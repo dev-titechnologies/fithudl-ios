@@ -54,11 +54,6 @@ class StarRateView: UIView {
         let star3 = viewWithTag(12) as! UIImageView
         let star4 = viewWithTag(13) as! UIImageView
         let star5 = viewWithTag(14) as! UIImageView
-        star1.image = noStarImage
-        star2.image = noStarImage
-        star3.image = noStarImage
-        star4.image = noStarImage
-        star5.image = noStarImage
         switch rating {
         case 0.5:
             star1.image = halfStarImage
@@ -94,12 +89,18 @@ class StarRateView: UIView {
             star3.image = fullStarImage
             star4.image = fullStarImage
             star5.image = halfStarImage
-        default:
+        case 5:
             star1.image = fullStarImage
             star2.image = fullStarImage
             star3.image = fullStarImage
             star4.image = fullStarImage
             star5.image = fullStarImage
+        default:
+            star1.image = noStarImage
+            star2.image = noStarImage
+            star3.image = noStarImage
+            star4.image = noStarImage
+            star5.image = noStarImage
             
         }
     }

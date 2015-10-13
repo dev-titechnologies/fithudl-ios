@@ -33,6 +33,9 @@ class LoginViewController: UIViewController {
         placeHolderString = NSAttributedString(string: resetEmailTextField.placeholder!, attributes: [NSForegroundColorAttributeName: UIColor(red: 136/255, green: 136/255, blue: 136/255, alpha: 1.0)])
         resetEmailTextField.attributedPlaceholder = placeHolderString
         
+        emailTextField.text     = "ardra.thambi@titechnologies.in"
+        passwordTextField.text  = "123456"
+        
         // Do any additional setup after loading the view.
     }
     

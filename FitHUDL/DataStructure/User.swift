@@ -9,7 +9,7 @@
 import UIKit
 
 class User: NSObject {
-    var profileID: String = ""
+    var profileID: Int = 0
     var name: String = ""
     var email: String = ""
     var bio: String?

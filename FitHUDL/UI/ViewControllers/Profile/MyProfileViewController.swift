@@ -43,7 +43,12 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var morebgView: UIView!
     
-    var profileID: String? = "4"
+    @IBOutlet weak var noBadgeLabel: UILabel!
+    @IBOutlet weak var noreviewLabel: UILabel!
+    @IBOutlet weak var notimeLabel: UILabel!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    
+    var profileID: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,15 +67,6 @@ class MyProfileViewController: UIViewController {
         
         sportsCarousel.type = iCarouselType.Custom
         navigationController?.setStatusBarColor()
-        let bioText: NSString = "IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE ASSIGNING"
-        
-        if bioText.length > BIOTEXT_LENGTH {
-            bioLabel.userInteractionEnabled = true
-            attributedBioText(bioText.substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true)
-        } else {
-            bioLabel.userInteractionEnabled = false
-            attributedBioText(bioText.substringToIndex(bioText.length), lengthExceed: false)
-        }
         
         if IS_IPHONE6PLUS {
             profileViewHeightConstraint.constant = 260.0
@@ -78,18 +74,23 @@ class MyProfileViewController: UIViewController {
             reviewBottomConstraint.constant = 30.0
             view.layoutIfNeeded()
         }
-        
-        if availableTimeCollectionView.numberOfItemsInSection(0) <= 3 {
-            morebgView.hidden = true
-            moreButton.hidden = true
-        }
-        
-        
+    
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
         availableTimeCollectionView.reloadData()
+        morebgView.hidden   = false
+        moreButton.hidden   = false
+        notimeLabel.hidden  = true
+        availableTimeCollectionView.hidden = false
+        noBadgeLabel.hidden         = true
+        badgesCollectionView.hidden = false
+        noreviewLabel.hidden        = true
+        reviewCollectionView.hidden = false
+        badgeNextButton.hidden      = false
+        badgePrevButton.hidden      = false
+        reviewNextButton.superview?.hidden = false
         sendRequestForProfile()
     }
     
@@ -187,6 +188,76 @@ class MyProfileViewController: UIViewController {
         presentViewController(custompopController, animated: true, completion: nil)
     }
     
+    func populateProfileContents() {
+        nameLabel.text = appDelegate.user.name
+        CustomURLConnection.downloadAndSetImage(appDelegate.user.imageURL!, imageView: userImageView, activityIndicatorView: indicatorView)
+        if let bioText = appDelegate.user.bio {
+            if count(bioText) > BIOTEXT_LENGTH {
+                bioLabel.userInteractionEnabled = true
+                attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true)
+            } else {
+                bioLabel.userInteractionEnabled = false
+                attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false)
+            }
+        }
+        sportsCarousel.currentItemIndex = 0
+        sportsCarousel.reloadData()
+        
+        if let hours = appDelegate.user.totalHours {
+            hoursLabel.text = "\(hours) hours"
+        } else {
+            hoursLabel.text = "0 hours"
+        }
+        
+        if let count = appDelegate.user.usageCount {
+            sessionCountLabel.text = "\(count)"
+        } else {
+            sessionCountLabel.text = "0"
+        }
+       
+        if let rate = appDelegate.user.rating {
+            rateLabel.text = "\(rate)"
+            starView.setStarViewValue(rate)
+        } else {
+            rateLabel.text = "0"
+            starView.setStarViewValue(0.0)
+        }
+        
+        if appDelegate.user.availableTimeArray.count <= 3 {
+            morebgView.hidden = true
+            moreButton.hidden = true
+        }
+        if appDelegate.user.badgesArray.count <= 3 {
+            badgeNextButton.hidden = true
+            badgePrevButton.hidden = true
+        }
+        if appDelegate.user.userReviewsArray.count <= 1 {
+            reviewNextButton.superview?.hidden = true
+        }
+        
+        if appDelegate.user.availableTimeArray.count == 0 {
+            notimeLabel.hidden = false
+            availableTimeCollectionView.hidden = true
+        } else {
+            availableTimeCollectionView.reloadData()
+        }
+        
+        if appDelegate.user.badgesArray.count == 0 {
+            noBadgeLabel.hidden = false
+            badgesCollectionView.hidden = true
+        } else {
+            badgesCollectionView.reloadData()
+        }
+        
+        if appDelegate.user.userReviewsArray.count == 0 {
+            noreviewLabel.hidden = false
+            reviewCollectionView.hidden = true
+        } else {
+            reviewCollectionView.reloadData()
+        }
+    }
+    
+    
     //MARK: - Profile API
     func sendRequestForProfile() {
         if !Globals.isInternetConnected() {
@@ -199,6 +270,60 @@ class MyProfileViewController: UIViewController {
         }
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "profile/profile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
+    
+    func parseProfileResponse(responseDictionary: NSDictionary) {
+        appDelegate.user.profileID  = responseDictionary["profile_id"] as! Int
+        appDelegate.user.name       = responseDictionary["profile_name"] as! String
+        appDelegate.user.email      = responseDictionary["email"] as! String
+        if let imageUrl = responseDictionary["profile_image"] as? String {
+            appDelegate.user.imageURL = imageUrl
+        } else {
+            appDelegate.user.imageURL = ""
+        }
+        
+        if let bio = responseDictionary["profile_desc"] as? String {
+            appDelegate.user.bio = bio
+        }
+        if let session = responseDictionary["Training_session"] as? NSArray {
+            appDelegate.user.availableTimeArray.addObjectsFromArray(session as! [NSDictionary])
+        }
+        if let usageCount = responseDictionary["usage_count"] as? Int {
+            appDelegate.user.usageCount = usageCount
+        }
+        if let rate = responseDictionary["rating"] as? Float {
+            appDelegate.user.rating = rate
+        }
+        if let badges = responseDictionary["Badges"] as? NSArray {
+            appDelegate.user.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+        }
+        if let comments = responseDictionary["User_comments"] as? NSArray {
+            appDelegate.user.userReviewsArray.addObjectsFromArray(comments as! [NSDictionary])
+        }
+
+        if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
+            for sports in appDelegate.sportsArray {
+                let sport = NSMutableDictionary()
+                sport.setObject(sports["id"] as! Int, forKey: "sports_id")
+                sport.setObject(sports["title"] as! String, forKey: "sport_name")
+                if let logo = sports["logo"] as? String {
+                    sport.setObject(logo, forKey: "logo")
+                } else {
+                    sport.setObject("", forKey: "logo")
+                }
+                
+                if sportsArray.valueForKey("sports_id")!.containsObject(sports["id"] as! Int) {
+                    let index = sportsArray.valueForKey("sports_id")?.indexOfObject(sports["id"] as! Int)
+                    let dict  = sportsArray.objectAtIndex(index!) as! NSDictionary
+                    sport.setObject(dict["expert_level"] as! String, forKey: "expert_level")
+                } else {
+                    sport.setObject("", forKey: "expert_level")
+                }
+                appDelegate.user.sportsArray.addObject(sport)
+            }
+        }
+        populateProfileContents()
+    }
+    
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
@@ -215,7 +340,15 @@ class MyProfileViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    
+                    parseProfileResponse(jsonResult)
+                } else if status == ResponseStatus.error {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
+                    } else {
+                        showDismissiveAlertMesssage(Message.Error)
+                    }
+                } else {
+                
                 }
             }
         }
@@ -228,8 +361,8 @@ class MyProfileViewController: UIViewController {
     }
     
     func setExpertiseLevel(level: String) {
-        let sports  = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
-        sports!.setObject(level, forKey: "level")
+        let sports  = appDelegate.user.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
+        sports!.setObject(level, forKey: "expert_level")
     }
     
     func attributedBioText(bio: String, lengthExceed: Bool) {
@@ -263,7 +396,7 @@ class MyProfileViewController: UIViewController {
 
 extension MyProfileViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
-        return appDelegate.sportsArray.count
+        return appDelegate.user.sportsArray.count
     }
     
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
@@ -291,18 +424,18 @@ extension MyProfileViewController: iCarouselDataSource {
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
         }
-        let sports          = appDelegate.sportsArray[index] as! NSDictionary
+        let sports          = appDelegate.user.sportsArray[index] as! NSDictionary
         if index == carousel.currentItemIndex {
-            titleLabel.text = sports["title"]!.uppercaseString as String
-            if sports["level"] as? String == SportsLevel.beginner {
+            titleLabel.text = sports["sport_name"]!.uppercaseString as String
+            if sports["expert_level"] as? String == SportsLevel.beginner {
                 beginnerButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.moderate {
+            } else if sports["expert_level"] as? String == SportsLevel.moderate {
                 moderateButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.expert {
+            } else if sports["expert_level"] as? String == SportsLevel.expert {
                 expertButton.selected = true
             }
         } else {
-            titleLabel.text = sports["title"] as? String
+            titleLabel.text = sports["sport_name"] as? String
         }
         
         return contentView
@@ -353,9 +486,9 @@ extension MyProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.isEqual(reviewCollectionView) {
-            return 5
+            return appDelegate.user.userReviewsArray.count
         } else if collectionView.isEqual(badgesCollectionView) {
-            return 10
+            return appDelegate.user.badgesArray.count
         }
         return appDelegate.user.availableTimeArray.count
         
@@ -364,18 +497,22 @@ extension MyProfileViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if collectionView.isEqual(reviewCollectionView) {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("reviewCell", forIndexPath: indexPath) as! UserReviewCollectionViewCell
-            cell.reviewView.starView.setStarViewValue(4.5)
+            let review = appDelegate.user.userReviewsArray[indexPath.row] as! NSDictionary
+            cell.reviewView.starView.setStarViewValue(review["user_rating"] as! Float)
             cell.reviewView.reviewTextView.scrollRangeToVisible(NSMakeRange(0, 0))
+            cell.reviewView.reviewTextView.text = review["user_review"] as! String
+            cell.reviewView.nameLabel.text      = review["profile_name"] as? String
             cell.reviewView.userImageView.backgroundColor = AppColor.statusBarColor
             return cell
         } else if collectionView.isEqual(badgesCollectionView){
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
-            cell.titleLabel.text = "\(indexPath.row)"
+            let badge = appDelegate.user.badgesArray[indexPath.row] as! NSDictionary
+            cell.titleLabel.text = badge["name"] as? String
             return cell
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
             let time = appDelegate.user.availableTimeArray[indexPath.row] as! NSDictionary
-            cell.timeLabel.text = time["time_starts"] as? String
+            cell.timeLabel.text = Globals.convertTimeTo12Hours((time["time_starts"] as? String)!) 
             return cell
         }
     }

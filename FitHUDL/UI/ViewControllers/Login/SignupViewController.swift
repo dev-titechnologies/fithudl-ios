@@ -30,10 +30,11 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var expertButton: UIButton!
     
     var fbUserDictionary: NSDictionary?
-    var sportsArray = NSMutableArray(array: appDelegate.sportsArray)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        sportsCarousel.type             = .Custom
         
         maleYConstraint.constant   = 0
         femaleYConstraint.constant = 0
@@ -48,10 +49,7 @@ class SignupViewController: UIViewController {
             genderViewYConstraint.constant = 40
         }
         view.layoutIfNeeded()
-        
-        for sport in sportsArray {
-            sport.setObject("", forKey: "level")
-        }
+
         
         let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText]
         var placeHolderString   = NSAttributedString(string: emailTextField.placeholder!, attributes: colorAttributes)
@@ -64,8 +62,6 @@ class SignupViewController: UIViewController {
         passwordTextField.attributedPlaceholder = placeHolderString
         
         genderButton.layer.borderColor = AppColor.statusBarColor.CGColor
-        
-        sportsCarousel.type = .Custom
         
         if let fbUser = fbUserDictionary {
             emailTextField.text = fbUser["email"] as! String
@@ -167,7 +163,7 @@ class SignupViewController: UIViewController {
     }
     
     func setExpertiseLevel(level: String) {
-        let sports  = sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
+        let sports  = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
         sports!.setObject(level, forKey: "level")
     }
     
@@ -184,8 +180,8 @@ class SignupViewController: UIViewController {
             requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
             requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
         } else {
-            requestDictionary.setObject(37, forKey: "latitude")
-            requestDictionary.setObject(-122, forKey: "longitude")
+            requestDictionary.setObject(37.785834, forKey: "latitude")
+            requestDictionary.setObject(-122.406417, forKey: "longitude")
         }
 
         if maleButton.selected {
@@ -194,7 +190,7 @@ class SignupViewController: UIViewController {
             requestDictionary.setObject(Gender.female, forKey: "gender")
         }
         
-        let filteredArray     = sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
+        let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
         if filteredArray.count > 0 {
             requestDictionary.setObject(filteredArray, forKey: "sportsList")
         }
@@ -242,6 +238,12 @@ class SignupViewController: UIViewController {
         showDismissiveAlertMesssage(error.localizedDescription)
         showLoadingView(false)
     }
+
+    override func viewWillDisappear(animated: Bool) {
+        for sport in appDelegate.sportsArray {
+            sport.setObject("", forKey: "level")
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -270,7 +272,7 @@ extension SignupViewController: UITextFieldDelegate {
 
 extension SignupViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
-        return sportsArray.count
+        return appDelegate.sportsArray.count
     }
     
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
@@ -297,7 +299,7 @@ extension SignupViewController: iCarouselDataSource {
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
         }
-        let sports          = sportsArray[index] as! NSDictionary
+        let sports          = appDelegate.sportsArray[index] as! NSDictionary
         if index == carousel.currentItemIndex {
             titleLabel.text = sports["title"]!.uppercaseString as String
             if sports["level"] as? String == SportsLevel.beginner {

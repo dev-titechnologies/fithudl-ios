@@ -42,4 +42,22 @@ class Globals: NSObject {
         }
     }
     
+    class func convertTimeTo24Hours(time: String) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "H.mm a"
+        let date = dateFormatter.dateFromString(time)
+        
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.stringFromDate(date!)
+    }
+    
+    class func convertTimeTo12Hours(time: String) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        let date = dateFormatter.dateFromString(time)
+        
+        dateFormatter.dateFormat = "H.mm a"
+        return dateFormatter.stringFromDate(date!)
+    }
+    
 }
