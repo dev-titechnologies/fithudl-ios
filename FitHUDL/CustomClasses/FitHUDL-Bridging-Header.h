@@ -1,0 +1,18 @@
+//
+//  FitHUDL-Bridging-Header.h
+//  FitHUDL
+//
+//  Created by Ti Technologies on 23/09/15.
+//  Copyright © 2015 Ti Technologies. All rights reserved.
+//
+
+#ifndef FitHUDL_Bridging_Header_h
+#define FitHUDL_Bridging_Header_h
+
+
+#endif /* FitHUDL_Bridging_Header_h */
+
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "Reachability.h"
+#import "iCarousel.h"

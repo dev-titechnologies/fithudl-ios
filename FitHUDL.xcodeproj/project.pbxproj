@@ -1,0 +1,731 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3003EA01BBA8105001354E3 /* UserReviewView.swift */; };
+		F3003EA31BBA8117001354E3 /* UserReviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3003EA21BBA8117001354E3 /* UserReviewView.xib */; };
+		F3003EA51BBA88F8001354E3 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3003EA41BBA887C001354E3 /* OpenSans-LightItalic.ttf */; };
+		F3003EA71BBAB071001354E3 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3003EA61BBAB065001354E3 /* OpenSans-Bold.ttf */; };
+		F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = F305F5201BB906AA006BEFA2 /* iCarousel.m */; };
+		F305F5271BB96691006BEFA2 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */; };
+		F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F5281BB966B4006BEFA2 /* FavoritesViewController.swift */; };
+		F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */; };
+		F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */; };
+		F340903F1BCBAEC600FF977A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F340903E1BCBAEC600FF977A /* User.swift */; };
+		F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */; };
+		F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */; };
+		F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */; };
+		F3438A801BB27EBF001BA5E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A7F1BB27EBF001BA5E6 /* AppDelegate.swift */; };
+		F3438A831BB27ED2001BA5E6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3438A811BB27ED2001BA5E6 /* LaunchScreen.xib */; };
+		F3438A841BB27ED2001BA5E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3438A821BB27ED2001BA5E6 /* Main.storyboard */; };
+		F3438A891BB27F50001BA5E6 /* FitHUDL.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F3438A871BB27F50001BA5E6 /* FitHUDL.xcdatamodeld */; };
+		F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A8B1BB27F74001BA5E6 /* CustomURLConnection.swift */; };
+		F3438A9A1BB2845D001BA5E6 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F3438A971BB2845D001BA5E6 /* FacebookSDKStrings.bundle */; };
+		F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3438A981BB2845D001BA5E6 /* FBSDKCoreKit.framework */; };
+		F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3438A991BB2845D001BA5E6 /* FBSDKLoginKit.framework */; };
+		F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F3438A9E1BB28A03001BA5E6 /* Reachability.m */; };
+		F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA21BB290B6001BA5E6 /* AppConstants.swift */; };
+		F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA31BB290B6001BA5E6 /* Globals.swift */; };
+		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
+		F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */; };
+		F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3717C971BBB9FFF0038795A /* StarRateView.swift */; };
+		F3717C9A1BBBA0170038795A /* StarRateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C991BBBA0170038795A /* StarRateView.xib */; };
+		F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */; };
+		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
+		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
+		F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB341BB27D4A0070EDAF /* ViewController.swift */; };
+		F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3CDCB391BB27D4A0070EDAF /* Images.xcassets */; };
+		F3CDCB491BB27D4A0070EDAF /* FitHUDLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */; };
+		F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */; };
+		F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */; };
+		F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F3CDCB431BB27D4A0070EDAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F3CDCB221BB27D490070EDAF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3CDCB291BB27D490070EDAF;
+			remoteInfo = FitHUDL;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F3003EA01BBA8105001354E3 /* UserReviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReviewView.swift; sourceTree = "<group>"; };
+		F3003EA21BBA8117001354E3 /* UserReviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserReviewView.xib; sourceTree = "<group>"; };
+		F3003EA41BBA887C001354E3 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		F3003EA61BBAB065001354E3 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		F305F51F1BB906AA006BEFA2 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		F305F5201BB906AA006BEFA2 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		F305F5281BB966B4006BEFA2 /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		F340903E1BCBAEC600FF977A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpViewController.swift; sourceTree = "<group>"; };
+		F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F3438A7F1BB27EBF001BA5E6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F3438A811BB27ED2001BA5E6 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		F3438A821BB27ED2001BA5E6 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		F3438A881BB27F50001BA5E6 /* FitHUDL.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FitHUDL.xcdatamodel; sourceTree = "<group>"; };
+		F3438A8A1BB27F74001BA5E6 /* FitHUDL-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FitHUDL-Bridging-Header.h"; sourceTree = "<group>"; };
+		F3438A8B1BB27F74001BA5E6 /* CustomURLConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomURLConnection.swift; sourceTree = "<group>"; };
+		F3438A971BB2845D001BA5E6 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
+		F3438A981BB2845D001BA5E6 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		F3438A991BB2845D001BA5E6 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		F3438A9E1BB28A03001BA5E6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		F3438A9F1BB28A03001BA5E6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F3438AA21BB290B6001BA5E6 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		F3438AA31BB290B6001BA5E6 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		F3717C971BBB9FFF0038795A /* StarRateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRateView.swift; sourceTree = "<group>"; };
+		F3717C991BBBA0170038795A /* StarRateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StarRateView.xib; sourceTree = "<group>"; };
+		F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgesCollectionViewCell.swift; sourceTree = "<group>"; };
+		F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BadgesCollectionViewCell.xib; sourceTree = "<group>"; };
+		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
+		F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitHUDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3CDCB2E1BB27D490070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3CDCB341BB27D4A0070EDAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F3CDCB391BB27D4A0070EDAF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitHUDLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3CDCB471BB27D4A0070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitHUDLTests.swift; sourceTree = "<group>"; };
+		F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopupViewController.swift; sourceTree = "<group>"; };
+		F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserReviewCollectionViewCell.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F3CDCB271BB27D490070EDAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */,
+				F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3CDCB3F1BB27D4A0070EDAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F305F51E1BB9069A006BEFA2 /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				F305F51F1BB906AA006BEFA2 /* iCarousel.h */,
+				F305F5201BB906AA006BEFA2 /* iCarousel.m */,
+			);
+			path = iCarousel;
+			sourceTree = "<group>";
+		};
+		F305F5221BB951D8006BEFA2 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		F305F5231BB96646006BEFA2 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				F305F5281BB966B4006BEFA2 /* FavoritesViewController.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
+		F305F5241BB96646006BEFA2 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		F305F5251BB9665D006BEFA2 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		F3438A711BB27DCF001BA5E6 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A7F1BB27EBF001BA5E6 /* AppDelegate.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		F3438A721BB27DDA001BA5E6 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A811BB27ED2001BA5E6 /* LaunchScreen.xib */,
+				F3438A821BB27ED2001BA5E6 /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		F3438A731BB27DE2001BA5E6 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A751BB27E25001BA5E6 /* CustomViews */,
+				F3438A761BB27E25001BA5E6 /* ViewControllers */,
+				F3438A771BB27E25001BA5E6 /* CustomCells */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		F3438A741BB27DEB001BA5E6 /* CustomClasses */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A9D1BB28915001BA5E6 /* Utils */,
+				F3438A8A1BB27F74001BA5E6 /* FitHUDL-Bridging-Header.h */,
+				F3438A8B1BB27F74001BA5E6 /* CustomURLConnection.swift */,
+			);
+			path = CustomClasses;
+			sourceTree = "<group>";
+		};
+		F3438A751BB27E25001BA5E6 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				F3003EA01BBA8105001354E3 /* UserReviewView.swift */,
+				F3003EA21BBA8117001354E3 /* UserReviewView.xib */,
+				F3717C971BBB9FFF0038795A /* StarRateView.swift */,
+				F3717C991BBBA0170038795A /* StarRateView.xib */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		F3438A761BB27E25001BA5E6 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F3B05B531BBA551700CA9ACA /* TabBarController */,
+				F305F5251BB9665D006BEFA2 /* Search */,
+				F305F5241BB96646006BEFA2 /* Feedback */,
+				F305F5231BB96646006BEFA2 /* Favorites */,
+				F305F5221BB951D8006BEFA2 /* Profile */,
+				F3438A781BB27E3A001BA5E6 /* Login */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F3438A771BB27E25001BA5E6 /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */,
+				F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */,
+				F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */,
+				F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */,
+			);
+			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		F3438A781BB27E3A001BA5E6 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */,
+				F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */,
+				F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		F3438A851BB27F1F001BA5E6 /* DataStructure */ = {
+			isa = PBXGroup;
+			children = (
+				F340903E1BCBAEC600FF977A /* User.swift */,
+			);
+			path = DataStructure;
+			sourceTree = "<group>";
+		};
+		F3438A861BB27F1F001BA5E6 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A871BB27F50001BA5E6 /* FitHUDL.xcdatamodeld */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		F3438A8D1BB27F8A001BA5E6 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				F305F51E1BB9069A006BEFA2 /* iCarousel */,
+				F3438A8E1BB27FB2001BA5E6 /* Facebook */,
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		F3438A8E1BB27FB2001BA5E6 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A971BB2845D001BA5E6 /* FacebookSDKStrings.bundle */,
+				F3438A981BB2845D001BA5E6 /* FBSDKCoreKit.framework */,
+				F3438A991BB2845D001BA5E6 /* FBSDKLoginKit.framework */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
+		F3438A9D1BB28915001BA5E6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F3438A9F1BB28A03001BA5E6 /* Reachability.h */,
+				F3438A9E1BB28A03001BA5E6 /* Reachability.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F3438AA11BB290B6001BA5E6 /* Globals */ = {
+			isa = PBXGroup;
+			children = (
+				F3438AA21BB290B6001BA5E6 /* AppConstants.swift */,
+				F3438AA31BB290B6001BA5E6 /* Globals.swift */,
+			);
+			path = Globals;
+			sourceTree = "<group>";
+		};
+		F36B81F11BB536DB00CB8043 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				F3003EA61BBAB065001354E3 /* OpenSans-Bold.ttf */,
+				F3003EA41BBA887C001354E3 /* OpenSans-LightItalic.ttf */,
+				F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */,
+				F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		F3B05B531BBA551700CA9ACA /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */,
+				F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */,
+			);
+			path = TabBarController;
+			sourceTree = "<group>";
+		};
+		F3CDCB211BB27D490070EDAF = {
+			isa = PBXGroup;
+			children = (
+				F3CDCB2C1BB27D490070EDAF /* FitHUDL */,
+				F3CDCB451BB27D4A0070EDAF /* FitHUDLTests */,
+				F3CDCB2B1BB27D490070EDAF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F3CDCB2B1BB27D490070EDAF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */,
+				F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F3CDCB2C1BB27D490070EDAF /* FitHUDL */ = {
+			isa = PBXGroup;
+			children = (
+				F36B81F11BB536DB00CB8043 /* Font */,
+				F3438AA11BB290B6001BA5E6 /* Globals */,
+				F3438A8D1BB27F8A001BA5E6 /* Libs */,
+				F3438A851BB27F1F001BA5E6 /* DataStructure */,
+				F3438A861BB27F1F001BA5E6 /* DataModel */,
+				F3438A741BB27DEB001BA5E6 /* CustomClasses */,
+				F3438A731BB27DE2001BA5E6 /* UI */,
+				F3438A721BB27DDA001BA5E6 /* Storyboard */,
+				F3438A711BB27DCF001BA5E6 /* AppDelegate */,
+				F3CDCB341BB27D4A0070EDAF /* ViewController.swift */,
+				F3CDCB391BB27D4A0070EDAF /* Images.xcassets */,
+				F3CDCB2D1BB27D490070EDAF /* Supporting Files */,
+			);
+			path = FitHUDL;
+			sourceTree = "<group>";
+		};
+		F3CDCB2D1BB27D490070EDAF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F3CDCB2E1BB27D490070EDAF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F3CDCB451BB27D4A0070EDAF /* FitHUDLTests */ = {
+			isa = PBXGroup;
+			children = (
+				F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */,
+				F3CDCB461BB27D4A0070EDAF /* Supporting Files */,
+			);
+			path = FitHUDLTests;
+			sourceTree = "<group>";
+		};
+		F3CDCB461BB27D4A0070EDAF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F3CDCB471BB27D4A0070EDAF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F3CDCB291BB27D490070EDAF /* FitHUDL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3CDCB4C1BB27D4A0070EDAF /* Build configuration list for PBXNativeTarget "FitHUDL" */;
+			buildPhases = (
+				F3CDCB261BB27D490070EDAF /* Sources */,
+				F3CDCB271BB27D490070EDAF /* Frameworks */,
+				F3CDCB281BB27D490070EDAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FitHUDL;
+			productName = FitHUDL;
+			productReference = F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F3CDCB411BB27D4A0070EDAF /* FitHUDLTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3CDCB4F1BB27D4A0070EDAF /* Build configuration list for PBXNativeTarget "FitHUDLTests" */;
+			buildPhases = (
+				F3CDCB3E1BB27D4A0070EDAF /* Sources */,
+				F3CDCB3F1BB27D4A0070EDAF /* Frameworks */,
+				F3CDCB401BB27D4A0070EDAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F3CDCB441BB27D4A0070EDAF /* PBXTargetDependency */,
+			);
+			name = FitHUDLTests;
+			productName = FitHUDLTests;
+			productReference = F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F3CDCB221BB27D490070EDAF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Ti Technologies";
+				TargetAttributes = {
+					F3CDCB291BB27D490070EDAF = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					F3CDCB411BB27D4A0070EDAF = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = F3CDCB291BB27D490070EDAF;
+					};
+				};
+			};
+			buildConfigurationList = F3CDCB251BB27D490070EDAF /* Build configuration list for PBXProject "FitHUDL" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F3CDCB211BB27D490070EDAF;
+			productRefGroup = F3CDCB2B1BB27D490070EDAF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F3CDCB291BB27D490070EDAF /* FitHUDL */,
+				F3CDCB411BB27D4A0070EDAF /* FitHUDLTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F3CDCB281BB27D490070EDAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3717C9A1BBBA0170038795A /* StarRateView.xib in Resources */,
+				F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */,
+				F3003EA71BBAB071001354E3 /* OpenSans-Bold.ttf in Resources */,
+				F3003EA51BBA88F8001354E3 /* OpenSans-LightItalic.ttf in Resources */,
+				F3438A841BB27ED2001BA5E6 /* Main.storyboard in Resources */,
+				F3438A831BB27ED2001BA5E6 /* LaunchScreen.xib in Resources */,
+				F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */,
+				F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */,
+				F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */,
+				F3003EA31BBA8117001354E3 /* UserReviewView.xib in Resources */,
+				F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */,
+				F3438A9A1BB2845D001BA5E6 /* FacebookSDKStrings.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3CDCB401BB27D4A0070EDAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F3CDCB261BB27D490070EDAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */,
+				F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */,
+				F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */,
+				F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */,
+				F3438A801BB27EBF001BA5E6 /* AppDelegate.swift in Sources */,
+				F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */,
+				F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */,
+				F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */,
+				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
+				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
+				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
+				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
+				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
+				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
+				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
+				F305F5271BB96691006BEFA2 /* MyProfileViewController.swift in Sources */,
+				F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */,
+				F3438A891BB27F50001BA5E6 /* FitHUDL.xcdatamodeld in Sources */,
+				F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */,
+				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
+				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
+				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3CDCB3E1BB27D4A0070EDAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3CDCB491BB27D4A0070EDAF /* FitHUDLTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F3CDCB441BB27D4A0070EDAF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3CDCB291BB27D490070EDAF /* FitHUDL */;
+			targetProxy = F3CDCB431BB27D4A0070EDAF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F3CDCB4A1BB27D4A0070EDAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F3CDCB4B1BB27D4A0070EDAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F3CDCB4D1BB27D4A0070EDAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
+				);
+				INFOPLIST_FILE = FitHUDL/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		F3CDCB4E1BB27D4A0070EDAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
+				);
+				INFOPLIST_FILE = FitHUDL/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		F3CDCB501BB27D4A0070EDAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = FitHUDLTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
+			};
+			name = Debug;
+		};
+		F3CDCB511BB27D4A0070EDAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = FitHUDLTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F3CDCB251BB27D490070EDAF /* Build configuration list for PBXProject "FitHUDL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3CDCB4A1BB27D4A0070EDAF /* Debug */,
+				F3CDCB4B1BB27D4A0070EDAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F3CDCB4C1BB27D4A0070EDAF /* Build configuration list for PBXNativeTarget "FitHUDL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3CDCB4D1BB27D4A0070EDAF /* Debug */,
+				F3CDCB4E1BB27D4A0070EDAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F3CDCB4F1BB27D4A0070EDAF /* Build configuration list for PBXNativeTarget "FitHUDLTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3CDCB501BB27D4A0070EDAF /* Debug */,
+				F3CDCB511BB27D4A0070EDAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F3438A871BB27F50001BA5E6 /* FitHUDL.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F3438A881BB27F50001BA5E6 /* FitHUDL.xcdatamodel */,
+			);
+			currentVersion = F3438A881BB27F50001BA5E6 /* FitHUDL.xcdatamodel */;
+			path = FitHUDL.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = F3CDCB221BB27D490070EDAF /* Project object */;
+}
