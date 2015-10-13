@@ -47,6 +47,10 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var noreviewLabel: UILabel!
     @IBOutlet weak var notimeLabel: UILabel!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var completedTitleLabel: UILabel!
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var bookView: UIView!
     
     var profileID: String?
     
@@ -75,6 +79,14 @@ class MyProfileViewController: UIViewController {
             view.layoutIfNeeded()
         }
     
+        if let id = profileID {
+            bookView.hidden            = false
+            favoriteButton.hidden      = false
+            completedTitleLabel.hidden = true
+            hoursLabel.hidden          = true
+            editButton.hidden          = true
+            
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -300,6 +312,10 @@ class MyProfileViewController: UIViewController {
             appDelegate.user.userReviewsArray.addObjectsFromArray(comments as! [NSDictionary])
         }
 
+        if let hours = responseDictionary["weekly_hours"] as? String {
+            appDelegate.user.totalHours = hours
+        }
+        
         if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
             for sports in appDelegate.sportsArray {
                 let sport = NSMutableDictionary()

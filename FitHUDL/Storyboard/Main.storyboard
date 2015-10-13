@@ -58,6 +58,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -718,6 +719,16 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                                                         <color key="backgroundColor" red="0.0" green="0.55686274509803924" blue="0.50588235294117645" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                                     </view>
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0RT-TD-UgM">
+                                                        <rect key="frame" x="272" y="5" width="45" height="45"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="45" id="WB3-hA-705"/>
+                                                            <constraint firstAttribute="width" constant="45" id="hZE-GF-N2T"/>
+                                                        </constraints>
+                                                        <state key="normal" title="Button">
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                    </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mse-dK-wTM">
                                                         <rect key="frame" x="8" y="5" width="250" height="20"/>
                                                         <constraints>
@@ -1053,6 +1064,23 @@
                                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LWM-LG-FeY">
                                                         <rect key="frame" x="150" y="83" width="20" height="20"/>
                                                     </activityIndicatorView>
+                                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YqX-fv-Nag">
+                                                        <rect key="frame" x="195" y="100" width="124" height="50"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="book_icon" translatesAutoresizingMaskIntoConstraints="NO" id="eDl-uP-Pre">
+                                                                <rect key="frame" x="80" y="7" width="36" height="36"/>
+                                                            </imageView>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="book_bg" translatesAutoresizingMaskIntoConstraints="NO" id="xSI-yT-Fyq">
+                                                                <rect key="frame" x="7" y="16" width="73" height="18"/>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Book here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MA1-Ww-E9i">
+                                                                <rect key="frame" x="10" y="14" width="62" height="21"/>
+                                                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -1068,13 +1096,17 @@
                                                     <constraint firstItem="jX0-tn-37c" firstAttribute="leading" secondItem="nca-Ik-iRE" secondAttribute="leading" id="HjJ-Wl-eom"/>
                                                     <constraint firstAttribute="trailing" secondItem="M4R-iS-wky" secondAttribute="trailing" constant="8" id="Inf-wF-SaO"/>
                                                     <constraint firstItem="Tml-Uq-y39" firstAttribute="leading" secondItem="nca-Ik-iRE" secondAttribute="leading" constant="8" id="Iq3-Zk-2ad"/>
+                                                    <constraint firstItem="M4R-iS-wky" firstAttribute="centerY" secondItem="0RT-TD-UgM" secondAttribute="centerY" constant="-2.5" id="IuA-3n-rp8"/>
                                                     <constraint firstAttribute="trailing" secondItem="xQe-5q-S5m" secondAttribute="trailing" constant="5" id="LuA-RH-HCx"/>
+                                                    <constraint firstItem="M4R-iS-wky" firstAttribute="centerX" secondItem="0RT-TD-UgM" secondAttribute="centerX" constant="-2.5" id="NCQ-GS-jty"/>
                                                     <constraint firstItem="4tk-4J-krU" firstAttribute="top" secondItem="nca-Ik-iRE" secondAttribute="top" id="PAw-BV-1lJ"/>
                                                     <constraint firstItem="LWM-LG-FeY" firstAttribute="centerY" secondItem="jX0-tn-37c" secondAttribute="centerY" constant="-27" id="Rbe-sx-EKu"/>
                                                     <constraint firstAttribute="bottom" secondItem="4tk-4J-krU" secondAttribute="bottom" id="Uy3-49-BSs"/>
                                                     <constraint firstAttribute="trailing" secondItem="VkY-55-ZS4" secondAttribute="trailing" constant="5" id="VBg-By-XvV"/>
                                                     <constraint firstItem="YBa-di-ftt" firstAttribute="leading" secondItem="nca-Ik-iRE" secondAttribute="leading" id="alX-PS-YRw"/>
                                                     <constraint firstItem="M4R-iS-wky" firstAttribute="top" secondItem="nca-Ik-iRE" secondAttribute="top" constant="5" id="d53-jr-Jfc"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0RT-TD-UgM" secondAttribute="trailing" constant="3" id="eLW-rl-dXX"/>
+                                                    <constraint firstItem="0RT-TD-UgM" firstAttribute="top" secondItem="nca-Ik-iRE" secondAttribute="top" constant="5" id="gsW-ii-bm0"/>
                                                     <constraint firstItem="Mse-dK-wTM" firstAttribute="leading" secondItem="nca-Ik-iRE" secondAttribute="leading" constant="8" id="hBG-HO-ns6"/>
                                                     <constraint firstAttribute="bottom" secondItem="jX0-tn-37c" secondAttribute="bottom" id="m2w-UF-IsL"/>
                                                     <constraint firstItem="VkY-55-ZS4" firstAttribute="top" secondItem="xQe-5q-S5m" secondAttribute="bottom" constant="-2" id="mrZ-tL-xNp"/>
@@ -1393,9 +1425,13 @@
                         <outlet property="badgesCollectionView" destination="o5K-vW-608" id="Bua-Xi-DWu"/>
                         <outlet property="beginnerButton" destination="Kaq-gD-O7s" id="HUU-ub-Xzo"/>
                         <outlet property="bioLabel" destination="Tml-Uq-y39" id="39w-2w-DfE"/>
+                        <outlet property="bookView" destination="YqX-fv-Nag" id="fOr-QK-jFF"/>
+                        <outlet property="completedTitleLabel" destination="xQe-5q-S5m" id="0bs-8f-EVs"/>
                         <outlet property="contentScrollView" destination="61n-f4-cJI" id="l2e-hc-6dy"/>
                         <outlet property="contentView" destination="EuN-r6-M4d" id="Na6-wa-kRD"/>
+                        <outlet property="editButton" destination="M4R-iS-wky" id="znm-qV-OGb"/>
                         <outlet property="expertButton" destination="UiM-jj-RHs" id="0Ig-dm-v0j"/>
+                        <outlet property="favoriteButton" destination="0RT-TD-UgM" id="Vrs-e1-4yc"/>
                         <outlet property="hoursLabel" destination="VkY-55-ZS4" id="VD7-sL-PNZ"/>
                         <outlet property="indicatorView" destination="LWM-LG-FeY" id="aF8-vF-Car"/>
                         <outlet property="moderateButton" destination="VJg-tw-lSM" id="SlK-eT-KUv"/>
@@ -1967,6 +2003,8 @@
     <resources>
         <image name="back_button" width="18" height="15"/>
         <image name="bgImage" width="291" height="291"/>
+        <image name="book_bg" width="72" height="18"/>
+        <image name="book_icon" width="36" height="36"/>
         <image name="close_button" width="42" height="42"/>
         <image name="edit_button" width="14" height="14"/>
         <image name="favorites_tabicon" width="17" height="17"/>
