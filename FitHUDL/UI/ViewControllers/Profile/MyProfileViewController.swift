@@ -85,7 +85,6 @@ class MyProfileViewController: UIViewController {
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
             editButton.hidden          = true
-            
         }
         // Do any additional setup after loading the view.
     }
@@ -202,7 +201,12 @@ class MyProfileViewController: UIViewController {
     
     func populateProfileContents() {
         nameLabel.text = appDelegate.user.name
-        CustomURLConnection.downloadAndSetImage(appDelegate.user.imageURL!, imageView: userImageView, activityIndicatorView: indicatorView)
+        if let url = appDelegate.user.imageURL {
+            CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
+        } else {
+            CustomURLConnection.downloadAndSetImage("", imageView: userImageView, activityIndicatorView: indicatorView)
+        }
+        
         if let bioText = appDelegate.user.bio {
             if count(bioText) > BIOTEXT_LENGTH {
                 bioLabel.userInteractionEnabled = true
@@ -211,6 +215,9 @@ class MyProfileViewController: UIViewController {
                 bioLabel.userInteractionEnabled = false
                 attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false)
             }
+        }
+        if appDelegate.user.sportsArray.count == 0 {
+            beginnerButton.superview?.superview?.hidden = true
         }
         sportsCarousel.currentItemIndex = 0
         sportsCarousel.reloadData()
@@ -337,7 +344,6 @@ class MyProfileViewController: UIViewController {
                 appDelegate.user.sportsArray.addObject(sport)
             }
         }
-        populateProfileContents()
     }
     
     
@@ -368,11 +374,13 @@ class MyProfileViewController: UIViewController {
                 }
             }
         }
+        populateProfileContents()
         showLoadingView(false)
     }
     
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
+        populateProfileContents()
         showLoadingView(false)
     }
     
