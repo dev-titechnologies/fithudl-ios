@@ -88,7 +88,7 @@ extension FavoritesViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell=tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! FavouritesListCell
-        cell.starView.setStarViewValue(4.5)
+        cell.starView.rating = 0
         cell.prof_pic.layer.borderWidth=1.0
         cell.prof_pic.layer.masksToBounds = false
         cell.prof_pic.layer.borderColor = UIColor.clearColor().CGColor
@@ -103,7 +103,7 @@ extension FavoritesViewController : UITableViewDelegate {
 
         cell.nameLabel?.text=self.favouriteList_array[indexPath.row].objectForKey("name") as? String
         if let ratevalue = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float {
-            cell.starView.setStarViewValue(ratevalue)
+            cell.starView.rating = ratevalue
         }
         if let session_count = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Int {
             cell.sessionCounterLabel?.text=String(session_count)

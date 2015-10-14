@@ -36,7 +36,6 @@
 		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
 		F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */; };
 		F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3717C971BBB9FFF0038795A /* StarRateView.swift */; };
-		F3717C9A1BBBA0170038795A /* StarRateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C991BBBA0170038795A /* StarRateView.xib */; };
 		F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */; };
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
@@ -91,7 +90,6 @@
 		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		F3717C971BBB9FFF0038795A /* StarRateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRateView.swift; sourceTree = "<group>"; };
-		F3717C991BBBA0170038795A /* StarRateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StarRateView.xib; sourceTree = "<group>"; };
 		F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgesCollectionViewCell.swift; sourceTree = "<group>"; };
 		F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BadgesCollectionViewCell.xib; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
@@ -211,7 +209,6 @@
 				F3003EA01BBA8105001354E3 /* UserReviewView.swift */,
 				F3003EA21BBA8117001354E3 /* UserReviewView.xib */,
 				F3717C971BBB9FFF0038795A /* StarRateView.swift */,
-				F3717C991BBBA0170038795A /* StarRateView.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -397,6 +394,7 @@
 				F3CDCB261BB27D490070EDAF /* Sources */,
 				F3CDCB271BB27D490070EDAF /* Frameworks */,
 				F3CDCB281BB27D490070EDAF /* Resources */,
+				F37968E31BCE280B0074B57D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -468,7 +466,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3717C9A1BBBA0170038795A /* StarRateView.xib in Resources */,
 				F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */,
 				F3003EA71BBAB071001354E3 /* OpenSans-Bold.ttf in Resources */,
 				F3003EA51BBA88F8001354E3 /* OpenSans-LightItalic.ttf in Resources */,
@@ -491,6 +488,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F37968E31BCE280B0074B57D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F3CDCB261BB27D490070EDAF /* Sources */ = {

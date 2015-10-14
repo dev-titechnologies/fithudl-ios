@@ -236,10 +236,10 @@ class MyProfileViewController: UIViewController {
        
         if let rate = appDelegate.user.rating {
             rateLabel.text = "\(rate)"
-            starView.setStarViewValue(rate)
+            starView.rating = rate
         } else {
             rateLabel.text = "0"
-            starView.setStarViewValue(0.0)
+            starView.rating = 0.0
         }
         
         if appDelegate.user.availableTimeArray.count <= 3 {
@@ -522,7 +522,12 @@ extension MyProfileViewController: UICollectionViewDataSource {
         if collectionView.isEqual(reviewCollectionView) {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("reviewCell", forIndexPath: indexPath) as! UserReviewCollectionViewCell
             let review = appDelegate.user.userReviewsArray[indexPath.row] as! NSDictionary
-            cell.reviewView.starView.setStarViewValue(review["user_rating"] as! Float)
+            if let rating = review["user_rating"] as? Float {
+                cell.reviewView.starView.rating = rating
+            } else {
+                cell.reviewView.starView.rating = 0.0
+            }
+            
             cell.reviewView.reviewTextView.scrollRangeToVisible(NSMakeRange(0, 0))
             cell.reviewView.reviewTextView.text = review["user_review"] as! String
             cell.reviewView.nameLabel.text      = review["profile_name"] as? String
