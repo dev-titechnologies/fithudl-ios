@@ -52,6 +52,7 @@ struct Connection {
     static let sportsList    = 14
     static let userProfile   = 15
     static let favouriteList = 16
+    static let unfavourite   = 17
 }
 
 struct SportsLevel {

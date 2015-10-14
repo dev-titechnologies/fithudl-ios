@@ -114,5 +114,4 @@ extension FavoritesViewController : UITableViewDelegate {
         
     }
     
-    
 }

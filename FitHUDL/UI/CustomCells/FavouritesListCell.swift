@@ -10,6 +10,7 @@ import UIKit
 
 class FavouritesListCell: UITableViewCell {
     
+    @IBOutlet weak var favouriteButton: UIButton!
     @IBOutlet weak var starView: StarRateView!
     @IBOutlet weak var prof_pic: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
