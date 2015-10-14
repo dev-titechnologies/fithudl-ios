@@ -147,7 +147,7 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func editButtonClicked(sender: UIButton) {
-        
+        performSegueWithIdentifier("segueToEditProfile", sender: self)
     }
     
     @IBAction func beginnerButtonClicked(sender: UIButton) {

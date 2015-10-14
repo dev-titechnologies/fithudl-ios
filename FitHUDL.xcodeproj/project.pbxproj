@@ -38,6 +38,8 @@
 		F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3717C971BBB9FFF0038795A /* StarRateView.swift */; };
 		F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */; };
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
+		F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F37968F01BCE812E0074B57D /* SRMonthPicker.m */; };
+		F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37968F31BCE81500074B57D /* EditProfileViewController.swift */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
 		F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB341BB27D4A0070EDAF /* ViewController.swift */; };
 		F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3CDCB391BB27D4A0070EDAF /* Images.xcassets */; };
@@ -92,6 +94,9 @@
 		F3717C971BBB9FFF0038795A /* StarRateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRateView.swift; sourceTree = "<group>"; };
 		F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgesCollectionViewCell.swift; sourceTree = "<group>"; };
 		F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BadgesCollectionViewCell.xib; sourceTree = "<group>"; };
+		F37968F01BCE812E0074B57D /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
+		F37968F11BCE812E0074B57D /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
+		F37968F31BCE81500074B57D /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitHUDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB2E1BB27D490070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -137,6 +142,7 @@
 		F305F5221BB951D8006BEFA2 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				F37968F31BCE81500074B57D /* EditProfileViewController.swift */,
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
 			);
 			path = Profile;
@@ -206,6 +212,7 @@
 		F3438A751BB27E25001BA5E6 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F37968EF1BCE80E50074B57D /* MonthPicker */,
 				F3003EA01BBA8105001354E3 /* UserReviewView.swift */,
 				F3003EA21BBA8117001354E3 /* UserReviewView.xib */,
 				F3717C971BBB9FFF0038795A /* StarRateView.swift */,
@@ -311,6 +318,15 @@
 				F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		F37968EF1BCE80E50074B57D /* MonthPicker */ = {
+			isa = PBXGroup;
+			children = (
+				F37968F01BCE812E0074B57D /* SRMonthPicker.m */,
+				F37968F11BCE812E0074B57D /* SRMonthPicker.h */,
+			);
+			path = MonthPicker;
 			sourceTree = "<group>";
 		};
 		F3B05B531BBA551700CA9ACA /* TabBarController */ = {
@@ -510,12 +526,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */,
 				F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */,
 				F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */,
 				F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */,
 				F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */,
 				F3438A801BB27EBF001BA5E6 /* AppDelegate.swift in Sources */,
 				F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */,
+				F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */,
 				F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */,
 				F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */,
 				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
