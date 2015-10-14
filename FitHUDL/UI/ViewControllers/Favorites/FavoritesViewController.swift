@@ -94,9 +94,20 @@ extension FavoritesViewController : UITableViewDelegate {
         cell.prof_pic.layer.borderColor = UIColor.clearColor().CGColor
         cell.prof_pic.layer.cornerRadius = cell.prof_pic.frame.size.height/2
         cell.prof_pic.clipsToBounds = true
+        
+        if let url = self.favouriteList_array[indexPath.row].objectForKey("profile_pic") as? String {
+            CustomURLConnection.downloadAndSetImage(url, imageView: cell.prof_pic, activityIndicatorView: cell.indicatorView)
+        } else {
+            CustomURLConnection.downloadAndSetImage("", imageView: cell.prof_pic, activityIndicatorView: cell.indicatorView)
+        }
+
         cell.nameLabel?.text=self.favouriteList_array[indexPath.row].objectForKey("name") as? String
-        cell.starView.setStarViewValue((self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float)!)
-        cell.sessionCounterLabel?.text=self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? String
+        if let ratevalue = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float {
+            cell.starView.setStarViewValue(ratevalue)
+        }
+        if let session_count = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Int {
+            cell.sessionCounterLabel?.text=String(session_count)
+        }
         
         return cell
         

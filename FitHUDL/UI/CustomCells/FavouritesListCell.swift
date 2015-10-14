@@ -14,5 +14,6 @@ class FavouritesListCell: UITableViewCell {
     @IBOutlet weak var prof_pic: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var sessionCounterLabel: UILabel!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
 
 }

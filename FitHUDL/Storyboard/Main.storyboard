@@ -607,7 +607,7 @@
                     <navigationItem key="navigationItem" id="hWe-Kj-edO">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="aQY-Fm-ZgS">
-                            <rect key="frame" x="96" y="5.5" width="128" height="33"/>
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FEEDBACK" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncg-Vt-QqZ">
@@ -2035,7 +2035,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_bg" translatesAutoresizingMaskIntoConstraints="NO" id="36v-Yt-mWY">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabselection" translatesAutoresizingMaskIntoConstraints="NO" id="36v-Yt-mWY">
                                                     <rect key="frame" x="66" y="12" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="Cav-3P-hT1"/>
@@ -2068,7 +2068,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uyl-MJ-bYO">
-                                                    <rect key="frame" x="124" y="73" width="191" height="1"/>
+                                                    <rect key="frame" x="124" y="74" width="191" height="1"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="eVC-tN-74A"/>
@@ -2077,7 +2077,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rx-5L-7U2">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rx-5L-7U2">
                                                     <rect key="frame" x="229" y="48" width="66" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="jmb-uo-P9w"/>
@@ -2086,6 +2086,9 @@
                                                     <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="41Y-IC-he2">
+                                                    <rect key="frame" x="81" y="27" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="4rx-5L-7U2" secondAttribute="trailing" constant="17" id="3B0-rM-gCd"/>
@@ -2098,6 +2101,7 @@
                                                 <constraint firstItem="53e-cW-gvB" firstAttribute="top" secondItem="Sj7-mV-igN" secondAttribute="bottom" constant="6" id="I2l-Wk-Zmv"/>
                                                 <constraint firstItem="53e-cW-gvB" firstAttribute="leading" secondItem="36v-Yt-mWY" secondAttribute="trailing" constant="8" id="MHZ-LS-rMO"/>
                                                 <constraint firstItem="Sj7-mV-igN" firstAttribute="leading" secondItem="36v-Yt-mWY" secondAttribute="trailing" constant="8" id="OtH-Xx-FpC"/>
+                                                <constraint firstItem="41Y-IC-he2" firstAttribute="top" secondItem="vXG-ob-Uwv" secondAttribute="top" constant="27" id="QLA-hJ-kcn"/>
                                                 <constraint firstItem="SMI-uN-8Fc" firstAttribute="leading" secondItem="36v-Yt-mWY" secondAttribute="trailing" constant="8" id="R4Y-Lb-nJc"/>
                                                 <constraint firstItem="RCu-vV-Ipy" firstAttribute="top" secondItem="vXG-ob-Uwv" secondAttribute="topMargin" constant="-8" id="Re8-8p-MG1"/>
                                                 <constraint firstAttribute="bottom" secondItem="RCu-vV-Ipy" secondAttribute="bottom" constant="1" id="TYB-4R-B7k"/>
@@ -2105,8 +2109,10 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="Uyl-MJ-bYO" secondAttribute="trailing" constant="-3" id="ZEi-0U-Htw"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="SMI-uN-8Fc" secondAttribute="trailing" constant="-3" id="Zes-so-3pj"/>
                                                 <constraint firstItem="36v-Yt-mWY" firstAttribute="leading" secondItem="RCu-vV-Ipy" secondAttribute="trailing" constant="10" id="b8a-xj-dyQ"/>
+                                                <constraint firstItem="41Y-IC-he2" firstAttribute="leading" secondItem="RCu-vV-Ipy" secondAttribute="trailing" constant="25" id="c3i-Im-MNJ"/>
+                                                <constraint firstAttribute="bottom" secondItem="41Y-IC-he2" secondAttribute="bottom" constant="29" id="dCz-4H-vAq"/>
                                                 <constraint firstItem="Uyl-MJ-bYO" firstAttribute="leading" secondItem="36v-Yt-mWY" secondAttribute="trailing" constant="8" id="fae-cb-FOX"/>
-                                                <constraint firstItem="Uyl-MJ-bYO" firstAttribute="top" secondItem="53e-cW-gvB" secondAttribute="bottom" constant="7" id="hKi-Bl-6Vy"/>
+                                                <constraint firstItem="Uyl-MJ-bYO" firstAttribute="top" secondItem="53e-cW-gvB" secondAttribute="bottom" constant="8" id="hKi-Bl-6Vy"/>
                                                 <constraint firstItem="AnV-Ak-sxb" firstAttribute="leading" secondItem="vXG-ob-Uwv" secondAttribute="leading" constant="15" id="mhP-4h-Oly"/>
                                                 <constraint firstItem="AnV-Ak-sxb" firstAttribute="top" secondItem="vXG-ob-Uwv" secondAttribute="top" constant="25" id="re3-U0-ma8"/>
                                                 <constraint firstItem="4rx-5L-7U2" firstAttribute="leading" secondItem="53e-cW-gvB" secondAttribute="trailing" constant="5" id="x2s-TN-MiE"/>
@@ -2116,6 +2122,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="indicatorView" destination="41Y-IC-he2" id="yCm-2L-Wsb"/>
                                             <outlet property="nameLabel" destination="SMI-uN-8Fc" id="SC4-6R-XFb"/>
                                             <outlet property="prof_pic" destination="36v-Yt-mWY" id="KEd-dW-Oc3"/>
                                             <outlet property="sessionCounterLabel" destination="4rx-5L-7U2" id="gba-Mc-Tf4"/>
@@ -2169,7 +2176,7 @@
         <image name="book_icon" width="36" height="36"/>
         <image name="close_button" width="42" height="42"/>
         <image name="edit_button" width="14" height="14"/>
-        <image name="favorites-fill" width="17" height="33"/>
+        <image name="favorites-fill" width="26" height="25"/>
         <image name="favorites_tabicon" width="17" height="17"/>
         <image name="fb_button" width="17" height="33"/>
         <image name="feedback_tabicon" width="18" height="17"/>
@@ -2193,6 +2200,7 @@
         <image name="settings_button" width="25" height="25"/>
         <image name="signin_bg" width="352" height="138"/>
         <image name="signup_button" width="124" height="45"/>
+        <image name="tabselection" width="94" height="48"/>
         <image name="white_arrow" width="21" height="9"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
