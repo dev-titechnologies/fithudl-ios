@@ -10,7 +10,9 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
+    @IBOutlet weak var nofavourites_label: UILabel!
     var favouriteList_array = Array<NSDictionary>()
+    var favouritelist_index : Int = 0
     @IBOutlet weak var favourite_tableview: UITableView!
     
     
@@ -58,13 +60,64 @@ class FavoritesViewController: UIViewController {
         var error : NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
-                if status == ResponseStatus.success {
-                    favouriteList_array = jsonResult["details"] as! Array
-                    println(favouriteList_array)
-                    favourite_tableview.reloadData()
+                if connection.connectionTag == Connection.favouriteList {
+                    if status == ResponseStatus.success {
+                        if let favourites = jsonResult["details"] as? NSArray {
+                            favouriteList_array = favourites as! Array
+                            println(favouriteList_array)
+                            favourite_tableview.reloadData()
+                        }
+                        else {
+                            println("dfdsfdsfdf")
+                            nofavourites_label.hidden=false
+                        }
+                        
+
+                    }
+                    else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        }
+                    } else {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        }
+                    }
+                }
+                else {
+                    
+                     if status == ResponseStatus.success {
+                        favouriteList_array.removeAtIndex(favouritelist_index)
+                        favourite_tableview.reloadData()
+                        if (favouriteList_array.count==0) {
+                            nofavourites_label.hidden=false
+                            
+                        }
+                        
+                    }
+                     else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        }
+                     } else {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        }
+                    }
+                    
+                    }
+                    
                 }
             }
-        }
+       
         showLoadingView(false)
         
     }
@@ -73,12 +126,26 @@ class FavoritesViewController: UIViewController {
         showDismissiveAlertMesssage(error.localizedDescription)
         showLoadingView(false)
     }
+    
+    func UnFavouriteAction(sender:UIButton) {
+        
+        favouritelist_index = sender.tag
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(0, forKey: "favorite")
+        requestDictionary.setObject(self.favouriteList_array[sender.tag].objectForKey("id")!, forKey: "trainer_id")
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "favourite/manage", requestType: HttpMethod.post),delegate: self,tag: Connection.unfavourite)
+        
+    }
 }
 
 extension FavoritesViewController : UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("Number of rows in section")
+     
         return self.favouriteList_array.count;
     }
     
@@ -105,9 +172,14 @@ extension FavoritesViewController : UITableViewDelegate {
         if let ratevalue = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float {
             cell.starView.rating = ratevalue
         }
+        
         if let session_count = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Int {
             cell.sessionCounterLabel?.text=String(session_count)
         }
+        
+        cell.favouriteButton.tag=indexPath.row
+        
+        cell.favouriteButton.addTarget(self, action: "UnFavouriteAction:", forControlEvents: UIControlEvents.TouchUpInside)
         
         return cell
         
