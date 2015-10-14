@@ -39,6 +39,19 @@
                                         <constraint firstAttribute="width" constant="80" id="Oz3-G9-22Q"/>
                                         <constraint firstAttribute="height" constant="10" id="eXR-ZZ-xjU"/>
                                     </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="emptystar"/>
+                                        <userDefinedRuntimeAttribute type="image" keyPath="fullImage" value="fullstar"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="minRating">
+                                            <integer key="value" value="0"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="maxRating">
+                                            <integer key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="editable" value="NO"/>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="floatRatings" value="YES"/>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="halfRatings" value="NO"/>
+                                    </userDefinedRuntimeAttributes>
                                 </view>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gTV-5h-fOE">
                                     <rect key="frame" x="5" y="17" width="290" height="75"/>
@@ -126,6 +139,10 @@
             <point key="canvasLocation" x="543" y="115"/>
         </view>
     </objects>
+    <resources>
+        <image name="emptystar" width="8" height="8"/>
+        <image name="fullstar" width="9" height="8"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
