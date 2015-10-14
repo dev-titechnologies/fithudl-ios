@@ -31,6 +31,7 @@
 		F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F3438A9E1BB28A03001BA5E6 /* Reachability.m */; };
 		F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA21BB290B6001BA5E6 /* AppConstants.swift */; };
 		F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA31BB290B6001BA5E6 /* Globals.swift */; };
+		F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */; };
 		F36691631BCD072A00B74CFE /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36691621BCD072A00B74CFE /* Images.swift */; };
 		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
 		F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */; };
@@ -85,6 +86,7 @@
 		F3438A9F1BB28A03001BA5E6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F3438AA21BB290B6001BA5E6 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		F3438AA31BB290B6001BA5E6 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesListCell.swift; sourceTree = "<group>"; };
 		F36691621BCD072A00B74CFE /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 		F3438A771BB27E25001BA5E6 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
+				F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */,
 				F3717C9B1BBBE2A10038795A /* BadgesCollectionViewCell.swift */,
 				F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */,
 				F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */,
@@ -509,6 +512,7 @@
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
 				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
+				F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */,
 				F36691631BCD072A00B74CFE /* Images.swift in Sources */,
 				F305F5271BB96691006BEFA2 /* MyProfileViewController.swift in Sources */,
 				F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */,

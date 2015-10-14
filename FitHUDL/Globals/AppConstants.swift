@@ -51,6 +51,7 @@ struct Connection {
     static let resetPassword = 13
     static let sportsList    = 14
     static let userProfile   = 15
+    static let favouriteList = 16
 }
 
 struct SportsLevel {
