@@ -304,6 +304,7 @@ class MyProfileViewController: UIViewController {
             appDelegate.user.bio = bio
         }
         if let session = responseDictionary["Training_session"] as? NSArray {
+            appDelegate.user.availableTimeArray.removeAllObjects()
             appDelegate.user.availableTimeArray.addObjectsFromArray(session as! [NSDictionary])
         }
         if let usageCount = responseDictionary["usage_count"] as? Int {
@@ -313,9 +314,11 @@ class MyProfileViewController: UIViewController {
             appDelegate.user.rating = rate
         }
         if let badges = responseDictionary["Badges"] as? NSArray {
+            appDelegate.user.badgesArray.removeAllObjects()
             appDelegate.user.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
         }
         if let comments = responseDictionary["User_comments"] as? NSArray {
+            appDelegate.user.userReviewsArray.removeAllObjects()
             appDelegate.user.userReviewsArray.addObjectsFromArray(comments as! [NSDictionary])
         }
 
@@ -324,6 +327,7 @@ class MyProfileViewController: UIViewController {
         }
         
         if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
+            appDelegate.user.sportsArray.removeAllObjects()
             for sports in appDelegate.sportsArray {
                 let sport = NSMutableDictionary()
                 sport.setObject(sports["id"] as! Int, forKey: "sports_id")

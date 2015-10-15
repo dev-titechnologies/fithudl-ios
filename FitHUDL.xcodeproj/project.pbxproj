@@ -40,6 +40,8 @@
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
 		F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F37968F01BCE812E0074B57D /* SRMonthPicker.m */; };
 		F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37968F31BCE81500074B57D /* EditProfileViewController.swift */; };
+		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
+		F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
 		F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB341BB27D4A0070EDAF /* ViewController.swift */; };
 		F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3CDCB391BB27D4A0070EDAF /* Images.xcassets */; };
@@ -97,6 +99,10 @@
 		F37968F01BCE812E0074B57D /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
 		F37968F11BCE812E0074B57D /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
 		F37968F31BCE81500074B57D /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		F38950051BCF94FD00ED0C77 /* DIDatepicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepicker.h; sourceTree = "<group>"; };
+		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
+		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
+		F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepickerDateView.m; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitHUDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB2E1BB27D490070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -212,6 +218,7 @@
 		F3438A751BB27E25001BA5E6 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F38950041BCF94B100ED0C77 /* Calendar */,
 				F37968EF1BCE80E50074B57D /* MonthPicker */,
 				F3003EA01BBA8105001354E3 /* UserReviewView.swift */,
 				F3003EA21BBA8117001354E3 /* UserReviewView.xib */,
@@ -327,6 +334,17 @@
 				F37968F11BCE812E0074B57D /* SRMonthPicker.h */,
 			);
 			path = MonthPicker;
+			sourceTree = "<group>";
+		};
+		F38950041BCF94B100ED0C77 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				F38950051BCF94FD00ED0C77 /* DIDatepicker.h */,
+				F38950061BCF94FD00ED0C77 /* DIDatepicker.m */,
+				F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */,
+				F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 		F3B05B531BBA551700CA9ACA /* TabBarController */ = {
@@ -541,6 +559,7 @@
 				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
 				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
+				F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
 				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
 				F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */,
@@ -552,6 +571,7 @@
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
 				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
+				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

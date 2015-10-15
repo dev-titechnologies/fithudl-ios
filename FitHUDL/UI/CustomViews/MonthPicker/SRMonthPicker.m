@@ -235,6 +235,8 @@ static const NSCalendarUnit SRDateComponentFlags = NSCalendarUnitMonth | NSCalen
         [self selectRow:(components.month - 1) inComponent:self.monthComponent animated:NO];
         
     [self selectRow:[self p_rowFromYear:components.year] inComponent:self.yearComponent animated:NO];
+    self.selectedMonth =  1 + ([self selectedRowInComponent:self.monthComponent] % self.monthStrings.count);
+    self.selectedYear  = [self p_yearFromRow:[self selectedRowInComponent:self.yearComponent]];
     
     _date = [self.calendar dateFromComponents:components];
 }

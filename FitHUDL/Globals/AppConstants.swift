@@ -20,6 +20,7 @@ let IS_IPHONE5      = UIScreen.mainScreen().bounds.size.height == 568 ? true : f
 let IS_IPHONE6      = UIScreen.mainScreen().bounds.size.width == 375 ? true : false
 let IS_IPHONE6PLUS  = UIScreen.mainScreen().bounds.size.width == 414 ? true : false
 let BIOTEXT_LENGTH  = 52
+let animateInterval: NSTimeInterval = 0.3
 
 struct AppColor {
     static let statusBarColor  = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
