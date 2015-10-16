@@ -10,6 +10,7 @@ import UIKit
 
 class AvailableTimeCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var deleteButton: UIButton!
 }
 
 class MyProfileViewController: UIViewController {
@@ -85,6 +86,9 @@ class MyProfileViewController: UIViewController {
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
             editButton.hidden          = true
+            beginnerButton.userInteractionEnabled = false
+            moderateButton.userInteractionEnabled = false
+            expertButton.userInteractionEnabled   = false
         }
         // Do any additional setup after loading the view.
     }
@@ -290,6 +294,17 @@ class MyProfileViewController: UIViewController {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "profile/profile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
     
+    func sendRequestForUpdateSportsLevel(sports: NSDictionary, type: String) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(sports["sports_id"]!, forKey: "sports_id")
+        requestDictionary.setObject(sports["expert_level"]!, forKey: "expert_level")
+        requestDictionary.setObject(type, forKey: "type")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/modifyUserSports", requestType: HttpMethod.post), delegate: self, tag: Connection.updateSports)
+    }
+    
     func parseProfileResponse(responseDictionary: NSDictionary) {
         appDelegate.user.profileID  = responseDictionary["profile_id"] as! Int
         appDelegate.user.name       = responseDictionary["profile_name"] as! String
@@ -365,20 +380,26 @@ class MyProfileViewController: UIViewController {
         var error: NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
-                if status == ResponseStatus.success {
-                    parseProfileResponse(jsonResult)
-                } else if status == ResponseStatus.error {
-                    if let message = jsonResult["message"] as? String {
-                        showDismissiveAlertMesssage(message)
+                if connection.connectionTag == Connection.userProfile {
+                    if status == ResponseStatus.success {
+                        parseProfileResponse(jsonResult)
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(Message.Error)
+                        }
                     } else {
-                        showDismissiveAlertMesssage(Message.Error)
+                        
                     }
+                    populateProfileContents()
                 } else {
-                
+                    if status == ResponseStatus.sessionOut {
+                    
+                    }
                 }
             }
         }
-        populateProfileContents()
         showLoadingView(false)
     }
     
@@ -390,7 +411,16 @@ class MyProfileViewController: UIViewController {
     
     func setExpertiseLevel(level: String) {
         let sports  = appDelegate.user.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
+        var type    = ""
+        if count(sports!["expert_level"] as! String) == 0 && count(level) > 0 {
+            type = SportsLevel.typeAdd
+        } else if count(sports!["expert_level"] as! String) > 0 && count(level) > 0 {
+            type = SportsLevel.typeUpdate
+        } else if count(sports!["expert_level"] as! String) > 0 && count(level) == 0 {
+            type = SportsLevel.typeDelete
+        }
         sports!.setObject(level, forKey: "expert_level")
+        sendRequestForUpdateSportsLevel(sports!, type: type)
     }
     
     func attributedBioText(bio: String, lengthExceed: Bool) {

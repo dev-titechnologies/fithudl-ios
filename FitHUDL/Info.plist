@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>ti.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>com.titechnologies.FitHUDL</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>14</string>
 	<key>FacebookAppID</key>
 	<string>1472417283067868</string>
 	<key>FacebookDisplayName</key>

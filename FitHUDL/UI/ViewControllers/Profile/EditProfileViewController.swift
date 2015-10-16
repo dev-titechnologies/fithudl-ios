@@ -18,8 +18,13 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var timeCollectionView: UICollectionView!
     @IBOutlet weak var datePicker: DIDatepicker!
     @IBOutlet weak var monthButton: UIButton!
-    
     @IBOutlet weak var contentViewHeightConstriant: NSLayoutConstraint!
+    @IBOutlet weak var timesetViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var endtimeView: UIView!
+    @IBOutlet weak var starttimeView: UIView!
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var timePicker: UIDatePicker!
+    @IBOutlet weak var timesetView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +42,10 @@ class EditProfileViewController: UIViewController {
         monthPick.superview!.frame = CGRect(x: 0.0, y: view.frame.size.height, width: view.frame.size.width, height: monthPick.frame.size.height)
         
         datePicker.fillDatesFromDate(NSDate(), toDate: endOfMonth())
-      
+        datePicker.selectedDateBottomLineColor = AppColor.statusBarColor
+
+        timePicker.minimumDate = NSDate()
+        
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "YYYY"
         monthPick.minimumYear  = dateFormatter.stringFromDate(NSDate()).toInt()!
@@ -69,6 +77,67 @@ class EditProfileViewController: UIViewController {
         }
         return nil
     }
+    
+    func setTimePickerValues() {
+        var formatter        = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-d"
+        let dateString       = formatter.stringFromDate(datePicker.selectedDate)
+        let currentDate      = formatter.stringFromDate(NSDate())
+        formatter.dateFormat = "hh mm a"
+        if dateString == currentDate {
+            timePicker.minimumDate = NSDate().dateByAddingTimeInterval(3600)
+        } else {
+            formatter.dateFormat = "hh:mm a"
+            timePicker.minimumDate = formatter.dateFromString("12:00 AM")
+        }
+    }
+    
+    func setTimeValues() {
+        var formatter        = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-d"
+        let dateString       = formatter.stringFromDate(datePicker.selectedDate)
+        let currentDate      = formatter.stringFromDate(NSDate())
+        formatter.dateFormat = "hh mm a"
+        if dateString == currentDate {
+            let changedTime = changeTimeValue(NSDate())
+            var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(1800))
+            var components = timeString.componentsSeparatedByString(" ")
+            (starttimeView.viewWithTag(97) as! UITextField).text = components[0]
+            (starttimeView.viewWithTag(98) as! UITextField).text = components[1]
+            (starttimeView.viewWithTag(99) as! UITextField).text = components[2]
+            timeString     = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(3600))
+            components     = timeString.componentsSeparatedByString(" ")
+            (endtimeView.viewWithTag(97) as! UITextField).text = components[0]
+            (endtimeView.viewWithTag(98) as! UITextField).text = components[1]
+            (endtimeView.viewWithTag(99) as! UITextField).text = components[2]
+        } else {
+            (starttimeView.viewWithTag(97) as! UITextField).text = "12"
+            (starttimeView.viewWithTag(98) as! UITextField).text = "00"
+            (starttimeView.viewWithTag(99) as! UITextField).text = "AM"
+            (endtimeView.viewWithTag(97) as! UITextField).text = "12"
+            (endtimeView.viewWithTag(98) as! UITextField).text = "30"
+            (endtimeView.viewWithTag(99) as! UITextField).text = "AM"
+        }
+    }
+    
+    func changeTimeValue(date: NSDate) -> NSDate {
+        let time = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute, fromDate: date)
+        var value: Int = 0
+        let minutes: NSInteger = time.minute
+        var newDate:NSDate = NSDate()
+        
+        if minutes > 0 && minutes < 30 {
+            value = 30-minutes
+            let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval((60 * value) + minutes)
+            newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+        } else if minutes > 30 && minutes < 60 {
+            value = 60 - minutes
+            let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval(60 * value)
+            newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+        }
+        return newDate
+    }
+    
 
     @IBAction func backButtonClicked(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -79,7 +148,17 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func addTimeButtonClicked(sender: UIButton) {
-    
+        if let date = datePicker.selectedDate {
+            setTimePickerValues()
+            setTimeValues()
+            timesetView.hidden = false
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+                self.timesetViewTopConstraint.constant = -180.0
+                self.view.layoutIfNeeded()
+            })
+        } else {
+            showDismissiveAlertMesssage("Please select a date")
+        }
     }
     
     @IBAction func doneButtonClicked(sender: UIButton) {
@@ -87,7 +166,12 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
+        nameTextField.resignFirstResponder()
+        bioTextView.resignFirstResponder()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            if IS_IPHONE4S {
+                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.monthButton.superview!.frame.origin.y-50.0)
+            }
             self.monthPick.superview!.frame = CGRect(origin: CGPoint(x: 0.0, y: self.view.frame.size.height - self.monthPick.superview!.frame.size.height), size: self.monthPick.superview!.frame.size)
             return
         })
@@ -100,11 +184,13 @@ class EditProfileViewController: UIViewController {
         let selectedDate = NSCalendar.currentCalendar().dateFromComponents(components);
         let formatter    = NSDateFormatter()
         formatter.dateFormat = "MMM yyyy"
+        monthButton.setTitle(formatter.stringFromDate(selectedDate!).uppercaseString, forState: .Normal)
         hidePickerView()
-        if monthButton.titleLabel?.text == formatter.stringFromDate(selectedDate!).uppercaseString {
+        let currentDate      = formatter.stringFromDate(NSDate())
+        if currentDate == formatter.stringFromDate(selectedDate!) {
+            datePicker.fillDatesFromDate(NSDate(), toDate: endOfMonth())
             return
         }
-        monthButton.setTitle(formatter.stringFromDate(selectedDate!).uppercaseString, forState: .Normal)
         formatter.dateFormat = "MMM"
         let month            = formatter.stringFromDate(selectedDate!)
         formatter.dateFormat = "yyyy"
@@ -117,6 +203,29 @@ class EditProfileViewController: UIViewController {
         hidePickerView()
     }
     
+    @IBAction func starttimeTapped(sender: UITapGestureRecognizer) {
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.timesetViewTopConstraint.constant = -350.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @IBAction func endtimeTapped(sender: UITapGestureRecognizer) {
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.timesetViewTopConstraint.constant = -350.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @IBAction func setButtonClicked(sender: UIButton) {
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.timesetViewTopConstraint.constant = 0.0
+            self.view.layoutIfNeeded()
+        }) { (completed) -> Void in
+            self.timesetView.hidden = true
+        }
+    }
+    
     func hidePickerView() {
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.monthPick.superview!.frame = CGRect(origin: CGPoint(x: 0.0, y: self.view.frame.size.height), size: self.monthPick.superview!.frame.size)
@@ -124,6 +233,9 @@ class EditProfileViewController: UIViewController {
         })
     }
     
+    func timeDeleteButtonClicked(deleteButton : UIButton) {
+    
+    }
     
     
     override func didReceiveMemoryWarning() {
@@ -145,16 +257,40 @@ class EditProfileViewController: UIViewController {
 }
 
 extension EditProfileViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(textField: UITextField) {
+        hidePickerView()
+        if IS_IPHONE4S {
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.nameTextField.superview!.frame.origin.y)
+                return
+            })
+        }
+    }
+    
     func textFieldDidEndEditing(textField: UITextField) {
         textField.resignFirstResponder()
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.contentScrollView.contentOffset = CGPointZero
+            return
+        })
         return true
     }
 }
 
 extension EditProfileViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        hidePickerView()
+        if IS_IPHONE4S {
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.nameTextField.superview!.frame.origin.y)
+                return
+            })
+        }
+    }
     
     func textViewDidChange(textView: UITextView) {
         if count(textView.text) == 0 {
@@ -167,6 +303,10 @@ extension EditProfileViewController: UITextViewDelegate {
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+                self.contentScrollView.contentOffset = CGPointZero
+                return
+            })
             if count(textView.text) == 0 {
                 placeholderLabel.hidden = false
             }
@@ -186,5 +326,35 @@ extension EditProfileViewController: SRMonthPickerDelegate {
     
     func monthPickerDidChangeDate(monthPicker: SRMonthPicker!) {
         
+    }
+}
+
+extension EditProfileViewController: UICollectionViewDataSource {
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
+        cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
+        cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)
+        return cell
+    }
+}
+
+extension EditProfileViewController: UICollectionViewDelegate {
+
+}
+
+extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if IS_IPHONE6 || IS_IPHONE6PLUS {
+            return CGSize(width: (collectionView.frame.size.width-30)/3, height: 40.0)
+        }
+        return CGSize(width: 98.0, height: 40.0)
     }
 }

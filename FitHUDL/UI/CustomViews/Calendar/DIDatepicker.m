@@ -41,7 +41,7 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.backgroundColor = [UIColor clearColor];
     self.bottomLineColor = [UIColor colorWithWhite:0.816 alpha:1.000];
-//    self.selectedDateBottomLineColor = [UIColor colorWithRed:0 green:172/255 blue:156/255 alpha:1.0];//self.tintColor;
+    self.selectedDateBottomLineColor = [UIColor colorWithRed:0 green:120/255 blue:109/255 alpha:1.0];//self.tintColor;
 }
 
 #pragma mark Setters | Getters
@@ -51,7 +51,7 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
     _dates = dates;
     
     [self.datesCollectionView reloadData];
-    
+    [self.datesCollectionView setContentOffset:CGPointZero];
     self.selectedDate = nil;
 }
 
@@ -90,15 +90,15 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
     return _datesCollectionView;
 }
 
-//- (void)setSelectedDateBottomLineColor:(UIColor *)selectedDateBottomLineColor
-//{
-//    _selectedDateBottomLineColor = selectedDateBottomLineColor;
-//    
-//    [self.datesCollectionView.indexPathsForSelectedItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        DIDatepickerCell *selectedCell = (DIDatepickerCell *)[self.datesCollectionView cellForItemAtIndexPath:obj];
-//        selectedCell.itemSelectionColor = _selectedDateBottomLineColor;
-//    }];
-//}
+- (void)setSelectedDateBottomLineColor:(UIColor *)selectedDateBottomLineColor
+{
+    _selectedDateBottomLineColor = selectedDateBottomLineColor;
+    
+    [self.datesCollectionView.indexPathsForSelectedItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        DIDatepickerCell *selectedCell = (DIDatepickerCell *)[self.datesCollectionView cellForItemAtIndexPath:obj];
+        selectedCell.itemSelectionColor = _selectedDateBottomLineColor;
+    }];
+}
 
 #pragma mark Public methods
 
@@ -251,7 +251,7 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
 //    } else {
 //        cell.dateLabel.textColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
 //    }
-//    cell.itemSelectionColor = _selectedDateBottomLineColor;
+    cell.itemSelectionColor = _selectedDateBottomLineColor;
     return cell;
 }
 
@@ -264,7 +264,7 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
 {
     [self.datesCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     _selectedDate = [self.dates objectAtIndex:indexPath.item];
-    
+
     [collectionView deselectItemAtIndexPath:selectedIndexPath animated:YES];
     selectedIndexPath = indexPath;
     [self sendActionsForControlEvents:UIControlEventValueChanged];
