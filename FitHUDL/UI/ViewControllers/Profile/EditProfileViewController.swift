@@ -26,6 +26,12 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timesetView: UIView!
     
+    let hourField   = 97
+    let minuteField = 98
+    let timeField   = 99
+    var tappedView: UIView? = nil
+    let availSessionTime = NSMutableDictionary()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -102,21 +108,21 @@ class EditProfileViewController: UIViewController {
             let changedTime = changeTimeValue(NSDate())
             var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(1800))
             var components = timeString.componentsSeparatedByString(" ")
-            (starttimeView.viewWithTag(97) as! UITextField).text = components[0]
-            (starttimeView.viewWithTag(98) as! UITextField).text = components[1]
-            (starttimeView.viewWithTag(99) as! UITextField).text = components[2]
+            (starttimeView.viewWithTag(hourField) as! UITextField).text = components[0]
+            (starttimeView.viewWithTag(minuteField) as! UITextField).text = components[1]
+            (starttimeView.viewWithTag(timeField) as! UITextField).text = components[2]
             timeString     = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(3600))
             components     = timeString.componentsSeparatedByString(" ")
-            (endtimeView.viewWithTag(97) as! UITextField).text = components[0]
-            (endtimeView.viewWithTag(98) as! UITextField).text = components[1]
-            (endtimeView.viewWithTag(99) as! UITextField).text = components[2]
+            (endtimeView.viewWithTag(hourField) as! UITextField).text = components[0]
+            (endtimeView.viewWithTag(minuteField) as! UITextField).text = components[1]
+            (endtimeView.viewWithTag(timeField) as! UITextField).text = components[2]
         } else {
-            (starttimeView.viewWithTag(97) as! UITextField).text = "12"
-            (starttimeView.viewWithTag(98) as! UITextField).text = "00"
-            (starttimeView.viewWithTag(99) as! UITextField).text = "AM"
-            (endtimeView.viewWithTag(97) as! UITextField).text = "12"
-            (endtimeView.viewWithTag(98) as! UITextField).text = "30"
-            (endtimeView.viewWithTag(99) as! UITextField).text = "AM"
+            (starttimeView.viewWithTag(hourField) as! UITextField).text = "12"
+            (starttimeView.viewWithTag(minuteField) as! UITextField).text = "00"
+            (starttimeView.viewWithTag(timeField) as! UITextField).text = "AM"
+            (endtimeView.viewWithTag(hourField) as! UITextField).text = "12"
+            (endtimeView.viewWithTag(minuteField) as! UITextField).text = "30"
+            (endtimeView.viewWithTag(timeField) as! UITextField).text = "AM"
         }
     }
     
@@ -136,6 +142,27 @@ class EditProfileViewController: UIViewController {
             newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
         }
         return newDate
+    }
+    
+    func splitTimeToIntervals(startTime: String, endTime: String) {
+        let timeFormat = NSDateFormatter()
+        timeFormat.dateFormat = "hh mm a"
+        let timeArray = NSMutableArray()
+        var fromTime = timeFormat.dateFromString(startTime)
+        let toTime   = timeFormat.dateFromString(endTime)
+        var timeAfterInterval = fromTime?.dateByAddingTimeInterval(1800)
+        while timeAfterInterval?.dateByAddingTimeInterval(1800).isEqualToDate(toTime!) == false {
+            timeFormat.dateFormat = "hh.mm a"
+            let time = NSMutableDictionary()
+            time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
+            time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
+            time.setObject(datePicker.selectedDate, forKey: "date")
+            fromTime = timeAfterInterval
+            timeArray.addObject(time)
+            timeAfterInterval = fromTime?.dateByAddingTimeInterval(1800)
+            continue
+        }
+        availSessionTime.setObject(timeArray, forKey: datePicker.selectedDate)
     }
     
 
@@ -181,7 +208,7 @@ class EditProfileViewController: UIViewController {
         let components   = NSDateComponents()
         components.month = monthPick.selectedMonth
         components.year  = monthPick.selectedYear
-        let selectedDate = NSCalendar.currentCalendar().dateFromComponents(components);
+        let selectedDate = NSCalendar.currentCalendar().dateFromComponents(components)
         let formatter    = NSDateFormatter()
         formatter.dateFormat = "MMM yyyy"
         monthButton.setTitle(formatter.stringFromDate(selectedDate!).uppercaseString, forState: .Normal)
@@ -204,6 +231,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func starttimeTapped(sender: UITapGestureRecognizer) {
+        tappedView = sender.view
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = -350.0
             self.view.layoutIfNeeded()
@@ -211,6 +239,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func endtimeTapped(sender: UITapGestureRecognizer) {
+        tappedView = sender.view
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = -350.0
             self.view.layoutIfNeeded()
@@ -218,12 +247,34 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func setButtonClicked(sender: UIButton) {
+        if tappedView == starttimeView {
+        
+        } else if tappedView == endtimeView {
+        
+        }
+        if validateTimeRange() {
+            let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text) \((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
+            let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text) \((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"
+            splitTimeToIntervals(startTime, endTime: endTime)
+        }
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = 0.0
             self.view.layoutIfNeeded()
         }) { (completed) -> Void in
             self.timesetView.hidden = true
         }
+    }
+    
+    func validateTimeRange() -> Bool {
+        if (starttimeView.viewWithTag(hourField) as! UITextField).text == "" {
+            showDismissiveAlertMesssage("Please select start time")
+            return false
+        }
+        if (endtimeView.viewWithTag(hourField) as! UITextField).text == "" {
+            showDismissiveAlertMesssage("Please select end time")
+            return false
+        }
+        return true
     }
     
     func hidePickerView() {
