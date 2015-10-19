@@ -20,8 +20,8 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var monthButton: UIButton!
     @IBOutlet weak var contentViewHeightConstriant: NSLayoutConstraint!
     @IBOutlet weak var timesetViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var endtimeView: UIView!
     @IBOutlet weak var starttimeView: UIView!
+    @IBOutlet weak var endtimeView: UIView!
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timesetView: UIView!
@@ -29,7 +29,9 @@ class EditProfileViewController: UIViewController {
     let hourField   = 97
     let minuteField = 98
     let timeField   = 99
-    var tappedView: UIView? = nil
+    var tappedView: UIView?     = nil
+    var initialStart: NSDate?   = nil
+    var initialEnd: NSDate?     = nil
     let availSessionTime = NSMutableDictionary()
     
     override func viewDidLoad() {
@@ -47,6 +49,7 @@ class EditProfileViewController: UIViewController {
         monthPick.superview!.setTranslatesAutoresizingMaskIntoConstraints(true)
         monthPick.superview!.frame = CGRect(x: 0.0, y: view.frame.size.height, width: view.frame.size.width, height: monthPick.frame.size.height)
         
+        datePicker.addTarget(self, action: "dateValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         datePicker.fillDatesFromDate(NSDate(), toDate: endOfMonth())
         datePicker.selectedDateBottomLineColor = AppColor.statusBarColor
 
@@ -60,6 +63,7 @@ class EditProfileViewController: UIViewController {
         monthPick.fontColor    = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPick.monthPickerDelegate = self
         
+        nameTextField.text = appDelegate.user.name
         // Do any additional setup after loading the view.
     }
     
@@ -89,9 +93,13 @@ class EditProfileViewController: UIViewController {
         formatter.dateFormat = "yyyy-MM-d"
         let dateString       = formatter.stringFromDate(datePicker.selectedDate)
         let currentDate      = formatter.stringFromDate(NSDate())
-        formatter.dateFormat = "hh mm a"
+        formatter.dateFormat = "hh:mm a"
         if dateString == currentDate {
-            timePicker.minimumDate = NSDate().dateByAddingTimeInterval(3600)
+            if tappedView == starttimeView {
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(1800)
+            } else {
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(3600)
+            }
         } else {
             formatter.dateFormat = "hh:mm a"
             timePicker.minimumDate = formatter.dateFromString("12:00 AM")
@@ -103,16 +111,28 @@ class EditProfileViewController: UIViewController {
         formatter.dateFormat = "yyyy-MM-d"
         let dateString       = formatter.stringFromDate(datePicker.selectedDate)
         let currentDate      = formatter.stringFromDate(NSDate())
-        formatter.dateFormat = "hh mm a"
+        formatter.dateFormat = "hh:mm a"
         if dateString == currentDate {
-            let changedTime = changeTimeValue(NSDate())
-            var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(1800))
-            var components = timeString.componentsSeparatedByString(" ")
+            if let start = initialStart {
+                
+            } else {
+                let changedTime = changeTimeValue(NSDate())
+                var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(1800))
+                initialStart   = formatter.dateFromString(timeString)
+            }
+            if let end = initialEnd {
+            
+            } else {
+                let changedTime = changeTimeValue(NSDate())
+                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(3600))
+                initialEnd      = formatter.dateFromString(timeString)
+            }
+            var components = formatter.stringFromDate(initialStart!).componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
             (starttimeView.viewWithTag(hourField) as! UITextField).text = components[0]
             (starttimeView.viewWithTag(minuteField) as! UITextField).text = components[1]
             (starttimeView.viewWithTag(timeField) as! UITextField).text = components[2]
-            timeString     = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(3600))
-            components     = timeString.componentsSeparatedByString(" ")
+
+            components     = formatter.stringFromDate(initialEnd!).componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
             (endtimeView.viewWithTag(hourField) as! UITextField).text = components[0]
             (endtimeView.viewWithTag(minuteField) as! UITextField).text = components[1]
             (endtimeView.viewWithTag(timeField) as! UITextField).text = components[2]
@@ -146,25 +166,45 @@ class EditProfileViewController: UIViewController {
     
     func splitTimeToIntervals(startTime: String, endTime: String) {
         let timeFormat = NSDateFormatter()
-        timeFormat.dateFormat = "hh mm a"
-        let timeArray = NSMutableArray()
+        timeFormat.dateFormat = "hh:mm a"
+        var timeArray: NSMutableArray!
+        if let array = availSessionTime.objectForKey(datePicker.selectedDate) as? NSMutableArray {
+            timeArray = array
+        } else {
+            timeArray = NSMutableArray()
+        }
         var fromTime = timeFormat.dateFromString(startTime)
-        let toTime   = timeFormat.dateFromString(endTime)
+        var toTime   = timeFormat.dateFromString(endTime)
+        timeFormat.dateFormat = "hh.mm a"
+        fromTime     = timeFormat.dateFromString(timeFormat.stringFromDate(fromTime!))
+        toTime       = timeFormat.dateFromString(timeFormat.stringFromDate(toTime!))
         var timeAfterInterval = fromTime?.dateByAddingTimeInterval(1800)
-        while timeAfterInterval?.dateByAddingTimeInterval(1800).isEqualToDate(toTime!) == false {
-            timeFormat.dateFormat = "hh.mm a"
+        println(fromTime)
+        println(timeAfterInterval)
+        println(timeFormat.stringFromDate(timeAfterInterval!))
+        println(timeFormat.stringFromDate(toTime!))
+        while timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             let time = NSMutableDictionary()
             time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
             time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
             time.setObject(datePicker.selectedDate, forKey: "date")
-            fromTime = timeAfterInterval
-            timeArray.addObject(time)
+            if !timeArray.containsObject(time) {
+                timeArray.addObject(time)
+            }
+            fromTime          = timeAfterInterval?.dateByAddingTimeInterval(1800)
             timeAfterInterval = fromTime?.dateByAddingTimeInterval(1800)
+            println(fromTime)
+            println(timeAfterInterval)
+            println(timeFormat.stringFromDate(timeAfterInterval!))
+            println(timeFormat.stringFromDate(toTime!))
             continue
         }
         availSessionTime.setObject(timeArray, forKey: datePicker.selectedDate)
     }
     
+    func dateValueChanged(collectionView: UICollectionView) {
+        timeCollectionView.reloadData()
+    }
 
     @IBAction func backButtonClicked(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -204,6 +244,38 @@ class EditProfileViewController: UIViewController {
         })
     }
     
+    @IBAction func timerCancelButtonClicked(sender: UIButton) {
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.timesetViewTopConstraint.constant = -180.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @IBAction func timerDoneButtonClicked(sender: UIButton) {
+        var formatter        = NSDateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        var timeString       = formatter.stringFromDate(timePicker.date)
+        if tappedView == starttimeView {
+            initialStart = timePicker.date
+        } else if tappedView == endtimeView {
+            initialEnd   = timePicker.date
+        }
+        var components       = timeString.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
+        if tappedView == starttimeView {
+            (starttimeView.viewWithTag(hourField) as! UITextField).text = components[0]
+            (starttimeView.viewWithTag(minuteField) as! UITextField).text = components[1]
+            (starttimeView.viewWithTag(timeField) as! UITextField).text = components[2]
+        } else if tappedView == endtimeView {
+            (endtimeView.viewWithTag(hourField) as! UITextField).text = components[0]
+            (endtimeView.viewWithTag(minuteField) as! UITextField).text = components[1]
+            (endtimeView.viewWithTag(timeField) as! UITextField).text = components[2]
+        }
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.timesetViewTopConstraint.constant = -180.0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
     @IBAction func pickerDoneClicked(sender: UIButton) {
         let components   = NSDateComponents()
         components.month = monthPick.selectedMonth
@@ -232,6 +304,7 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func starttimeTapped(sender: UITapGestureRecognizer) {
         tappedView = sender.view
+        setTimePickerValues()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = -350.0
             self.view.layoutIfNeeded()
@@ -240,6 +313,7 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func endtimeTapped(sender: UITapGestureRecognizer) {
         tappedView = sender.view
+        setTimePickerValues()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = -350.0
             self.view.layoutIfNeeded()
@@ -247,15 +321,11 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func setButtonClicked(sender: UIButton) {
-        if tappedView == starttimeView {
-        
-        } else if tappedView == endtimeView {
-        
-        }
         if validateTimeRange() {
             let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text) \((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
             let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text) \((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"
             splitTimeToIntervals(startTime, endTime: endTime)
+            timeCollectionView.reloadData()
         }
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = 0.0
@@ -285,9 +355,12 @@ class EditProfileViewController: UIViewController {
     }
     
     func timeDeleteButtonClicked(deleteButton : UIButton) {
-    
+        let cell = deleteButton.superview?.superview as! AvailableTimeCollectionViewCell
+        let indexPath = timeCollectionView.indexPathForCell(cell)
+        let timeArray = availSessionTime.objectForKey(datePicker.selectedDate) as! NSMutableArray
+        timeArray.removeObjectAtIndex(indexPath!.item)
+        timeCollectionView.reloadData()
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -386,11 +459,20 @@ extension EditProfileViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        if let datePicker = datePicker.selectedDate {
+            if let timeArray = availSessionTime.objectForKey(datePicker) as? NSArray {
+                return timeArray.count
+            }
+        }
+        return 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
+        let time = (availSessionTime.objectForKey(datePicker.selectedDate) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
+        let starttime = time["time_starts"] as! String
+        let endtime = time["time_ends"] as! String
+        cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
         cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)
         return cell
