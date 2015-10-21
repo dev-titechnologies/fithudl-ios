@@ -8,17 +8,23 @@
 
 import UIKit
 
-class FeedbackViewController: UIViewController {
+class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDelegate {
     
+    @IBOutlet weak var contentScrollView: UIScrollView!
+    @IBOutlet var cellRateView: RateView?
+    @IBOutlet weak var suggestionLabel: UILabel!
     @IBOutlet weak var contentviewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var rateCollectionView: UICollectionView!
     @IBOutlet weak var suggestions_textfield: UITextView!
     @IBOutlet weak var submit_button: UIButton!
+    var indexNumber : Int = 0
     var rating_category_array = Array<NSDictionary>()
+    var postRatingArray = Array<NSDictionary>()
+    var postRateDict = [String:AnyObject]()
+    var postRateEditDict = [String:AnyObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         var nib = UINib(nibName: "RateFeedbackCell", bundle: nil)
         rateCollectionView.registerNib(nib, forCellWithReuseIdentifier: "FeedbacKCell")
@@ -28,9 +34,19 @@ class FeedbackViewController: UIViewController {
         submit_button.layer.borderColor=AppColor.statusBarColor.CGColor
         
         if IS_IPHONE6 || IS_IPHONE6PLUS {
-            contentviewHeightConstraint.constant = 560
+            contentviewHeightConstraint.constant = 555
         }
+        var touch = UITapGestureRecognizer(target:self, action:"scrollviewTouchAction")
+        contentScrollView.addGestureRecognizer(touch)
         
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        sendRequestToGetRateCategory()
     }
     
     override func didReceiveMemoryWarning() {
@@ -38,16 +54,25 @@ class FeedbackViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func Submit_Feedback(sender: AnyObject) {
+    // MARK: - keyboardWillHide
+    
+    func scrollviewTouchAction() {
+        suggestions_textfield.resignFirstResponder()
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let keyboardSize =  (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.suggestionLabel.frame.origin.y-20.0)
+            }
+        }
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    func keyboardWillHide(notification: NSNotification) {
         
-        sendRequestToGetRateCategory()
+        self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.contentScrollView.frame.origin.y)
     }
-    
-    
     //MARK: - RatingCategory API
     
     func sendRequestToGetRateCategory() {
@@ -79,6 +104,16 @@ class FeedbackViewController: UIViewController {
                         if let favourites = jsonResult["data"] as? NSArray {
                             rating_category_array = favourites as! Array
                             println(rating_category_array)
+                            postRatingArray = Array<NSDictionary>()
+                            for var i = 0; i < rating_category_array.count; i++ {
+                                
+                                postRateDict["id"]=self.rating_category_array[i].objectForKey("id")
+                                postRateDict["rating_count"]=self.rating_category_array[i].objectForKey("rating_count")
+                                postRatingArray.append(postRateDict)
+                                
+                                
+                            }
+                            println(postRatingArray)
                             rateCollectionView.reloadData()
                         }
                         else {
@@ -103,6 +138,8 @@ class FeedbackViewController: UIViewController {
                 else {
                     
                     if status == ResponseStatus.success {
+                        suggestions_textfield.resignFirstResponder()
+                        suggestions_textfield.text=""
                         
                     }
                     else if status == ResponseStatus.error {
@@ -134,17 +171,50 @@ class FeedbackViewController: UIViewController {
     }
     
     
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
+    func rateData(data: Int) {
+        
+        postRateEditDict = [String:AnyObject]()
+        postRateEditDict=self.postRatingArray[indexNumber] as! [String : AnyObject]
+        postRateEditDict["rating_count"] = data
+        postRatingArray.removeAtIndex(indexNumber)
+        postRatingArray.insert(postRateEditDict, atIndex:indexNumber)
     }
-    */
+    
+    func FeedRate(sender:UIButton) {
+        indexNumber=sender.tag
+        let indexPath = NSIndexPath(forRow: sender.tag, inSection: 0)
+        let cell = rateCollectionView.cellForItemAtIndexPath(indexPath) as! RateFeedbackCell!
+        cell.rateView.feedRate(sender)
+    }
+    
+    @IBAction func sendFeedback(sender: AnyObject) {
+        
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(suggestions_textfield.text, forKey: "feedback")
+        requestDictionary.setObject(postRatingArray, forKey: "rating")
+        
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "feedback/add", requestType: HttpMethod.post),delegate: self,tag: Connection.submitfeedback)
+        
+    }
+}
+
+//MARK: - TextViewDelegate
+
+func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    return true
+}
+func textViewDidBeginEditing(textView: UITextView){
     
 }
+func textViewShouldEndEditing(textView: UITextView) -> Bool {
+    return true
+}
+
+
 
 extension FeedbackViewController: UICollectionViewDataSource {
     
@@ -159,26 +229,46 @@ extension FeedbackViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("FeedbacKCell", forIndexPath: indexPath) as! RateFeedbackCell
+        cell.rateView?.delegate=self
         if indexPath.row >= rating_category_array.count
         {
             cell.backgroundColor=UIColor.whiteColor()
             cell.alpha=0.5;
             cell.rateView.hidden=true
             cell.arrowShape.hidden=true
+            cell.RateCategory_name.hidden=true
         }
-        else {
+        else
+        {
+            cell.RateCategory_name.hidden=false
             cell.RateCategory_name?.text=self.rating_category_array[indexPath.row].objectForKey("name") as? String
             cell.backgroundColor=UIColor.whiteColor()
+            cell.alpha=1.0;
             cell.rateView.layer.cornerRadius=10.0
             cell.rateView.hidden=false
             cell.arrowShape.hidden=false
+            if let session_count = self.rating_category_array[indexPath.row].objectForKey("rating_count") as? Int {
+                cell.rateView.showRateView(session_count)
+            }
+            
+            cell.rateView.starOne.tag=indexPath.row
+            cell.rateView.starTwo.tag=indexPath.row
+            cell.rateView.starThree.tag=indexPath.row
+            cell.rateView.starFour.tag=indexPath.row
+            cell.rateView.starFive.tag=indexPath.row
+            cell.rateView.starOne.addTarget(self, action: "FeedRate:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.rateView.starTwo.addTarget(self, action: "FeedRate:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.rateView.starThree.addTarget(self, action: "FeedRate:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.rateView.starFour.addTarget(self, action: "FeedRate:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.rateView.starFive.addTarget(self, action: "FeedRate:", forControlEvents: UIControlEvents.TouchUpInside)
             
         }
         return cell
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        return CGSize(width: collectionView.frame.width/3, height: 90);
-        
-    }
+        func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    
+            return CGSize(width: collectionView.frame.width/3, height: 90);
+    
+        }
 }
+
