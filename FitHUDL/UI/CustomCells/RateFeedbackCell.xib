@@ -58,18 +58,18 @@
                         <rect key="frame" x="6" y="50" width="94" height="20"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="cLc-oz-vpt"/>
+                            <constraint firstAttribute="height" constant="20" id="FOU-HD-4zV"/>
+                            <constraint firstAttribute="width" constant="94" id="Uu6-QB-mWV"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="Y14-tv-yEb" firstAttribute="leading" secondItem="4Lh-cb-tAc" secondAttribute="leading" constant="6" id="0MK-f3-Dad"/>
-                <constraint firstItem="ys5-eD-90q" firstAttribute="leading" secondItem="Y14-tv-yEb" secondAttribute="trailing" constant="5" id="0SA-V6-Gwm"/>
-                <constraint firstItem="Y14-tv-yEb" firstAttribute="top" secondItem="nfm-3p-MFP" secondAttribute="bottom" id="3Q3-bs-SBC"/>
+                <constraint firstItem="Y14-tv-yEb" firstAttribute="centerX" secondItem="nfm-3p-MFP" secondAttribute="centerX" constant="-1.5" id="4Oo-2B-ruM"/>
                 <constraint firstItem="nfm-3p-MFP" firstAttribute="centerY" secondItem="pRK-iz-AVr" secondAttribute="centerY" constant="20.5" id="Em4-oE-rdV"/>
                 <constraint firstAttribute="centerX" secondItem="pRK-iz-AVr" secondAttribute="centerX" id="LkR-QB-OKc"/>
+                <constraint firstItem="Y14-tv-yEb" firstAttribute="top" secondItem="nfm-3p-MFP" secondAttribute="bottom" id="MJK-hA-Kes"/>
                 <constraint firstItem="nfm-3p-MFP" firstAttribute="centerX" secondItem="pRK-iz-AVr" secondAttribute="centerX" constant="1.5" id="Mng-eX-KrQ"/>
                 <constraint firstItem="V9d-f1-dnY" firstAttribute="top" secondItem="4Lh-cb-tAc" secondAttribute="top" id="R4O-NA-gZI"/>
                 <constraint firstAttribute="trailing" secondItem="ys5-eD-90q" secondAttribute="trailing" id="RsJ-pn-bGg"/>

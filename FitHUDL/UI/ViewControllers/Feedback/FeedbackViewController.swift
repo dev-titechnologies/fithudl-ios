@@ -93,27 +93,32 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
     }
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
-        
+         var rating_categoryTemp_array = Array<NSDictionary>()
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        println(response)
         var error : NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.ratecategory {
                     if status == ResponseStatus.success {
                         if let favourites = jsonResult["data"] as? NSArray {
-                            rating_category_array = favourites as! Array
-                            println(rating_category_array)
+                            
+                            rating_categoryTemp_array = favourites as! Array
+                            rating_category_array = Array<NSDictionary>()
                             postRatingArray = Array<NSDictionary>()
-                            for var i = 0; i < rating_category_array.count; i++ {
+                            for var i = 0; i < rating_categoryTemp_array.count; i++ {
                                 
-                                postRateDict["id"]=self.rating_category_array[i].objectForKey("id")
-                                postRateDict["rating_count"]=self.rating_category_array[i].objectForKey("rating_count")
-                                postRatingArray.append(postRateDict)
+                                let Catagorystatus = rating_categoryTemp_array[i].objectForKey("status") as? Int
                                 
+                                if Catagorystatus == 1
+                                {
+                                    rating_category_array.append(rating_categoryTemp_array[i])
+                                    postRateDict["id"]=rating_categoryTemp_array[i].objectForKey("id")
+                                    postRateDict["rating_count"]=rating_categoryTemp_array[i].objectForKey("rating_count")
+                                    postRatingArray.append(postRateDict)
+
+                                }
                                 
                             }
-                            println(postRatingArray)
                             rateCollectionView.reloadData()
                         }
                         else {

@@ -575,7 +575,7 @@ extension MyProfileViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
             let time = appDelegate.user.availableTimeArray[indexPath.row] as! NSDictionary
-            cell.timeLabel.text = Globals.convertTimeTo12Hours((time["time_starts"] as? String)!) 
+          //  cell.timeLabel.text = Globals.convertTimeTo12Hours((time["time_starts"] as? String)!)
             return cell
         }
     }
