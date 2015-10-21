@@ -127,7 +127,7 @@ class FavoritesViewController: UIViewController {
         showLoadingView(false)
     }
     
-    func UnFavouriteAction(sender:UIButton) {
+    func unFavouriteAction(sender:UIButton) {
         
         favouritelist_index = sender.tag
         let requestDictionary = NSMutableDictionary()
@@ -178,9 +178,7 @@ extension FavoritesViewController : UITableViewDelegate {
         }
         
         cell.favouriteButton.tag=indexPath.row
-        
-        cell.favouriteButton.addTarget(self, action: "UnFavouriteAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+        cell.favouriteButton.addTarget(self, action: "unFavouriteAction:", forControlEvents: UIControlEvents.TouchUpInside)
         return cell
     }
 }
@@ -188,7 +186,8 @@ extension FavoritesViewController : UITableViewDelegate {
 extension FavoritesViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
-        userProfile.profileID   = String(stringInterpolationSegment: self.favouriteList_array[indexPath.row].objectForKey("id") as? Int)
+        let id                  = self.favouriteList_array[indexPath.row].objectForKey("id") as! Int
+        userProfile.profileID   = "\(id)"
         navigationController?.pushViewController(userProfile, animated: true)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

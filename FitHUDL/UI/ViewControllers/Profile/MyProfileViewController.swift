@@ -167,6 +167,11 @@ class MyProfileViewController: UIViewController {
         }
     }
     
+    @IBAction func favoriteButtonClicked(sender: UIButton) {
+        sender.selected = !sender.selected
+        sendRequestToManageFavorite(Int(sender.selected))
+    }
+    
     @IBAction func editButtonClicked(sender: UIButton) {
         performSegueWithIdentifier("segueToEditProfile", sender: self)
     }
@@ -331,7 +336,7 @@ class MyProfileViewController: UIViewController {
         showLoadingView(true)
         let requestDictionary = NSMutableDictionary()
         if let id = profileID {
-            requestDictionary.setObject(id, forKey: "user_id")
+            requestDictionary.setObject(id.toInt()!, forKey: "user_id")
         }
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "profile/profile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
@@ -346,6 +351,20 @@ class MyProfileViewController: UIViewController {
         requestDictionary.setObject(type, forKey: "type")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/modifyUserSports", requestType: HttpMethod.post), delegate: self, tag: Connection.updateSports)
     }
+    
+    func sendRequestToManageFavorite(favorite: Int) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(favorite, forKey: "favorite")
+        if let id = profileID {
+            requestDictionary.setObject(id.toInt()!, forKey: "trainer_id")
+        }
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "favourite/manage", requestType: HttpMethod.post), delegate: self, tag: Connection.unfavourite)
+    }
+    
     
     func parseProfileResponse(responseDictionary: NSDictionary) {
         if let id = profileID {
@@ -512,10 +531,25 @@ class MyProfileViewController: UIViewController {
                         Globals.clearSession()
                         dismissViewControllerAnimated(true, completion: nil)
                     }
-                } else {
+                } else if connection.connectionTag == Connection.updateSports {
                     if status == ResponseStatus.sessionOut {
                         Globals.clearSession()
                         dismissViewControllerAnimated(true, completion: nil)
+                    }
+                } else if connection.connectionTag == Connection.unfavourite {
+                    if status == ResponseStatus.success {
+                        
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(Message.Error)
+                        }
+                        favoriteButton.selected = !favoriteButton.selected
+                    } else {
+                        Globals.clearSession()
+                        dismissViewControllerAnimated(true, completion: nil)
+                        
                     }
                 }
             }

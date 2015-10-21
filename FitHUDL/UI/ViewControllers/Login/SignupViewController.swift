@@ -36,6 +36,10 @@ class SignupViewController: UIViewController {
 
         sportsCarousel.type             = .Custom
         
+        if appDelegate.sportsArray.count == 0 {
+            sportsCarousel.superview?.hidden = true
+        }
+        
         maleYConstraint.constant   = 0
         femaleYConstraint.constant = 0
         
