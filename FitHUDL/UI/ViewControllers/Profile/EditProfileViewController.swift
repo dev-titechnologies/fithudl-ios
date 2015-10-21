@@ -25,6 +25,10 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var timesetView: UIView!
+    @IBOutlet weak var photoButton: UIButton!
+    let imagePicker = UIImagePickerController()
+    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     let hourField   = 97
     let minuteField = 98
@@ -37,6 +41,7 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.setStatusBarColor()
         let colorAttributes     = [NSForegroundColorAttributeName: UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1.0)]
         var placeHolderString   = NSAttributedString(string: nameTextField.placeholder!, attributes: colorAttributes)
         nameTextField.attributedPlaceholder = placeHolderString
@@ -51,7 +56,7 @@ class EditProfileViewController: UIViewController {
         
         datePicker.addTarget(self, action: "dateValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         datePicker.fillDatesFromDate(NSDate(), toDate: endOfMonth())
-        datePicker.selectedDateBottomLineColor = AppColor.statusBarColor
+        datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
 
         timePicker.minimumDate = NSDate()
         
@@ -64,6 +69,22 @@ class EditProfileViewController: UIViewController {
         monthPick.monthPickerDelegate = self
         
         nameTextField.text = appDelegate.user.name
+        if let bio = appDelegate.user.bio {
+            bioTextView.text = bio
+            placeholderLabel.hidden = true
+        }
+        var datesArray  = appDelegate.user.availableTimeArray.valueForKey("date") as! NSArray
+        datesArray      = datesArray.valueForKeyPath("date") as![String]
+        for date in datesArray {
+            let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
+            availSessionTime.setObject(filteredArray, forKey: date as! String)
+        }
+        if let url = appDelegate.user.imageURL {
+            CustomURLConnection.downloadAndSetImage(url, imageView: photoImageView, activityIndicatorView: indicatorView)
+            photoButton.hidden = true
+        } else {
+            photoButton.hidden = false
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -89,10 +110,9 @@ class EditProfileViewController: UIViewController {
     }
     
     func setTimePickerValues() {
-        var formatter        = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-d"
-        let dateString       = formatter.stringFromDate(datePicker.selectedDate)
-        let currentDate      = formatter.stringFromDate(NSDate())
+        let dateString       = Globals.convertDate(datePicker.selectedDate)
+        let currentDate      = Globals.convertDate(NSDate())
+        let formatter        = NSDateFormatter()
         formatter.dateFormat = "hh:mm a"
         if dateString == currentDate {
             if tappedView == starttimeView {
@@ -107,10 +127,9 @@ class EditProfileViewController: UIViewController {
     }
     
     func setTimeValues() {
-        var formatter        = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-d"
-        let dateString       = formatter.stringFromDate(datePicker.selectedDate)
-        let currentDate      = formatter.stringFromDate(NSDate())
+        let dateString       = Globals.convertDate(datePicker.selectedDate)
+        let currentDate      = Globals.convertDate(NSDate())
+        let formatter        = NSDateFormatter()
         formatter.dateFormat = "hh:mm a"
         if dateString == currentDate {
             if let start = initialStart {
@@ -168,7 +187,7 @@ class EditProfileViewController: UIViewController {
         let timeFormat = NSDateFormatter()
         timeFormat.dateFormat = "hh:mm a"
         var timeArray: NSMutableArray!
-        if let array = availSessionTime.objectForKey(datePicker.selectedDate) as? NSMutableArray {
+        if let array = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as? NSMutableArray {
             timeArray = array
         } else {
             timeArray = NSMutableArray()
@@ -185,9 +204,9 @@ class EditProfileViewController: UIViewController {
         println(timeFormat.stringFromDate(toTime!))
         while timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             let time = NSMutableDictionary()
-            time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
-            time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
-            time.setObject(datePicker.selectedDate, forKey: "date")
+            time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "starts")
+            time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "ends")
+            time.setObject(Globals.convertDate(datePicker.selectedDate), forKey: "date")
             if !timeArray.containsObject(time) {
                 timeArray.addObject(time)
             }
@@ -199,7 +218,7 @@ class EditProfileViewController: UIViewController {
             println(timeFormat.stringFromDate(toTime!))
             continue
         }
-        availSessionTime.setObject(timeArray, forKey: datePicker.selectedDate)
+        availSessionTime.setObject(timeArray, forKey: Globals.convertDate(datePicker.selectedDate))
     }
     
     func dateValueChanged(collectionView: UICollectionView) {
@@ -210,8 +229,23 @@ class EditProfileViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func dismissTimeView(sender: UIButton) {
+        
+    }
+    
     @IBAction func photoButtonClicked(sender: UIButton) {
-   
+        let actionSheet = UIAlertController(title: "Upload Profile Picture", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let takePhotoButton = UIAlertAction(title: "Take a Photo", style: UIAlertActionStyle.Default) { (takePhoto) -> Void in
+            self.showImagePicker(false)
+        }
+        let photoLibraryButton = UIAlertAction(title: "Choose from Gallery", style: UIAlertActionStyle.Default) { (choosePicture) -> Void in
+            self.showImagePicker(true)
+        }
+        let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        actionSheet.addAction(takePhotoButton)
+        actionSheet.addAction(photoLibraryButton)
+        actionSheet.addAction(cancelButton)
+        presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     @IBAction func addTimeButtonClicked(sender: UIButton) {
@@ -229,7 +263,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func doneButtonClicked(sender: UIButton) {
-    
+        sendRequestToEditProfile()
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
@@ -320,6 +354,10 @@ class EditProfileViewController: UIViewController {
         })
     }
     
+    @IBAction func photoImageViewTapped(sender: UITapGestureRecognizer) {
+        photoButtonClicked(photoButton)
+    }
+    
     @IBAction func setButtonClicked(sender: UIButton) {
         if validateTimeRange() {
             let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text) \((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
@@ -357,10 +395,114 @@ class EditProfileViewController: UIViewController {
     func timeDeleteButtonClicked(deleteButton : UIButton) {
         let cell = deleteButton.superview?.superview as! AvailableTimeCollectionViewCell
         let indexPath = timeCollectionView.indexPathForCell(cell)
-        let timeArray = availSessionTime.objectForKey(datePicker.selectedDate) as! NSMutableArray
+        let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSMutableArray
         timeArray.removeObjectAtIndex(indexPath!.item)
         timeCollectionView.reloadData()
     }
+    
+    func showImagePicker(isGallery: Bool) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
+            imagePicker.delegate = self
+            if isGallery {
+                imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            } else {
+                imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
+            }
+            imagePicker.allowsEditing = false
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().UUIDString)"
+    }
+    
+    func sendRequestToEditProfile() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestURL = SERVER_URL.stringByAppendingString("user/editProfile")
+        let request    = NSMutableURLRequest(URL: NSURL(string: requestURL)!)
+        request.HTTPMethod = HttpMethod.post
+        
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(nameTextField.text, forKey: "name")
+        requestDictionary.setObject(bioTextView.text, forKey: "bio")
+        let timeArray = NSMutableArray()
+        for value in availSessionTime.allValues {
+            timeArray.addObjectsFromArray(value as! [AnyObject])
+        }
+        requestDictionary.setObject(timeArray, forKey: "session")
+        if let deviceToken = appDelegate.deviceToken {
+            requestDictionary.setObject(deviceToken, forKey:"device_id")
+        } else {
+            requestDictionary.setObject("xyz", forKey: "device_id")
+        }
+        if let apiToken = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
+            requestDictionary.setObject(apiToken, forKey: "token")
+        }
+        
+        let boundary = generateBoundaryString()
+        
+        request.setValue("multipart/form-date; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = createBodyWithParameters(requestDictionary, boundary: boundary, imageData: UIImageJPEGRepresentation(photoImageView.image, 0.5))
+        CustomURLConnection(request: request, delegate: self, tag: Connection.userProfile)
+    }
+    
+    func createBodyWithParameters(parameters: NSDictionary, boundary: String, imageData: NSData) -> NSData {
+        var body = NSMutableData()
+        for (key, value) in parameters {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\(key)\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+        let mimetype = "image/jpg"
+        body.appendString("--\(boundary)\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"file\"\r\n")
+        body.appendString("Content-Type: \(mimetype)\r\n\r\n")
+        body.appendData(imageData)
+        body.appendString("\r\n--\(boundary)--\r\n")
+        return body
+    }
+    
+    
+    
+    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
+        connection.receiveData.length = 0
+    }
+    
+    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
+        connection.receiveData.appendData(data)
+    }
+    
+    func connectionDidFinishLoading(connection: CustomURLConnection) {
+        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+        println(response)
+        var error: NSError?
+        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+            if let status = jsonResult["status"] as? Int {
+                if status == ResponseStatus.success {
+                    
+                } else if status == ResponseStatus.error {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
+                    } else {
+                        showDismissiveAlertMesssage(Message.Error)
+                    }
+                } else {
+                    
+                }
+            }
+        }
+        showLoadingView(false)
+    }
+    
+    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
+        showDismissiveAlertMesssage(error.localizedDescription)
+        showLoadingView(false)
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -378,6 +520,19 @@ class EditProfileViewController: UIViewController {
     }
     */
 
+}
+
+extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        let selectedImage = info["UIImagePickerControllerOriginalImage"] as! UIImage
+        photoImageView.image = selectedImage
+        photoButton.hidden = true
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 extension EditProfileViewController: UITextFieldDelegate {
@@ -405,7 +560,6 @@ extension EditProfileViewController: UITextFieldDelegate {
 }
 
 extension EditProfileViewController: UITextViewDelegate {
-    
     func textViewDidBeginEditing(textView: UITextView) {
         hidePickerView()
         if IS_IPHONE4S {
@@ -460,7 +614,7 @@ extension EditProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let datePicker = datePicker.selectedDate {
-            if let timeArray = availSessionTime.objectForKey(datePicker) as? NSArray {
+            if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
                 return timeArray.count
             }
         }
@@ -469,9 +623,9 @@ extension EditProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-        let time = (availSessionTime.objectForKey(datePicker.selectedDate) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
-        let starttime = time["time_starts"] as! String
-        let endtime = time["time_ends"] as! String
+        let time = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
+        let starttime = time["starts"] as! String
+        let endtime = time["ends"] as! String
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
         cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)
@@ -489,5 +643,12 @@ extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: (collectionView.frame.size.width-30)/3, height: 40.0)
         }
         return CGSize(width: 98.0, height: 40.0)
+    }
+}
+
+extension NSMutableData {
+    func appendString(string: String) {
+        let data = string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+        appendData(data!)
     }
 }

@@ -56,8 +56,14 @@ class Globals: NSObject {
         dateFormatter.dateFormat = "HH:mm"
         let date = dateFormatter.dateFromString(time)
         
-        dateFormatter.dateFormat = "H.mm a"
+        dateFormatter.dateFormat = "h.mm a"
         return dateFormatter.stringFromDate(date!)
+    }
+    
+    class func convertDate(date: NSDate) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.stringFromDate(date)
     }
     
 }
