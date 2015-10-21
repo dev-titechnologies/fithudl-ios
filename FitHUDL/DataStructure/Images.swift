@@ -31,7 +31,7 @@ class Images: NSManagedObject {
         appDelegate.saveContext()
     }
     
-    class func delete() {
+    class func deleteImages() {
         var error: NSError?              = nil
         var fetchRequest: NSFetchRequest = NSFetchRequest(entityName: "Images")
         var results: NSArray             = appDelegate.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error)!

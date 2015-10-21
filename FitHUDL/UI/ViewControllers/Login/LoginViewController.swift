@@ -48,6 +48,8 @@ class LoginViewController: UIViewController {
     
     override func viewWillDisappear(animated: Bool) {
         calloutView.removeFromSuperview()
+        calloutView.frame = CGRect(x: 0.0, y: -17.0, width: view.frame.size.width, height: 0)
+        self.view.addSubview(calloutView)
     }
 
     @IBAction func loginButtonClicked(sender: UIButton) {

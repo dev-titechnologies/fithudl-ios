@@ -182,8 +182,14 @@ extension FavoritesViewController : UITableViewDelegate {
         cell.favouriteButton.addTarget(self, action: "UnFavouriteAction:", forControlEvents: UIControlEvents.TouchUpInside)
         
         return cell
-        
-        
     }
-    
+}
+
+extension FavoritesViewController : UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
+        userProfile.profileID   = String(stringInterpolationSegment: self.favouriteList_array[indexPath.row].objectForKey("id") as? Int)
+        navigationController?.pushViewController(userProfile, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
 }

@@ -44,7 +44,7 @@ class Globals: NSObject {
     
     class func convertTimeTo24Hours(time: String) -> String {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "H.mm a"
+        dateFormatter.dateFormat = "h.mm a"
         let date = dateFormatter.dateFromString(time)
         
         dateFormatter.dateFormat = "HH:mm"
@@ -64,6 +64,11 @@ class Globals: NSObject {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.stringFromDate(date)
+    }
+    
+    class func clearSession() {
+        NSUserDefaults.standardUserDefaults().setObject("", forKey: "API_TOKEN")
+        Images.deleteImages()
     }
     
 }

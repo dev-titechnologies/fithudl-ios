@@ -71,17 +71,16 @@ class CustomURLConnection: NSURLConnection {
                             }
                         }
                         activityIndicatorView.stopAnimating()
-                         activityIndicatorView.hidden=true
+                        activityIndicatorView.hidden=true
                     }
                 } else {
                     activityIndicatorView.stopAnimating()
-                     activityIndicatorView.hidden=true
+                    activityIndicatorView.hidden=true
                 }
             }
         } else {
             activityIndicatorView.stopAnimating()
-             activityIndicatorView.hidden=true
+            activityIndicatorView.hidden=true
         }
     }
-
 }

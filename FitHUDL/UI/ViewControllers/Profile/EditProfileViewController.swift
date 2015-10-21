@@ -74,7 +74,7 @@ class EditProfileViewController: UIViewController {
             placeholderLabel.hidden = true
         }
         var datesArray  = appDelegate.user.availableTimeArray.valueForKey("date") as! NSArray
-        datesArray      = datesArray.valueForKeyPath("date") as![String]
+//        datesArray      = datesArray.valueForKeyPath("date") as![String]
         for date in datesArray {
             let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
             availSessionTime.setObject(filteredArray, forKey: date as! String)
@@ -204,8 +204,8 @@ class EditProfileViewController: UIViewController {
         println(timeFormat.stringFromDate(toTime!))
         while timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             let time = NSMutableDictionary()
-            time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "starts")
-            time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "ends")
+            time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
+            time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
             time.setObject(Globals.convertDate(datePicker.selectedDate), forKey: "date")
             if !timeArray.containsObject(time) {
                 timeArray.addObject(time)
@@ -230,7 +230,12 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func dismissTimeView(sender: UIButton) {
-        
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.timesetViewTopConstraint.constant = 0.0
+            self.view.layoutIfNeeded()
+            }) { (completed) -> Void in
+                self.timesetView.hidden = true
+        }
     }
     
     @IBAction func photoButtonClicked(sender: UIButton) {
@@ -413,60 +418,85 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    func generateBoundaryString() -> String {
-        return "Boundary-\(NSUUID().UUIDString)"
-    }
+//    func generateBoundaryString() -> String {
+//        return "Boundary-\(NSUUID().UUIDString)"
+//    }
+//    
+//    func sendRequestToEditProfile() {
+//        if !Globals.isInternetConnected() {
+//            return
+//        }
+//        showLoadingView(true)
+//        let requestURL = SERVER_URL.stringByAppendingString("user/editProfile")
+//        let request    = NSMutableURLRequest(URL: NSURL(string: requestURL)!)
+//        request.HTTPMethod = HttpMethod.post
+//        
+//        let requestDictionary = NSMutableDictionary()
+//        requestDictionary.setObject(nameTextField.text, forKey: "name")
+//        requestDictionary.setObject(bioTextView.text, forKey: "bio")
+//        let timeArray = NSMutableArray()
+//        for value in availSessionTime.allValues {
+//            timeArray.addObjectsFromArray(value as! [AnyObject])
+//        }
+//        requestDictionary.setObject(timeArray, forKey: "session")
+//        if let deviceToken = appDelegate.deviceToken {
+//            requestDictionary.setObject(deviceToken, forKey:"device_id")
+//        } else {
+//            requestDictionary.setObject("xyz", forKey: "device_id")
+//        }
+//        if let apiToken = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
+//            requestDictionary.setObject(apiToken, forKey: "token")
+//        }
+//        
+//        let boundary = generateBoundaryString()
+//        
+//        request.setValue("multipart/form-date; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//        request.HTTPBody = createBodyWithParameters(requestDictionary, boundary: boundary, imageData: UIImageJPEGRepresentation(photoImageView.image, 0.5))
+//        CustomURLConnection(request: request, delegate: self, tag: Connection.userProfile)
+//    }
+//    
+//    func createBodyWithParameters(parameters: NSDictionary, boundary: String, imageData: NSData) -> NSData {
+//        var body = NSMutableData()
+//        for (key, value) in parameters {
+//            body.appendString("--\(boundary)\r\n")
+//            body.appendString("Content-Disposition: form-data; name=\(key)\r\n\r\n")
+//            body.appendString("\(value)\r\n")
+//        }
+//        let mimetype = "image/jpg"
+//        body.appendString("--\(boundary)\r\n")
+//        body.appendString("Content-Disposition: form-data; name=\"file\"\r\n")
+//        body.appendString("Content-Type: \(mimetype)\r\n\r\n")
+//        body.appendData(imageData)
+//        body.appendString("\r\n--\(boundary)--\r\n")
+//        return body
+//    }
     
     func sendRequestToEditProfile() {
         if !Globals.isInternetConnected() {
             return
         }
         showLoadingView(true)
-        let requestURL = SERVER_URL.stringByAppendingString("user/editProfile")
-        let request    = NSMutableURLRequest(URL: NSURL(string: requestURL)!)
-        request.HTTPMethod = HttpMethod.post
         
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(nameTextField.text, forKey: "name")
         requestDictionary.setObject(bioTextView.text, forKey: "bio")
         let timeArray = NSMutableArray()
         for value in availSessionTime.allValues {
-            timeArray.addObjectsFromArray(value as! [AnyObject])
+            for time in (value as! [NSMutableDictionary]) {
+                time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_starts") as! String), forKey: "time_starts")
+                time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_ends") as! String), forKey: "time_ends")
+            }
+            timeArray.addObjectsFromArray(value as! [NSDictionary])
         }
         requestDictionary.setObject(timeArray, forKey: "session")
-        if let deviceToken = appDelegate.deviceToken {
-            requestDictionary.setObject(deviceToken, forKey:"device_id")
-        } else {
-            requestDictionary.setObject("xyz", forKey: "device_id")
-        }
-        if let apiToken = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
-            requestDictionary.setObject(apiToken, forKey: "token")
+        if let image = photoImageView.image {
+            let imageData = UIImageJPEGRepresentation(image, 0.5)
+            let imageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
+            requestDictionary.setObject(imageString, forKey: "file")
         }
         
-        let boundary = generateBoundaryString()
-        
-        request.setValue("multipart/form-date; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = createBodyWithParameters(requestDictionary, boundary: boundary, imageData: UIImageJPEGRepresentation(photoImageView.image, 0.5))
-        CustomURLConnection(request: request, delegate: self, tag: Connection.userProfile)
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/editProfile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
-    
-    func createBodyWithParameters(parameters: NSDictionary, boundary: String, imageData: NSData) -> NSData {
-        var body = NSMutableData()
-        for (key, value) in parameters {
-            body.appendString("--\(boundary)\r\n")
-            body.appendString("Content-Disposition: form-data; name=\(key)\r\n\r\n")
-            body.appendString("\(value)\r\n")
-        }
-        let mimetype = "image/jpg"
-        body.appendString("--\(boundary)\r\n")
-        body.appendString("Content-Disposition: form-data; name=\"file\"\r\n")
-        body.appendString("Content-Type: \(mimetype)\r\n\r\n")
-        body.appendData(imageData)
-        body.appendString("\r\n--\(boundary)--\r\n")
-        return body
-    }
-    
-    
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
@@ -483,7 +513,7 @@ class EditProfileViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    
+                    dismissViewControllerAnimated(true, completion: nil)
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {
                         showDismissiveAlertMesssage(message)
@@ -491,7 +521,7 @@ class EditProfileViewController: UIViewController {
                         showDismissiveAlertMesssage(Message.Error)
                     }
                 } else {
-                    
+                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
                 }
             }
         }
@@ -624,8 +654,8 @@ extension EditProfileViewController: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
         let time = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
-        let starttime = time["starts"] as! String
-        let endtime = time["ends"] as! String
+        let starttime = time["time_starts"] as! String
+        let endtime = time["time_ends"] as! String
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
         cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)
