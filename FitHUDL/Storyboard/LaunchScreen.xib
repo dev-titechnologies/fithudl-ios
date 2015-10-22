@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -9,12 +10,36 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="EJ8-v9-8XF">
+                    <rect key="frame" x="89" y="30" width="302" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="EJ8-v9-8XF" secondAttribute="height" multiplier="5:1" id="z9T-Hb-0bk"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgImage" translatesAutoresizingMaskIntoConstraints="NO" id="XBd-sx-3EW">
+                    <rect key="frame" x="90" y="117" width="291" height="291"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="XBd-sx-3EW" secondAttribute="height" multiplier="1:1" id="Jcn-Tp-oJ9"/>
+                    </constraints>
+                </imageView>
+            </subviews>
             <color key="backgroundColor" red="0.0" green="0.58823529409999997" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="EJ8-v9-8XF" secondAttribute="centerX" id="188-0V-dLX"/>
+                <constraint firstItem="EJ8-v9-8XF" firstAttribute="centerY" secondItem="XBd-sx-3EW" secondAttribute="centerY" constant="-202.5" id="3Pz-Dd-OEN"/>
+                <constraint firstItem="EJ8-v9-8XF" firstAttribute="centerX" secondItem="XBd-sx-3EW" secondAttribute="centerX" constant="4.5" id="BSe-LT-jAY"/>
+                <constraint firstAttribute="centerY" secondItem="EJ8-v9-8XF" secondAttribute="centerY" constant="180" id="kWw-xa-eGS"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="548" y="455"/>
         </view>
     </objects>
+    <resources>
+        <image name="bgImage" width="291" height="291"/>
+        <image name="splash-logo" width="302" height="60"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

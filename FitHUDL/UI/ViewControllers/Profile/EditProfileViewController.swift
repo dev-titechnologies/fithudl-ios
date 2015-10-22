@@ -73,8 +73,7 @@ class EditProfileViewController: UIViewController {
             bioTextView.text = bio
             placeholderLabel.hidden = true
         }
-        var datesArray  = appDelegate.user.availableTimeArray.valueForKey("date") as! NSArray
-//        datesArray      = datesArray.valueForKeyPath("date") as![String]
+        var datesArray  = NSSet(array: appDelegate.user.availableTimeArray.valueForKey("date") as! [String])
         for date in datesArray {
             let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
             availSessionTime.setObject(filteredArray, forKey: date as! String)
@@ -652,10 +651,10 @@ extension EditProfileViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-        let time = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
-        let starttime = time["time_starts"] as! String
-        let endtime = time["time_ends"] as! String
+        let cell            = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
+        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
+        let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
+        let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
         cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)

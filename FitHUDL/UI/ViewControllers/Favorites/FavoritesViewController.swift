@@ -154,13 +154,13 @@ extension FavoritesViewController : UITableViewDelegate {
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell=tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! FavouritesListCell
-        cell.starView.rating = 0
-        cell.prof_pic.layer.borderWidth=1.0
-        cell.prof_pic.layer.masksToBounds = false
-        cell.prof_pic.layer.borderColor = UIColor.clearColor().CGColor
-        cell.prof_pic.layer.cornerRadius = cell.prof_pic.frame.size.height/2
-        cell.prof_pic.clipsToBounds = true
+        let cell                            = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! FavouritesListCell
+        cell.starView.rating                = 0
+        cell.prof_pic.layer.borderWidth     = 1.0
+        cell.prof_pic.layer.masksToBounds   = false
+        cell.prof_pic.layer.borderColor     = UIColor.clearColor().CGColor
+        cell.prof_pic.layer.cornerRadius    = cell.prof_pic.frame.size.height/2
+        cell.prof_pic.clipsToBounds         = true
         
         if let url = self.favouriteList_array[indexPath.row].objectForKey("profile_pic") as? String {
             CustomURLConnection.downloadAndSetImage(url, imageView: cell.prof_pic, activityIndicatorView: cell.indicatorView)
@@ -168,16 +168,17 @@ extension FavoritesViewController : UITableViewDelegate {
             CustomURLConnection.downloadAndSetImage("", imageView: cell.prof_pic, activityIndicatorView: cell.indicatorView)
         }
 
-        cell.nameLabel?.text=self.favouriteList_array[indexPath.row].objectForKey("name") as? String
+        cell.nameLabel?.text = self.favouriteList_array[indexPath.row].objectForKey("name") as? String
+        
         if let ratevalue = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float {
             cell.starView.rating = ratevalue
         }
         
-        if let session_count = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Int {
-            cell.sessionCounterLabel?.text=String(session_count)
+        if let session_count = self.favouriteList_array[indexPath.row].objectForKey("session") as? Int {
+            cell.sessionCounterLabel?.text = "\(session_count)"
         }
         
-        cell.favouriteButton.tag=indexPath.row
+        cell.favouriteButton.tag = indexPath.row
         cell.favouriteButton.addTarget(self, action: "unFavouriteAction:", forControlEvents: UIControlEvents.TouchUpInside)
         return cell
     }

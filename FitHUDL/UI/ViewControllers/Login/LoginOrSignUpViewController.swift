@@ -33,7 +33,7 @@ class LoginOrSignUpViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        sendRequestToGetSportsList()
+        appDelegate.sendRequestToGetSportsList()
         navigationController?.navigationBarHidden = true
     }
     
@@ -94,13 +94,6 @@ class LoginOrSignUpViewController: UIViewController {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/emailExists", requestType: HttpMethod.post), delegate: self, tag: Connection.checkUser)
     }
     
-    func sendRequestToGetSportsList() {
-        if !Globals.isInternetConnected() {
-            return
-        }
-        CustomURLConnection(request: CustomURLConnection.createRequest(nil, methodName: "sports/list", requestType: HttpMethod.get), delegate: self, tag: Connection.sportsList)
-    }
-    
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
     }
@@ -115,42 +108,42 @@ class LoginOrSignUpViewController: UIViewController {
         var error: NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
-                if connection.connectionTag == Connection.sportsList {
-                    if status == ResponseStatus.success {
-                        appDelegate.sportsArray.removeAllObjects()
-                        if let sportsList = jsonResult["sportsList"] as? NSArray {
-                            appDelegate.sportsArray.addObjectsFromArray(sportsList as [AnyObject])
-                        }
-                    }
-                } else {
-                    if status == ResponseStatus.success {
-                        if let newUser = jsonResult["new_user"] as? Bool {
-                            if newUser == true {
-                                let signupController = storyboard?.instantiateViewControllerWithIdentifier("SignupViewController") as! SignupViewController
-                                signupController.fbUserDictionary = fbUserDictionary
-                                navigationController?.pushViewController(signupController, animated: true)
-                            } else {
-                                if let token = jsonResult["token"] as? String {
-                                    NSUserDefaults.standardUserDefaults().setObject(token, forKey: "API_TOKEN")
-                                    performSegueWithIdentifier("modalSeguetoTab", sender: self)
-                                }
+//                if connection.connectionTag == Connection.sportsList {
+//                    if status == ResponseStatus.success {
+//                        appDelegate.sportsArray.removeAllObjects()
+//                        if let sportsList = jsonResult["sportsList"] as? NSArray {
+//                            appDelegate.sportsArray.addObjectsFromArray(sportsList as [AnyObject])
+//                        }
+//                    }
+//                } else {
+                if status == ResponseStatus.success {
+                    if let newUser = jsonResult["new_user"] as? Bool {
+                        if newUser == true {
+                            let signupController = storyboard?.instantiateViewControllerWithIdentifier("SignupViewController") as! SignupViewController
+                            signupController.fbUserDictionary = fbUserDictionary
+                            navigationController?.pushViewController(signupController, animated: true)
+                        } else {
+                            if let token = jsonResult["token"] as? String {
+                                NSUserDefaults.standardUserDefaults().setObject(token, forKey: "API_TOKEN")
+                                performSegueWithIdentifier("modalSeguetoTab", sender: self)
                             }
                         }
-                    } else if status == ResponseStatus.error {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.invalid)
-                        }
+                    }
+                } else if status == ResponseStatus.error {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
                     } else {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                        }
+                        showDismissiveAlertMesssage(ErrorMessage.invalid)
+                    }
+                } else {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
+                    } else {
+                        showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                     }
                 }
             }
+//            }
         }
 
         showLoadingView(false)
