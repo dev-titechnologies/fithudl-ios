@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -19,7 +19,6 @@
             <string>OpenSans-Light</string>
         </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
-            <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
@@ -626,24 +625,65 @@
                     <view key="view" contentMode="scaleToFill" id="6iO-aK-GZD">
                         <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KPY-C0-hTT">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="L6R-Rl-kYy">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L6R-Rl-kYy" id="QTo-pL-NDo">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="pIW-Xr-SVe" id="ub6-bt-ROA"/>
+                                    <outlet property="delegate" destination="pIW-Xr-SVe" id="zdV-DJ-wgt"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="KPY-C0-hTT" secondAttribute="trailing" id="AN9-Rx-zWT"/>
+                            <constraint firstItem="KPY-C0-hTT" firstAttribute="leading" secondItem="6iO-aK-GZD" secondAttribute="leading" id="HrG-pK-YYz"/>
+                            <constraint firstItem="sFg-gc-yjB" firstAttribute="top" secondItem="KPY-C0-hTT" secondAttribute="bottom" id="LKZ-MM-05u"/>
+                            <constraint firstItem="KPY-C0-hTT" firstAttribute="top" secondItem="Oko-Fx-mAa" secondAttribute="bottom" id="qPC-l3-j8i"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="g3W-D4-WkE">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="umg-X4-ZMN">
-                            <rect key="frame" x="96" y="6" width="128" height="33"/>
+                            <rect key="frame" x="8" y="0.0" width="304" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SEARCH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8H1-Gm-Rph">
-                                    <rect key="frame" x="0.0" y="0.0" width="128" height="33"/>
-                                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <searchBar contentMode="redraw" searchBarStyle="minimal" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oa-sl-lJO">
+                                    <rect key="frame" x="0.0" y="0.0" width="304" height="44"/>
+                                    <color key="backgroundColor" red="0.0078431372549019607" green="0.52941176470588236" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="gJ1-73-5hV"/>
+                                        <constraint firstAttribute="width" constant="304" id="jZ9-w8-67r"/>
+                                    </constraints>
+                                    <color key="tintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="barTintColor" red="0.0078431372549019607" green="0.51764705882352935" blue="0.4823529411764706" alpha="1" colorSpace="deviceRGB"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="pIW-Xr-SVe" id="YZh-MO-t9U"/>
+                                    </connections>
+                                </searchBar>
                             </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="0oa-sl-lJO" firstAttribute="top" secondItem="umg-X4-ZMN" secondAttribute="top" id="BOK-XW-bZn"/>
+                                <constraint firstAttribute="centerX" secondItem="0oa-sl-lJO" secondAttribute="centerX" id="WB3-JE-6ji"/>
+                            </constraints>
                         </view>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="0oa-sl-lJO" id="FqU-WO-le4"/>
+                        <outlet property="tableView" destination="KPY-C0-hTT" id="mp3-qb-CO4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xsd-w6-LbM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -823,7 +863,7 @@
         <!--Main Tabbar View Controller-->
         <scene sceneID="xoP-fy-ZCV">
             <objects>
-                <tabBarController id="F1K-lc-MaG" customClass="MainTabbarViewController" customModule="FitHUDL" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabbarViewController" id="F1K-lc-MaG" customClass="MainTabbarViewController" customModule="FitHUDL" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="rCf-ia-vlk"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="YJx-23-7nk">
@@ -2159,7 +2199,7 @@
                                             </label>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JhG-c2-BtZ">
                                                 <rect key="frame" x="0.0" y="50" width="320" height="180"/>
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="180" id="d5j-YL-zne"/>
                                                 </constraints>
@@ -2238,7 +2278,7 @@
                                             </collectionView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="37s-q7-LGE">
                                                 <rect key="frame" x="0.0" y="231" width="320" height="1"/>
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="QWp-si-Hk9"/>
                                                 </constraints>
@@ -2254,7 +2294,7 @@
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQe-2j-M6j">
                                                 <rect key="frame" x="10" y="276" width="300" height="112"/>
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <connections>

@@ -8,7 +8,8 @@
 
 import UIKit
 
-class UserReviewView: UIView {
+class UserReviewView: UIView
+{
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var reviewTextView: UITextView!
