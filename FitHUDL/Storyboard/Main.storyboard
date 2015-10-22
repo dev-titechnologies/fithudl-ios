@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -215,7 +215,13 @@
                     <navigationItem key="navigationItem" id="mdy-Yh-o3R"/>
                     <connections>
                         <outlet property="bgImageView" destination="1D3-3l-zLb" id="uX8-G0-2Ga"/>
+                        <outlet property="connectFBButton" destination="z63-Jp-Oek" id="NS0-oP-h75"/>
+                        <outlet property="contactusButton" destination="UbK-IE-FNZ" id="zyF-ao-ypb"/>
+                        <outlet property="copyrightLabel" destination="k5t-6O-Qos" id="TOk-hs-Sxc"/>
+                        <outlet property="signInButton" destination="af3-zT-N52" id="8jX-AJ-tmw"/>
+                        <outlet property="signUpButton" destination="heF-8t-SrJ" id="j2T-m2-zFb"/>
                         <outlet property="titleImageView" destination="juV-g1-TJP" id="6xC-t0-mg1"/>
+                        <outlet property="tosButton" destination="m2N-d8-c2d" id="5wK-0L-Rqf"/>
                         <segue destination="F1K-lc-MaG" kind="modal" identifier="modalSeguetoTab" id="yyH-6q-B63"/>
                     </connections>
                 </viewController>
@@ -3304,6 +3310,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="XyB-39-z9L"/>
+        <segue reference="yyH-6q-B63"/>
     </inferredMetricsTieBreakers>
 </document>

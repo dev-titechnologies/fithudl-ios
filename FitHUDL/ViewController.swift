@@ -18,6 +18,16 @@ extension UINavigationController {
 
 extension UIViewController {
     
+    func dismissOnSessionExpire() {
+        if let presentingController = self.presentingViewController as? UINavigationController {
+            Globals.clearSession()
+            presentingController.popToRootViewControllerAnimated(true)
+            UIAlertView(title: "", message: ErrorMessage.sessionOut, delegate: nil, cancelButtonTitle: "OK").show()
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+
+    }
+    
     func showDismissiveAlertMesssage(message: String) {
         let alertController = UIAlertController(title: alertTitle, message: message, preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Default) { (okAction) -> Void in
