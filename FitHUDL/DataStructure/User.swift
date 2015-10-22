@@ -16,7 +16,8 @@ class User: NSObject {
     var imageURL: String?
     var totalHours: String?
     var usageCount: Int?
-    var rating: Float?
+    var rating: String?
+    var isFavorite = false
     var availableTimeArray  = NSMutableArray()
     var userReviewsArray    = NSMutableArray()
     var sportsArray         = NSMutableArray()

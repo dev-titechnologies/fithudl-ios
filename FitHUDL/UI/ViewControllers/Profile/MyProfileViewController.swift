@@ -97,6 +97,9 @@ class MyProfileViewController: UIViewController {
             notificationButton.hidden  = true
             settingsButton.setImage(UIImage(named: "back_button"), forState: UIControlState.Normal)
         }
+        if appDelegate.sportsArray.count == 0 {
+            appDelegate.sendRequestToGetSportsList()
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -253,6 +256,7 @@ class MyProfileViewController: UIViewController {
     
     func populateProfileContents(user: User) {
         nameLabel.text = user.name
+        favoriteButton.selected = user.isFavorite
         if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
         } else {
@@ -287,10 +291,10 @@ class MyProfileViewController: UIViewController {
         }
         
         if let rate = user.rating {
-            rateLabel.text = "\(rate)"
-            starView.rating = rate
+            rateLabel.text  = rate
+            starView.rating = (rate as NSString).floatValue
         } else {
-            rateLabel.text = "0"
+            rateLabel.text  = "0"
             starView.rating = 0.0
         }
         
@@ -387,7 +391,7 @@ class MyProfileViewController: UIViewController {
             if let usageCount = responseDictionary["usage_count"] as? Int {
                 profileUser.usageCount = usageCount
             }
-            if let rate = responseDictionary["rating"] as? Float {
+            if let rate = responseDictionary["rating"] as? String {
                 profileUser.rating = rate
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
@@ -425,6 +429,7 @@ class MyProfileViewController: UIViewController {
                     profileUser.sportsArray.addObject(sport)
                 }
             }
+            profileUser.isFavorite = responseDictionary["favourite"] as! Bool
         } else {
             appDelegate.user.profileID  = responseDictionary["profile_id"] as! Int
             appDelegate.user.name       = responseDictionary["profile_name"] as! String
@@ -445,7 +450,7 @@ class MyProfileViewController: UIViewController {
             if let usageCount = responseDictionary["usage_count"] as? Int {
                 appDelegate.user.usageCount = usageCount
             }
-            if let rate = responseDictionary["rating"] as? Float {
+            if let rate = responseDictionary["rating"] as? String {
                 appDelegate.user.rating = rate
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
@@ -706,8 +711,9 @@ extension MyProfileViewController: UICollectionViewDataSource {
         } else if collectionView.isEqual(badgesCollectionView) {
             return profileID == nil ? appDelegate.user.badgesArray.count : profileUser.badgesArray.count
         }
-        return profileID == nil ? appDelegate.user.availableTimeArray.count : profileUser.availableTimeArray.count
-        
+        let source = profileID == nil ? appDelegate.user.availableTimeArray : profileUser.availableTimeArray
+        let filteredArray = source.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+        return filteredArray.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -735,8 +741,9 @@ extension MyProfileViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
             let source = profileID == nil ? appDelegate.user.availableTimeArray : profileUser.availableTimeArray
-            let time = source[indexPath.row] as! NSDictionary
-            //            cell.timeLabel.text = Globals.convertTimeTo12Hours((time["time_starts"] as? String)!) 
+            let filteredArray = source.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+            let time = filteredArray[indexPath.row] as! NSDictionary
+            cell.timeLabel.text = Globals.convertTimeTo12Hours((time["time_starts"] as? String)!)
             return cell
         }
     }
@@ -744,14 +751,15 @@ extension MyProfileViewController: UICollectionViewDataSource {
 
 extension MyProfileViewController: UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if collectionView.isEqual(availableTimeCollectionView) {
-            let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
-            custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-            custompopController.viewTag = ViewTag.timeView
-            let source = profileID == nil ? appDelegate.user.availableTimeArray : profileUser.availableTimeArray
-            custompopController.timeDictionary = source[indexPath.row] as? NSDictionary
-            presentViewController(custompopController, animated: true, completion: nil)
-        }
+        //To activate/deactivate time
+//        if collectionView.isEqual(availableTimeCollectionView) {
+//            let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
+//            custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+//            custompopController.viewTag = ViewTag.timeView
+//            let source = profileID == nil ? appDelegate.user.availableTimeArray : profileUser.availableTimeArray
+//            custompopController.timeDictionary = source[indexPath.row] as? NSDictionary
+//            presentViewController(custompopController, animated: true, completion: nil)
+//        }
 
     }
 }
