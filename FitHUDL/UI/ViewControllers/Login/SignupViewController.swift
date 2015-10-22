@@ -284,11 +284,11 @@ extension SignupViewController: iCarouselDataSource {
         var contentView: UIView
         var titleLabel: UILabel
         var sportsImageView: UIImageView
+        var indicatorView: UIActivityIndicatorView
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 70.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
             sportsImageView.contentMode         = .ScaleAspectFit
-            sportsImageView.backgroundColor     = AppColor.statusBarColor
             sportsImageView.tag                 = 1
             sportsImageView.layer.cornerRadius  = 25.0
             contentView.addSubview(sportsImageView)
@@ -299,12 +299,25 @@ extension SignupViewController: iCarouselDataSource {
             titleLabel.textAlignment = NSTextAlignment.Center
             titleLabel.tag       = 2
             contentView.addSubview(titleLabel)
+            indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            indicatorView.center = sportsImageView.center
+            indicatorView.hidesWhenStopped = true
+            indicatorView.tag = 3
+            indicatorView.startAnimating()
+            contentView.addSubview(indicatorView)
         } else {
             contentView     = view!
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
+            indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
         }
+        
         let sports          = appDelegate.sportsArray[index] as! NSDictionary
+        if let logo = sports["logo"] as? String {
+            CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
+        } else {
+            CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
+        }
         if index == carousel.currentItemIndex {
             titleLabel.text = sports["title"]!.uppercaseString as String
             if sports["level"] as? String == SportsLevel.beginner {
