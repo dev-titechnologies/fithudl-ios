@@ -58,6 +58,7 @@ struct Connection {
     static let ratecategory   = 19
     static let submitfeedback = 20
     static let logout         = 21
+    static let searchUserName = 21
 }
 
 struct SportsLevel {

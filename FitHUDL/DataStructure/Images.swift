@@ -25,6 +25,7 @@ class Images: NSManagedObject {
     
     
     class func save(imageURL: String, imageData: NSData) {
+        
         var newImage: Images    = NSEntityDescription.insertNewObjectForEntityForName("Images", inManagedObjectContext: appDelegate.managedObjectContext!) as! Images
         newImage.imageURL       = imageURL
         newImage.imageData      = imageData

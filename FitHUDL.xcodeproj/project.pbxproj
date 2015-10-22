@@ -17,6 +17,7 @@
 		F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */; };
 		F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */; };
 		F340903F1BCBAEC600FF977A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F340903E1BCBAEC600FF977A /* User.swift */; };
+		F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34262761BD8E86400A1EF69 /* UsersList.swift */; };
 		F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */; };
 		F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */; };
 		F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */; };
@@ -77,6 +78,7 @@
 		F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		F340903E1BCBAEC600FF977A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F34262761BD8E86400A1EF69 /* UsersList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersList.swift; sourceTree = "<group>"; };
 		F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpViewController.swift; sourceTree = "<group>"; };
 		F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			children = (
 				F340903E1BCBAEC600FF977A /* User.swift */,
 				F36691621BCD072A00B74CFE /* Images.swift */,
+				F34262761BD8E86400A1EF69 /* UsersList.swift */,
 			);
 			path = DataStructure;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
 				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
 				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
+				F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */,
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
 				F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
