@@ -97,9 +97,6 @@ class MyProfileViewController: UIViewController {
             notificationButton.hidden  = true
             settingsButton.setImage(UIImage(named: "back_button"), forState: UIControlState.Normal)
         }
-        if appDelegate.sportsArray.count == 0 {
-            appDelegate.sendRequestToGetSportsList()
-        }
         // Do any additional setup after loading the view.
     }
     
@@ -516,8 +513,7 @@ class MyProfileViewController: UIViewController {
                         }
                     } else {
                         showLoadingView(false)
-                        Globals.clearSession()
-                        dismissViewControllerAnimated(true, completion: nil)
+                        dismissOnSessionExpire()
                         return
                     }
                     if let id = profileID {
@@ -534,12 +530,12 @@ class MyProfileViewController: UIViewController {
                         }
                     } else {
                         Globals.clearSession()
+                        (self.presentingViewController as! UINavigationController).popToRootViewControllerAnimated(true)
                         dismissViewControllerAnimated(true, completion: nil)
                     }
                 } else if connection.connectionTag == Connection.updateSports {
                     if status == ResponseStatus.sessionOut {
-                        Globals.clearSession()
-                        dismissViewControllerAnimated(true, completion: nil)
+                        dismissOnSessionExpire()
                     }
                 } else if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
@@ -552,9 +548,7 @@ class MyProfileViewController: UIViewController {
                         }
                         favoriteButton.selected = !favoriteButton.selected
                     } else {
-                        Globals.clearSession()
-                        dismissViewControllerAnimated(true, completion: nil)
-                        
+                        dismissOnSessionExpire()
                     }
                 }
             }

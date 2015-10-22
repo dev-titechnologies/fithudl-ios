@@ -41,16 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
-        
-        if let token = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
-            if token != "" {
-                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                let mainTabController = storyBoard.instantiateViewControllerWithIdentifier("MainTabbarViewController") as! MainTabbarViewController
-                sendRequestToGetSportsList()
-                self.window?.rootViewController = mainTabController
-            }
-        }
-        
+        sendRequestToGetAllUserNames()
         return true
     }
 
@@ -78,27 +69,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.saveContext()
     }
     
-    func sendRequestToGetSportsList() {
+    
+    // MARK: - Get Search Name
+    
+    func sendRequestToGetAllUserNames() {
         if !Globals.isInternetConnected() {
             return
         }
         
-        let request = NSMutableURLRequest(URL: NSURL(string: SERVER_URL.stringByAppendingString("sports/list"))!)
+        let request = NSMutableURLRequest(URL: NSURL(string: SERVER_URL.stringByAppendingString("search/userList"))!)
         request.HTTPMethod = HttpMethod.get
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             if error == nil {
                 if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
+                    println("searchUsers",jsonResult)
                     if let status = jsonResult["status"] as? Int {
                         if status == ResponseStatus.success {
-                            appDelegate.sportsArray.removeAllObjects()
-                            if let sportsList = jsonResult["sportsList"] as? NSArray {
-                                appDelegate.sportsArray.addObjectsFromArray(sportsList as [AnyObject])
-                            }
+                            //                            appDelegate.sportsArray.removeAllObjects()
+                            //                            if let sportsList = jsonResult["sportsList"] as? NSArray {
+                            //                                appDelegate.sportsArray.addObjectsFromArray(sportsList as [AnyObject])
+                            //                            }
                         }
                     }
                 }
             } else {
-            
+                
             }
         }
     }

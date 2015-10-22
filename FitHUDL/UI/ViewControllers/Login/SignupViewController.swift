@@ -34,6 +34,7 @@ class SignupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.navigationBarHidden = false
         sportsCarousel.type             = .Custom
         
         if appDelegate.sportsArray.count == 0 {

@@ -76,7 +76,7 @@ class EditProfileViewController: UIViewController {
         var datesArray  = NSSet(array: appDelegate.user.availableTimeArray.valueForKey("date") as! [String])
         for date in datesArray {
             let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
-            availSessionTime.setObject(filteredArray, forKey: date as! String)
+            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
         }
         if let url = appDelegate.user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: photoImageView, activityIndicatorView: indicatorView)
@@ -520,7 +520,8 @@ class EditProfileViewController: UIViewController {
                         showDismissiveAlertMesssage(Message.Error)
                     }
                 } else {
-                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                    dismissViewControllerAnimated(false, completion: nil)
+                    self.presentingViewController?.dismissOnSessionExpire()
                 }
             }
         }
