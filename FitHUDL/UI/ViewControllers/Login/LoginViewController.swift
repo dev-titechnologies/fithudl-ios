@@ -23,7 +23,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBarHidden = false
+        navigationController?.navigationBarHidden   = false
+        
+        emailTextField.superview!.layer.borderColor = AppColor.boxBorderColor.CGColor
         
         let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText]
         var placeHolderString   = NSAttributedString(string: emailTextField.placeholder!, attributes: colorAttributes)
