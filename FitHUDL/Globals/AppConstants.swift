@@ -27,6 +27,7 @@ struct AppColor {
     static let placeholderText = UIColor(red: 216/255, green: 1, blue: 251/255, alpha: 1.0)
     static let yellowTextColor = UIColor(red: 1, green: 204/255, blue: 59/255, alpha: 1.0)
     static let textDisableColor = UIColor(red: 0, green: 170/255, blue: 155/255, alpha: 1.0)
+    static let boxBorderColor   = UIColor(red: 242/255, green: 141/255, blue: 44/255, alpha: 1.0)
 }
 
 struct Message {
