@@ -14,6 +14,7 @@ class UserReviewView: UIView
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var reviewTextView: UITextView!
     @IBOutlet weak var starView: StarRateView!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     var view: UIView!
     

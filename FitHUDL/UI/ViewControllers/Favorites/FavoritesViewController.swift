@@ -163,10 +163,38 @@ extension FavoritesViewController : UITableViewDelegate {
         cell.prof_pic.clipsToBounds         = true
         
         if let url = self.favouriteList_array[indexPath.row].objectForKey("profile_pic") as? String {
-            CustomURLConnection.downloadAndSetImage(url, imageView: cell.prof_pic, activityIndicatorView: cell.indicatorView)
-        } else {
-            CustomURLConnection.downloadAndSetImage("", imageView: cell.prof_pic, activityIndicatorView: cell.indicatorView)
+            let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
+            if imageurl.length != 0 {
+                if var imagesArray = Images.fetch(url as String) {
+                    let image      = imagesArray[0] as! Images
+                    let coverImage = UIImage(data: image.imageData)!
+                    cell.prof_pic.image = UIImage(data: image.imageData)!
+                    cell.indicatorView.stopAnimating()
+                } else {
+                    if let imageURL = NSURL(string: imageurl as String){
+                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                            if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? FavouritesListCell {
+                                if error == nil {
+                                    let imageFromData:UIImage? = UIImage(data: data)
+                                    if let image  = imageFromData {
+                                        updatedCell.prof_pic.image = image
+                                        Images.save(imageurl as String, imageData: data)
+                                    }
+                                }
+                                updatedCell.indicatorView.stopAnimating()
+                            }
+                            cell.indicatorView.stopAnimating()
+                        }
+                    } else {
+                        cell.indicatorView.stopAnimating()
+                    }
+                }
+            } else {
+                cell.indicatorView.stopAnimating()
+            }
         }
+       
 
         cell.nameLabel?.text = self.favouriteList_array[indexPath.row].objectForKey("name") as? String
         

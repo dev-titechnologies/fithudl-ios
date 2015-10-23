@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -15,6 +15,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserReviewView" customModule="FitHUDL" customModuleProvider="target">
             <connections>
+                <outlet property="indicatorView" destination="ZwT-mV-JSC" id="dSl-4Z-Y7c"/>
                 <outlet property="nameLabel" destination="XFL-nY-Jqb" id="R9l-DX-xrz"/>
                 <outlet property="reviewTextView" destination="gTV-5h-fOE" id="oKN-zx-5sX"/>
                 <outlet property="starView" destination="SlJ-5C-Xyo" id="jpH-Cd-tK1"/>
@@ -108,11 +109,16 @@
                                 <constraint firstItem="7xi-4Y-kMp" firstAttribute="top" secondItem="0Sg-se-oMX" secondAttribute="top" id="sW8-5B-yVG"/>
                             </constraints>
                         </view>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ZwT-mV-JSC">
+                            <rect key="frame" x="25" y="20" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="XFL-nY-Jqb" secondAttribute="trailing" constant="55" id="2VV-au-5HH"/>
                         <constraint firstItem="XFL-nY-Jqb" firstAttribute="leading" secondItem="CwL-3L-CJu" secondAttribute="trailing" constant="5" id="307-st-zis"/>
+                        <constraint firstItem="ZwT-mV-JSC" firstAttribute="centerY" secondItem="CwL-3L-CJu" secondAttribute="centerY" id="5ZC-mX-RlS"/>
+                        <constraint firstItem="ZwT-mV-JSC" firstAttribute="centerX" secondItem="CwL-3L-CJu" secondAttribute="centerX" id="DIb-OK-BmR"/>
                         <constraint firstItem="CwL-3L-CJu" firstAttribute="top" secondItem="CCe-Yl-weH" secondAttribute="top" constant="5" id="FU4-gE-nsX"/>
                         <constraint firstItem="FX2-QG-2h8" firstAttribute="top" secondItem="XFL-nY-Jqb" secondAttribute="bottom" constant="1" id="P8Y-AP-vd5"/>
                         <constraint firstAttribute="trailing" secondItem="FX2-QG-2h8" secondAttribute="trailing" id="PIz-SQ-lUG"/>
