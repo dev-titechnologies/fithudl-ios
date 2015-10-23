@@ -13,11 +13,11 @@ class SearchViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    var usersListArray = Array<NSDictionary>()
+    var usersListArray = NSMutableArray()
 
     var searchActive : Bool = false
-    var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
-    var filtered:[String] = []
+   // var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
+    var filtered = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,8 +46,9 @@ class SearchViewController: UIViewController {
                 let userDictionary = NSMutableDictionary()
                 userDictionary.setObject(User.userName, forKey: "userName")
                 userDictionary.setObject(User.userID, forKey: "userID")
-                self.usersListArray.append(userDictionary)
+                usersListArray.addObject(userDictionary)
             }
+            tableView.reloadData()
          
         }
         
@@ -65,15 +66,15 @@ extension SearchViewController: UITableViewDataSource {
         if(searchActive) {
             return filtered.count
         }
-        return data.count;
+        return usersListArray.count;
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell=tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         if(searchActive){
-            cell.textLabel?.text = filtered[indexPath.row]
+            cell.textLabel?.text = filtered[indexPath.row].objectForKey("userName") as? String
         } else {
-            cell.textLabel?.text = data[indexPath.row];
+            cell.textLabel?.text = usersListArray[indexPath.row].objectForKey("userName") as? String
         }
         return cell
     }
@@ -99,11 +100,20 @@ extension SearchViewController:UISearchBarDelegate {
     }
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
-        filtered = data.filter({ (text) -> Bool in
-            let tmp: NSString = text
-            let range = tmp.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
-            return range.location != NSNotFound
-        })
+        for name in usersListArray {
+            let text  = name["userName"] as! NSString
+            let range = text.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+            if range.location != NSNotFound {
+                filtered.addObject(name)
+            }
+            
+        }
+        
+//        filtered = usersListArray. .filter({ (text) -> Bool in
+//            let tmp: NSString = text
+//            let range = tmp.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+//            return range.location != NSNotFound
+//        })
         if(filtered.count == 0){
             searchActive = false;
         } else {
