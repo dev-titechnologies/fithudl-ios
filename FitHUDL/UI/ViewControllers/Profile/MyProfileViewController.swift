@@ -55,6 +55,7 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var calloutView: UIView!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var notificationButton: UIButton!
+    @IBOutlet weak var expertLevelLabel: UILabel!
     
     var profileID: String?
     let calloutViewYAxis:CGFloat = 52.0
@@ -91,9 +92,8 @@ class MyProfileViewController: UIViewController {
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
             editButton.hidden          = true
-            beginnerButton.userInteractionEnabled = false
-            moderateButton.userInteractionEnabled = false
-            expertButton.userInteractionEnabled   = false
+            beginnerButton.superview?.hidden    = true
+            expertLevelLabel.superview?.hidden  = false
             notificationButton.hidden  = true
             settingsButton.setImage(UIImage(named: "back_button"), forState: UIControlState.Normal)
         }
@@ -658,13 +658,28 @@ extension MyProfileViewController: iCarouselDataSource {
         }
         if index == carousel.currentItemIndex {
             titleLabel.text = sports["sport_name"]!.uppercaseString as String
-            if sports["expert_level"] as? String == SportsLevel.beginner {
-                beginnerButton.selected = true
-            } else if sports["expert_level"] as? String == SportsLevel.moderate {
-                moderateButton.selected = true
-            } else if sports["expert_level"] as? String == SportsLevel.expert {
-                expertButton.selected = true
+            if profileID == nil {
+                if sports["expert_level"] as? String == SportsLevel.beginner {
+                    beginnerButton.selected = true
+                } else if sports["expert_level"] as? String == SportsLevel.moderate {
+                    moderateButton.selected = true
+                } else if sports["expert_level"] as? String == SportsLevel.expert {
+                    expertButton.selected = true
+                }
+            } else {
+                expertLevelLabel.superview?.superview?.hidden = false
+                if let level = sports["expert_level"] as? String {
+                    if level ==  "" {
+                        expertLevelLabel.superview?.superview?.hidden = true
+                    } else {
+                        expertLevelLabel.text = level
+                    }
+                } else {
+                    expertLevelLabel.superview?.superview?.hidden = true
+                }
+                
             }
+
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }

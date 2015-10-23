@@ -85,6 +85,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -2969,6 +2970,31 @@
                                                                     <constraint firstAttribute="width" constant="5" id="Ft4-AY-D3w"/>
                                                                 </constraints>
                                                             </imageView>
+                                                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="95C-bM-KXM">
+                                                                <rect key="frame" x="63" y="3" width="75" height="20"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNo-TW-9Di">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="20"/>
+                                                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                                <color key="backgroundColor" red="0.94901960780000005" green="0.55294117649999996" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="qNo-TW-9Di" firstAttribute="top" secondItem="95C-bM-KXM" secondAttribute="top" id="JZN-fw-5lt"/>
+                                                                    <constraint firstAttribute="height" constant="20" id="QcZ-6S-xwX"/>
+                                                                    <constraint firstAttribute="width" constant="75" id="RxL-2L-MsT"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="qNo-TW-9Di" secondAttribute="bottom" id="a4U-Zq-eBd"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="qNo-TW-9Di" secondAttribute="trailing" id="fP9-Bl-MeL"/>
+                                                                    <constraint firstItem="qNo-TW-9Di" firstAttribute="leading" secondItem="95C-bM-KXM" secondAttribute="leading" id="zEw-g1-J99"/>
+                                                                </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                        <integer key="value" value="10"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                            </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B7t-Mf-CLF">
                                                                 <rect key="frame" x="0.0" y="3" width="200" height="20"/>
                                                                 <subviews>
@@ -3067,7 +3093,9 @@
                                                             <constraint firstItem="B7t-Mf-CLF" firstAttribute="leading" secondItem="hKj-8y-Inm" secondAttribute="leading" id="V1h-Pi-FeY"/>
                                                             <constraint firstAttribute="trailing" secondItem="B7t-Mf-CLF" secondAttribute="trailing" id="WYN-Sv-GDh"/>
                                                             <constraint firstItem="CBy-oF-fKK" firstAttribute="top" secondItem="hKj-8y-Inm" secondAttribute="top" id="lmH-9k-zaO"/>
+                                                            <constraint firstItem="95C-bM-KXM" firstAttribute="top" secondItem="CBy-oF-fKK" secondAttribute="bottom" id="mhQ-85-L5w"/>
                                                             <constraint firstAttribute="centerX" secondItem="CBy-oF-fKK" secondAttribute="centerX" constant="-0.5" id="qpd-u6-6Xt"/>
+                                                            <constraint firstItem="CBy-oF-fKK" firstAttribute="centerX" secondItem="95C-bM-KXM" secondAttribute="centerX" id="qyN-Jt-pbJ"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p5Z-Lt-3Rw" customClass="iCarousel">
@@ -3226,6 +3254,7 @@
                         <outlet property="contentView" destination="pko-1b-27P" id="zHT-Nc-HLc"/>
                         <outlet property="editButton" destination="nHX-jl-4EB" id="UJU-CH-5bO"/>
                         <outlet property="expertButton" destination="FLW-AI-VoX" id="haI-pb-vgf"/>
+                        <outlet property="expertLevelLabel" destination="qNo-TW-9Di" id="fgH-tv-IRw"/>
                         <outlet property="favoriteButton" destination="MwM-ng-ljs" id="S9K-jo-OLp"/>
                         <outlet property="hoursLabel" destination="Mvr-VC-HSn" id="dlW-LU-LRK"/>
                         <outlet property="indicatorView" destination="Oi8-zb-631" id="VoB-OR-9h7"/>
