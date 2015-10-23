@@ -279,6 +279,19 @@ class MyProfileViewController: UIViewController {
         sportsCarousel.reloadData()
         
         if let hours = user.totalHours {
+            let components = hours.componentsSeparatedByString(":")
+            let hour = components[0].toInt()!
+            if hour < 2 {
+                hoursLabel.textColor = AppColor.boxBorderColor
+            } else if (hour>=2 && hour<5) {
+                hoursLabel.textColor = AppColor.yellowTextColor
+            } else if (hour>=5 && hour<10) {
+                hoursLabel.textColor = AppColor.statusBarColor
+            } else {
+                hoursLabel.font = UIFont(name: "OpenSans-Bold", size: 16.0)
+                hoursLabel.textColor = AppColor.badgeSilverColor
+            }
+            completedTitleLabel.textColor = hoursLabel.textColor
             hoursLabel.text = "\(hours) hours"
         } else {
             hoursLabel.text = "0 hours"
@@ -751,17 +764,26 @@ extension MyProfileViewController: UICollectionViewDataSource {
             } else {
                 cell.reviewView.starView.rating = 0.0
             }
-            
             cell.reviewView.reviewTextView.scrollRangeToVisible(NSMakeRange(0, 0))
             cell.reviewView.reviewTextView.text = review["user_review"] as! String
             cell.reviewView.nameLabel.text      = review["profile_name"] as? String
             cell.reviewView.userImageView.backgroundColor = AppColor.statusBarColor
+            if let userImage = review["image_url"] as? String {
+                CustomURLConnection.downloadAndSetImage(userImage, imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
+            } else {
+                CustomURLConnection.downloadAndSetImage("", imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
+            }
             return cell
         } else if collectionView.isEqual(badgesCollectionView){
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
             let source = profileID == nil ? appDelegate.user.badgesArray : profileUser.badgesArray
             let badge = source[indexPath.row] as! NSDictionary
             cell.titleLabel.text = badge["name"] as? String
+            if let badgeImage = badge["image_url"] as? String {
+                CustomURLConnection.downloadAndSetImage(badgeImage, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
+            } else {
+                CustomURLConnection.downloadAndSetImage("", imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
+            }
             return cell
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell

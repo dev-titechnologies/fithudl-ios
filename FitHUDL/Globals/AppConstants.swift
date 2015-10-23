@@ -28,6 +28,7 @@ struct AppColor {
     static let yellowTextColor = UIColor(red: 1, green: 204/255, blue: 59/255, alpha: 1.0)
     static let textDisableColor = UIColor(red: 0, green: 170/255, blue: 155/255, alpha: 1.0)
     static let boxBorderColor   = UIColor(red: 242/255, green: 141/255, blue: 44/255, alpha: 1.0)
+    static let badgeSilverColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1.0)
 }
 
 struct Message {

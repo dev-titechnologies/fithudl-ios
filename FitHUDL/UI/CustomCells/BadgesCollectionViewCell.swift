@@ -11,8 +11,8 @@ import UIKit
 class BadgesCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var sportImageView: UIImageView!
     @IBOutlet weak var badgeImageView: UIImageView!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

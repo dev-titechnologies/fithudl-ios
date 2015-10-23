@@ -58,7 +58,6 @@ class CustomURLConnection: NSURLConnection {
                 let coverImage = UIImage(data: image.imageData)!
                 imageView.image   =   UIImage(data: image.imageData)!
                 activityIndicatorView.stopAnimating()
-                activityIndicatorView.hidden=true
             } else {
                 if let imageURL = NSURL(string: imageurl as String){
                     let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
@@ -71,16 +70,13 @@ class CustomURLConnection: NSURLConnection {
                             }
                         }
                         activityIndicatorView.stopAnimating()
-                        activityIndicatorView.hidden=true
                     }
                 } else {
                     activityIndicatorView.stopAnimating()
-                    activityIndicatorView.hidden=true
                 }
             }
         } else {
             activityIndicatorView.stopAnimating()
-            activityIndicatorView.hidden=true
         }
     }
 }
