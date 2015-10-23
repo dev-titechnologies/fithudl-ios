@@ -8,12 +8,13 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController{
     
-    
+    var searchResultArray = Array<NSDictionary>()
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var usersListArray = NSMutableArray()
+    var searchString:String = ""
 
     var searchActive : Bool = false
    // var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
@@ -28,6 +29,7 @@ class SearchViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         self.fetchUserListFromDb()
+        self.sendRequestToGetSearchUsers()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,6 +55,7 @@ class SearchViewController: UIViewController {
         }
         
     }
+    
     
 }
 
@@ -93,13 +96,18 @@ extension SearchViewController:UISearchBarDelegate {
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchActive=false
         searchBar.resignFirstResponder()
+        searchBar.showsCancelButton=false
 
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchActive=false
+        println("SEARCH button clicked")
+        
     }
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
+        searchString=searchText
+        filtered = NSMutableArray()
         for name in usersListArray {
             let text  = name["userName"] as! NSString
             let range = text.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
@@ -109,11 +117,6 @@ extension SearchViewController:UISearchBarDelegate {
             
         }
         
-//        filtered = usersListArray. .filter({ (text) -> Bool in
-//            let tmp: NSString = text
-//            let range = tmp.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
-//            return range.location != NSNotFound
-//        })
         if(filtered.count == 0){
             searchActive = false;
         } else {
@@ -121,5 +124,90 @@ extension SearchViewController:UISearchBarDelegate {
         }
         self.tableView.reloadData()
     }
+    
+    //MARK: Serach API CALL
+    
+    func sendRequestToGetSearchUsers() {
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(searchString, forKey: "search_name")
+        
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "search/search", requestType: HttpMethod.post),delegate: self,tag: Connection.searchUserName)
+
+    }
+    
+    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
+        return connection.receiveData.length=0
+    }
+    
+    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
+        connection.receiveData.appendData(data)
+    }
+    func connectionDidFinishLoading(connection: CustomURLConnection) {
+        var rating_categoryTemp_array = Array<NSDictionary>()
+        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+        println("REEEEEE \(response)")
+        var error : NSError?
+        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+            
+            println("search results \(jsonResult)")
+            if let status = jsonResult["status"] as? Int {
+                if connection.connectionTag == Connection.ratecategory {
+                    if status == ResponseStatus.success {
+                        
+                    }
+                    else
+                        if status == ResponseStatus.error {
+                            if let message = jsonResult["message"] as? String {
+                                showDismissiveAlertMesssage(message)
+                            } else {
+                                showDismissiveAlertMesssage(ErrorMessage.invalid)
+                            }
+                        } else {
+                            if let message = jsonResult["message"] as? String {
+                                showDismissiveAlertMesssage(message)
+                            } else {
+                                showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                            }
+                    }
+                }
+                else {
+                    
+                    if status == ResponseStatus.success {
+                    }
+                    else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        }
+                    } else {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        showLoadingView(false)
+        
+    }
+    
+    
+    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
+        showDismissiveAlertMesssage(error.localizedDescription)
+        showLoadingView(false)
+    }
+    
+
+    
 
 }
