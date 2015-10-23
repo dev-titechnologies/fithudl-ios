@@ -4,9 +4,12 @@
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="UsersList" syncable="YES"/>
+    <entity name="UsersList" representedClassName="FitHUDL.UsersList" syncable="YES">
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Images" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="UsersList" positionX="-63" positionY="0" width="128" height="45"/>
+        <element name="UsersList" positionX="-63" positionY="0" width="128" height="75"/>
     </elements>
 </model>

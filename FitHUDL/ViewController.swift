@@ -55,6 +55,8 @@ extension UIViewController {
             
             let loadingLabel            = UILabel(frame: CGRect(x: 10.0, y: indicatorView.frame.origin.y+indicatorView.frame.size.height+5.0, width: 80.0, height: 30.0))
             loadingLabel.text           = "Loading"
+            loadingLabel.textColor      = UIColor.whiteColor()
+            loadingLabel.font           = UIFont(name: "OpenSans", size: 16.0)
             loadingLabel.textAlignment  = NSTextAlignment.Center
             loadingView.addSubview(loadingLabel)
             overlayView.addSubview(loadingView)

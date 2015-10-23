@@ -85,10 +85,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     println("searchUsers",jsonResult)
                     if let status = jsonResult["status"] as? Int {
                         if status == ResponseStatus.success {
-                            //                            appDelegate.sportsArray.removeAllObjects()
-                            //                            if let sportsList = jsonResult["sportsList"] as? NSArray {
-                            //                                appDelegate.sportsArray.addObjectsFromArray(sportsList as [AnyObject])
-                            //                            }
+                            
+                            UsersList.deleteUserList()
+                            
+                            if let usersList = jsonResult["data"] as? NSArray {
+                                
+                                var i:Int=0
+                                for i=0;i<usersList.count;i++ {
+                                    
+                                    let userName = usersList[i].objectForKey("name") as! String
+                                    let userId   = usersList[i].objectForKey("id") as! Int
+                                    UsersList.saveUserList(userName, usersID: "\(userId)")
+                                    
+                                    }
+                                UsersList.fetchUsersList()
+                                
+                            }
                         }
                     }
                 }

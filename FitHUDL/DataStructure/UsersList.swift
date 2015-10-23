@@ -14,7 +14,7 @@ class UsersList: NSManagedObject {
     @NSManaged var userName:String
     @NSManaged var userID:String
    
-    class func saveUserList(usersName : String, usersID : String) {
+    class func saveUserList(usersName: String, usersID: String) {
         
         
         var userlist:UsersList = NSEntityDescription.insertNewObjectForEntityForName("UsersList", inManagedObjectContext: appDelegate.managedObjectContext!) as! UsersList

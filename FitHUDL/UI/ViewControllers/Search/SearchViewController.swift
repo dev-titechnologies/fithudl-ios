@@ -13,6 +13,7 @@ class SearchViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    var usersListArray = Array<NSDictionary>()
 
     var searchActive : Bool = false
     var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
@@ -24,13 +25,33 @@ class SearchViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        self.fetchUserListFromDb()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    func fetchUserListFromDb() {
+        
+        if var usersArray = UsersList.fetchUsersList() {
+            
+            var i:Int=0
+            for i=0;i<usersArray.count;i++ {
+                
+                let User      = usersArray[i] as! UsersList
+                let userDictionary = NSMutableDictionary()
+                userDictionary.setObject(User.userName, forKey: "userName")
+                userDictionary.setObject(User.userID, forKey: "userID")
+                self.usersListArray.append(userDictionary)
+            }
+         
+        }
+        
+    }
     
 }
 
@@ -91,5 +112,4 @@ extension SearchViewController:UISearchBarDelegate {
         self.tableView.reloadData()
     }
 
-    
 }
