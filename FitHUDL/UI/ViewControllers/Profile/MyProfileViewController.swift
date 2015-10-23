@@ -97,6 +97,9 @@ class MyProfileViewController: UIViewController {
             notificationButton.hidden  = true
             settingsButton.setImage(UIImage(named: "back_button"), forState: UIControlState.Normal)
         }
+        beginnerButton.selected = false
+        moderateButton.selected = false
+        expertButton.selected   = false
         // Do any additional setup after loading the view.
     }
     
@@ -611,18 +614,18 @@ class MyProfileViewController: UIViewController {
 
 extension MyProfileViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
-        return appDelegate.user.sportsArray.count
+       return profileID == nil ? appDelegate.user.sportsArray.count : profileUser.sportsArray.count
     }
     
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
         var contentView: UIView
         var titleLabel: UILabel
         var sportsImageView: UIImageView
+        var indicatorView: UIActivityIndicatorView
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 78.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
             sportsImageView.contentMode         = .ScaleAspectFit
-            sportsImageView.backgroundColor     = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0)
             sportsImageView.tag                 = 1
             sportsImageView.layer.cornerRadius  = sportsImageView.frame.size.height/2.0
             contentView.addSubview(sportsImageView)
@@ -634,12 +637,25 @@ extension MyProfileViewController: iCarouselDataSource {
             titleLabel.textAlignment = NSTextAlignment.Center
             titleLabel.tag       = 2
             contentView.addSubview(titleLabel)
+            indicatorView           = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            indicatorView.center    = sportsImageView.center
+            indicatorView.hidesWhenStopped  = true
+            indicatorView.tag       = 3
+            indicatorView.startAnimating()
+            contentView.addSubview(indicatorView)
         } else {
             contentView     = view!
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
+            indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
         }
-        let sports          = appDelegate.user.sportsArray[index] as! NSDictionary
+        let source          = profileID == nil ? appDelegate.user.sportsArray : profileUser.sportsArray
+        let sports          = source[index] as! NSDictionary
+        if let logo = sports["logo"] as? String {
+            CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
+        } else {
+            CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
+        }
         if index == carousel.currentItemIndex {
             titleLabel.text = sports["sport_name"]!.uppercaseString as String
             if sports["expert_level"] as? String == SportsLevel.beginner {
