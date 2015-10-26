@@ -7,31 +7,38 @@
 //
 
 import UIKit
-
-class SearchViewController: UIViewController{
+import MapKit
+import CoreLocation
+class SearchViewController: UIViewController,MKMapViewDelegate{
     
+    @IBOutlet weak var mapView: MKMapView!
     var searchResultArray = Array<NSDictionary>()
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var usersListArray = NSMutableArray()
     var searchString:String = ""
-
     var searchActive : Bool = false
-   // var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
     var filtered = NSMutableArray()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationController?.setStatusBarColor()
-
-        // Do any additional setup after loading the view.
+        
+        
+        
+        
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         self.fetchUserListFromDb()
-        self.sendRequestToGetSearchUsers()
+        
+        
+        mapView.delegate = self
+        
+        // self.sendRequestToGetSearchUsers()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -51,11 +58,20 @@ class SearchViewController: UIViewController{
                 usersListArray.addObject(userDictionary)
             }
             tableView.reloadData()
-         
+            
         }
         
     }
     
+    
+    //MARK: MKMapView Functions
+    
+    
+    func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {
+        
+        
+        mapView.centerCoordinate = userLocation.location.coordinate
+    }
     
 }
 
@@ -97,7 +113,8 @@ extension SearchViewController:UISearchBarDelegate {
         searchActive=false
         searchBar.resignFirstResponder()
         searchBar.showsCancelButton=false
-
+        tableView.hidden=true
+        
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchActive=false
@@ -112,14 +129,17 @@ extension SearchViewController:UISearchBarDelegate {
             let text  = name["userName"] as! NSString
             let range = text.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
             if range.location != NSNotFound {
+                tableView.hidden=false
                 filtered.addObject(name)
             }
             
         }
         
         if(filtered.count == 0){
+            tableView.hidden=true
             searchActive = false;
         } else {
+            tableView.hidden=false
             searchActive = true;
         }
         self.tableView.reloadData()
@@ -136,7 +156,7 @@ extension SearchViewController:UISearchBarDelegate {
         }
         showLoadingView(true)
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "search/search", requestType: HttpMethod.post),delegate: self,tag: Connection.searchUserName)
-
+        
     }
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
@@ -207,7 +227,5 @@ extension SearchViewController:UISearchBarDelegate {
         showLoadingView(false)
     }
     
-
-    
-
 }
+
