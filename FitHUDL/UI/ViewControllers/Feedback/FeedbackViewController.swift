@@ -29,7 +29,7 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
         var nib = UINib(nibName: "RateFeedbackCell", bundle: nil)
         rateCollectionView.registerNib(nib, forCellWithReuseIdentifier: "FeedbacKCell")
         navigationController?.setStatusBarColor()
-        submit_button.layer.cornerRadius=10.0
+//        submit_button.layer.cornerRadius=10.0
         submit_button.layer.borderWidth=1.0
         submit_button.layer.borderColor=AppColor.statusBarColor.CGColor
         

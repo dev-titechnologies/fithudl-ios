@@ -73,4 +73,27 @@ class Globals: NSObject {
         Images.deleteImages()
     }
     
+    class func endOfMonth() -> NSDate? {
+        let calendar = NSCalendar.currentCalendar()
+        let months   = NSDateComponents()
+        months.month = 1
+        
+        if let plusOneMonthDate = calendar.dateByAddingComponents(months, toDate: NSDate(), options: nil) {
+            let plusOneMonthDateComponents = calendar.components(.CalendarUnitYear | .CalendarUnitMonth, fromDate: plusOneMonthDate)
+            let endOfMonth = calendar.dateFromComponents(plusOneMonthDateComponents)?.dateByAddingTimeInterval(-1)
+            return endOfMonth
+        }
+        return nil
+    }
+    
+    class func attributedBioText(bio: String, lengthExceed: Bool, bioLabel: UILabel) {
+        var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 15.0)!, NSForegroundColorAttributeName: AppColor.yellowTextColor])
+        bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
+        bioTitle.appendAttributedString(NSAttributedString(string: " \(bio)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 13.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
+        if lengthExceed == true {
+            bioTitle.appendAttributedString(NSAttributedString(string: "...", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
+        }
+        bioLabel.attributedText = bioTitle
+    }
+    
 }

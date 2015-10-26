@@ -41,6 +41,9 @@
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
 		F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F37968F01BCE812E0074B57D /* SRMonthPicker.m */; };
 		F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37968F31BCE81500074B57D /* EditProfileViewController.swift */; };
+		F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576A91BDDD9460072486B /* BookingSessionViewController.swift */; };
+		F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */; };
+		F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */; };
 		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
 		F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */; };
 		F3A2AD241BD4A73800DA6F7B /* RateFeedbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD221BD4A73800DA6F7B /* RateFeedbackCell.swift */; };
@@ -105,6 +108,9 @@
 		F37968F01BCE812E0074B57D /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
 		F37968F11BCE812E0074B57D /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
 		F37968F31BCE81500074B57D /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		F38576A91BDDD9460072486B /* BookingSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingSessionViewController.swift; sourceTree = "<group>"; };
+		F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewCell.swift; sourceTree = "<group>"; };
+		F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookingTableViewCell.xib; sourceTree = "<group>"; };
 		F38950051BCF94FD00ED0C77 /* DIDatepicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepicker.h; sourceTree = "<group>"; };
 		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
@@ -160,6 +166,7 @@
 			children = (
 				F37968F31BCE81500074B57D /* EditProfileViewController.swift */,
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
+				F38576A91BDDD9460072486B /* BookingSessionViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -262,6 +269,8 @@
 				F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */,
 				F3A2AD221BD4A73800DA6F7B /* RateFeedbackCell.swift */,
 				F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */,
+				F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */,
+				F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -521,6 +530,7 @@
 				F3A2AD251BD4A73800DA6F7B /* RateFeedbackCell.xib in Resources */,
 				F3003EA51BBA88F8001354E3 /* OpenSans-LightItalic.ttf in Resources */,
 				F3438A841BB27ED2001BA5E6 /* Main.storyboard in Resources */,
+				F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */,
 				F3438A831BB27ED2001BA5E6 /* LaunchScreen.xib in Resources */,
 				F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */,
 				F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */,
@@ -575,6 +585,8 @@
 				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
 				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
+				F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */,
+				F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */,
 				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
 				F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */,
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,

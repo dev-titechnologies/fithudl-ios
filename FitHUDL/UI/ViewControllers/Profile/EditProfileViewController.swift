@@ -50,12 +50,13 @@ class EditProfileViewController: UIViewController {
             contentViewHeightConstriant.constant = view.frame.size.height-64.0
             view.layoutIfNeeded()
         }
+        nameTextField.superview?.layer.borderColor = AppColor.boxBorderColor.CGColor
         
         monthPick.superview!.setTranslatesAutoresizingMaskIntoConstraints(true)
         monthPick.superview!.frame = CGRect(x: 0.0, y: view.frame.size.height, width: view.frame.size.width, height: monthPick.frame.size.height)
         
         datePicker.addTarget(self, action: "dateValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        datePicker.fillDatesFromDate(NSDate(), toDate: endOfMonth())
+        datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
         datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
 
         timePicker.minimumDate = NSDate()
@@ -80,9 +81,9 @@ class EditProfileViewController: UIViewController {
         }
         if let url = appDelegate.user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: photoImageView, activityIndicatorView: indicatorView)
-            photoButton.hidden = true
+//            photoButton.hidden = true
         } else {
-            photoButton.hidden = false
+//            photoButton.hidden = false
         }
         // Do any additional setup after loading the view.
     }
@@ -95,18 +96,7 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    func endOfMonth() -> NSDate? {
-        let calendar = NSCalendar.currentCalendar()
-        let months   = NSDateComponents()
-        months.month = 1
-        
-        if let plusOneMonthDate = calendar.dateByAddingComponents(months, toDate: NSDate(), options: nil) {
-            let plusOneMonthDateComponents = calendar.components(.CalendarUnitYear | .CalendarUnitMonth, fromDate: plusOneMonthDate)
-            let endOfMonth = calendar.dateFromComponents(plusOneMonthDateComponents)?.dateByAddingTimeInterval(-1)
-            return endOfMonth
-        }
-        return nil
-    }
+
     
     func setTimePickerValues() {
         let dateString       = Globals.convertDate(datePicker.selectedDate)
@@ -325,7 +315,7 @@ class EditProfileViewController: UIViewController {
         hidePickerView()
         let currentDate      = formatter.stringFromDate(NSDate())
         if currentDate == formatter.stringFromDate(selectedDate!) {
-            datePicker.fillDatesFromDate(NSDate(), toDate: endOfMonth())
+            datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
             return
         }
         formatter.dateFormat = "MMM"

@@ -254,6 +254,10 @@ class MyProfileViewController: UIViewController {
         presentViewController(custompopController, animated: true, completion: nil)
     }
     
+    @IBAction func bookSessionTapped(sender: UITapGestureRecognizer) {
+        performSegueWithIdentifier("pushToBookingSession", sender: self)
+    }
+    
     func populateProfileContents(user: User) {
         nameLabel.text = user.name
         favoriteButton.selected = user.isFavorite
@@ -266,10 +270,10 @@ class MyProfileViewController: UIViewController {
         if let bioText = user.bio {
             if count(bioText) > BIOTEXT_LENGTH {
                 bioLabel.userInteractionEnabled = true
-                attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true)
+                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel)
             } else {
                 bioLabel.userInteractionEnabled = false
-                attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false)
+                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel)
             }
         }
         if user.sportsArray.count == 0 {
@@ -595,33 +599,25 @@ class MyProfileViewController: UIViewController {
         sports!.setObject(level, forKey: "expert_level")
         sendRequestForUpdateSportsLevel(sports!, type: type)
     }
-    
-    func attributedBioText(bio: String, lengthExceed: Bool) {
-        var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 15.0)!, NSForegroundColorAttributeName: AppColor.yellowTextColor])
-        bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
-        bioTitle.appendAttributedString(NSAttributedString(string: " \(bio)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 13.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
-        if lengthExceed == true {
-            bioTitle.appendAttributedString(NSAttributedString(string: "...", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
-        }
-        bioLabel.attributedText = bioTitle
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "pushToBookingSession" {
+            let bookViewController = segue.destinationViewController as! BookingSessionViewController
+            bookViewController.user = profileUser
+        }
     }
-    */
-
 }
 
 
