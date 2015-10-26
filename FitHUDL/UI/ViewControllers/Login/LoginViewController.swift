@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var calloutView: UIView!
     @IBOutlet weak var calloutContentViewHeightConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var signInButton: UIButton!
     var selectedTextField: UITextField!
     let calloutViewYAxis:CGFloat = 45.0
     
@@ -36,6 +37,8 @@ class LoginViewController: UIViewController {
         
         placeHolderString = NSAttributedString(string: resetEmailTextField.placeholder!, attributes: [NSForegroundColorAttributeName: UIColor(red: 136/255, green: 136/255, blue: 136/255, alpha: 1.0)])
         resetEmailTextField.attributedPlaceholder = placeHolderString
+        
+        signInButton.layer.borderColor = UIColor.whiteColor().CGColor
         
         emailTextField.text     = "ardra@test.com"
         passwordTextField.text  = "123456"

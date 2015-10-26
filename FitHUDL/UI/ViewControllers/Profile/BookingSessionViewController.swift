@@ -24,8 +24,12 @@ class BookingSessionViewController: UIViewController {
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
+    var selectedIndexArray = NSMutableArray()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sportsCarousel.type = .Custom
         
         let nib  = UINib(nibName: "BookingTableViewCell", bundle: nil)
         bookingTableView.registerNib(nib, forCellReuseIdentifier: "bookCell")
@@ -57,6 +61,7 @@ class BookingSessionViewController: UIViewController {
             }
         }
 
+        favoriteButton.selected = user.isFavorite
         if let url = appDelegate.user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: profileImageView, activityIndicatorView: indicatorView)
         } else {
@@ -69,16 +74,52 @@ class BookingSessionViewController: UIViewController {
         bookingTableView.reloadData()
     }
     
+    func hidePickerView() {
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.monthPicker.superview!.frame = CGRect(origin: CGPoint(x: 0.0, y: self.view.frame.size.height), size: self.monthPicker.superview!.frame.size)
+            return
+        })
+    }
+    
+    func sendRequestToManageFavorite(favorite: Int) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(favorite, forKey: "favorite")
+        requestDictionary.setObject(user.profileID, forKey: "trainer_id")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "favourite/manage", requestType: HttpMethod.post), delegate: self, tag: Connection.unfavourite)
+    }
+    
     @IBAction func pickerCancelClicked(sender: UIButton) {
-        
+        hidePickerView()
     }
     
     @IBAction func pickerDoneClicked(sender: UIButton) {
-        
+        let components   = NSDateComponents()
+        components.month = monthPicker.selectedMonth
+        components.year  = monthPicker.selectedYear
+        let selectedDate = NSCalendar.currentCalendar().dateFromComponents(components)
+        let formatter    = NSDateFormatter()
+        formatter.dateFormat = "MMM yyyy"
+        monthButton.setTitle(formatter.stringFromDate(selectedDate!).uppercaseString, forState: .Normal)
+        hidePickerView()
+        let currentDate      = formatter.stringFromDate(NSDate())
+        if currentDate == formatter.stringFromDate(selectedDate!) {
+            datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
+            return
+        }
+        formatter.dateFormat = "MMM"
+        let month            = formatter.stringFromDate(selectedDate!)
+        formatter.dateFormat = "yyyy"
+        let year             = formatter.stringFromDate(selectedDate!)
+        datePicker.filDatesWithMonth(month, year: year)
     }
     
     @IBAction func favoriteButtonClicked(sender: UIButton) {
-        
+        sender.selected = !sender.selected
+        sendRequestToManageFavorite(Int(sender.selected))
     }
     
     @IBAction func cancelViewTapped(sender: UITapGestureRecognizer) {
@@ -95,6 +136,45 @@ class BookingSessionViewController: UIViewController {
     @IBAction func backButtonClicked(sender: UIButton) {
         navigationController?.popViewControllerAnimated(true)
     }
+    
+    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
+        connection.receiveData.length = 0
+    }
+    
+    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
+        connection.receiveData.appendData(data)
+    }
+    
+    func connectionDidFinishLoading(connection: CustomURLConnection) {
+        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+        println(response)
+        var error: NSError?
+        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+            if let status = jsonResult["status"] as? Int {
+                if connection.connectionTag == Connection.unfavourite {
+                    if status == ResponseStatus.success {
+                        
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(Message.Error)
+                        }
+                        favoriteButton.selected = !favoriteButton.selected
+                    } else {
+                        dismissOnSessionExpire()
+                    }
+                }
+            }
+        }
+        showLoadingView(false)
+    }
+    
+    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
+        showDismissiveAlertMesssage(error.localizedDescription)
+        showLoadingView(false)
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -124,6 +204,7 @@ extension BookingSessionViewController: iCarouselDataSource {
         var titleLabel: UILabel
         var sportsImageView: UIImageView
         var indicatorView: UIActivityIndicatorView
+        var tickImageView: UIImageView!
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 78.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
@@ -145,11 +226,18 @@ extension BookingSessionViewController: iCarouselDataSource {
             indicatorView.tag       = 3
             indicatorView.startAnimating()
             contentView.addSubview(indicatorView)
+            tickImageView           = UIImageView(image: UIImage(named: "tick"))
+            tickImageView.frame     = CGRect(origin: CGPoint(x: 12.0, y: 0.0), size: tickImageView.image!.size)
+            tickImageView.tag       = 4
+            tickImageView.hidden    = true
+            contentView.addSubview(tickImageView)
+            
         } else {
             contentView     = view!
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
+            tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         let sports          = user.sportsArray[index] as! NSDictionary
         if let logo = sports["logo"] as? String {
@@ -172,15 +260,19 @@ extension BookingSessionViewController: iCarouselDataSource {
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
-        
+        if selectedIndexArray.containsObject(index) {
+            tickImageView.hidden = false
+        } else {
+            tickImageView.hidden = true
+        }
         return contentView
     }
 }
 
 extension BookingSessionViewController: iCarouselDelegate {
     func carousel(carousel: iCarousel, itemTransformForOffset offset: CGFloat, baseTransform transform: CATransform3D) -> CATransform3D {
-        let centerItemZoom: CGFloat = 1.5
-        let centerItemSpacing: CGFloat = 1.4
+        let centerItemZoom: CGFloat     = 1.5
+        let centerItemSpacing: CGFloat  = 1.3
         
         var offset      = offset
         var transform   = transform
@@ -189,7 +281,7 @@ extension BookingSessionViewController: iCarouselDelegate {
         let absClampedOffset = min(1.0, fabs(offset))
         let clampedOffset = min(1.0, max(-1.0, offset))
         let scaleFactor = 1.0 + absClampedOffset * (1.0/centerItemZoom - 1.0)
-        offset = (scaleFactor * offset + scaleFactor * (centerItemSpacing - 1.0) * clampedOffset) * carousel.itemWidth * spacing
+        offset    = (scaleFactor * offset + scaleFactor * (centerItemSpacing - 1.0) * clampedOffset) * carousel.itemWidth * spacing
         transform = CATransform3DTranslate(transform, offset, 0.0, -absClampedOffset)
         transform = CATransform3DScale(transform, scaleFactor, scaleFactor, 1.0)
         return transform
@@ -200,7 +292,12 @@ extension BookingSessionViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-        
+        if selectedIndexArray.containsObject(index) {
+            selectedIndexArray.removeObject(index)
+        } else {
+            selectedIndexArray.addObject(index)
+        }
+        carousel.reloadData()
     }
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
@@ -210,8 +307,6 @@ extension BookingSessionViewController: iCarouselDelegate {
         return value
     }
 }
-
-
 
 extension BookingSessionViewController: SRMonthPickerDelegate {
     func monthPickerWillChangeDate(monthPicker: SRMonthPicker!) {
