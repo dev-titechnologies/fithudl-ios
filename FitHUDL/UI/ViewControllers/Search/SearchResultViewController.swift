@@ -1,19 +1,19 @@
 //
-//  FavoritesViewController.swift
+//  SearchResultViewController.swift
 //  FitHUDL
 //
-//  Created by Ti Technologies on 28/09/15.
+//  Created by Ti Technologies on 28/10/15.
 //  Copyright (c) 2015 Ti Technologies. All rights reserved.
 //
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
-    
+class SearchResultViewController: UIViewController {
+
     @IBOutlet weak var nofavourites_label: UILabel!
-    var favouriteList_array = Array<NSDictionary>()
-    var favouritelist_index : Int = 0
-    @IBOutlet weak var favourite_tableview: UITableView!
+    var searchResultArray = Array<NSDictionary>()
+    var searchIndex : Int = 0
+    @IBOutlet weak var searchTableView: UITableView!
     
     
     override func viewDidLoad() {
@@ -30,7 +30,12 @@ class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         
-        sendRequestToGetFavouriteList()
+       searchTableView.reloadData()
+    }
+    
+    @IBAction func backBauttonClicked(sender: AnyObject) {
+        
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     
@@ -63,16 +68,15 @@ class FavoritesViewController: UIViewController {
                 if connection.connectionTag == Connection.favouriteList {
                     if status == ResponseStatus.success {
                         if let favourites = jsonResult["details"] as? NSArray {
-                            favouriteList_array = favourites as! Array
-                            println(favouriteList_array)
-                            favourite_tableview.reloadData()
+                            searchResultArray = favourites as! Array
+                            println(searchResultArray)
+                            searchTableView.reloadData()
                         }
                         else {
                             println("dfdsfdsfdf")
-                            nofavourites_label.hidden=false
                         }
                         
-
+                        
                     }
                     else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
@@ -90,22 +94,21 @@ class FavoritesViewController: UIViewController {
                 }
                 else {
                     
-                     if status == ResponseStatus.success {
-                        favouriteList_array.removeAtIndex(favouritelist_index)
-                        favourite_tableview.reloadData()
-                        if (favouriteList_array.count==0) {
-                            nofavourites_label.hidden=false
+                    if status == ResponseStatus.success {
+                        searchResultArray.removeAtIndex(searchIndex)
+                        searchTableView.reloadData()
+                        if (searchResultArray.count==0) {
                             
                         }
                         
                     }
-                     else if status == ResponseStatus.error {
+                    else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
                             showDismissiveAlertMesssage(ErrorMessage.invalid)
                         }
-                     } else {
+                    } else {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
@@ -113,14 +116,15 @@ class FavoritesViewController: UIViewController {
                         }
                     }
                     
-                    }
-                    
                 }
+                
             }
-       
+        }
+        
         showLoadingView(false)
         
     }
+    
     
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
@@ -129,10 +133,10 @@ class FavoritesViewController: UIViewController {
     
     func unFavouriteAction(sender:UIButton) {
         
-        favouritelist_index = sender.tag
+        searchIndex = sender.tag
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(0, forKey: "favorite")
-        requestDictionary.setObject(self.favouriteList_array[sender.tag].objectForKey("id")!, forKey: "trainer_id")
+        requestDictionary.setObject(self.searchResultArray[sender.tag].objectForKey("id")!, forKey: "trainer_id")
         if !Globals.isInternetConnected() {
             return
         }
@@ -141,12 +145,11 @@ class FavoritesViewController: UIViewController {
         
     }
 }
-
-extension FavoritesViewController : UITableViewDelegate {
+extension SearchResultViewController : UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     
-        return self.favouriteList_array.count;
+        
+        return self.searchResultArray.count;
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -162,7 +165,7 @@ extension FavoritesViewController : UITableViewDelegate {
         cell.prof_pic.layer.cornerRadius    = cell.prof_pic.frame.size.height/2
         cell.prof_pic.clipsToBounds         = true
         
-        if let url = self.favouriteList_array[indexPath.row].objectForKey("profile_pic") as? String {
+        if let url = self.searchResultArray[indexPath.row].objectForKey("profile_pic") as? String {
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
                 if var imagesArray = Images.fetch(url as String) {
@@ -194,14 +197,15 @@ extension FavoritesViewController : UITableViewDelegate {
                 cell.indicatorView.stopAnimating()
             }
         }
-       
-        cell.nameLabel?.text = self.favouriteList_array[indexPath.row].objectForKey("name") as? String
         
-        if let ratevalue = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float {
+        
+        cell.nameLabel?.text = self.searchResultArray[indexPath.row].objectForKey("name") as? String
+        
+        if let ratevalue = self.searchResultArray[indexPath.row].objectForKey("rating_count") as? Float {
             cell.starView.rating = ratevalue
         }
         
-        if let session_count = self.favouriteList_array[indexPath.row].objectForKey("session") as? Int {
+        if let session_count = self.searchResultArray[indexPath.row].objectForKey("session") as? Int {
             cell.sessionCounterLabel?.text = "\(session_count)"
         }
         
@@ -211,12 +215,15 @@ extension FavoritesViewController : UITableViewDelegate {
     }
 }
 
-extension FavoritesViewController : UITableViewDelegate {
+extension SearchResultViewController : UITableViewDelegate {
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
-        let id                  = self.favouriteList_array[indexPath.row].objectForKey("id") as! Int
+        let id                  = self.searchResultArray[indexPath.row].objectForKey("id") as! Int
         userProfile.profileID   = "\(id)"
+        userProfile.searchResultId = "SEARCH"
         navigationController?.pushViewController(userProfile, animated: true)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
+

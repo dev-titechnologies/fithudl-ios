@@ -23,9 +23,9 @@ class BookingSessionViewController: UIViewController {
     @IBOutlet weak var expertLevelLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    
     var selectedIndexArray = NSMutableArray()
-    
+    var searchResultId : String?
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,6 +50,11 @@ class BookingSessionViewController: UIViewController {
         monthPicker.monthPickerDelegate = self
         
         nameLabel.text = appDelegate.user.name
+        
+        if let id = searchResultId {
+            tableViewTopConstraint.constant = -65
+            view.layoutIfNeeded()
+        }
         
         if let bioText = user.bio {
             if count(bioText) > BIOTEXT_LENGTH {
@@ -82,6 +87,7 @@ class BookingSessionViewController: UIViewController {
     }
     
     func sendRequestToManageFavorite(favorite: Int) {
+        
         if !Globals.isInternetConnected() {
             return
         }
@@ -226,6 +232,7 @@ extension BookingSessionViewController: iCarouselDataSource {
             indicatorView.tag       = 3
             indicatorView.startAnimating()
             contentView.addSubview(indicatorView)
+            
             tickImageView           = UIImageView(image: UIImage(named: "tick"))
             tickImageView.frame     = CGRect(origin: CGPoint(x: 12.0, y: 0.0), size: tickImageView.image!.size)
             tickImageView.tag       = 4

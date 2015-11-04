@@ -82,7 +82,7 @@ class SignupViewController: UIViewController {
                 }
             }
         }
-        
+        println("SportslistArray\(appDelegate.sportsArray)")
         // Do any additional setup after loading the view.
     }
 
@@ -173,6 +173,12 @@ class SignupViewController: UIViewController {
     func setExpertiseLevel(level: String) {
         let sports  = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
         sports!.setObject(level, forKey: "level")
+        
+        println("SPOrtsLISSS\(sports)")
+        
+        println("SportslisgggtArray\(appDelegate.sportsArray)")
+        
+        
     }
     
     func sendSignupRequest() {
@@ -202,6 +208,8 @@ class SignupViewController: UIViewController {
         if filteredArray.count > 0 {
             requestDictionary.setObject(filteredArray, forKey: "sportsList")
         }
+        
+        println("Requset Dict is\(requestDictionary)")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/signup", requestType: HttpMethod.post), delegate: self, tag: Connection.signup)
     }
     
@@ -283,6 +291,7 @@ extension SignupViewController: iCarouselDataSource {
         return appDelegate.sportsArray.count
     }
     
+    
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
         var contentView: UIView
         var titleLabel: UILabel
@@ -357,6 +366,7 @@ extension SignupViewController: iCarouselDelegate {
     }
     
     func carouselCurrentItemIndexDidChange(carousel: iCarousel) {
+        println("value changes")
         beginnerButton.selected = false
         moderateButton.selected = false
         expertButton.selected   = false
@@ -364,6 +374,8 @@ extension SignupViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
+        
+        println("select index at icarooo")
         
     }
     

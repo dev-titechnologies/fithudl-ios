@@ -22,5 +22,6 @@ class User: NSObject {
     var userReviewsArray    = NSMutableArray()
     var sportsArray         = NSMutableArray()
     var badgesArray         = NSMutableArray()
+    var userSportsArray     = NSMutableArray()
     
 }

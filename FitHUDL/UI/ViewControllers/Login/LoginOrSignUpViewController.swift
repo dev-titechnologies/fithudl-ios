@@ -132,6 +132,7 @@ class LoginOrSignUpViewController: UIViewController {
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
+        
     }
     
     func connection(connection: CustomURLConnection, didReceiveData data: NSData) {

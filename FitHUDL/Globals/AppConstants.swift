@@ -8,7 +8,7 @@
 ///// changes by ardra
 import UIKit
 
-let SERVER_URL = "http://192.168.1.64:1337/"
+let SERVER_URL = "http://fithudl.titechnologies.in/"
 //let Server_URL = "http://192.168.1.151:1337/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -61,6 +61,7 @@ struct Connection {
     static let submitfeedback = 20
     static let logout         = 21
     static let searchUserName = 22
+    static let userSportsList = 23
 }
 
 struct SportsLevel {

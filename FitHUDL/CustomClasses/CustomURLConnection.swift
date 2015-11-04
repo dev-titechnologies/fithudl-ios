@@ -43,6 +43,8 @@ class CustomURLConnection: NSURLConnection {
                     parameters.setObject(apiToken, forKey: "token")
                 }
             }
+            
+            println("PARAM\(parameters)")
             let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
             urlRequest.HTTPBody = jsonData
         }

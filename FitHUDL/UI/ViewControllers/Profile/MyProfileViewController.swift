@@ -56,10 +56,13 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var notificationButton: UIButton!
     @IBOutlet weak var expertLevelLabel: UILabel!
-    
+    var searchResultId:String?
     var profileID: String?
     let calloutViewYAxis:CGFloat = 52.0
     let profileUser = User()
+    
+    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +82,11 @@ class MyProfileViewController: UIViewController {
         sportsCarousel.type = iCarouselType.Custom
         navigationController?.setStatusBarColor()
         
+        if let id = searchResultId {
+        scrollViewBottomConstraint.constant = -65
+        carouselBackgroundView.constant=226.0
+        view.layoutIfNeeded()
+        }
         if IS_IPHONE6PLUS {
             profileViewHeightConstraint.constant = 260.0
             reviewTopConstraint.constant    = 30.0
@@ -121,6 +129,9 @@ class MyProfileViewController: UIViewController {
         calloutView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: calloutView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(calloutView)
         sendRequestForProfile()
+       // self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.contentScrollView.frame.origin.y)
+        // self.contentScrollView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.contentScrollView.frame.origin.y)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -133,6 +144,7 @@ class MyProfileViewController: UIViewController {
         if IS_IPHONE4S || IS_IPHONE5 {
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 560.0)
         } else {
+        
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
         }
     }
@@ -388,6 +400,8 @@ class MyProfileViewController: UIViewController {
     
     
     func parseProfileResponse(responseDictionary: NSDictionary) {
+        
+        println("Response Dictionary\(responseDictionary)")
         if let id = profileID {
             profileUser.profileID  = responseDictionary["profile_id"] as! Int
             profileUser.name       = responseDictionary["profile_name"] as! String
@@ -444,6 +458,8 @@ class MyProfileViewController: UIViewController {
                         sport.setObject("", forKey: "expert_level")
                     }
                     profileUser.sportsArray.addObject(sport)
+                    
+                   
                 }
             }
             profileUser.isFavorite = responseDictionary["favourite"] as! Bool
@@ -499,12 +515,20 @@ class MyProfileViewController: UIViewController {
                         let index = sportsArray.valueForKey("sports_id")?.indexOfObject(sports["id"] as! Int)
                         let dict  = sportsArray.objectAtIndex(index!) as! NSDictionary
                         sport.setObject(dict["expert_level"] as! String, forKey: "expert_level")
+                        
                     } else {
                         sport.setObject("", forKey: "expert_level")
                     }
                     appDelegate.user.sportsArray.addObject(sport)
+                    
+                    println("USER SPORTS  \(appDelegate.user.userSportsArray)")
+                    
+                    println("profile sports array \(appDelegate.user.sportsArray)")
+                    
+                    
                 }
-            }
+            
+                          }
         }
     }
     
@@ -520,6 +544,7 @@ class MyProfileViewController: UIViewController {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         println(response)
         var error: NSError?
+        
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.userProfile {
@@ -616,6 +641,9 @@ class MyProfileViewController: UIViewController {
         if segue.identifier == "pushToBookingSession" {
             let bookViewController = segue.destinationViewController as! BookingSessionViewController
             bookViewController.user = profileUser
+            if let id = searchResultId {
+                bookViewController.searchResultId=searchResultId
+            }
         }
     }
 }

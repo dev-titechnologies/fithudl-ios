@@ -33,6 +33,7 @@
 		F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA21BB290B6001BA5E6 /* AppConstants.swift */; };
 		F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA31BB290B6001BA5E6 /* Globals.swift */; };
 		F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */; };
+		F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */; };
 		F36691631BCD072A00B74CFE /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36691621BCD072A00B74CFE /* Images.swift */; };
 		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
 		F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */; };
@@ -99,6 +100,7 @@
 		F3438AA21BB290B6001BA5E6 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		F3438AA31BB290B6001BA5E6 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesListCell.swift; sourceTree = "<group>"; };
+		F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		F36691621BCD072A00B74CFE /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */,
+				F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */,
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */,
+				F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */,
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
 				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
 				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
@@ -644,7 +648,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -688,7 +693,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -703,6 +709,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "60b57b4f-6d59-4b04-a41b-2d27d7544c3a";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -712,8 +719,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
@@ -722,7 +729,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "66fd9b70-e040-40ec-a82f-9fcec0ac489a";
+				PROVISIONING_PROFILE = "60b57b4f-6d59-4b04-a41b-2d27d7544c3a";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -740,7 +747,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c6f56d20-12f7-4937-9fb6-dbf0a0513739";
+				PROVISIONING_PROFILE = "60b57b4f-6d59-4b04-a41b-2d27d7544c3a";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;
@@ -775,6 +782,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "60b57b4f-6d59-4b04-a41b-2d27d7544c3a";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Release;
