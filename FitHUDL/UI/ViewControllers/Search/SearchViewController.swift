@@ -51,7 +51,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         tableView.layer.cornerRadius = 4.0
         tableView.layer.borderColor = UIColor.lightGrayColor().CGColor
         userSelectedArray = NSMutableArray()
-        println("SERACH USER SPORTS\(appDelegate.user.userSportsArray)")
        
        
     }
@@ -65,14 +64,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.point.coordinate = locationCoordinate
         mapView.addAnnotation(self.point)
         
-//        var longitude :CLLocationDegrees = -122.0312186
-//        var latitude :CLLocationDegrees = 37.33233141
-        
-        var location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude) //changed!!!
-        
-        println("latiiii\(locationCoordinate.latitude)")
-        
-         println("longiiiii\(locationCoordinate.longitude)")
+        var location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
         
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(locationMark, error) -> Void in
           
@@ -99,12 +91,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         selectedIndexArray = NSMutableArray()
         
         allSportsArray = appDelegate.user.sportsArray
-        
-        
-        
-         println("ALL SPORTS ARRAY \(allSportsArray)")
-        
-        println("arrrr SPORTS ARRAY \(appDelegate.sportsArray)")
         
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations( annotationsToRemove )
@@ -210,22 +196,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     func setExpertiseLevel(level: String)
     {
-//        let sports  = allSportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
-//        sports!.setObject(level, forKey: "level")
-//        println("expertise level\(sports)")
-        println("again sports \(allSportsArray)")
-        
-        
+
         if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int){
             
             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int)
             userSelectedArray.removeObjectAtIndex(indexValue!)
-            
             var userSport = NSMutableDictionary()
             userSport  = allSportsArray[sportsCarousel.currentItemIndex] as! NSMutableDictionary
             userSport.setObject(level, forKey: "level")
             userSelectedArray.addObject(userSport)
-            
             
         }
         else
@@ -235,11 +214,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             userSport.setObject(level, forKey: "level")
             userSelectedArray.addObject(userSport)
         }
-        
-        println("DELETED ARRAY EXPERT \(userSelectedArray)")
-        
-
-        
         
     }
 
@@ -279,11 +253,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             
             if (error != nil) {
                 
-                
                 println("Error:" + error.localizedDescription)
                 
                 return
-                
             }
             
             if placemarks.count > 0 {
@@ -338,15 +310,8 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     // MARK: - Navigation
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         if segue.identifier == "searchToSearchResult" {
-//            let searchResultController = segue.destinationViewController as! SearchResultViewController
-//            searchResultController.searchResultArray = searchResultArray
-//            
-            
             var DestViewController = segue.destinationViewController as! UINavigationController
             let targetController = DestViewController.topViewController as! SearchResultViewController
             targetController.searchResultArray = searchResultArray
@@ -684,7 +649,6 @@ extension SearchViewController: iCarouselDataSource {
                     tickImageView.hidden = false
                 }
                 else {
-                   // tickImageView.hidden=true
             }
             
         } else {
