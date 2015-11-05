@@ -74,6 +74,7 @@ class EditProfileViewController: UIViewController {
             bioTextView.text = bio
             placeholderLabel.hidden = true
         }
+        
         var datesArray  = NSSet(array: appDelegate.user.availableTimeArray.valueForKey("date") as! [String])
         for date in datesArray {
             let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray

@@ -35,6 +35,7 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var badgePrevButton: UIButton!
     @IBOutlet weak var availableTimeCollectionView: UICollectionView!
     
+    
     @IBOutlet weak var reviewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var reviewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var profileViewHeightConstraint: NSLayoutConstraint!
@@ -309,6 +310,7 @@ class MyProfileViewController: UIViewController {
             }
             completedTitleLabel.textColor = hoursLabel.textColor
             hoursLabel.text = "\(hours) hours"
+            
         } else {
             hoursLabel.text = "0 hours"
         }
@@ -397,7 +399,6 @@ class MyProfileViewController: UIViewController {
         }
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "favourite/manage", requestType: HttpMethod.post), delegate: self, tag: Connection.unfavourite)
     }
-    
     
     func parseProfileResponse(responseDictionary: NSDictionary) {
         
@@ -521,14 +522,9 @@ class MyProfileViewController: UIViewController {
                     }
                     appDelegate.user.sportsArray.addObject(sport)
                     
-                    println("USER SPORTS  \(appDelegate.user.userSportsArray)")
-                    
-                    println("profile sports array \(appDelegate.user.sportsArray)")
-                    
-                    
                 }
             
-                          }
+           }
         }
     }
     

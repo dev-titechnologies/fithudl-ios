@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BookingTableViewCell: UITableViewCell {
+class BookingTableViewCell: UITableViewCell,UITextFieldDelegate {
 
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var timeLabel: UILabel!
@@ -16,6 +16,7 @@ class BookingTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        locationTextField.delegate = self
         bookButton.layer.borderWidth = 1.0
         bookButton.layer.borderColor = AppColor.statusBarColor.CGColor
         

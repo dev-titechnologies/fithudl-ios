@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BookingSessionViewController: UIViewController {
+class BookingSessionViewController: UIViewController,UITextFieldDelegate {
 
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var bookingTableView: UITableView!
@@ -16,7 +16,6 @@ class BookingSessionViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     var user: User!
-    
     @IBOutlet weak var datePicker: DIDatepicker!
     @IBOutlet weak var monthButton: UIButton!
     @IBOutlet weak var sportsCarousel: iCarousel!
@@ -25,12 +24,15 @@ class BookingSessionViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     var selectedIndexArray = NSMutableArray()
     var searchResultId : String?
+    var profileID: String?
+    let profileUser = User()
+    let availSessionTime = NSMutableDictionary()
+    var activeText: UITextField!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         sportsCarousel.type = .Custom
-        
         let nib  = UINib(nibName: "BookingTableViewCell", bundle: nil)
         bookingTableView.registerNib(nib, forCellReuseIdentifier: "bookCell")
         
@@ -49,13 +51,11 @@ class BookingSessionViewController: UIViewController {
         monthPicker.fontColor    = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPicker.monthPickerDelegate = self
         
-        nameLabel.text = appDelegate.user.name
-        
+        nameLabel.text = user.name
         if let id = searchResultId {
             tableViewTopConstraint.constant = -65
             view.layoutIfNeeded()
         }
-        
         if let bioText = user.bio {
             if count(bioText) > BIOTEXT_LENGTH {
                 bioLabel.userInteractionEnabled = true
@@ -67,14 +67,72 @@ class BookingSessionViewController: UIViewController {
         }
 
         favoriteButton.selected = user.isFavorite
-        if let url = appDelegate.user.imageURL {
+        if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: profileImageView, activityIndicatorView: indicatorView)
         } else {
         }
+        var datesArray  = NSSet(array:user.availableTimeArray.valueForKey("date") as! [String])
+        for date in datesArray {
+            let filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
+            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
+        }
+       
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("keyboardWillShow:"),
+            name: UIKeyboardWillShowNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("keyboardWillHide:"),
+            name: UIKeyboardWillHideNotification,
+            object: nil)
         
-        // Do any additional setup after loading the view.
     }
-
+    
+    //MARK: KEYBOARD HANDLING
+    
+    func keyboardWillShow(note: NSNotification) {
+        if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            var frame = bookingTableView.frame
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationBeginsFromCurrentState(true)
+            UIView.setAnimationDuration(0.3)
+            frame.size.height -= keyboardSize.height
+            bookingTableView.frame = frame
+            if activeText != nil {
+                let rect = bookingTableView.convertRect(activeText.bounds, fromView: activeText)
+                bookingTableView.scrollRectToVisible(rect, animated: false)
+            }
+            UIView.commitAnimations()
+        }
+    }
+    
+    func keyboardWillHide(note: NSNotification) {
+        if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            var frame = bookingTableView.frame
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationBeginsFromCurrentState(true)
+            UIView.setAnimationDuration(0.3)
+            frame.size.height += keyboardSize.height
+            bookingTableView.frame = frame
+            UIView.commitAnimations()
+        }
+    }
+    
+  //MARK: TextField Delegate & DataSourse Method
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        activeText = textField
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        //activeText = nil
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        activeText.resignFirstResponder()
+        return true
+    }
+    
     func dateValueChanged(collectionView: UICollectionView) {
         bookingTableView.reloadData()
     }
@@ -86,8 +144,9 @@ class BookingSessionViewController: UIViewController {
         })
     }
     
+   //MARK: Unfavourite API
+    
     func sendRequestToManageFavorite(favorite: Int) {
-        
         if !Globals.isInternetConnected() {
             return
         }
@@ -143,6 +202,8 @@ class BookingSessionViewController: UIViewController {
         navigationController?.popViewControllerAnimated(true)
     }
     
+    
+    
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
     }
@@ -153,11 +214,23 @@ class BookingSessionViewController: UIViewController {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        println(response)
         var error: NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.unfavourite {
+                    if status == ResponseStatus.success {
+                        
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(Message.Error)
+                        }
+                        favoriteButton.selected = !favoriteButton.selected
+                    } else {
+                        dismissOnSessionExpire()
+                    }
+                }else  if connection.connectionTag == Connection.bookingRequest {
                     if status == ResponseStatus.success {
                         
                     } else if status == ResponseStatus.error {
@@ -187,17 +260,44 @@ class BookingSessionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func bookingAction(sender:UIButton) {
+        
+        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(sender.tag) as! NSDictionary
+        let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
+        let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
+        let date            = Globals.convertTimeTo12Hours(time["date"] as! String)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(user.profileID, forKey: "trainer_id")
+        
+        if  selectedIndexArray.count > 0 {
+        requestDictionary.setObject(selectedIndexArray.objectAtIndex(0), forKey: "sports_id")
+         } else {
+        
+        UIAlertView(title: "Please Select A Sports", message: "", delegate: self, cancelButtonTitle: "OK").show()
+        return
+        
+        }
+        requestDictionary.setObject(starttime, forKey: "start_time")
+        requestDictionary.setObject(endtime, forKey: "end_time")
+        requestDictionary.setObject(date, forKey: "session_date")
+                
+        if  (activeText != nil) {
+           
+            requestDictionary.setObject(activeText.text, forKey: "location")
+            
+        } else {
+            
+             UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            return
+           
+        }
+        
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/request", requestType: HttpMethod.post),delegate: self,tag: Connection.bookingRequest)
     }
-    */
-
 }
 
 extension BookingSessionViewController: iCarouselDataSource {
@@ -267,7 +367,7 @@ extension BookingSessionViewController: iCarouselDataSource {
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
-        if selectedIndexArray.containsObject(index) {
+        if selectedIndexArray.containsObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!) {
             tickImageView.hidden = false
         } else {
             tickImageView.hidden = true
@@ -280,10 +380,8 @@ extension BookingSessionViewController: iCarouselDelegate {
     func carousel(carousel: iCarousel, itemTransformForOffset offset: CGFloat, baseTransform transform: CATransform3D) -> CATransform3D {
         let centerItemZoom: CGFloat     = 1.5
         let centerItemSpacing: CGFloat  = 1.3
-        
         var offset      = offset
         var transform   = transform
-        
         let spacing     = self.carousel(carousel, valueForOption: iCarouselOption.Spacing, withDefault: 1.0)
         let absClampedOffset = min(1.0, fabs(offset))
         let clampedOffset = min(1.0, max(-1.0, offset))
@@ -299,16 +397,19 @@ extension BookingSessionViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-        if selectedIndexArray.containsObject(index) {
-            selectedIndexArray.removeObject(index)
+        
+        if selectedIndexArray.containsObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!) {
+            selectedIndexArray.removeObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!)
         } else {
-            selectedIndexArray.addObject(index)
+            selectedIndexArray.removeAllObjects()
+            selectedIndexArray.addObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!)
         }
         carousel.reloadData()
     }
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
-        if option == .Spacing {
+        if option == .Spacing
+        {
             return value * 1.4
         }
         return value
@@ -316,6 +417,7 @@ extension BookingSessionViewController: iCarouselDelegate {
 }
 
 extension BookingSessionViewController: SRMonthPickerDelegate {
+    
     func monthPickerWillChangeDate(monthPicker: SRMonthPicker!) {
         let components = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitMonth, fromDate: NSDate())
         if monthPicker.selectedYear == monthPicker.minimumYear && monthPicker.selectedMonth < components.month {
@@ -334,11 +436,24 @@ extension BookingSessionViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        if let datePicker = datePicker.selectedDate {
+            if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
+                return timeArray.count
+            }
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("bookCell") as! BookingTableViewCell
+        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
+        let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
+        let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
+        cell.timeLabel.text = "\(starttime) to \(endtime)"
+        cell.timeLabel.font = UIFont(name: "OpenSans", size: 12.0)
+        cell.locationTextField.delegate = self
+        cell.bookButton.tag = indexPath.row
+        cell.bookButton.addTarget(self, action: "bookingAction:", forControlEvents: UIControlEvents.TouchUpInside)
         return cell
     }
 }
