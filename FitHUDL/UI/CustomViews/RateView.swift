@@ -1,4 +1,4 @@
-//
+   //
 //  RateView.swift
 //  FitHUDL
 //
@@ -31,7 +31,6 @@ class RateView: UIView {
     @IBAction func feedRate(sender: UIButton)
     {
         
-        println("Rate One")
         let button_image = sender.imageForState(UIControlState.Normal)
         
         if sender == starOne {

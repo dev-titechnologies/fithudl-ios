@@ -34,17 +34,13 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var badgeNextButton: UIButton!
     @IBOutlet weak var badgePrevButton: UIButton!
     @IBOutlet weak var availableTimeCollectionView: UICollectionView!
-    
-    
     @IBOutlet weak var reviewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var reviewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var profileViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var timeCollectionViewWidthConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var availableTimeView: UIView!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var morebgView: UIView!
-    
     @IBOutlet weak var noBadgeLabel: UILabel!
     @IBOutlet weak var noreviewLabel: UILabel!
     @IBOutlet weak var notimeLabel: UILabel!
@@ -57,14 +53,19 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var notificationButton: UIButton!
     @IBOutlet weak var expertLevelLabel: UILabel!
+    @IBOutlet weak var NotificationView: UIView!
+    @IBOutlet weak var notificationBackgroundView: UIView!
+    @IBOutlet weak var notificationBgtrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
     var searchResultId:String?
     var profileID: String?
     let calloutViewYAxis:CGFloat = 52.0
     let profileUser = User()
-    
+    var notificationListArray =  Array<NSDictionary>()
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
     
+    @IBOutlet weak var notificationTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
@@ -72,6 +73,9 @@ class MyProfileViewController: UIViewController {
         
         nib = UINib(nibName: "BadgesCollectionViewCell", bundle: nil)
         badgesCollectionView.registerNib(nib, forCellWithReuseIdentifier: "badgeCell")
+        
+        let notificationNib  = UINib(nibName: "NotificationCell", bundle: nil)
+        notificationTableView.registerNib(notificationNib, forCellReuseIdentifier: "Cell")
         
         badgePrevButton.enabled  = false
         badgeNextButton.enabled  = true
@@ -109,6 +113,7 @@ class MyProfileViewController: UIViewController {
         beginnerButton.selected = false
         moderateButton.selected = false
         expertButton.selected   = false
+        
         // Do any additional setup after loading the view.
     }
     
@@ -125,28 +130,48 @@ class MyProfileViewController: UIViewController {
         badgeNextButton.hidden      = false
         badgePrevButton.hidden      = false
         reviewNextButton.superview?.hidden = false
+        
         calloutView.removeFromSuperview()
         calloutView.setTranslatesAutoresizingMaskIntoConstraints(true)
         calloutView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: calloutView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(calloutView)
+        
+        
+        notificationBackgroundView.removeFromSuperview()
+        notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        notificationBackgroundView.frame = CGRect(x: 18.0, y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
+        appDelegate.window?.addSubview(notificationBackgroundView)
+        notificationBackgroundView.backgroundColor = UIColor.clearColor()
+        notificationBackgroundView.hidden=true
+        notificationTableView.layer.borderWidth = 0.5
+        notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
         sendRequestForProfile()
-       // self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.contentScrollView.frame.origin.y)
-        // self.contentScrollView.setTranslatesAutoresizingMaskIntoConstraints(true)
-        self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.contentScrollView.frame.origin.y)
+        
+        
+       
+
     }
     
     override func viewWillDisappear(animated: Bool) {
         calloutView.removeFromSuperview()
         calloutView.frame = CGRect(x: 0.0, y: -17.0, width: calloutView.frame.size.width, height: 0)
         self.view.addSubview(calloutView)
+       
+        
+        notificationBackgroundView.removeFromSuperview()
+        notificationBackgroundView.frame = CGRect(x: 18.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
+        self.view.addSubview(notificationBackgroundView)
     }
     
     override func viewDidLayoutSubviews() {
         if IS_IPHONE4S || IS_IPHONE5 {
+            
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 560.0)
+           
         } else {
         
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
+           
         }
     }
     
@@ -257,6 +282,36 @@ class MyProfileViewController: UIViewController {
     
     @IBAction func notificationsButtonClicked(sender: UIButton) {
         
+        if sender.tag == 0 {
+            
+                sender.tag = 1;
+                notificationBackgroundView.hidden=false
+                UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.notificationBackgroundView.frame = CGRect(x: 18.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 411.0)
+                self.notificationTableView.reloadData()
+                self.sendRequestForNotificationList()
+                }, completion: nil)
+        } else {
+                sender.tag=0;
+                UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.notificationBackgroundView.hidden=true
+                }, completion: nil)
+        }
+        
+        if IS_IPHONE4S || IS_IPHONE5 {
+            
+            notificationArrowTrailingConstraint.constant = 16.0
+            notificationBgtrailingConstraint.constant = 2.0
+            view.layoutIfNeeded()
+            
+        } else {
+            notificationArrowTrailingConstraint.constant = -38.0
+            notificationBgtrailingConstraint.constant = -50.0
+            view.layoutIfNeeded()
+            
+        }
+
+        
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
@@ -363,7 +418,19 @@ class MyProfileViewController: UIViewController {
         }
     }
     
+    //MARK: - NoticationList API
+    
+    func sendRequestForNotificationList() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/notification", requestType: HttpMethod.post), delegate: self, tag: Connection.notificationRequest)
+    }
+    
     //MARK: - Profile API
+    
     func sendRequestForProfile() {
         if !Globals.isInternetConnected() {
             return
@@ -580,6 +647,25 @@ class MyProfileViewController: UIViewController {
                     }
                 } else if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
+                        
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(Message.Error)
+                        }
+                        favoriteButton.selected = !favoriteButton.selected
+                    } else {
+                        dismissOnSessionExpire()
+                    }
+                }  else if connection.connectionTag == Connection.notificationRequest {
+                    if status == ResponseStatus.success {
+                        
+                        if let notifications = jsonResult["data"] as? NSArray {
+                            self.notificationListArray = notifications as! Array
+                            notificationTableView.reloadData()
+                        }
+
                         
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
@@ -839,5 +925,86 @@ extension MyProfileViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: 60.0, height: 22.0)
         }
         return CGSize(width: (collectionView.frame.size.width-6.0)/3.0, height: ((collectionView.frame.size.width-6.0)/3.0)+10.0)
+    }
+}
+
+
+extension MyProfileViewController : UITableViewDataSource {
+    
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return notificationListArray.count
+    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! NotificationCell
+        var imageUrl:String
+        cell.roundLabel.layer.cornerRadius = 10.0
+        cell.roundLabel.layer.borderColor = UIColor.clearColor().CGColor
+        cell.roundLabel.clipsToBounds=true
+        cell.profilePic.layer.cornerRadius = 25.0
+        cell.profilePic.layer.borderColor = UIColor.clearColor().CGColor
+        cell.profilePic.clipsToBounds=true
+        
+        if self.notificationListArray[indexPath.row].objectForKey("type") as! String == "training_req" {
+            
+            imageUrl = self.notificationListArray[indexPath.row].objectForKey("user_image") as! String
+            cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
+            cell.bodyLabel.text = "has requested for Sports"
+            
+        } else {
+            
+            imageUrl = self.notificationListArray[indexPath.row].objectForKey("trainer_image") as! String
+            cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("trainer_name") as? String
+            cell.bodyLabel.text = "has accepted your booking request"
+        }
+        
+            let imageurl = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
+            if imageurl.length != 0 {
+                if var imagesArray = Images.fetch(imageUrl as String) {
+                    let image      = imagesArray[0] as! Images
+                    let coverImage = UIImage(data: image.imageData)!
+                    cell.profilePic.image = UIImage(data: image.imageData)!
+                    cell.indicatorView.stopAnimating()
+                } else {
+                    if let imageURL = NSURL(string: imageurl as String){
+                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                            if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? NotificationCell {
+                                if error == nil {
+                                    let imageFromData:UIImage? = UIImage(data: data)
+                                    if let image  = imageFromData {
+                                        updatedCell.profilePic.image = image
+                                        Images.save(imageurl as String, imageData: data)
+                                    }
+                                }
+                                updatedCell.indicatorView.stopAnimating()
+                                updatedCell.indicatorView.hidesWhenStopped=true
+                            }
+                            cell.indicatorView.stopAnimating()
+                            cell.indicatorView.hidesWhenStopped=true
+                        }
+                    } else {
+                        cell.indicatorView.stopAnimating()
+                        cell.indicatorView.hidesWhenStopped=true
+                    }
+                }
+            } else {
+                cell.indicatorView.stopAnimating()
+                cell.indicatorView.hidesWhenStopped=true
+            }
+
+        return cell
+    }
+}
+
+extension MyProfileViewController : UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     }
 }

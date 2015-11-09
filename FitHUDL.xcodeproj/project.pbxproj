@@ -45,6 +45,8 @@
 		F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576A91BDDD9460072486B /* BookingSessionViewController.swift */; };
 		F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */; };
 		F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */; };
+		F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */; };
+		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
 		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
 		F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */; };
 		F3A2AD241BD4A73800DA6F7B /* RateFeedbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD221BD4A73800DA6F7B /* RateFeedbackCell.swift */; };
@@ -55,6 +57,8 @@
 		F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB341BB27D4A0070EDAF /* ViewController.swift */; };
 		F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3CDCB391BB27D4A0070EDAF /* Images.xcassets */; };
 		F3CDCB491BB27D4A0070EDAF /* FitHUDLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */; };
+		F3E266651BECCB2E00717724 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E266631BECCB2E00717724 /* NotificationCell.swift */; };
+		F3E266661BECCB2E00717724 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E266641BECCB2E00717724 /* NotificationCell.xib */; };
 		F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */; };
 		F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */; };
 		F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */; };
@@ -113,6 +117,8 @@
 		F38576A91BDDD9460072486B /* BookingSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingSessionViewController.swift; sourceTree = "<group>"; };
 		F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewCell.swift; sourceTree = "<group>"; };
 		F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookingTableViewCell.xib; sourceTree = "<group>"; };
+		F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
 		F38950051BCF94FD00ED0C77 /* DIDatepicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepicker.h; sourceTree = "<group>"; };
 		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
@@ -129,6 +135,8 @@
 		F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitHUDLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB471BB27D4A0070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitHUDLTests.swift; sourceTree = "<group>"; };
+		F3E266631BECCB2E00717724 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		F3E266641BECCB2E00717724 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopupViewController.swift; sourceTree = "<group>"; };
 		F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReviewCollectionViewCell.swift; sourceTree = "<group>"; };
 		F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserReviewCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -245,6 +253,8 @@
 				F3717C971BBB9FFF0038795A /* StarRateView.swift */,
 				F3A2AD261BD4A77000DA6F7B /* RateView.swift */,
 				F3A2AD281BD4A78600DA6F7B /* RateView.xib */,
+				F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */,
+				F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -252,6 +262,7 @@
 		F3438A761BB27E25001BA5E6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				F388D6961BEC517900E41540 /* Notification */,
 				F3B05B531BBA551700CA9ACA /* TabBarController */,
 				F305F5251BB9665D006BEFA2 /* Search */,
 				F305F5241BB96646006BEFA2 /* Feedback */,
@@ -274,6 +285,8 @@
 				F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */,
 				F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */,
 				F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */,
+				F3E266631BECCB2E00717724 /* NotificationCell.swift */,
+				F3E266641BECCB2E00717724 /* NotificationCell.xib */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -361,6 +374,14 @@
 				F37968F11BCE812E0074B57D /* SRMonthPicker.h */,
 			);
 			path = MonthPicker;
+			sourceTree = "<group>";
+		};
+		F388D6961BEC517900E41540 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Notification;
+			path = Login;
 			sourceTree = "<group>";
 		};
 		F38950041BCF94B100ED0C77 /* Calendar */ = {
@@ -528,6 +549,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */,
 				F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */,
 				F3003EA71BBAB071001354E3 /* OpenSans-Bold.ttf in Resources */,
 				F3A2AD251BD4A73800DA6F7B /* RateFeedbackCell.xib in Resources */,
@@ -539,6 +561,7 @@
 				F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */,
 				F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */,
 				F3003EA31BBA8117001354E3 /* UserReviewView.xib in Resources */,
+				F3E266661BECCB2E00717724 /* NotificationCell.xib in Resources */,
 				F3A2AD291BD4A78600DA6F7B /* RateView.xib in Resources */,
 				F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */,
 				F3438A9A1BB2845D001BA5E6 /* FacebookSDKStrings.bundle in Resources */,
@@ -589,6 +612,7 @@
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
 				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
 				F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */,
+				F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */,
 				F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */,
 				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
 				F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */,
@@ -602,6 +626,7 @@
 				F305F5271BB96691006BEFA2 /* MyProfileViewController.swift in Sources */,
 				F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */,
 				F3438A891BB27F50001BA5E6 /* FitHUDL.xcdatamodeld in Sources */,
+				F3E266651BECCB2E00717724 /* NotificationCell.swift in Sources */,
 				F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */,
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */,

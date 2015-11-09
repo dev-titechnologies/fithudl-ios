@@ -64,11 +64,9 @@ class FavoritesViewController: UIViewController {
                     if status == ResponseStatus.success {
                         if let favourites = jsonResult["details"] as? NSArray {
                             favouriteList_array = favourites as! Array
-                            println(favouriteList_array)
                             favourite_tableview.reloadData()
                         }
                         else {
-                            println("dfdsfdsfdf")
                             nofavourites_label.hidden=false
                         }
                         
