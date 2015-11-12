@@ -45,6 +45,8 @@
 		F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576A91BDDD9460072486B /* BookingSessionViewController.swift */; };
 		F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */; };
 		F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */; };
+		F3884C631BF2F8B500A62547 /* BookingRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */; };
+		F3884C671BF35DB300A62547 /* PackageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3884C661BF35DB300A62547 /* PackageViewController.swift */; };
 		F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */; };
 		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
 		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
@@ -117,6 +119,8 @@
 		F38576A91BDDD9460072486B /* BookingSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingSessionViewController.swift; sourceTree = "<group>"; };
 		F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewCell.swift; sourceTree = "<group>"; };
 		F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookingTableViewCell.xib; sourceTree = "<group>"; };
+		F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookingRequestViewController.swift; path = ../../CustomViews/BookingRequestViewController.swift; sourceTree = "<group>"; };
+		F3884C661BF35DB300A62547 /* PackageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageViewController.swift; sourceTree = "<group>"; };
 		F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
 		F38950051BCF94FD00ED0C77 /* DIDatepicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepicker.h; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 				F37968F31BCE81500074B57D /* EditProfileViewController.swift */,
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
 				F38576A91BDDD9460072486B /* BookingSessionViewController.swift */,
+				F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -269,6 +274,7 @@
 				F305F5231BB96646006BEFA2 /* Favorites */,
 				F305F5221BB951D8006BEFA2 /* Profile */,
 				F3438A781BB27E3A001BA5E6 /* Login */,
+				F3884C651BF35D9100A62547 /* Packages */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -374,6 +380,15 @@
 				F37968F11BCE812E0074B57D /* SRMonthPicker.h */,
 			);
 			path = MonthPicker;
+			sourceTree = "<group>";
+		};
+		F3884C651BF35D9100A62547 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F3884C661BF35DB300A62547 /* PackageViewController.swift */,
+			);
+			name = Packages;
+			path = Login;
 			sourceTree = "<group>";
 		};
 		F388D6961BEC517900E41540 /* Notification */ = {
@@ -611,6 +626,7 @@
 				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
 				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
+				F3884C631BF2F8B500A62547 /* BookingRequestViewController.swift in Sources */,
 				F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */,
 				F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */,
 				F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */,
@@ -618,6 +634,7 @@
 				F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */,
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
 				F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */,
+				F3884C671BF35DB300A62547 /* PackageViewController.swift in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
 				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
 				F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */,

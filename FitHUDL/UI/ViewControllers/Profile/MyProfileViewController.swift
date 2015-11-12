@@ -246,6 +246,11 @@ class MyProfileViewController: UIViewController {
         presentViewController(alertController, animated: true, completion: nil)
     }
     
+    
+    @IBAction func packagesButtonClicked(sender: AnyObject) {
+        performSegueWithIdentifier("segueToPackages", sender: self)
+    }
+    
     @IBAction func reviewBackButtonClicked(sender: UIButton) {
         reviewNextButton.enabled = true
         let currentIndexPath:Int = Int(reviewCollectionView.contentOffset.x/reviewCollectionView.frame.size.width)
@@ -271,7 +276,7 @@ class MyProfileViewController: UIViewController {
         }
         if calloutView.frame.size.height == 0 {
             UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 95.0)
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 152.0)
                 }, completion: nil)
         } else {
             UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -1006,5 +1011,10 @@ extension MyProfileViewController : UITableViewDataSource {
 extension MyProfileViewController : UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
+        controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        controller.notificationDictionary = self.notificationListArray[indexPath.row] as! NSMutableDictionary
+        presentViewController(controller, animated: true, completion: nil)
+        notificationBackgroundView.hidden = true
     }
 }
