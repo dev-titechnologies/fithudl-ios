@@ -65,6 +65,7 @@ struct Connection {
     static let bookingRequest = 24
     static let notificationRequest = 25
     static let bookingAcceptRequest = 26
+    static let packagesListRequest = 27
 }
 
 struct SportsLevel {

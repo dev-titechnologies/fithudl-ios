@@ -454,7 +454,6 @@ extension SearchViewController:UISearchBarDelegate {
             
              requestDictionary.setObject(self.userSelectedArray, forKey: "sportsList")
         }
-        println("search request Dictionary\(requestDictionary)")
         if !Globals.isInternetConnected() {
             return
         }

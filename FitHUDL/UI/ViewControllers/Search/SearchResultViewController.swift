@@ -73,9 +73,7 @@ class SearchResultViewController: UIViewController {
                             searchTableView.reloadData()
                         }
                         else {
-                            println("dfdsfdsfdf")
                         }
-                        
                         
                     }
                     else if status == ResponseStatus.error {
