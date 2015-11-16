@@ -389,7 +389,9 @@ class MyProfileViewController: UIViewController {
             starView.rating = 0.0
         }
         
-        if user.availableTimeArray.count <= 3 {
+        let filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+        
+        if filteredArray.count <= 3 {
             morebgView.hidden = true
             moreButton.hidden = true
         }
@@ -401,7 +403,7 @@ class MyProfileViewController: UIViewController {
             reviewNextButton.superview?.hidden = true
         }
         
-        if user.availableTimeArray.count == 0 {
+        if filteredArray.count == 0 {
             notimeLabel.hidden = false
             availableTimeCollectionView.hidden = true
         } else {
@@ -944,77 +946,71 @@ extension MyProfileViewController : UITableViewDataSource {
         
         return notificationListArray.count
     }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        
+
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! NotificationCell
         var imageUrl:String
-        cell.roundLabel.layer.cornerRadius = 10.0
-        cell.roundLabel.layer.borderColor = UIColor.clearColor().CGColor
-        cell.roundLabel.clipsToBounds=true
-        cell.profilePic.layer.cornerRadius = 25.0
-        cell.profilePic.layer.borderColor = UIColor.clearColor().CGColor
-        cell.profilePic.clipsToBounds=true
+        cell.roundLabel.layer.cornerRadius  = 10.0
+        cell.roundLabel.layer.borderColor   = UIColor.clearColor().CGColor
+        cell.roundLabel.clipsToBounds       = true
+        cell.profilePic.layer.cornerRadius  = 25.0
+        cell.profilePic.layer.borderColor   = UIColor.clearColor().CGColor
+        cell.profilePic.clipsToBounds       = true
         
-        if self.notificationListArray[indexPath.row].objectForKey("type") as! String == "training_req" {
-            
+        if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
             imageUrl = self.notificationListArray[indexPath.row].objectForKey("user_image") as! String
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
             cell.bodyLabel.text = "has requested for Sports"
-            
         } else {
-            
             imageUrl = self.notificationListArray[indexPath.row].objectForKey("trainer_image") as! String
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("trainer_name") as? String
             cell.bodyLabel.text = "has accepted your booking request"
         }
         
-            let imageurl = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
-            if imageurl.length != 0 {
-                if var imagesArray = Images.fetch(imageUrl as String) {
-                    let image      = imagesArray[0] as! Images
-                    let coverImage = UIImage(data: image.imageData)!
-                    cell.profilePic.image = UIImage(data: image.imageData)!
-                    cell.indicatorView.stopAnimating()
-                } else {
-                    if let imageURL = NSURL(string: imageurl as String){
-                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                            if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? NotificationCell {
-                                if error == nil {
-                                    let imageFromData:UIImage? = UIImage(data: data)
-                                    if let image  = imageFromData {
-                                        updatedCell.profilePic.image = image
-                                        Images.save(imageurl as String, imageData: data)
-                                    }
-                                }
-                                updatedCell.indicatorView.stopAnimating()
-                                updatedCell.indicatorView.hidesWhenStopped=true
-                            }
-                            cell.indicatorView.stopAnimating()
-                            cell.indicatorView.hidesWhenStopped=true
-                        }
-                    } else {
-                        cell.indicatorView.stopAnimating()
-                        cell.indicatorView.hidesWhenStopped=true
-                    }
-                }
-            } else {
+        let imageurl = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
+        if imageurl.length != 0 {
+            if var imagesArray = Images.fetch(imageUrl as String) {
+                let image      = imagesArray[0] as! Images
+                let coverImage = UIImage(data: image.imageData)!
+                cell.profilePic.image = UIImage(data: image.imageData)!
                 cell.indicatorView.stopAnimating()
-                cell.indicatorView.hidesWhenStopped=true
+            } else {
+                if let imageURL = NSURL(string: imageurl as String){
+                    let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                        if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? NotificationCell {
+                            if error == nil {
+                                let imageFromData:UIImage? = UIImage(data: data)
+                                if let image  = imageFromData {
+                                    updatedCell.profilePic.image = image
+                                    Images.save(imageurl as String, imageData: data)
+                                }
+                            }
+                            updatedCell.indicatorView.stopAnimating()
+                        }
+                        cell.indicatorView.stopAnimating()
+                    }
+                } else {
+                    cell.indicatorView.stopAnimating()
+                }
             }
+        } else {
+            cell.indicatorView.stopAnimating()
+        }
 
         return cell
     }
 }
 
 extension MyProfileViewController : UITableViewDelegate {
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
-        controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        controller.notificationDictionary = self.notificationListArray[indexPath.row] as! NSMutableDictionary
-        presentViewController(controller, animated: true, completion: nil)
-        notificationBackgroundView.hidden = true
+        if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
+            let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            controller.notificationDictionary = notificationListArray[indexPath.row] as! NSMutableDictionary
+            presentViewController(controller, animated: true, completion: nil)
+            notificationBackgroundView.hidden = true
+        }
     }
 }

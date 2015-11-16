@@ -53,18 +53,21 @@ class PackageViewController: UIViewController {
     
     //MARK: PackageList API 
     
-    func parsePackageListAPI() {
+    func parsePackageList() {
         
-        goldNameLabel.text = packageListArray[0].objectForKey("name") as? String
-        goldDollarLabel.text = (packageListArray[0].objectForKey("cost") as? String)! + "$"
-        goldDiscountLabel.text = "get a " + (packageListArray[0].objectForKey("discount") as? String)! + " discount"
+        goldNameLabel.text      = packageListArray[0].objectForKey("name") as? String
+        var cost                = packageListArray[0].objectForKey("cost") as? Int
+        goldDollarLabel.text    = "\(cost!)" + "$"
+        goldDiscountLabel.text  = "get a " + (packageListArray[0].objectForKey("discount") as? String)! + " discount"
         
-        silverNameLabel.text = packageListArray[1].objectForKey("name") as? String
-        silverDollarLabel.text = (packageListArray[1].objectForKey("cost") as? String)! + "$"
+        silverNameLabel.text     = packageListArray[1].objectForKey("name") as? String
+        cost                     = packageListArray[1].objectForKey("cost") as? Int
+        silverDollarLabel.text   = "\(cost!)" + "$"
         silverDiscountLabel.text = "get a " + (packageListArray[1].objectForKey("discount") as? String)! + " discount"
 
-        bronzeNameLabel.text = packageListArray[2].objectForKey("name") as? String
-        bronzeDollarLabel.text = (packageListArray[2].objectForKey("cost") as? String)! + "$"
+        bronzeNameLabel.text     = packageListArray[2].objectForKey("name") as? String
+        cost                     = packageListArray[1].objectForKey("cost") as? Int
+        bronzeDollarLabel.text   = "\(cost!)" + "$"
         bronzeDiscountLabel.text = "get a " + (packageListArray[2].objectForKey("discount") as? String)! + " discount"
 
     }
@@ -79,7 +82,7 @@ class PackageViewController: UIViewController {
     }
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
-        return connection.receiveData.length=0
+        connection.receiveData.length = 0
     }
     
     func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
@@ -87,7 +90,6 @@ class PackageViewController: UIViewController {
     }
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
-        
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         println(response)
         var error : NSError?
@@ -97,13 +99,11 @@ class PackageViewController: UIViewController {
                     if status == ResponseStatus.success {
                         if let packages = jsonResult["data"] as? NSArray {
                             packageListArray = packages as! Array
-                            self.parsePackageListAPI()
-                        }
-                        else {
+                            parsePackageList()
+                        } else {
                             
                         }
-                    }
-                    else if status == ResponseStatus.error {
+                    } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
@@ -116,17 +116,12 @@ class PackageViewController: UIViewController {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
-                }
-                else {
+                } else {
                     
-
                 }
-                
             }
         }
-        
         showLoadingView(false)
-        
     }
     
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {

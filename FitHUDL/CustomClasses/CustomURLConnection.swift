@@ -55,7 +55,7 @@ class CustomURLConnection: NSURLConnection {
         activityIndicatorView.startAnimating()
         let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
         if imageurl.length != 0 {
-            if var imagesArray = Images.fetch(url as String) {
+            if var imagesArray = Images.fetch(imageurl as String) {
                 let image      = imagesArray[0] as! Images
                 let coverImage = UIImage(data: image.imageData)!
                 imageView.image   =   UIImage(data: image.imageData)!

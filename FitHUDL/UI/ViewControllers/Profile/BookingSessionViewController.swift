@@ -43,7 +43,9 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
         datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter        = NSDateFormatter()
+        dateFormatter.dateFormat = "MMM yyyy"
+        monthButton.setTitle(dateFormatter.stringFromDate(NSDate()).uppercaseString, forState: .Normal)
         dateFormatter.dateFormat = "YYYY"
         monthPicker.minimumYear  = dateFormatter.stringFromDate(NSDate()).toInt()!
         monthPicker.maximumYear  = monthPicker.minimumYear+25

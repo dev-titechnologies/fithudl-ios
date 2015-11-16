@@ -61,12 +61,14 @@ class EditProfileViewController: UIViewController {
 
         timePicker.minimumDate = NSDate()
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter        = NSDateFormatter()
+        dateFormatter.dateFormat = "MMM yyyy"
+        monthButton.setTitle(dateFormatter.stringFromDate(NSDate()).uppercaseString, forState: .Normal)
         dateFormatter.dateFormat = "YYYY"
-        monthPick.minimumYear  = dateFormatter.stringFromDate(NSDate()).toInt()!
-        monthPick.maximumYear  = monthPick.minimumYear+25
-        monthPick.font         = UIFont(name: "Open-Sans", size: 17.0)
-        monthPick.fontColor    = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
+        monthPick.minimumYear    = dateFormatter.stringFromDate(NSDate()).toInt()!
+        monthPick.maximumYear    = monthPick.minimumYear+25
+        monthPick.font           = UIFont(name: "Open-Sans", size: 17.0)
+        monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPick.monthPickerDelegate = self
         
         nameTextField.text = appDelegate.user.name

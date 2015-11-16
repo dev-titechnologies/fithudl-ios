@@ -99,6 +99,11 @@ struct ErrorMessage {
     static let sessionOut   = "Current Session Expired!"
 }
 
+struct TrainingStatus {
+    static let requested = "training_req"
+    static let accepted  = "training_req_accepted"
+}
+
 class AppConstants: NSObject {
 
 }
