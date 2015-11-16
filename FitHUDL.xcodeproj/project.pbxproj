@@ -51,6 +51,9 @@
 		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
 		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
 		F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */; };
+		F39F4ACB1BF9BA3600056A0B /* SessionTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39F4ACA1BF9BA3600056A0B /* SessionTimerViewController.swift */; };
+		F39F4ACD1BF9C8B500056A0B /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39F4ACC1BF9C8B500056A0B /* TimerView.swift */; };
+		F39F4AD31BF9EE5600056A0B /* MZTimerLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F39F4AD21BF9EE5600056A0B /* MZTimerLabel.m */; };
 		F3A2AD241BD4A73800DA6F7B /* RateFeedbackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD221BD4A73800DA6F7B /* RateFeedbackCell.swift */; };
 		F3A2AD251BD4A73800DA6F7B /* RateFeedbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */; };
 		F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD261BD4A77000DA6F7B /* RateView.swift */; };
@@ -127,6 +130,10 @@
 		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
 		F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepickerDateView.m; sourceTree = "<group>"; };
+		F39F4ACA1BF9BA3600056A0B /* SessionTimerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionTimerViewController.swift; sourceTree = "<group>"; };
+		F39F4ACC1BF9C8B500056A0B /* TimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		F39F4AD11BF9EE5600056A0B /* MZTimerLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZTimerLabel.h; sourceTree = "<group>"; };
+		F39F4AD21BF9EE5600056A0B /* MZTimerLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MZTimerLabel.m; sourceTree = "<group>"; };
 		F3A2AD221BD4A73800DA6F7B /* RateFeedbackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateFeedbackCell.swift; sourceTree = "<group>"; };
 		F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateFeedbackCell.xib; sourceTree = "<group>"; };
 		F3A2AD261BD4A77000DA6F7B /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateView.swift; sourceTree = "<group>"; };
@@ -182,6 +189,7 @@
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
 				F38576A91BDDD9460072486B /* BookingSessionViewController.swift */,
 				F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */,
+				F39F4ACA1BF9BA3600056A0B /* SessionTimerViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -251,6 +259,7 @@
 		F3438A751BB27E25001BA5E6 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F39F4AD01BF9EE3E00056A0B /* Timer */,
 				F38950041BCF94B100ED0C77 /* Calendar */,
 				F37968EF1BCE80E50074B57D /* MonthPicker */,
 				F3003EA01BBA8105001354E3 /* UserReviewView.swift */,
@@ -260,6 +269,7 @@
 				F3A2AD281BD4A78600DA6F7B /* RateView.xib */,
 				F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */,
 				F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */,
+				F39F4ACC1BF9C8B500056A0B /* TimerView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -408,6 +418,15 @@
 				F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */,
 			);
 			path = Calendar;
+			sourceTree = "<group>";
+		};
+		F39F4AD01BF9EE3E00056A0B /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				F39F4AD11BF9EE5600056A0B /* MZTimerLabel.h */,
+				F39F4AD21BF9EE5600056A0B /* MZTimerLabel.m */,
+			);
+			path = Timer;
 			sourceTree = "<group>";
 		};
 		F3B05B531BBA551700CA9ACA /* TabBarController */ = {
@@ -643,13 +662,16 @@
 				F305F5271BB96691006BEFA2 /* MyProfileViewController.swift in Sources */,
 				F3717C981BBB9FFF0038795A /* StarRateView.swift in Sources */,
 				F3438A891BB27F50001BA5E6 /* FitHUDL.xcdatamodeld in Sources */,
+				F39F4ACD1BF9C8B500056A0B /* TimerView.swift in Sources */,
 				F3E266651BECCB2E00717724 /* NotificationCell.swift in Sources */,
 				F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */,
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */,
 				F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */,
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
+				F39F4AD31BF9EE5600056A0B /* MZTimerLabel.m in Sources */,
 				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
+				F39F4ACB1BF9BA3600056A0B /* SessionTimerViewController.swift in Sources */,
 				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -18,3 +18,4 @@
 #import "iCarousel.h"
 #import "SRMonthPicker.h"
 #import "DIDatePicker.h"
+#import "MZTimerLabel.h"

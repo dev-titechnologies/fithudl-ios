@@ -59,7 +59,7 @@ class EditProfileViewController: UIViewController {
         datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
         datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
 
-        timePicker.minimumDate = NSDate()
+        timePicker.minimumDate   = NSDate()
         
         let dateFormatter        = NSDateFormatter()
         dateFormatter.dateFormat = "MMM yyyy"
@@ -108,9 +108,9 @@ class EditProfileViewController: UIViewController {
         formatter.dateFormat = "hh:mm a"
         if dateString == currentDate {
             if tappedView == starttimeView {
-                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(1800)
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(TimeOut.sessionDuration)
             } else {
-                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(3600)
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(TimeOut.sessionDuration+TimeOut.sessionInterval)
             }
         } else {
             formatter.dateFormat = "hh:mm a"
@@ -128,14 +128,14 @@ class EditProfileViewController: UIViewController {
                 
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(1800))
+                var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(TimeOut.sessionDuration))
                 initialStart   = formatter.dateFromString(timeString)
             }
             if let end = initialEnd {
             
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(3600))
+                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(TimeOut.sessionDuration+TimeOut.sessionInterval))
                 initialEnd      = formatter.dateFromString(timeString)
             }
             var components = formatter.stringFromDate(initialStart!).componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
@@ -189,12 +189,12 @@ class EditProfileViewController: UIViewController {
         timeFormat.dateFormat = "hh.mm a"
         fromTime     = timeFormat.dateFromString(timeFormat.stringFromDate(fromTime!))
         toTime       = timeFormat.dateFromString(timeFormat.stringFromDate(toTime!))
-        var timeAfterInterval = fromTime?.dateByAddingTimeInterval(1800)
+        var timeAfterInterval = fromTime?.dateByAddingTimeInterval(TimeOut.sessionDuration)
         println(fromTime)
         println(timeAfterInterval)
         println(timeFormat.stringFromDate(timeAfterInterval!))
         println(timeFormat.stringFromDate(toTime!))
-        while timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(1800).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
+        while timeAfterInterval!.dateByAddingTimeInterval(TimeOut.sessionDuration).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(TimeOut.sessionDuration).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             let time = NSMutableDictionary()
             time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
             time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
@@ -202,8 +202,8 @@ class EditProfileViewController: UIViewController {
             if !timeArray.containsObject(time) {
                 timeArray.addObject(time)
             }
-            fromTime          = timeAfterInterval?.dateByAddingTimeInterval(1800)
-            timeAfterInterval = fromTime?.dateByAddingTimeInterval(1800)
+            fromTime          = timeAfterInterval?.dateByAddingTimeInterval(TimeOut.sessionDuration)
+            timeAfterInterval = fromTime?.dateByAddingTimeInterval(TimeOut.sessionDuration)
             println(fromTime)
             println(timeAfterInterval)
             println(timeFormat.stringFromDate(timeAfterInterval!))

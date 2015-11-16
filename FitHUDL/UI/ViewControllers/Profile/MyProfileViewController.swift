@@ -937,18 +937,16 @@ extension MyProfileViewController: UICollectionViewDelegateFlowLayout {
 
 
 extension MyProfileViewController : UITableViewDataSource {
-    
-    
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return notificationListArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! NotificationCell
         var imageUrl:String
         cell.roundLabel.layer.cornerRadius  = 10.0
@@ -959,11 +957,11 @@ extension MyProfileViewController : UITableViewDataSource {
         cell.profilePic.clipsToBounds       = true
         
         if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
-            imageUrl = self.notificationListArray[indexPath.row].objectForKey("user_image") as! String
+            imageUrl = notificationListArray[indexPath.row].objectForKey("user_image") as! String
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
             cell.bodyLabel.text = "has requested for Sports"
         } else {
-            imageUrl = self.notificationListArray[indexPath.row].objectForKey("trainer_image") as! String
+            imageUrl = notificationListArray[indexPath.row].objectForKey("trainer_image") as! String
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("trainer_name") as? String
             cell.bodyLabel.text = "has accepted your booking request"
         }
@@ -1010,7 +1008,11 @@ extension MyProfileViewController : UITableViewDelegate {
             controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             controller.notificationDictionary = notificationListArray[indexPath.row] as! NSMutableDictionary
             presentViewController(controller, animated: true, completion: nil)
-            notificationBackgroundView.hidden = true
+        } else {
+            let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            presentViewController(controller, animated: true, completion: nil)
         }
+        notificationBackgroundView.hidden = true
     }
 }

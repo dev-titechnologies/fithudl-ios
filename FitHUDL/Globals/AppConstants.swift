@@ -29,6 +29,7 @@ struct AppColor {
     static let textDisableColor = UIColor(red: 0, green: 170/255, blue: 155/255, alpha: 1.0)
     static let boxBorderColor   = UIColor(red: 242/255, green: 141/255, blue: 44/255, alpha: 1.0)
     static let badgeSilverColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1.0)
+    static let timerColor       = UIColor(red: 183/255, green: 183/255, blue: 183/255, alpha: 1.0)
 }
 
 struct Message {
@@ -39,6 +40,8 @@ struct Message {
 struct TimeOut {
     static let Image: NSTimeInterval = 60
     static let Data: NSTimeInterval  = 20
+    static let sessionDuration: NSTimeInterval = 1800
+    static let sessionInterval: NSTimeInterval = 1800
 }
 
 struct HttpMethod {
