@@ -50,8 +50,8 @@ class TimerView: UIView {
         let radius: CGFloat     = max(bounds.width, bounds.height)
         self.layer.cornerRadius = radius/2
         let arcWidth: CGFloat   = 2
-        let startAngle: CGFloat = 0.0
-        let endAngle: CGFloat   = CGFloat(2*M_PI)
+        let startAngle: CGFloat = CGFloat(-M_PI_2)
+        let endAngle: CGFloat   = CGFloat(3/2*M_PI)
         var path                = UIBezierPath(arcCenter: center, radius: radius/2-arcWidth/2, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         pathLayer.path          = path.CGPath
         pathLayer.fillColor     = UIColor.clearColor().CGColor

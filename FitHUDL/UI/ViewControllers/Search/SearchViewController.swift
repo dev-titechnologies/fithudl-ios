@@ -26,99 +26,86 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    var selectedIndexArray = NSMutableArray()
     var user: User!
-    var usersListArray = NSMutableArray()
+    
+    var selectedIndexArray  = NSMutableArray()
+    var usersListArray      = NSMutableArray()
     var searchString:String = ""
     var searchActive : Bool = false
-    var filtered = NSMutableArray()
-    var allSportsArray = NSMutableArray()
-    var searchResultArray = Array<NSDictionary>()
-    var sliderValue:Int=0
-    var locationManager = CLLocationManager()
+    var filtered            = NSMutableArray()
+    var allSportsArray      = NSMutableArray()
+    var searchResultArray   = Array<NSDictionary>()
+    var sliderValue:Int     = 0
+    var locationManager     = CLLocationManager()
+    var expertFlag:Bool     = false
+    var userSelectedArray   = NSMutableArray()
+    var count:Int           = 0
     var point: MKPointAnnotation! = MKPointAnnotation()
-    var expertFlag:Bool=false
-    var userSelectedArray = NSMutableArray()
-    
-    var count:Int=0
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         navigationController?.setStatusBarColor()
-        sportsCarousel.type = iCarouselType.Custom
+        sportsCarousel.type             = iCarouselType.Custom
         sportsCarousel.currentItemIndex = 0
-        tableView.layer.cornerRadius = 4.0
-        tableView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        userSelectedArray = NSMutableArray()
-       
-       
+        tableView.layer.cornerRadius    = 4.0
+        tableView.layer.borderColor     = UIColor.lightGrayColor().CGColor
+        userSelectedArray               = NSMutableArray()
+        
+        let searchField         = searchBar.valueForKey("searchField") as? UITextField
+        searchField?.textColor  = UIColor.whiteColor()
     }
+    
     func mapViewToch(getstureRecognizer : UITapGestureRecognizer){
         
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
-        mapView.removeAnnotations( annotationsToRemove )
-        let touchLocation = getstureRecognizer.locationInView(mapView)
-        let locationCoordinate = mapView.convertPoint(touchLocation, toCoordinateFromView: mapView)
-        self.point = MKPointAnnotation()
-        self.point.coordinate = locationCoordinate
+        mapView.removeAnnotations(annotationsToRemove)
+        let touchLocation       = getstureRecognizer.locationInView(mapView)
+        let locationCoordinate  = mapView.convertPoint(touchLocation, toCoordinateFromView: mapView)
+        self.point              = MKPointAnnotation()
+        self.point.coordinate   = locationCoordinate
         mapView.addAnnotation(self.point)
         
         var location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
         
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(locationMark, error) -> Void in
-          
             if error != nil {
                 println("Reverse geocoder failed with error" + error.localizedDescription)
                 return
             }
-            
             if locationMark.count > 0 {
                 let locationmark = locationMark[0] as! CLPlacemark
                 println("GEOO\(locationmark.locality)")
                 self.locationName.text = locationmark.locality
-            }
-            else {
+            } else {
                 println("Problem with the data received from geocoder")
             }
         })
         
     }
     override func viewDidAppear(animated: Bool) {
-        
         super.viewDidAppear(true)
-        
-        selectedIndexArray = NSMutableArray()
-        
-        allSportsArray = appDelegate.user.sportsArray
-        
+        selectedIndexArray      = NSMutableArray()
+        allSportsArray          = appDelegate.user.sportsArray
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
-        mapView.removeAnnotations( annotationsToRemove )
-
-        mapView.showsUserLocation = true
-        self.locationManager.delegate = self
-        
+        mapView.removeAnnotations(annotationsToRemove)
+        mapView.showsUserLocation       = true
+        self.locationManager.delegate   = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
         self.locationManager.requestWhenInUseAuthorization()
-        
         self.locationManager.startUpdatingLocation()
         
         var tapGesture = UITapGestureRecognizer(target: self, action: "mapViewToch:")
         self.mapView.addGestureRecognizer(tapGesture)
 
-        
         self.fetchUserListFromDb()
-        filtered = NSMutableArray()
-        mapView.delegate = self
-        searchButton.layer.borderColor=AppColor.statusBarColor.CGColor
-        searchButton.layer.borderWidth=1.0
-        searchButton.backgroundColor=UIColor.clearColor()
+        filtered            = NSMutableArray()
+        mapView.delegate    = self
+        searchButton.layer.borderColor  = AppColor.statusBarColor.CGColor
+        searchButton.layer.borderWidth  = 1.0
+        searchButton.backgroundColor    = UIColor.clearColor()
         
         count = 0
         self.sendRequestToGetUsersSports()
-        
-        
     }
     
     override func didReceiveMemoryWarning() {

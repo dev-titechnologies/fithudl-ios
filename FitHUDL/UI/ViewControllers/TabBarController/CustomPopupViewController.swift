@@ -35,7 +35,7 @@ class CustomPopupViewController: UIViewController {
         
         timeOkButton.layer.cornerRadius = 23.0
         timeOkButton.layer.borderWidth  = 2.0
-        timeOkButton.layer.borderColor  = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0).CGColor
+        timeOkButton.layer.borderColor  = AppColor.statusBarColor.CGColor
         
         
         switch (viewTag) {

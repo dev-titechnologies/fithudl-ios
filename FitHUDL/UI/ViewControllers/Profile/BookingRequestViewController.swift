@@ -35,14 +35,14 @@ class BookingRequestViewController: UIViewController {
         cancelButton.layer.borderColor = AppColor.statusBarColor.CGColor
         cancelButton.layer.borderWidth = 1.0
         
-        var heading : String = (notificationDictionary.objectForKey("sports_name") as? String)!
-        headingLabel.text = "Request for " + heading
+        var heading : String    = (notificationDictionary.objectForKey("sports_name") as? String)!
+        headingLabel.text       = "Request for " + heading
         var date : String       = (notificationDictionary.objectForKey("alloted_date") as? String)!
-        var startTime : String  = (notificationDictionary.objectForKey("start_time") as? String)!
-        var endTime : String    = (notificationDictionary.objectForKey("end_time") as? String)!
-        timeLabel.text = date + " at " + startTime + " to " + endTime
-        locationLabel.text = notificationDictionary.objectForKey("location") as? String
-        nameLabel.text = notificationDictionary.objectForKey("user_name") as? String
+        var startTime : String  = Globals.convertTimeTo12Hours((notificationDictionary.objectForKey("start_time") as? String)!)
+        var endTime : String    = Globals.convertTimeTo12Hours((notificationDictionary.objectForKey("end_time") as? String)!)
+        timeLabel.text          = date + " at " + startTime + " to " + endTime
+        locationLabel.text      = notificationDictionary.objectForKey("location") as? String
+        nameLabel.text          = notificationDictionary.objectForKey("user_name") as? String
 
     }
 
@@ -53,15 +53,14 @@ class BookingRequestViewController: UIViewController {
     
     @IBAction func acceptButtonClicked(sender: AnyObject) {
         bookingRequestStatus = 1
-        self.sendRequestToGetFavouriteList()
+        sendRequestToUpdateBooking()
     }
 
     @IBAction func rejectButtonClicked(sender: AnyObject) {
-        
         bookingRequestStatus = 2
-        self.sendRequestToGetFavouriteList()
-        
+        sendRequestToUpdateBooking()
     }
+    
     @IBAction func cancelButtonClicked(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
         
@@ -69,19 +68,20 @@ class BookingRequestViewController: UIViewController {
     
     //MARK: Booking Request API Call
     
-    func sendRequestToGetFavouriteList() {
-        let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(bookingRequestStatus, forKey: "session_status")
-        requestDictionary.setObject(notificationDictionary.objectForKey("request_id") as! Int, forKey: "booking_id")
+    func sendRequestToUpdateBooking() {
         if !Globals.isInternetConnected() {
             return
         }
         showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(bookingRequestStatus, forKey: "session_status")
+        requestDictionary.setObject(notificationDictionary.objectForKey("request_id") as! Int, forKey: "booking_id")
+
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/updateBookingStatus", requestType: HttpMethod.post),delegate: self,tag: Connection.bookingAcceptRequest)
     }
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
-        return connection.receiveData.length=0
+        connection.receiveData.length = 0
     }
     
     func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
@@ -89,7 +89,6 @@ class BookingRequestViewController: UIViewController {
     }
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
-        
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         println(response)
         var error : NSError?
@@ -98,8 +97,7 @@ class BookingRequestViewController: UIViewController {
                 if connection.connectionTag == Connection.bookingAcceptRequest {
                     if status == ResponseStatus.success {
                         self.dismissViewControllerAnimated(true, completion: nil)
-                    }
-                    else if status == ResponseStatus.error {
+                    } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
@@ -112,21 +110,16 @@ class BookingRequestViewController: UIViewController {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
-                }
-                else {
+                } else {
                     
                 }
             }
         }
-        
         showLoadingView(false)
-        
     }
     
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
         showLoadingView(false)
     }
-    
-
 }

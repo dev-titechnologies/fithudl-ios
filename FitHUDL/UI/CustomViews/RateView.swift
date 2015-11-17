@@ -23,153 +23,103 @@ class RateView: UIView {
     @IBOutlet weak var starFive: UIButton!
     
     var delegate : FeedbackRateDelegate?
-    let noStarImage   = UIImage(named: "emptystar")
-    let halfStarImage = UIImage(named: "halfstar")
-    let fullStarImage = UIImage(named: "fullstar")
     var view: UIView!
     
-    @IBAction func feedRate(sender: UIButton)
-    {
-        
-        let button_image = sender.imageForState(UIControlState.Normal)
+    @IBAction func feedRate(sender: UIButton) {
+        let selectedState = sender.selected
         
         if sender == starOne {
-            
-            if button_image == noStarImage {
-                
+            if !selectedState {
                 self.delegate?.rateData(1)
-                starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-                
-                
-            }
-            else
-            {
+            } else {
                 self.delegate?.rateData(0)
-                starOne.setImage(noStarImage, forState: UIControlState.Normal)
-                starTwo.setImage(noStarImage, forState: UIControlState.Normal)
-                starThree.setImage(noStarImage, forState: UIControlState.Normal)
-                starFour.setImage(noStarImage, forState: UIControlState.Normal)
-                starFive.setImage(noStarImage, forState: UIControlState.Normal)
+                starTwo.selected    = false
+                starThree.selected  = false
+                starFour.selected   = false
+                starFive.selected   = false
             }
-        }
-        else if sender == starTwo{
-            if button_image == noStarImage
-            {
+        } else if sender == starTwo {
+            if !selectedState {
                 self.delegate?.rateData(2)
-                starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-                starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-            }
-            else {
+                starOne.selected = true
+            } else {
                 self.delegate?.rateData(1)
-                starTwo.setImage(noStarImage, forState: UIControlState.Normal)
-                starThree.setImage(noStarImage, forState: UIControlState.Normal)
-                starFour.setImage(noStarImage, forState: UIControlState.Normal)
-                starFive.setImage(noStarImage, forState: UIControlState.Normal)
-                
+                starThree.selected  = false
+                starFour.selected   = false
+                starFive.selected   = false
             }
-            
-        }
-        else if sender == starThree {
-            if button_image == noStarImage{
+        } else if sender == starThree {
+            if !selectedState {
                 self.delegate?.rateData(3)
-                starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-                starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-                starThree.setImage(fullStarImage, forState: UIControlState.Normal)
-                
-            }
-            else {
+                starOne.selected    = true
+                starTwo.selected    = true
+            } else {
                 self.delegate?.rateData(2)
-                starThree.setImage(noStarImage, forState: UIControlState.Normal)
-                starFour.setImage(noStarImage, forState: UIControlState.Normal)
-                starFive.setImage(noStarImage, forState: UIControlState.Normal)
-                
+                starFour.selected   = false
+                starFive.selected   = false
             }
-        }
-        else if sender == starFour{
-            if button_image == noStarImage {
+        } else if sender == starFour{
+            if !selectedState {
                 self.delegate?.rateData(4)
-                starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-                starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-                starThree.setImage(fullStarImage, forState: UIControlState.Normal)
-                starFour.setImage(fullStarImage, forState: UIControlState.Normal)
-            }
-            else {
+                starOne.selected    = true
+                starTwo.selected    = true
+                starThree.selected  = true
+            } else {
                 self.delegate?.rateData(3)
-                starFour.setImage(noStarImage, forState: UIControlState.Normal)
-                starFive.setImage(noStarImage, forState: UIControlState.Normal)
+                starFive.selected   = false
             }
-        }
-        else if sender == starFive{
-            if button_image == noStarImage {
+        } else if sender == starFive{
+            if !selectedState {
                 self.delegate?.rateData(5)
-                starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-                starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-                starThree.setImage(fullStarImage, forState: UIControlState.Normal)
-                starFour.setImage(fullStarImage, forState: UIControlState.Normal)
-                starFive.setImage(fullStarImage, forState: UIControlState.Normal)
-            }
-            else {
+                starOne.selected    = true
+                starTwo.selected    = true
+                starThree.selected  = true
+                starFour.selected   = true
+            } else {
                 self.delegate?.rateData(4)
-                starFive.setImage(noStarImage, forState: UIControlState.Normal)
             }
-            
         }
+        sender.selected = !selectedState
     }
     
-    func showRateView(rateCount : Int)
-    {
+    func showRateView(rateCount : Int){
         switch(rateCount) {
-        case 0:
-            starOne.setImage(noStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(noStarImage, forState: UIControlState.Normal)
-            starThree.setImage(noStarImage, forState: UIControlState.Normal)
-            starFour.setImage(noStarImage, forState: UIControlState.Normal)
-            starFive.setImage(noStarImage, forState: UIControlState.Normal)
-            
-            break
         case 1:
-            starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(noStarImage, forState: UIControlState.Normal)
-            starThree.setImage(noStarImage, forState: UIControlState.Normal)
-            starFour.setImage(noStarImage, forState: UIControlState.Normal)
-            starFive.setImage(noStarImage, forState: UIControlState.Normal)
-            break
+            starOne.selected    = true
+            starTwo.selected    = false
+            starThree.selected  = false
+            starFour.selected   = false
+            starFive.selected   = false
         case 2:
-            starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-            starThree.setImage(noStarImage, forState: UIControlState.Normal)
-            starFour.setImage(noStarImage, forState: UIControlState.Normal)
-            starFive.setImage(noStarImage, forState: UIControlState.Normal)
-            break
-            
+            starOne.selected    = true
+            starTwo.selected    = true
+            starThree.selected  = false
+            starFour.selected   = false
+            starFive.selected   = false
         case 3:
-            starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-            starThree.setImage(fullStarImage, forState: UIControlState.Normal)
-            starFour.setImage(noStarImage, forState: UIControlState.Normal)
-            starFive.setImage(noStarImage, forState: UIControlState.Normal)
-            break
+            starOne.selected    = true
+            starTwo.selected    = true
+            starThree.selected  = true
+            starFour.selected   = false
+            starFive.selected   = false
         case 4:
-            starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-            starThree.setImage(fullStarImage, forState: UIControlState.Normal)
-            starFour.setImage(fullStarImage, forState: UIControlState.Normal)
-            starFive.setImage(noStarImage, forState: UIControlState.Normal)
-            break
+            starOne.selected    = true
+            starTwo.selected    = true
+            starThree.selected  = true
+            starFour.selected   = true
+            starFive.selected   = false
         case 5:
-            starOne.setImage(fullStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(fullStarImage, forState: UIControlState.Normal)
-            starThree.setImage(fullStarImage, forState: UIControlState.Normal)
-            starFour.setImage(fullStarImage, forState: UIControlState.Normal)
-            starFive.setImage(fullStarImage, forState: UIControlState.Normal)
-            break
+            starOne.selected    = true
+            starTwo.selected    = true
+            starThree.selected  = true
+            starFour.selected   = true
+            starFive.selected   = true
         default:
-            starOne.setImage(noStarImage, forState: UIControlState.Normal)
-            starTwo.setImage(noStarImage, forState: UIControlState.Normal)
-            starThree.setImage(noStarImage, forState: UIControlState.Normal)
-            starFour.setImage(noStarImage, forState: UIControlState.Normal)
-            starFive.setImage(noStarImage, forState: UIControlState.Normal)
-            break
+            starOne.selected    = false
+            starTwo.selected    = false
+            starThree.selected  = false
+            starFour.selected   = false
+            starFive.selected   = false
         }
         
     }

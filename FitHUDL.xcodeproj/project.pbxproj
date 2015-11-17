@@ -34,6 +34,7 @@
 		F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA31BB290B6001BA5E6 /* Globals.swift */; };
 		F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */; };
 		F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */; };
+		F35FAE591BFB3A3E00FDB777 /* BookingRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */; };
 		F36691631BCD072A00B74CFE /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36691621BCD072A00B74CFE /* Images.swift */; };
 		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
 		F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */; };
@@ -45,7 +46,6 @@
 		F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576A91BDDD9460072486B /* BookingSessionViewController.swift */; };
 		F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */; };
 		F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */; };
-		F3884C631BF2F8B500A62547 /* BookingRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */; };
 		F3884C671BF35DB300A62547 /* PackageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3884C661BF35DB300A62547 /* PackageViewController.swift */; };
 		F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */; };
 		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
@@ -110,6 +110,7 @@
 		F3438AA31BB290B6001BA5E6 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesListCell.swift; sourceTree = "<group>"; };
 		F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingRequestViewController.swift; sourceTree = "<group>"; };
 		F36691621BCD072A00B74CFE /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		F38576A91BDDD9460072486B /* BookingSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingSessionViewController.swift; sourceTree = "<group>"; };
 		F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewCell.swift; sourceTree = "<group>"; };
 		F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookingTableViewCell.xib; sourceTree = "<group>"; };
-		F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookingRequestViewController.swift; path = ../../CustomViews/BookingRequestViewController.swift; sourceTree = "<group>"; };
 		F3884C661BF35DB300A62547 /* PackageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageViewController.swift; sourceTree = "<group>"; };
 		F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
@@ -185,10 +185,10 @@
 		F305F5221BB951D8006BEFA2 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */,
 				F37968F31BCE81500074B57D /* EditProfileViewController.swift */,
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
 				F38576A91BDDD9460072486B /* BookingSessionViewController.swift */,
-				F3884C611BF2F8B500A62547 /* BookingRequestViewController.swift */,
 				F39F4ACA1BF9BA3600056A0B /* SessionTimerViewController.swift */,
 			);
 			path = Profile;
@@ -636,6 +636,7 @@
 				F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */,
 				F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */,
 				F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */,
+				F35FAE591BFB3A3E00FDB777 /* BookingRequestViewController.swift in Sources */,
 				F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */,
 				F3438A801BB27EBF001BA5E6 /* AppDelegate.swift in Sources */,
 				F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */,
@@ -645,7 +646,6 @@
 				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
 				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
-				F3884C631BF2F8B500A62547 /* BookingRequestViewController.swift in Sources */,
 				F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */,
 				F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */,
 				F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */,

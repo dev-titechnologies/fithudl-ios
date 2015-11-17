@@ -67,27 +67,22 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                 Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel)
             }
         }
-
+       
         favoriteButton.selected = user.isFavorite
         if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: profileImageView, activityIndicatorView: indicatorView)
         } else {
+            
         }
+        
         var datesArray  = NSSet(array:user.availableTimeArray.valueForKey("date") as! [String])
         for date in datesArray {
-            let filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
+            var filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
         }
-       
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillShow:"),
-            name: UIKeyboardWillShowNotification,
-            object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: Selector("keyboardWillHide:"),
-            name: UIKeyboardWillHideNotification,
-            object: nil)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     //MARK: KEYBOARD HANDLING
@@ -265,9 +260,9 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     func bookingAction(sender:UIButton) {
         
         let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(sender.tag) as! NSDictionary
-        let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
-        let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
-        let date            = Globals.convertTimeTo12Hours(time["date"] as! String)
+        let starttime       = Globals.convertTimeTo24Hours(time["time_starts"] as! String)
+        let endtime         = Globals.convertTimeTo24Hours(time["time_ends"] as! String)
+        let date            = time["date"] as! String
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(user.profileID, forKey: "trainer_id")
         
@@ -439,7 +434,11 @@ extension BookingSessionViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let datePicker = datePicker.selectedDate {
-            if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
+            if var timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
+                if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker) {
+                    let time = Globals.convertTime(NSDate())
+                    timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+                }
                 return timeArray.count
             }
         }
@@ -448,7 +447,12 @@ extension BookingSessionViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("bookCell") as! BookingTableViewCell
-        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
+        var timeArray       = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
+            let time = Globals.convertTime(NSDate())
+            timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+        }
+        let time            = timeArray.objectAtIndex(indexPath.item) as! NSDictionary
         let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
         let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
         cell.timeLabel.text = "\(starttime) to \(endtime)"

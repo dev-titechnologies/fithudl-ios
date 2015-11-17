@@ -68,6 +68,12 @@ class Globals: NSObject {
         return dateFormatter.stringFromDate(date)
     }
     
+    class func convertTime(time: NSDate) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.stringFromDate(time)
+    }
+    
     class func clearSession() {
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "API_TOKEN")
         Images.deleteImages()

@@ -1010,7 +1010,8 @@ extension MyProfileViewController : UITableViewDelegate {
             presentViewController(controller, animated: true, completion: nil)
         } else {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
-            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+            controller.sessionDictionary      = notificationListArray[indexPath.row] as NSDictionary
             presentViewController(controller, animated: true, completion: nil)
         }
         notificationBackgroundView.hidden = true
