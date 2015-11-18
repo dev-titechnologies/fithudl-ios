@@ -21,7 +21,7 @@ let IS_IPHONE6      = UIScreen.mainScreen().bounds.size.width == 375 ? true : fa
 let IS_IPHONE6PLUS  = UIScreen.mainScreen().bounds.size.width == 414 ? true : false
 let BIOTEXT_LENGTH  = 52
 let animateInterval: NSTimeInterval = 0.3
-
+let secondsValue: Int    = 60
 struct AppColor {
     static let statusBarColor  = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
     static let placeholderText = UIColor(red: 216/255, green: 1, blue: 251/255, alpha: 1.0)
@@ -40,8 +40,10 @@ struct Message {
 struct TimeOut {
     static let Image: NSTimeInterval = 60
     static let Data: NSTimeInterval  = 20
-    static let sessionDuration: NSTimeInterval = 1800
-    static let sessionInterval: NSTimeInterval = 1800
+//    static let sessionDuration: NSTimeInterval = 60//1800
+//    static let sessionInterval: NSTimeInterval = 1800
+    static let sessionDuration: String = "GENERAL_SESSION_DURATION"
+    static let sessionInterval: String = "GENERAL_BOOKING_INTERVAL"
 }
 
 struct HttpMethod {

@@ -43,7 +43,7 @@ class SessionTimerViewController: UIViewController {
         timerLabel.timerType = MZTimerLabelTypeTimer
         timerLabel.timeLabel = timerLabel
         timerLabel.delegate  = self
-        timerLabel.setCountDownTime(TimeOut.sessionDuration)
+        timerLabel.setCountDownTime(NSTimeInterval(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue*secondsValue))
         
         rateOkButton.layer.cornerRadius     = 23.0
         rateOkButton.layer.borderWidth      = 2.0
@@ -75,7 +75,7 @@ class SessionTimerViewController: UIViewController {
     }
     
     func showUserRateView() {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.contentView.hidden  = true
             self.rateView.hidden     = false
             self.closeButton.hidden  = false
@@ -247,5 +247,26 @@ extension SessionTimerViewController: MZTimerLabelDelegate {
     func timerLabel(timerLabel: MZTimerLabel!, finshedCountDownTimerWithTime countTime: NSTimeInterval) {
         statusLabel.text = "This session is complete."
         showSessionExtensionAlert()
+    }
+}
+
+extension SessionTimerViewController: UITextViewDelegate {
+    func textViewDidChange(textView: UITextView) {
+        if count(textView.text) == 0 {
+            placeholderLabel.hidden = false
+        } else {
+            placeholderLabel.hidden = true
+        }
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            if count(textView.text) == 0 {
+                placeholderLabel.hidden = false
+            }
+            return false
+        }
+        return true
     }
 }

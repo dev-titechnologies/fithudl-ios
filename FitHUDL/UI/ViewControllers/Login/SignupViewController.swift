@@ -89,7 +89,7 @@ class SignupViewController: UIViewController {
     @IBAction func genderButtonClicked(sender: UIButton) {
         genderButton.selected = !genderButton.selected
         if genderButton.selected {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.maleYConstraint.constant   = 40.0
                 self.femaleYConstraint.constant = -41.0
                 self.view.layoutIfNeeded()
@@ -99,7 +99,7 @@ class SignupViewController: UIViewController {
         } else {
             maleButton.selected     = false
             femaleButton.selected   = false
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.maleYConstraint.constant   = 0
                 self.femaleYConstraint.constant = 0
                 self.view.layoutIfNeeded()

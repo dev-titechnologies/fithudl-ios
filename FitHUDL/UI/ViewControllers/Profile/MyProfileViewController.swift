@@ -62,10 +62,12 @@ class MyProfileViewController: UIViewController {
     let calloutViewYAxis:CGFloat = 52.0
     let profileUser = User()
     var notificationListArray =  Array<NSDictionary>()
+    
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
     
     @IBOutlet weak var notificationTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
@@ -89,13 +91,13 @@ class MyProfileViewController: UIViewController {
         
         if let id = searchResultId {
         scrollViewBottomConstraint.constant = -65
-        carouselBackgroundView.constant=226.0
+        carouselBackgroundView.constant     = 226.0
         view.layoutIfNeeded()
         }
         if IS_IPHONE6PLUS {
             profileViewHeightConstraint.constant = 260.0
-            reviewTopConstraint.constant    = 30.0
-            reviewBottomConstraint.constant = 30.0
+            reviewTopConstraint.constant         = 30.0
+            reviewBottomConstraint.constant      = 30.0
             view.layoutIfNeeded()
         }
     
@@ -146,10 +148,7 @@ class MyProfileViewController: UIViewController {
         notificationTableView.layer.borderWidth = 0.5
         notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
         sendRequestForProfile()
-        
-        
-       
-
+        appDelegate.sendRequestToGetConfig()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -165,13 +164,9 @@ class MyProfileViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         if IS_IPHONE4S || IS_IPHONE5 {
-            
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 560.0)
-           
         } else {
-        
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
-           
         }
     }
     
@@ -233,7 +228,7 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func logoutButtonClicked(sender: UIButton) {
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
             }, completion: nil)
         let alertController = UIAlertController(title: "", message: "Do you wish to logout?", preferredStyle: UIAlertControllerStyle.Alert)
@@ -275,11 +270,11 @@ class MyProfileViewController: UIViewController {
             return
         }
         if calloutView.frame.size.height == 0 {
-            UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 152.0)
                 }, completion: nil)
         } else {
-            UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
                 }, completion: nil)
         }
@@ -291,14 +286,14 @@ class MyProfileViewController: UIViewController {
             
                 sender.tag = 1;
                 notificationBackgroundView.hidden=false
-                UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.notificationBackgroundView.frame = CGRect(x: 18.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 411.0)
                 self.notificationTableView.reloadData()
                 self.sendRequestForNotificationList()
                 }, completion: nil)
         } else {
                 sender.tag=0;
-                UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.notificationBackgroundView.hidden=true
                 }, completion: nil)
         }

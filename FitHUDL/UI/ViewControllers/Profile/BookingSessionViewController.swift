@@ -92,7 +92,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             var frame = bookingTableView.frame
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationBeginsFromCurrentState(true)
-            UIView.setAnimationDuration(0.3)
+            UIView.setAnimationDuration(animateInterval)
             frame.size.height -= keyboardSize.height
             bookingTableView.frame = frame
             if activeText != nil {
@@ -108,7 +108,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             var frame = bookingTableView.frame
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationBeginsFromCurrentState(true)
-            UIView.setAnimationDuration(0.3)
+            UIView.setAnimationDuration(animateInterval)
             frame.size.height += keyboardSize.height
             bookingTableView.frame = frame
             UIView.commitAnimations()

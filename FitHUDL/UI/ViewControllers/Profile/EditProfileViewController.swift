@@ -37,6 +37,8 @@ class EditProfileViewController: UIViewController {
     var initialStart: NSDate?   = nil
     var initialEnd: NSDate?     = nil
     let availSessionTime = NSMutableDictionary()
+    let duration = appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue * secondsValue
+    let interval = appDelegate.configDictionary[TimeOut.sessionInterval]!.integerValue * secondsValue
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,15 +108,16 @@ class EditProfileViewController: UIViewController {
         let currentDate      = Globals.convertDate(NSDate())
         let formatter        = NSDateFormatter()
         formatter.dateFormat = "hh:mm a"
+
         if dateString == currentDate {
             if tappedView == starttimeView {
-                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(TimeOut.sessionDuration)
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(NSTimeInterval(duration))
             } else {
-                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(TimeOut.sessionDuration+TimeOut.sessionInterval)
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(NSTimeInterval(duration)+NSTimeInterval(interval))
             }
         } else {
-            formatter.dateFormat = "hh:mm a"
-            timePicker.minimumDate = formatter.dateFromString("12:00 AM")
+            formatter.dateFormat    = "hh:mm a"
+            timePicker.minimumDate  = formatter.dateFromString("12:00 AM")
         }
     }
     
@@ -128,14 +131,14 @@ class EditProfileViewController: UIViewController {
                 
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(TimeOut.sessionDuration))
+                var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)))
                 initialStart   = formatter.dateFromString(timeString)
             }
             if let end = initialEnd {
             
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(TimeOut.sessionDuration+TimeOut.sessionInterval))
+                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)+NSTimeInterval(interval)))
                 initialEnd      = formatter.dateFromString(timeString)
             }
             var components = formatter.stringFromDate(initialStart!).componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
@@ -163,11 +166,11 @@ class EditProfileViewController: UIViewController {
         let minutes: NSInteger = time.minute
         var newDate:NSDate = NSDate()
         
-        if minutes > 0 && minutes < 30 {
+        if minutes > 0 && minutes <= 30 {
             value = 30-minutes
             let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval((60 * value) + minutes)
             newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
-        } else if minutes > 30 && minutes < 60 {
+        } else if minutes > 30 && minutes <= 60 {
             value = 60 - minutes
             let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval(60 * value)
             newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
@@ -189,12 +192,10 @@ class EditProfileViewController: UIViewController {
         timeFormat.dateFormat = "hh.mm a"
         fromTime     = timeFormat.dateFromString(timeFormat.stringFromDate(fromTime!))
         toTime       = timeFormat.dateFromString(timeFormat.stringFromDate(toTime!))
-        var timeAfterInterval = fromTime?.dateByAddingTimeInterval(TimeOut.sessionDuration)
-        println(fromTime)
-        println(timeAfterInterval)
-        println(timeFormat.stringFromDate(timeAfterInterval!))
-        println(timeFormat.stringFromDate(toTime!))
-        while timeAfterInterval!.dateByAddingTimeInterval(TimeOut.sessionDuration).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(TimeOut.sessionDuration).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
+        
+        var timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
+
+        while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             let time = NSMutableDictionary()
             time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
             time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
@@ -202,12 +203,8 @@ class EditProfileViewController: UIViewController {
             if !timeArray.containsObject(time) {
                 timeArray.addObject(time)
             }
-            fromTime          = timeAfterInterval?.dateByAddingTimeInterval(TimeOut.sessionDuration)
-            timeAfterInterval = fromTime?.dateByAddingTimeInterval(TimeOut.sessionDuration)
-            println(fromTime)
-            println(timeAfterInterval)
-            println(timeFormat.stringFromDate(timeAfterInterval!))
-            println(timeFormat.stringFromDate(toTime!))
+            fromTime          = timeAfterInterval?.dateByAddingTimeInterval(NSTimeInterval(duration))
+            timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
             continue
         }
         availSessionTime.setObject(timeArray, forKey: Globals.convertDate(datePicker.selectedDate))

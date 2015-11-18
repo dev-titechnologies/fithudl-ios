@@ -14,11 +14,14 @@ import CoreLocation
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
-    var sportsArray = NSMutableArray()
-    var deviceToken: String?
-    var locationManager = CLLocationManager()
     var currentLocation: CLLocation?
-    var user = User()
+    var deviceToken: String?
+    
+    var configDictionary    = NSMutableDictionary()
+    var sportsArray         = NSMutableArray()
+    var locationManager     = CLLocationManager()
+    var user                = User()
+   
     
 //    var sportsArray: NSMutableArray = [NSMutableDictionary(objects: ["Run", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Tennis", ""], forKeys: ["sport","level"]), NSMutableDictionary(objects: ["Cycle", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Workout", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Yoga", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Kayak", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Dance", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Walk", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Swim", ""], forKeys: ["sport", "level"]),NSMutableDictionary(objects: ["Calisthenics", ""], forKeys: ["sport", "level"])]
     
@@ -100,6 +103,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                     }
                                 UsersList.fetchUsersList()
                                 
+                            }
+                        }
+                    }
+                }
+            } else {
+                
+            }
+        }
+    }
+    
+    //MARK: - General Settings API
+    func sendRequestToGetConfig() {
+        let request = NSMutableURLRequest(URL: NSURL(string: SERVER_URL.stringByAppendingString("settings/generalSettings"))!)
+        request.HTTPMethod = HttpMethod.get
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            if error == nil {
+                if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
+                    println("generalSettings",jsonResult)
+                    if let status = jsonResult["status"] as? Int {
+                        if status == ResponseStatus.success {
+                            self.configDictionary.removeAllObjects()
+                            let configArray = jsonResult["data"] as! Array<NSMutableDictionary>
+                            for config in configArray {
+                                let value: AnyObject? = config["value"]
+                                self.configDictionary.setObject(value!, forKey: config["code"] as! String)
                             }
                         }
                     }
