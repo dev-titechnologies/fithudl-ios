@@ -281,37 +281,30 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func notificationsButtonClicked(sender: UIButton) {
-        
         if sender.tag == 0 {
-            
-                sender.tag = 1;
-                notificationBackgroundView.hidden=false
-                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            sender.tag = 1
+            notificationBackgroundView.hidden   = false
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.notificationBackgroundView.frame = CGRect(x: 18.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 411.0)
                 self.notificationTableView.reloadData()
                 self.sendRequestForNotificationList()
-                }, completion: nil)
+            }, completion: nil)
         } else {
-                sender.tag=0;
-                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.notificationBackgroundView.hidden=true
-                }, completion: nil)
+            sender.tag = 0
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.notificationBackgroundView.hidden  = true
+            }, completion: nil)
         }
         
         if IS_IPHONE4S || IS_IPHONE5 {
-            
             notificationArrowTrailingConstraint.constant = 16.0
-            notificationBgtrailingConstraint.constant = 2.0
+            notificationBgtrailingConstraint.constant    = 2.0
             view.layoutIfNeeded()
-            
         } else {
             notificationArrowTrailingConstraint.constant = -38.0
-            notificationBgtrailingConstraint.constant = -50.0
+            notificationBgtrailingConstraint.constant    = -50.0
             view.layoutIfNeeded()
-            
         }
-
-        
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {

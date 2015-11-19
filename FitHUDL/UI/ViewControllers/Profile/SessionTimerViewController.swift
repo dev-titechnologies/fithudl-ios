@@ -24,7 +24,14 @@ class SessionTimerViewController: UIViewController {
     @IBOutlet weak var rateOkButton: UIButton!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var rateView: UIView!
+    @IBOutlet weak var shareView: UIView!
+    @IBOutlet weak var sportsImageView: UIImageView!
+    @IBOutlet weak var shareLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var shareOkButton: UIButton!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
+    @IBOutlet weak var screenshotView: UIImageView!
     var sessionDictionary: NSDictionary!
     var starOne: UIButton!
     var starTwo: UIButton!
@@ -36,6 +43,7 @@ class SessionTimerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        appDelegate.configDictionary.setObject(1, forKey: TimeOut.sessionDuration)
         let radius        = max(circleView.frame.size.width,circleView.frame.size.height)
         circleView.layer.cornerRadius = CGFloat(radius)/2.0
         circleView.layer.borderWidth  = 2.0
@@ -48,6 +56,9 @@ class SessionTimerViewController: UIViewController {
         rateOkButton.layer.cornerRadius     = 23.0
         rateOkButton.layer.borderWidth      = 2.0
         rateOkButton.layer.borderColor      = AppColor.statusBarColor.CGColor
+        shareOkButton.layer.cornerRadius    = 23.0
+        shareOkButton.layer.borderWidth     = 2.0
+        shareOkButton.layer.borderColor     = AppColor.statusBarColor.CGColor
         commentTextView.layer.borderWidth   = 0.5
         commentTextView.layer.borderColor   = AppColor.statusBarColor.CGColor
         
@@ -64,8 +75,22 @@ class SessionTimerViewController: UIViewController {
             isTrainer = true
             nameLabel.text = sessionDictionary["user_name"] as? String
         }
-        startTimeLabel.text = "START TIME " + Globals.convertTimeTo12Hours((sessionDictionary["start_time"] as? String)!)
-        endTimeLabel.text   = "END TIME " + Globals.convertTimeTo12Hours((sessionDictionary["end_time"] as? String)!)
+        let startTime = Globals.convertTimeTo12Hours((sessionDictionary["start_time"] as? String)!)
+        let endTime = Globals.convertTimeTo12Hours((sessionDictionary["end_time"] as? String)!)
+        
+        startTimeLabel.text = "START TIME " + startTime
+        endTimeLabel.text   = "END TIME " + endTime
+        
+        if !isTrainer {
+            let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sessionDictionary.objectForKey("sports_id") as! Int])) as NSArray
+            let sportsUrl = (filteredArray.firstObject as! NSDictionary).objectForKey("logo") as! String
+            CustomURLConnection.downloadAndSetImage(sportsUrl, imageView: sportsImageView, activityIndicatorView: indicatorView)
+            let name        = sessionDictionary["user_name"] as! String
+            let sport       = (sessionDictionary["sports_name"] as! String).uppercaseString
+            shareLabel.text = "\(name) just completed a \(sport) session on"
+            timeLabel.text  = "Time: \(startTime) to \(endTime)"
+//            self.view.addSubview(Globals.createShareImage(sportsImageView.image!, shareText: "\(name) just completed a \(sport) session on"))
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -79,6 +104,14 @@ class SessionTimerViewController: UIViewController {
             self.contentView.hidden  = true
             self.rateView.hidden     = false
             self.closeButton.hidden  = false
+        })
+    }
+    
+    func showFBShareView() {
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.rateView.hidden     = true
+            self.closeButton.hidden  = false
+            self.shareOkButton.hidden = false
         })
     }
     
@@ -141,6 +174,13 @@ class SessionTimerViewController: UIViewController {
     
     @IBAction func rateOkButtonClicked(sender: UIButton) {
         sendRequestToRateUser()
+        if !isTrainer {
+            showFBShareView()
+        }
+    }
+    
+    @IBAction func shareOkButtonClicked(sender: UIButton) {
+        
     }
     
     @IBAction func closeButtonClicked(sender: UIButton) {
@@ -170,7 +210,6 @@ class SessionTimerViewController: UIViewController {
         if !Globals.isInternetConnected() {
             return
         }
-        showLoadingView(true)
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(userRate, forKey: "rating_count")
         requestDictionary.setObject(commentTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()), forKey: "rating_comment")

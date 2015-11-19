@@ -102,4 +102,48 @@ class Globals: NSObject {
         bioLabel.attributedText = bioTitle
     }
     
+    class func createShareImage(sportImage: UIImage, shareText: String) -> UIView {
+        let contentView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 260.0, height: 160.0))
+        
+        let bgImageView = UIImageView(image: UIImage(named: "popup_bg"))
+        bgImageView.frame           = CGRect(origin: CGPointZero, size: CGSize(width: 260.0, height: 160.0))
+        bgImageView.contentMode     = UIViewContentMode.ScaleAspectFill
+        bgImageView.clipsToBounds   = true
+        contentView.addSubview(bgImageView)
+        
+        let sportImageView   = UIImageView(image: sportImage)
+        sportImageView.frame = CGRect(origin: CGPoint(x: 8.0, y: 43.0), size: CGSize(width: 82.0, height: 82.0))
+        contentView.addSubview(sportImageView)
+        
+        let height      = getLabelHeight(shareText)
+        let shareLabel  = UILabel(frame: CGRect(origin: CGPoint(x: 95.0, y: (sportImageView.frame.origin.y+sportImageView.frame.size.height+height)/2.0), size: CGSize(width: 162.0, height: height)))
+        shareLabel.text = shareText
+        shareLabel.font = UIFont(name: "Open Sans", size: 13.0)
+        shareLabel.numberOfLines = 0
+        shareLabel.textColor = UIColor.whiteColor()
+        contentView.addSubview(shareLabel)
+        
+        let logo = UIImageView(image: UIImage(named: "app_logo"))
+        logo.frame = CGRect(origin: CGPoint(x: shareLabel.frame.origin.x+shareLabel.frame.size.width-logo.image!.size.width, y: shareLabel.frame.origin.y+shareLabel.frame.size.height+1), size: logo.image!.size)
+        contentView.addSubview(logo)
+        contentView.layer.cornerRadius = 5.0
+        return contentView
+//        return getScreenshot(contentView)
+    }
+    
+    private class func getLabelHeight(message: String) -> CGFloat {
+        let label = UILabel(frame: CGRect(origin: CGPointZero, size: CGSize(width: 162.0, height: 80.0)))
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Open Sans", size: 13.0)
+        label.text = message
+        label.sizeToFit()
+        return label.frame.height
+    }
+    
+    private class func getScreenshot(contentView: UIView) -> UIImage {
+        UIGraphicsBeginImageContext(contentView.frame.size)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return screenshot
+    }
 }
