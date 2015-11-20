@@ -259,10 +259,16 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
     func bookingAction(sender:UIButton) {
         
-        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(sender.tag) as! NSDictionary
-        let starttime       = Globals.convertTimeTo24Hours(time["time_starts"] as! String)
-        let endtime         = Globals.convertTimeTo24Hours(time["time_ends"] as! String)
-        let date            = time["date"] as! String
+//        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(sender.tag) as! NSDictionary
+        var timeArray       = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
+            let time  = Globals.convertTime(NSDate())
+            timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+        }
+        let time        = timeArray.objectAtIndex(sender.tag) as! NSDictionary
+        let starttime   = Globals.convertTimeTo24Hours(time["time_starts"] as! String)
+        let endtime     = Globals.convertTimeTo24Hours(time["time_ends"] as! String)
+        let date        = time["date"] as! String
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(user.profileID, forKey: "trainer_id")
         

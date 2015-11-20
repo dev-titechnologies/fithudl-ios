@@ -1177,7 +1177,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="shareOkButtonClicked:" destination="ENb-Gh-ava" eventType="touchUpInside" id="Z0J-9N-bCO"/>
+                                            <action selector="shareOkButtonClicked:" destination="ENb-Gh-ava" eventType="touchUpInside" id="wsa-vq-Vqx"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time: 07.00AM to 07.30AM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4h-Bi-vJJ">
@@ -1277,9 +1277,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NpQ-sA-Ugw">
-                                <rect key="frame" x="45" y="420" width="240" height="128"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1306,7 +1303,6 @@
                         <outlet property="placeholderLabel" destination="ozg-0x-T6D" id="Bva-Q7-I26"/>
                         <outlet property="rateOkButton" destination="G3d-2o-Kfs" id="EFV-Rz-0CH"/>
                         <outlet property="rateView" destination="aZP-hc-vcm" id="Pt8-bh-hR3"/>
-                        <outlet property="screenshotView" destination="NpQ-sA-Ugw" id="arB-8h-Kd5"/>
                         <outlet property="shareLabel" destination="2sx-ED-8Ay" id="vTf-1g-Db9"/>
                         <outlet property="shareOkButton" destination="xQ5-t5-edg" id="cqQ-vP-wF9"/>
                         <outlet property="shareView" destination="Zs5-Sc-MrN" id="YGe-oY-aeS"/>
@@ -4361,29 +4357,34 @@
                                         <rect key="frame" x="5" y="12" width="140" height="126"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdp-fM-APA">
-                                                <rect key="frame" x="9" y="67" width="124" height="50"/>
+                                                <rect key="frame" x="8" y="9" width="124" height="50"/>
                                                 <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="124" id="BaO-ha-K8W"/>
-                                                    <constraint firstAttribute="height" constant="50" id="plI-Kx-9v1"/>
+                                                    <constraint firstAttribute="width" constant="124" id="xUF-Cc-Vbp"/>
+                                                    <constraint firstAttribute="height" constant="50" id="zYl-x9-AWy"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                                <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Packages">
                                                     <color key="titleColor" red="0.0" green="0.58823529409999997" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" red="0.0" green="0.58823529411764708" blue="0.53333333333333333" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="packagesButtonClicked:" destination="uzi-1t-L5K" eventType="touchUpInside" id="q3M-pF-BRC"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u2b-ph-iO9">
-                                                <rect key="frame" x="8" y="9" width="124" height="50"/>
+                                                <rect key="frame" x="8" y="67" width="124" height="50"/>
                                                 <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="124" id="afn-WA-Ry9"/>
-                                                    <constraint firstAttribute="height" constant="50" id="cIX-cw-ZcU"/>
+                                                    <constraint firstAttribute="height" constant="50" id="ccb-Ti-x6P"/>
+                                                    <constraint firstAttribute="width" constant="124" id="h9B-Zc-GHM"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                                <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Logout">
                                                     <color key="titleColor" red="0.0" green="0.58823529409999997" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -4395,12 +4396,12 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="Bdp-fM-APA" firstAttribute="leading" secondItem="VK4-9P-E9c" secondAttribute="leading" constant="9" id="3Jd-Vg-YjJ"/>
+                                            <constraint firstItem="Bdp-fM-APA" firstAttribute="top" secondItem="VK4-9P-E9c" secondAttribute="top" constant="9" id="0vv-Mk-MEO"/>
+                                            <constraint firstItem="Bdp-fM-APA" firstAttribute="leading" secondItem="VK4-9P-E9c" secondAttribute="leading" constant="8" id="54l-Ju-gzn"/>
+                                            <constraint firstItem="u2b-ph-iO9" firstAttribute="top" secondItem="Bdp-fM-APA" secondAttribute="bottom" constant="8" id="HvS-aU-ArX"/>
                                             <constraint firstAttribute="width" constant="140" id="Var-RE-Ujn"/>
-                                            <constraint firstItem="u2b-ph-iO9" firstAttribute="leading" secondItem="VK4-9P-E9c" secondAttribute="leading" constant="8" id="gbl-xy-AFD"/>
-                                            <constraint firstItem="Bdp-fM-APA" firstAttribute="top" secondItem="u2b-ph-iO9" secondAttribute="bottom" constant="8" id="mIR-Ef-c4H"/>
-                                            <constraint firstItem="u2b-ph-iO9" firstAttribute="top" secondItem="VK4-9P-E9c" secondAttribute="top" constant="9" id="ph6-gy-xOn"/>
                                             <constraint firstAttribute="height" constant="126" id="qgl-Yz-Udo"/>
+                                            <constraint firstItem="u2b-ph-iO9" firstAttribute="leading" secondItem="VK4-9P-E9c" secondAttribute="leading" constant="8" id="zQ1-Nb-LM9"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -4420,7 +4421,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="7" y="10" width="290" height="400"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
                                                 <rect key="frame" x="102" y="11" width="87" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="TAc-CO-NF3"/>
@@ -4554,6 +4555,7 @@
                         <outlet property="notificationButton" destination="R9Y-nv-fAS" id="L0T-jz-Npj"/>
                         <outlet property="notificationTableView" destination="Pqj-Xy-K9s" id="ZkG-TG-tkA"/>
                         <outlet property="notimeLabel" destination="ny1-bY-8Ew" id="umz-38-DRq"/>
+                        <outlet property="packagesButton" destination="Bdp-fM-APA" id="oiN-ld-WC5"/>
                         <outlet property="profileViewHeightConstraint" destination="7DM-Qg-vaN" id="5CH-Xc-tbx"/>
                         <outlet property="rateLabel" destination="H9x-UZ-LJc" id="sUD-yB-72p"/>
                         <outlet property="reviewBackButton" destination="x7f-b1-0Qj" id="b8W-xB-hbX"/>

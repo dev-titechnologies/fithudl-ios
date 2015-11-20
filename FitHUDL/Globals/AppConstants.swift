@@ -9,6 +9,7 @@
 import UIKit
 
 let SERVER_URL = "http://fithudl.titechnologies.in/"
+let SHARE_URL  = ""
 //let Server_URL = "http://192.168.1.151:1337/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -22,6 +23,8 @@ let IS_IPHONE6PLUS  = UIScreen.mainScreen().bounds.size.width == 414 ? true : fa
 let BIOTEXT_LENGTH  = 52
 let animateInterval: NSTimeInterval = 0.3
 let secondsValue: Int    = 60
+let NOTIFSHARE = "fbShareNotification"
+
 struct AppColor {
     static let statusBarColor  = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
     static let placeholderText = UIColor(red: 216/255, green: 1, blue: 251/255, alpha: 1.0)
@@ -40,8 +43,6 @@ struct Message {
 struct TimeOut {
     static let Image: NSTimeInterval = 60
     static let Data: NSTimeInterval  = 20
-//    static let sessionDuration: NSTimeInterval = 60//1800
-//    static let sessionInterval: NSTimeInterval = 1800
     static let sessionDuration: String = "GENERAL_SESSION_DURATION"
     static let sessionInterval: String = "GENERAL_BOOKING_INTERVAL"
 }
@@ -72,6 +73,9 @@ struct Connection {
     static let bookingAcceptRequest = 26
     static let packagesListRequest  = 27
     static let userRatingRequest    = 28
+    static let shareImageRequest    = 29
+    static let sessionExtend        = 30
+    static let sessionComplete      = 31
 }
 
 struct SportsLevel {
@@ -109,6 +113,12 @@ struct TrainingStatus {
     static let requested = "training_req"
     static let accepted  = "training_req_accepted"
 }
+
+struct Session {
+    static let complete = 0
+    static let extend   = 1
+}
+
 
 class AppConstants: NSObject {
 

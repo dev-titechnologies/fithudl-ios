@@ -31,7 +31,6 @@ class SessionTimerViewController: UIViewController {
     @IBOutlet weak var shareOkButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
-    @IBOutlet weak var screenshotView: UIImageView!
     var sessionDictionary: NSDictionary!
     var starOne: UIButton!
     var starTwo: UIButton!
@@ -40,6 +39,8 @@ class SessionTimerViewController: UIViewController {
     var starFive: UIButton!
     var userRate = 0
     var isTrainer = false
+    var imagePath = ""
+    var notShared = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,7 +90,8 @@ class SessionTimerViewController: UIViewController {
             let sport       = (sessionDictionary["sports_name"] as! String).uppercaseString
             shareLabel.text = "\(name) just completed a \(sport) session on"
             timeLabel.text  = "Time: \(startTime) to \(endTime)"
-//            self.view.addSubview(Globals.createShareImage(sportsImageView.image!, shareText: "\(name) just completed a \(sport) session on"))
+            sendRequestforShareImageUrl(Globals.createShareImage(sportsImageView.image!, shareText: shareLabel.text!, parentView: self.view))
+            
         }
         // Do any additional setup after loading the view.
     }
@@ -108,10 +110,11 @@ class SessionTimerViewController: UIViewController {
     }
     
     func showFBShareView() {
+        sendRequestforShareImageUrl(Globals.createShareImage(sportsImageView.image!, shareText: shareLabel.text!, parentView: self.view))
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.rateView.hidden     = true
             self.closeButton.hidden  = false
-            self.shareOkButton.hidden = false
+            self.shareView.hidden    = false
         })
     }
     
@@ -180,16 +183,27 @@ class SessionTimerViewController: UIViewController {
     }
     
     @IBAction func shareOkButtonClicked(sender: UIButton) {
-        
+        if imagePath == "" {
+            showLoadingView(true)
+            notShared = true
+        } else {
+            dismissViewControllerAnimated(true, completion: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NOTIFSHARE, object: nil, userInfo: ["imageURL": SERVER_URL.stringByAppendingString(self.imagePath)])
+        }
     }
     
     @IBAction func closeButtonClicked(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
+        if !isTrainer && shareView.hidden {
+            showFBShareView()
+        } else {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     func showSessionExtensionAlert() {
         let alert = UIAlertController(title: "", message: "The session is complete. Do you wish to extend the session?", preferredStyle: UIAlertControllerStyle.Alert)
         let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
+//            self.sendRequestToExtendSession(Session.extend)
             self.timerView.layer.sublayers.removeLast()
             self.timerView.setNeedsDisplay()
             self.timerLabel.reset()
@@ -198,12 +212,29 @@ class SessionTimerViewController: UIViewController {
             self.statusLabel.text = "This session has been started."
         }
         let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (noAction) -> Void in
+//            self.sendRequestToExtendSession(Session.complete)
             self.showUserRateView()
-//            self.dismissViewControllerAnimated(true, completion: nil)
         }
         alert.addAction(yesAction)
         alert.addAction(noAction)
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: - API
+    
+    func sendRequestToExtendSession(extends: Int) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(sessionDictionary["booking_id"]!, forKey: "booking_id")
+        requestDictionary.setObject(extends, forKey: "session_extends")
+        var connectTag = Connection.sessionComplete
+        if extends == Session.extend {
+            connectTag = Connection.sessionExtend
+        }
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/sessionExtension", requestType: HttpMethod.post),delegate: self,tag: connectTag)
     }
     
     func sendRequestToRateUser() {
@@ -225,6 +256,17 @@ class SessionTimerViewController: UIViewController {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "rating/add", requestType: HttpMethod.post),delegate: self,tag: Connection.userRatingRequest)
     }
     
+    func sendRequestforShareImageUrl(shareImage: UIImage) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        let requestDictionary = NSMutableDictionary()
+        let imageData = UIImageJPEGRepresentation(shareImage, 1.0)
+        let imageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
+        requestDictionary.setObject(imageString, forKey: "image")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/generateImageUrl", requestType: HttpMethod.post),delegate: self,tag: Connection.shareImageRequest)
+    }
+    
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
     }
@@ -239,19 +281,59 @@ class SessionTimerViewController: UIViewController {
         var error : NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
-                if status == ResponseStatus.success {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else if status == ResponseStatus.error {
-                    if let message = jsonResult["message"] as? String {
-                        showDismissiveAlertMesssage(message)
+                if connection.connectionTag == Connection.userRatingRequest {
+                    if status == ResponseStatus.success {
+
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        }
                     } else {
-                        showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        }
+                    }
+                } else if connection.connectionTag == Connection.shareImageRequest {
+                    if status == ResponseStatus.success {
+                        if let path = jsonResult["imagePath"] as? String {
+                            imagePath = path
+                            if notShared {
+                                notShared = false
+                                dismissViewControllerAnimated(true, completion: nil)
+                                NSNotificationCenter.defaultCenter().postNotificationName(NOTIFSHARE, object: nil, userInfo: ["imageURL": SERVER_URL.stringByAppendingString(self.imagePath)])
+                            }
+                        } else {
+                            showDismissiveAlertMesssage("No image path available")
+                        }
                     }
                 } else {
-                    if let message = jsonResult["message"] as? String {
-                        showDismissiveAlertMesssage(message)
+                    if status == ResponseStatus.success {
+                        if connection.connectionTag == Connection.sessionExtend {
+                            timerView.layer.sublayers.removeLast()
+                            timerView.setNeedsDisplay()
+                            timerLabel.reset()
+                            timerView.resetView()
+                            timerLabel.start()
+                            statusLabel.text = "This session has been started."
+                        } else if connection.connectionTag == Connection.sessionComplete {
+                            showUserRateView()
+                        }
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        }
                     } else {
-                        showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        }
                     }
                 }
             }

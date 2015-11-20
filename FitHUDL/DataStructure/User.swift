@@ -18,6 +18,8 @@ class User: NSObject {
     var usageCount: Int?
     var rating: String?
     var isFavorite = false
+    var walletBalance: String?
+    var isVerified = 0
     var availableTimeArray  = NSMutableArray()
     var userReviewsArray    = NSMutableArray()
     var sportsArray         = NSMutableArray()

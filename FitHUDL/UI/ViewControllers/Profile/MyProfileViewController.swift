@@ -63,9 +63,9 @@ class MyProfileViewController: UIViewController {
     let profileUser = User()
     var notificationListArray =  Array<NSDictionary>()
     
+    @IBOutlet weak var packagesButton: UIButton!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
-    
     @IBOutlet weak var notificationTableView: UITableView!
     
     override func viewDidLoad() {
@@ -102,7 +102,6 @@ class MyProfileViewController: UIViewController {
         }
     
         if let id = profileID {
-            bookView.hidden            = false
             favoriteButton.hidden      = false
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
@@ -322,6 +321,14 @@ class MyProfileViewController: UIViewController {
     func populateProfileContents(user: User) {
         nameLabel.text = user.name
         favoriteButton.selected = user.isFavorite
+        packagesButton.enabled = Bool(appDelegate.user.isVerified)
+        if let id = profileID {
+            if Bool(appDelegate.user.isVerified) == true {
+                bookView.hidden = false
+            } else {
+                bookView.hidden = true
+            }
+        }
         if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
         } else {
@@ -469,6 +476,8 @@ class MyProfileViewController: UIViewController {
             profileUser.profileID  = responseDictionary["profile_id"] as! Int
             profileUser.name       = responseDictionary["profile_name"] as! String
             profileUser.email      = responseDictionary["email"] as! String
+            profileUser.isVerified = responseDictionary["user_verified"] as! Int
+            profileUser.walletBalance = responseDictionary["wallet_balance"] as? String
             if let imageUrl = responseDictionary["profile_image"] as? String {
                 profileUser.imageURL = imageUrl
             } else {
@@ -521,8 +530,6 @@ class MyProfileViewController: UIViewController {
                         sport.setObject("", forKey: "expert_level")
                     }
                     profileUser.sportsArray.addObject(sport)
-                    
-                   
                 }
             }
             profileUser.isFavorite = responseDictionary["favourite"] as! Bool
@@ -530,6 +537,8 @@ class MyProfileViewController: UIViewController {
             appDelegate.user.profileID  = responseDictionary["profile_id"] as! Int
             appDelegate.user.name       = responseDictionary["profile_name"] as! String
             appDelegate.user.email      = responseDictionary["email"] as! String
+            appDelegate.user.isVerified = responseDictionary["user_verified"] as! Int
+            appDelegate.user.walletBalance = responseDictionary["wallet_balance"] as? String
             if let imageUrl = responseDictionary["profile_image"] as? String {
                 appDelegate.user.imageURL = imageUrl
             } else {
@@ -700,6 +709,13 @@ class MyProfileViewController: UIViewController {
         }
         sports!.setObject(level, forKey: "expert_level")
         sendRequestForUpdateSportsLevel(sports!, type: type)
+    }
+    
+    func shareOnFB(notification: NSNotification) {
+        let info     = notification.userInfo as! Dictionary<String, String>
+        let imageURL = info["imageURL"]
+        Globals.showShareDialogBox(imageURL!, parentController: self)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -1000,6 +1016,7 @@ extension MyProfileViewController : UITableViewDelegate {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
             controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
             controller.sessionDictionary      = notificationListArray[indexPath.row] as NSDictionary
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareOnFB:", name: NOTIFSHARE, object: nil)
             presentViewController(controller, animated: true, completion: nil)
         }
         notificationBackgroundView.hidden = true
