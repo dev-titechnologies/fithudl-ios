@@ -32,6 +32,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sendRequestToGetBookingSessions()
         sportsCarousel.type = .Custom
         let nib  = UINib(nibName: "BookingTableViewCell", bundle: nil)
         bookingTableView.registerNib(nib, forCellReuseIdentifier: "bookCell")
@@ -74,13 +75,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         } else {
             
         }
-        
-        var datesArray  = NSSet(array:user.availableTimeArray.valueForKey("date") as! [String])
-        for date in datesArray {
-            var filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
-            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
-        }
-        
+    
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -95,8 +90,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             UIView.setAnimationDuration(animateInterval)
             frame.size.height -= keyboardSize.height
             bookingTableView.frame = frame
-            if activeText != nil {
-                let rect = bookingTableView.convertRect(activeText.bounds, fromView: activeText)
+            if let textField = activeText {
+                let rect = bookingTableView.convertRect(textField.bounds, fromView: textField)
                 bookingTableView.scrollRectToVisible(rect, animated: false)
             }
             UIView.commitAnimations()
@@ -114,22 +109,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             UIView.commitAnimations()
         }
     }
-    
-  //MARK: TextField Delegate & DataSourse Method
-    
-    func textFieldDidBeginEditing(textField: UITextField) {
-        activeText = textField
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        //activeText = nil
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        activeText.resignFirstResponder()
-        return true
-    }
-    
+
     func dateValueChanged(collectionView: UICollectionView) {
         bookingTableView.reloadData()
     }
@@ -142,6 +122,17 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     }
     
    //MARK: Unfavourite API
+    
+    func sendRequestToGetBookingSessions() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(user.profileID, forKey: "user_id")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/userBookingSessions", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionsList)
+    }
     
     func sendRequestToManageFavorite(favorite: Int) {
         if !Globals.isInternetConnected() {
@@ -185,7 +176,13 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func cancelViewTapped(sender: UITapGestureRecognizer) {
-        
+        selectedIndexArray.removeAllObjects()
+        sportsCarousel.reloadData()
+        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        for time in timeArray {
+            time.setObject("", forKey: "location")
+        }
+        bookingTableView.reloadData()
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
@@ -198,8 +195,6 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     @IBAction func backButtonClicked(sender: UIButton) {
         navigationController?.popViewControllerAnimated(true)
     }
-    
-    
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
@@ -240,6 +235,14 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                     } else {
                         dismissOnSessionExpire()
                     }
+                } else if connection.connectionTag == Connection.sessionsList {
+                    if let data = jsonResult["data"] as? NSArray {
+                        var datesArray  = NSSet(array:data.valueForKey("date") as! [String])
+                        for date in datesArray {
+                            var filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
+                            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
+                        }
+                    }
                 }
             }
         }
@@ -258,8 +261,14 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     }
     
     func bookingAction(sender:UIButton) {
+        let requestDictionary = NSMutableDictionary()
+        if  selectedIndexArray.count > 0 {
+            requestDictionary.setObject(selectedIndexArray.objectAtIndex(0), forKey: "sports_id")
+        } else {
+            UIAlertView(title: "Please Select A Sports", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            return
+        }
         
-//        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(sender.tag) as! NSDictionary
         var timeArray       = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
         if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
             let time  = Globals.convertTime(NSDate())
@@ -269,26 +278,22 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         let starttime   = Globals.convertTimeTo24Hours(time["time_starts"] as! String)
         let endtime     = Globals.convertTimeTo24Hours(time["time_ends"] as! String)
         let date        = time["date"] as! String
-        let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(user.profileID, forKey: "trainer_id")
         
-        if  selectedIndexArray.count > 0 {
-            requestDictionary.setObject(selectedIndexArray.objectAtIndex(0), forKey: "sports_id")
-         } else {
-            UIAlertView(title: "Please Select A Sports", message: "", delegate: self, cancelButtonTitle: "OK").show()
-            return
-        }
+        requestDictionary.setObject(user.profileID, forKey: "trainer_id")
         requestDictionary.setObject(starttime, forKey: "start_time")
         requestDictionary.setObject(endtime, forKey: "end_time")
         requestDictionary.setObject(date, forKey: "session_date")
-                
-        if  (activeText != nil) {
-            requestDictionary.setObject(activeText.text, forKey: "location")
+        if let place = time["location"] as? String {
+            if place == "" {
+                UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
+                return
+            } else {
+                requestDictionary.setObject(place, forKey: "location")
+            }
         } else {
             UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
         }
-        
         if !Globals.isInternetConnected() {
             return
         }
@@ -446,15 +451,22 @@ extension BookingSessionViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("bookCell") as! BookingTableViewCell
-        var timeArray       = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        let cell        = tableView.dequeueReusableCellWithIdentifier("bookCell") as! BookingTableViewCell
+        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
         if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
-            let time = Globals.convertTime(NSDate())
-            timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+            let time    = Globals.convertTime(NSDate())
+            timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
         }
-        let time            = timeArray.objectAtIndex(indexPath.item) as! NSDictionary
-        let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
-        let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
+        let time        = timeArray.objectAtIndex(indexPath.item) as! NSDictionary
+        let starttime   = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
+        let endtime     = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
+        
+        if let place = time["location"] as? String {
+            cell.locationTextField.text = place
+        } else {
+            cell.locationTextField.text = ""
+        }
+        
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.font = UIFont(name: "OpenSans", size: 12.0)
         cell.locationTextField.delegate = self
@@ -466,4 +478,42 @@ extension BookingSessionViewController: UITableViewDataSource {
 
 extension BookingSessionViewController: UITableViewDelegate {
 
+}
+
+extension BookingSessionViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(textField: UITextField) {
+        activeText = textField
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
+            let time    = Globals.convertTime(NSDate())
+            timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+        }
+        let cell        = textField.superview?.superview as! BookingTableViewCell
+        let indexPath   = bookingTableView.indexPathForCell(cell)
+        let session     = timeArray.objectAtIndex(indexPath!.row) as! NSMutableDictionary
+        session.setObject(textField.text, forKey: "location")
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let text        = textField.text+string
+        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
+            let time    = Globals.convertTime(NSDate())
+            timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+        }
+        let cell        = textField.superview?.superview as! BookingTableViewCell
+        let indexPath   = bookingTableView.indexPathForCell(cell)
+        let session     = timeArray.objectAtIndex(indexPath!.row) as! NSMutableDictionary
+        session.setObject(text, forKey: "location")
+        return true
+    }
+    
 }
