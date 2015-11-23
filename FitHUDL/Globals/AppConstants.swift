@@ -76,6 +76,7 @@ struct Connection {
     static let shareImageRequest    = 29
     static let sessionExtend        = 30
     static let sessionComplete      = 31
+    static let sessionsList         = 32
 }
 
 struct SportsLevel {

@@ -91,12 +91,15 @@ class SessionTimerViewController: UIViewController {
             shareLabel.text = "\(name) just completed a \(sport) session on"
             timeLabel.text  = "Time: \(startTime) to \(endTime)"
             sendRequestforShareImageUrl(Globals.createShareImage(sportsImageView.image!, shareText: shareLabel.text!, parentView: self.view))
-            
         }
         // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear(animated: Bool) {
+        let timer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(secondsValue*1), target: self, selector: Selector("startTimer"), userInfo: nil, repeats: false)
+    }
+   
+    func startTimer() {
         timerLabel.start()
         timerView.resetView()
     }
@@ -203,17 +206,17 @@ class SessionTimerViewController: UIViewController {
     func showSessionExtensionAlert() {
         let alert = UIAlertController(title: "", message: "The session is complete. Do you wish to extend the session?", preferredStyle: UIAlertControllerStyle.Alert)
         let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
-//            self.sendRequestToExtendSession(Session.extend)
-            self.timerView.layer.sublayers.removeLast()
-            self.timerView.setNeedsDisplay()
-            self.timerLabel.reset()
-            self.timerView.resetView()
-            self.timerLabel.start()
-            self.statusLabel.text = "This session has been started."
+            self.sendRequestToExtendSession(Session.extend)
+//            self.timerView.layer.sublayers.removeLast()
+//            self.timerView.setNeedsDisplay()
+//            self.timerLabel.reset()
+//            self.timerView.resetView()
+//            self.timerLabel.start()
+//            self.statusLabel.text = "This session has been started."
         }
         let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (noAction) -> Void in
-//            self.sendRequestToExtendSession(Session.complete)
-            self.showUserRateView()
+            self.sendRequestToExtendSession(Session.complete)
+//            self.showUserRateView()
         }
         alert.addAction(yesAction)
         alert.addAction(noAction)

@@ -135,6 +135,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -1485,6 +1487,7 @@
                         <segue destination="D6X-NE-lnK" kind="relationship" relationship="viewControllers" id="72T-eY-DtE"/>
                         <segue destination="XQG-Rv-WkZ" kind="relationship" relationship="viewControllers" id="XMS-qh-NhS"/>
                         <segue destination="QWp-ym-LjH" kind="relationship" relationship="viewControllers" id="Fj0-Fc-VB9"/>
+                        <segue destination="3tN-2h-nvM" kind="relationship" relationship="viewControllers" id="LLM-s5-sUM"/>
                         <segue destination="c3F-6r-Y5M" kind="relationship" relationship="viewControllers" id="Q8m-OK-3iB"/>
                     </connections>
                 </tabBarController>
@@ -1823,6 +1826,101 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iAY-sR-MqC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1275" y="1845"/>
+        </scene>
+        <!--Booking History View Controller-->
+        <scene sceneID="MsD-5j-M5z">
+            <objects>
+                <viewController id="ct6-K0-JXl" customClass="BookingHistoryViewController" customModule="FitHUDL" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Bkt-bz-56Y"/>
+                        <viewControllerLayoutGuide type="bottom" id="aCh-jG-iBd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bNo-JR-t3Y">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5DA-hs-6k2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="JcW-UB-GZ8">
+                                        <rect key="frame" x="15" y="11" width="291" height="29"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="7Ae-y4-5DF"/>
+                                        </constraints>
+                                        <segments>
+                                            <segment title="My bookings" width="145"/>
+                                            <segment title="Bookings" width="145"/>
+                                        </segments>
+                                        <color key="tintColor" red="0.0" green="0.49803921568627452" blue="0.43529411764705883" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="segmentValueChanged:" destination="ct6-K0-JXl" eventType="valueChanged" id="OE1-SV-taZ"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Iw0-SL-0Wc"/>
+                                    <constraint firstAttribute="centerX" secondItem="JcW-UB-GZ8" secondAttribute="centerX" constant="-0.5" id="QXD-Um-0Ei"/>
+                                    <constraint firstItem="JcW-UB-GZ8" firstAttribute="top" secondItem="5DA-hs-6k2" secondAttribute="top" constant="11" id="d9d-Lb-2wq"/>
+                                </constraints>
+                            </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No bookings available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xMD-Ex-cxl">
+                                <rect key="frame" x="30" y="217" width="260" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="260" id="1le-QV-lft"/>
+                                    <constraint firstAttribute="height" constant="21" id="44S-Ll-T4h"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KMM-ma-ZOm">
+                                <rect key="frame" x="0.0" y="50" width="320" height="407"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="ct6-K0-JXl" id="TXx-8k-NcP"/>
+                                    <outlet property="delegate" destination="ct6-K0-JXl" id="fIE-mh-LO6"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aCh-jG-iBd" firstAttribute="top" secondItem="KMM-ma-ZOm" secondAttribute="bottom" constant="-2" id="8Vw-nQ-PNn"/>
+                            <constraint firstAttribute="trailing" secondItem="KMM-ma-ZOm" secondAttribute="trailing" id="Eyx-fL-qcC"/>
+                            <constraint firstItem="5DA-hs-6k2" firstAttribute="leading" secondItem="bNo-JR-t3Y" secondAttribute="leading" id="KCp-rh-a1K"/>
+                            <constraint firstAttribute="trailing" secondItem="5DA-hs-6k2" secondAttribute="trailing" id="QDZ-oh-Ewi"/>
+                            <constraint firstItem="KMM-ma-ZOm" firstAttribute="top" secondItem="Bkt-bz-56Y" secondAttribute="bottom" constant="50" id="S74-Dp-RKC"/>
+                            <constraint firstAttribute="centerY" secondItem="xMD-Ex-cxl" secondAttribute="centerY" id="eKK-cA-tx1"/>
+                            <constraint firstItem="5DA-hs-6k2" firstAttribute="top" secondItem="Bkt-bz-56Y" secondAttribute="bottom" id="ePj-b4-jbX"/>
+                            <constraint firstAttribute="centerX" secondItem="xMD-Ex-cxl" secondAttribute="centerX" id="hqW-U1-jCh"/>
+                            <constraint firstItem="KMM-ma-ZOm" firstAttribute="leading" secondItem="bNo-JR-t3Y" secondAttribute="leading" id="lkB-V9-Qwe"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="aIo-gN-Nom">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="d6S-LQ-gHJ">
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BOOKING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwC-Y0-lwT">
+                                    <rect key="frame" x="0.0" y="0.0" width="128" height="33"/>
+                                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="bookingSegmentControl" destination="JcW-UB-GZ8" id="brz-bV-rA5"/>
+                        <outlet property="historyTableView" destination="KMM-ma-ZOm" id="lXy-eA-2h1"/>
+                        <outlet property="noAvailLabel" destination="xMD-Ex-cxl" id="CLy-5i-F9Z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pok-5S-4TK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="899" y="1783"/>
         </scene>
         <!--SEARCH-->
         <scene sceneID="BsQ-2I-fk4">
@@ -3325,7 +3423,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4X2-yk-ieW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1742" y="2480"/>
+            <point key="canvasLocation" x="2274" y="2480"/>
         </scene>
         <!--Package View Controller-->
         <scene sceneID="Rjy-xc-87O">
@@ -4421,7 +4519,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="7" y="10" width="290" height="400"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
                                                 <rect key="frame" x="102" y="11" width="87" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="TAc-CO-NF3"/>
@@ -5219,6 +5317,26 @@
             </objects>
             <point key="canvasLocation" x="1838" y="-591"/>
         </scene>
+        <!--BOOKING-->
+        <scene sceneID="TrZ-zX-7AH">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3tN-2h-nvM" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="BOOKING" image="booking_tabicon" id="eDK-9s-oGh"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="yWW-FX-uq9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0078431372549019607" green="0.52941176470588236" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ct6-K0-JXl" kind="relationship" relationship="rootViewController" id="Dz7-Lb-Qbp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wNr-kf-Im1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="516" y="1783"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Favorites-unfill" width="26" height="25"/>
@@ -5229,12 +5347,13 @@
         <image name="bgImage" width="291" height="291"/>
         <image name="book_bg" width="72" height="18"/>
         <image name="book_icon" width="36" height="36"/>
+        <image name="booking_tabicon" width="17" height="17"/>
         <image name="bronze" width="76" height="75"/>
         <image name="calendar_arrow" width="13" height="6"/>
         <image name="cancel_icon" width="36" height="36"/>
         <image name="chkgreen" width="30" height="30"/>
         <image name="chkwhite" width="30" height="30"/>
-        <image name="close_button" width="42" height="42"/>
+        <image name="close_button" width="7" height="7"/>
         <image name="delete_button" width="14" height="14"/>
         <image name="done_button" width="22" height="22"/>
         <image name="down_arrow" width="26" height="26"/>

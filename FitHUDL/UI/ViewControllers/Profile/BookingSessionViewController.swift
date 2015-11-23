@@ -124,8 +124,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         //activeText = nil
     }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
         activeText.resignFirstResponder()
         return true
     }
@@ -273,26 +273,20 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         requestDictionary.setObject(user.profileID, forKey: "trainer_id")
         
         if  selectedIndexArray.count > 0 {
-        requestDictionary.setObject(selectedIndexArray.objectAtIndex(0), forKey: "sports_id")
+            requestDictionary.setObject(selectedIndexArray.objectAtIndex(0), forKey: "sports_id")
          } else {
-        
-        UIAlertView(title: "Please Select A Sports", message: "", delegate: self, cancelButtonTitle: "OK").show()
-        return
-        
+            UIAlertView(title: "Please Select A Sports", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            return
         }
         requestDictionary.setObject(starttime, forKey: "start_time")
         requestDictionary.setObject(endtime, forKey: "end_time")
         requestDictionary.setObject(date, forKey: "session_date")
                 
         if  (activeText != nil) {
-           
             requestDictionary.setObject(activeText.text, forKey: "location")
-            
         } else {
-            
-             UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
-           
         }
         
         if !Globals.isInternetConnected() {
