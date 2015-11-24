@@ -49,7 +49,7 @@ extension UIViewController {
             
             let indicatorView               = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
             indicatorView.tag               = 998
-            indicatorView.frame             = CGRect(x: (loadingView.frame.size.width-indicatorView.frame.size.width)/2.0, y: (loadingView.frame.size.height-indicatorView.frame.size.height)/2.0, width: indicatorView.frame.size.width, height: indicatorView.frame.size.height)
+            indicatorView.frame             = CGRect(x: (loadingView.frame.size.width-indicatorView.frame.size.width)/2.0, y: 20.0, width: indicatorView.frame.size.width, height: indicatorView.frame.size.height)
             indicatorView.hidesWhenStopped  = true
             loadingView.addSubview(indicatorView)
             

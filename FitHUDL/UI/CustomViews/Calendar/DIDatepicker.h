@@ -13,6 +13,7 @@ extern const CGFloat kDIDatepickerHeight;
 // data
 @property (strong, nonatomic) NSArray *dates;
 @property (strong, nonatomic, readonly) NSDate *selectedDate;
+@property (strong, nonatomic, readonly) NSDate *prevDate;
 
 // UI
 @property (strong, nonatomic) UIColor *bottomLineColor;

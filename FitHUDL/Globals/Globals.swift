@@ -154,23 +154,4 @@ class Globals: NSObject {
         return image
     }
     
-    class func showShareDialogBox(shareImageURL: String, parentController: UIViewController) {
-        let shareContent            = FBSDKShareLinkContent()
-        shareContent.contentTitle   = alertTitle
-        shareContent.imageURL       = NSURL(string: SERVER_URL.stringByAppendingString(shareImageURL))
-        shareContent.contentURL     = NSURL(string: SHARE_URL)
-        shareContent.contentDescription = "Join FitHUDL!"
-        
-        let shareDialog             = FBSDKShareDialog()
-        shareDialog.shareContent    = shareContent
-        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "fb://")!) {
-            shareDialog.mode        = FBSDKShareDialogMode.Native
-        } else {
-            shareDialog.mode        = FBSDKShareDialogMode.FeedWeb
-        }
-        shareDialog.fromViewController = parentController
-        if shareDialog.canShow() {
-            shareDialog.show()
-        }
-    }
 }

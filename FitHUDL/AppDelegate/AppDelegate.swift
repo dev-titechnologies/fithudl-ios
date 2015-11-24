@@ -157,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        UIAlertView(title: "FitHUDL", message: "\(userInfo)", delegate: nil, cancelButtonTitle: "OK")
+        UIAlertView(title: "FitHUDL", message: "\(userInfo)", delegate: nil, cancelButtonTitle: "OK").show()
     }
     
     // MARK: - CLLocationManagerDelegate

@@ -121,6 +121,31 @@ class SessionTimerViewController: UIViewController {
         })
     }
     
+    func showShareDialogBox(shareImageURL: String) {
+        let shareContent            = FBSDKShareLinkContent()
+        shareContent.contentTitle   = alertTitle
+        shareContent.imageURL       = NSURL(string: SERVER_URL.stringByAppendingString(shareImageURL))
+        shareContent.contentURL     = NSURL(string: SHARE_URL)
+        shareContent.contentDescription = "Join FitHUDL!"
+        
+        let shareDialog             = FBSDKShareDialog()
+        shareDialog.shareContent    = shareContent
+        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "fb://")!) {
+            shareDialog.mode        = FBSDKShareDialogMode.Native
+        } else {
+            shareDialog.mode        = FBSDKShareDialogMode.FeedWeb
+        }
+        shareDialog.fromViewController = self
+        shareDialog.delegate        = self
+        shareDialog.show()
+        
+        var error: NSError?
+        if (!shareDialog.validateWithError(&error)){
+            println(error)
+        }
+    }
+
+    
     @IBAction func userRate(sender: UIButton) {
         let selectedState = sender.selected
         
@@ -190,8 +215,7 @@ class SessionTimerViewController: UIViewController {
             showLoadingView(true)
             notShared = true
         } else {
-            dismissViewControllerAnimated(true, completion: nil)
-            NSNotificationCenter.defaultCenter().postNotificationName(NOTIFSHARE, object: nil, userInfo: ["imageURL": SERVER_URL.stringByAppendingString(self.imagePath)])
+            showShareDialogBox(imagePath)
         }
     }
     
@@ -306,8 +330,7 @@ class SessionTimerViewController: UIViewController {
                             imagePath = path
                             if notShared {
                                 notShared = false
-                                dismissViewControllerAnimated(true, completion: nil)
-                                NSNotificationCenter.defaultCenter().postNotificationName(NOTIFSHARE, object: nil, userInfo: ["imageURL": SERVER_URL.stringByAppendingString(self.imagePath)])
+                                showShareDialogBox(imagePath)
                             }
                         } else {
                             showDismissiveAlertMesssage("No image path available")
@@ -392,5 +415,21 @@ extension SessionTimerViewController: UITextViewDelegate {
             return false
         }
         return true
+    }
+}
+
+extension SessionTimerViewController: FBSDKSharingDelegate {
+    func sharer(sharer: FBSDKSharing!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+        println(results)
+        println(sharer)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func sharerDidCancel(sharer: FBSDKSharing!) {
+        
+    }
+    
+    func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+        
     }
 }

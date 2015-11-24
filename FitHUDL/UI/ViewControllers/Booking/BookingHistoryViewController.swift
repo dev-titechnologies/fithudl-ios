@@ -15,9 +15,11 @@ class BookingHistoryViewController: UIViewController {
     @IBOutlet weak var noAvailLabel: UILabel!
     var myBookings = NSMutableArray()
     var bookings   = NSMutableArray()
+    var cancelDictionary: NSDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setStatusBarColor()
         let font        = UIFont(name: "OpenSans", size: 14.0)
         var attributes  = [NSForegroundColorAttributeName: AppColor.statusBarColor, NSFontAttributeName: font!]
         bookingSegmentControl.setTitleTextAttributes(attributes, forState: UIControlState.Normal)
@@ -27,8 +29,11 @@ class BookingHistoryViewController: UIViewController {
         let nib = UINib(nibName: "HistoryTableViewCell", bundle: nil)
         historyTableView.registerNib(nib, forCellReuseIdentifier: "historyCell")
         
-        sendRequestToGetSessions()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        sendRequestToGetSessions()
     }
     
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
@@ -39,12 +44,29 @@ class BookingHistoryViewController: UIViewController {
         }
         historyTableView.reloadData()
     }
+    
+    func cancelBooking(sender: UIButton) {
+        let cell        = sender.superview?.superview as! HistoryTableViewCell
+        let indexPath   = historyTableView.indexPathForCell(cell)
+        let request     = bookingSegmentControl.selectedSegmentIndex == 0 ? (myBookings[indexPath!.row] as! NSDictionary) : (bookings[indexPath!.row] as! NSDictionary)
+        sendRequestToCancelSession(request["request_id"] as! Int)
+    }
+    
+    func sendRequestToCancelSession(requestID: Int) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(requestID, forKey: "request_id")
+        cancelDictionary = requestDictionary
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/sessionCancel", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionCancel)
+    }
 
     func sendRequestToGetSessions() {
         if !Globals.isInternetConnected() {
             return
         }
-        
         showLoadingView(true)
         let requestDictionary = NSMutableDictionary()
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/getUserSessions", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionsList)
@@ -83,9 +105,18 @@ class BookingHistoryViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    myBookings.removeAllObjects()
-                    bookings.removeAllObjects()
-                    parseBookingHistory(jsonResult)
+                    if connection.connectionTag == Connection.sessionCancel {
+                        let source = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings : bookings
+                        let predicate = NSPredicate(format: "request_id = %d", argumentArray: [cancelDictionary!["request_id"] as! Int])
+                        let filteredArray = source.filteredArrayUsingPredicate(predicate)
+                        if filteredArray.count>0 {
+                            source.removeObjectAtIndex(source.indexOfObject(filteredArray[0]))
+                        }
+                    } else {
+                        myBookings.removeAllObjects()
+                        bookings.removeAllObjects()
+                        parseBookingHistory(jsonResult)
+                    }
                     historyTableView.reloadData()
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {
@@ -116,10 +147,6 @@ class BookingHistoryViewController: UIViewController {
         let dates = formatter.dateFromString(date)
         formatter.dateFormat = "dd-MM-yyyy"
         return formatter.stringFromDate(dates!)
-    }
-    
-    func cancelBooking(sender: UIButton) {
-    
     }
     
     override func didReceiveMemoryWarning() {
@@ -198,5 +225,7 @@ extension BookingHistoryViewController: UITableViewDataSource {
 }
 
 extension BookingHistoryViewController: UITableViewDelegate {
-
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
 }

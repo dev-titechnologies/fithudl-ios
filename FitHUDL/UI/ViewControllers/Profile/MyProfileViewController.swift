@@ -286,8 +286,8 @@ class MyProfileViewController: UIViewController {
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.notificationBackgroundView.frame = CGRect(x: 18.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 411.0)
                 self.notificationTableView.reloadData()
-                self.sendRequestForNotificationList()
             }, completion: nil)
+            self.sendRequestForNotificationList()
         } else {
             sender.tag = 0
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -711,13 +711,6 @@ class MyProfileViewController: UIViewController {
         sendRequestForUpdateSportsLevel(sports!, type: type)
     }
     
-    func shareOnFB(notification: NSNotification) {
-        let info     = notification.userInfo as! Dictionary<String, String>
-        let imageURL = info["imageURL"]
-        Globals.showShareDialogBox(imageURL!, parentController: self)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -1012,13 +1005,12 @@ extension MyProfileViewController : UITableViewDelegate {
             controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             controller.notificationDictionary = notificationListArray[indexPath.row] as! NSMutableDictionary
             presentViewController(controller, animated: true, completion: nil)
-        } else {
-            let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
-            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-            controller.sessionDictionary      = notificationListArray[indexPath.row] as NSDictionary
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareOnFB:", name: NOTIFSHARE, object: nil)
-            presentViewController(controller, animated: true, completion: nil)
-        }
+        } //else {
+//            let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
+//            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+//            controller.sessionDictionary      = notificationListArray[indexPath.row] as NSDictionary
+//            presentViewController(controller, animated: true, completion: nil)
+//        }
         notificationBackgroundView.hidden = true
     }
 }

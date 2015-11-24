@@ -8,35 +8,50 @@
 
 import UIKit
 
+protocol ConfirmBookDelegate {
+    func confirmSessionBook()
+}
+
 class CustomPopupViewController: UIViewController {
 
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var bioView: UIView!
     @IBOutlet weak var timeView: UIView!
-    @IBOutlet weak var rateView: UIView!
     @IBOutlet weak var timeOkButton: UIButton!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var timeTitleLabel: UILabel!
     @IBOutlet weak var timeMsgLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     
+    @IBOutlet weak var weekValueLabel: UILabel!
+    @IBOutlet weak var placeLabel: UILabel!
+    @IBOutlet weak var timeValueLabel: UILabel!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var sportsLabel: UILabel!
+    @IBOutlet weak var sportsImageView: UIImageView!
+    @IBOutlet weak var bookButton: UIButton!
+    @IBOutlet weak var confirmView: UIView!
+    
+    var delegate:ConfirmBookDelegate?
     var viewTag = 0
     var bioText: String?
     var timeDictionary: NSDictionary?
+    var sessionDictionary: NSMutableDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         bioView.hidden  = true
-        rateView.hidden = true
         timeView.hidden = true
+        confirmView.hidden = true
         
         bioView.layer.cornerRadius  = 10.0
         timeView.layer.cornerRadius = 10.0
-        rateView.layer.cornerRadius = 10.0
         
         timeOkButton.layer.cornerRadius = 23.0
         timeOkButton.layer.borderWidth  = 2.0
         timeOkButton.layer.borderColor  = AppColor.statusBarColor.CGColor
-        
+        bookButton.layer.borderColor    = AppColor.statusBarColor.CGColor
+        bookButton.layer.borderWidth    = 1.0
         
         switch (viewTag) {
         case ViewTag.bioText:
@@ -45,8 +60,9 @@ class CustomPopupViewController: UIViewController {
         case ViewTag.timeView:
             timeView.hidden = false
             setValueForTimeView()
-        case ViewTag.rateView:
-            rateView.hidden = false
+        case ViewTag.bookView:
+            confirmView.hidden = false
+            setUpBookConfirmView()
         default:
             timeView.hidden = false
         }
@@ -68,6 +84,23 @@ class CustomPopupViewController: UIViewController {
         }
     }
     
+    func setUpBookConfirmView() {
+        let predicate       = NSPredicate(format: "id = %d", argumentArray: [sessionDictionary!["sports_id"] as! Int])
+        let filteredArray   = appDelegate.sportsArray.filteredArrayUsingPredicate(predicate)
+        if filteredArray.count > 0 {
+            let imageURL    = (filteredArray[0] as! NSDictionary)["logo"] as! String
+            CustomURLConnection.downloadAndSetImage(imageURL, imageView: sportsImageView, activityIndicatorView: indicatorView)
+            let sportName   = ((filteredArray[0] as! NSDictionary)["title"] as! String).uppercaseString
+            sportsLabel.text = "\(sportName) session on"
+        }
+        nameLabel.text      = appDelegate.user.name.uppercaseString
+        let startTime       = Globals.convertTimeTo12Hours(sessionDictionary!["start_time"] as! String)
+        let endTime         = Globals.convertTimeTo12Hours(sessionDictionary!["end_time"] as! String)
+        timeValueLabel.text = "\(startTime) to \(endTime)"
+        placeLabel.text     = sessionDictionary!["location"] as? String
+        weekValueLabel.text = "No"
+    }
+    
     func attributedBioText() {
         var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 14.0)!, NSForegroundColorAttributeName: AppColor.yellowTextColor])
         bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
@@ -77,6 +110,20 @@ class CustomPopupViewController: UIViewController {
     
     @IBAction func timeOkButtonClicked(sender: UIButton) {
 
+    }
+    
+    @IBAction func bookButtonClicked(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
+        delegate?.confirmSessionBook()
+    }
+    
+    @IBAction func weeklyButtonClicked(sender: UIButton) {
+        sender.selected     = !sender.selected
+        weekValueLabel.text = sender.selected ? "Yes" : "No"
+    }
+    
+    @IBAction func stopBookButtonClicked(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func closeButtonClicked(sender: UIButton) {

@@ -28,6 +28,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     let profileUser = User()
     let availSessionTime = NSMutableDictionary()
     var activeText: UITextField!
+    var bookingDictionary: NSMutableDictionary?
+    
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
@@ -176,13 +178,14 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func cancelViewTapped(sender: UITapGestureRecognizer) {
-        selectedIndexArray.removeAllObjects()
-        sportsCarousel.reloadData()
+
         var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
         for time in timeArray {
             time.setObject("", forKey: "location")
         }
         bookingTableView.reloadData()
+        selectedIndexArray.removeAllObjects()
+        sportsCarousel.reloadData()
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
@@ -214,7 +217,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                         
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
+                            showDismissiveAlertMesssage(message.capitalizedString)
                         } else {
                             showDismissiveAlertMesssage(Message.Error)
                         }
@@ -224,14 +227,13 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                     }
                 }else  if connection.connectionTag == Connection.bookingRequest {
                     if status == ResponseStatus.success {
-                        
+                        showDismissiveAlertMesssage("Session booked successfully")
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
+                            showDismissiveAlertMesssage(message.capitalizedString)
                         } else {
                             showDismissiveAlertMesssage(Message.Error)
                         }
-                        favoriteButton.selected = !favoriteButton.selected
                     } else {
                         dismissOnSessionExpire()
                     }
@@ -263,9 +265,17 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     func bookingAction(sender:UIButton) {
         let requestDictionary = NSMutableDictionary()
         if  selectedIndexArray.count > 0 {
-            requestDictionary.setObject(selectedIndexArray.objectAtIndex(0), forKey: "sports_id")
+            let filteredArray = user.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "sports_id = %d", argumentArray: [selectedIndexArray[0]]))
+            if filteredArray.count > 0 {
+                let level = filteredArray[0].objectForKey("expert_level") as! String
+                if appDelegate.user.walletBalance?.toInt() < appDelegate.configDictionary[level] as? Int {
+                    showDismissiveAlertMesssage("Insufficient balance to book this session")
+                    return
+                }
+            }
+            requestDictionary.setObject(selectedIndexArray[0], forKey: "sports_id")
         } else {
-            UIAlertView(title: "Please Select A Sports", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            showDismissiveAlertMesssage("Please select a sport!")
             return
         }
         
@@ -294,11 +304,14 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
         }
-        if !Globals.isInternetConnected() {
-            return
-        }
-        showLoadingView(true)
-        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/request", requestType: HttpMethod.post),delegate: self,tag: Connection.bookingRequest)
+        bookingDictionary = requestDictionary
+        
+        let popController               = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
+        popController.sessionDictionary = bookingDictionary
+        popController.delegate          = self
+        popController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        popController.viewTag           = ViewTag.bookView
+        presentViewController(popController, animated: true, completion: nil)
     }
 }
 
@@ -457,7 +470,7 @@ extension BookingSessionViewController: UITableViewDataSource {
             let time    = Globals.convertTime(NSDate())
             timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
         }
-        let time        = timeArray.objectAtIndex(indexPath.item) as! NSDictionary
+        let time        = timeArray.objectAtIndex(indexPath.row) as! NSDictionary
         let starttime   = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
         let endtime     = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
         
@@ -477,7 +490,11 @@ extension BookingSessionViewController: UITableViewDataSource {
 }
 
 extension BookingSessionViewController: UITableViewDelegate {
-
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! BookingTableViewCell
+        cell.locationTextField.becomeFirstResponder()
+    }
 }
 
 extension BookingSessionViewController: UITextFieldDelegate {
@@ -486,7 +503,17 @@ extension BookingSessionViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        var timeArray   = NSArray()
+        if let prevDate = datePicker.prevDate {
+            if Globals.convertDate(datePicker.selectedDate) == Globals.convertDate(prevDate) {
+                timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+            } else {
+                timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.prevDate)) as! NSArray
+            }
+        } else {
+             timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        }
+
         if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
             let time    = Globals.convertTime(NSDate())
             timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
@@ -513,7 +540,19 @@ extension BookingSessionViewController: UITextFieldDelegate {
         let indexPath   = bookingTableView.indexPathForCell(cell)
         let session     = timeArray.objectAtIndex(indexPath!.row) as! NSMutableDictionary
         session.setObject(text, forKey: "location")
+        println(text)
+        println(session)
         return true
     }
     
+}
+
+extension BookingSessionViewController: ConfirmBookDelegate {
+    func confirmSessionBook() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        CustomURLConnection(request: CustomURLConnection.createRequest(bookingDictionary!, methodName: "sessions/request", requestType: HttpMethod.post),delegate: self,tag: Connection.bookingRequest)
+    }
 }

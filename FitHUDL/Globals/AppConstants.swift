@@ -9,7 +9,7 @@
 import UIKit
 
 let SERVER_URL = "http://fithudl.titechnologies.in/"
-let SHARE_URL  = ""
+let SHARE_URL  = "http://www.fithudl.com/"
 //let Server_URL = "http://192.168.1.151:1337/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -23,7 +23,6 @@ let IS_IPHONE6PLUS  = UIScreen.mainScreen().bounds.size.width == 414 ? true : fa
 let BIOTEXT_LENGTH  = 52
 let animateInterval: NSTimeInterval = 0.3
 let secondsValue: Int    = 60
-let NOTIFSHARE = "fbShareNotification"
 
 struct AppColor {
     static let statusBarColor  = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
@@ -77,6 +76,7 @@ struct Connection {
     static let sessionExtend        = 30
     static let sessionComplete      = 31
     static let sessionsList         = 32
+    static let sessionCancel        = 33
 }
 
 struct SportsLevel {
@@ -97,6 +97,7 @@ struct ViewTag {
     static let bioText  = 1
     static let timeView = 2
     static let rateView = 3
+    static let bookView = 4
 }
 
 struct ResponseStatus {
