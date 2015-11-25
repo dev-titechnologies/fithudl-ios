@@ -63,7 +63,12 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
     func keyboardWillShow(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             if let keyboardSize =  (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.suggestionLabel.frame.origin.y-20.0)
+                if IS_IPHONE4S {
+                    self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.suggestionLabel.frame.origin.y-5.0)
+                } else {
+                    self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.suggestionLabel.frame.origin.y-20.0)
+                }
+                
             }
         }
     }

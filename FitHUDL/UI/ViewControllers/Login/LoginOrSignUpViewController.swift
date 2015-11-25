@@ -34,6 +34,11 @@ class LoginOrSignUpViewController: UIViewController {
             bgImageView.setTranslatesAutoresizingMaskIntoConstraints(true)
             bgImageView.frame    = CGRect(x: (view.frame.size.width-250)/2.0, y: 65.0, width: 250, height: 250)
         }
+        if let token = appDelegate.deviceToken {
+            
+        } else {
+            appDelegate.deviceToken = NSUserDefaults.standardUserDefaults().objectForKey("deviceToken") as? String
+        }
         
         // Do any additional setup after loading the view.
     }
@@ -99,6 +104,7 @@ class LoginOrSignUpViewController: UIViewController {
                     self.fbUserID       = result.token.userID
                     self.getUserData()
                 }
+                fbLoginManager.logOut()
             }
         })
     }

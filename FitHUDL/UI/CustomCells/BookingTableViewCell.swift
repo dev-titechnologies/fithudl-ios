@@ -13,6 +13,7 @@ class BookingTableViewCell: UITableViewCell,UITextFieldDelegate {
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var bookButton: UIButton!
+    @IBOutlet weak var disabledView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -162,7 +162,8 @@ extension SearchResultViewController : UITableViewDataSource {
         cell.prof_pic.layer.borderColor     = UIColor.clearColor().CGColor
         cell.prof_pic.layer.cornerRadius    = cell.prof_pic.frame.size.height/2
         cell.prof_pic.clipsToBounds         = true
-        
+        cell.prof_pic.image = UIImage(named: "default_image")
+        cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFit
         if let url = self.searchResultArray[indexPath.row].objectForKey("profile_pic") as? String {
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
@@ -170,6 +171,7 @@ extension SearchResultViewController : UITableViewDataSource {
                     let image      = imagesArray[0] as! Images
                     let coverImage = UIImage(data: image.imageData)!
                     cell.prof_pic.image = UIImage(data: image.imageData)!
+                    cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
                     cell.indicatorView.stopAnimating()
                 } else {
                     if let imageURL = NSURL(string: imageurl as String){
@@ -180,6 +182,7 @@ extension SearchResultViewController : UITableViewDataSource {
                                     let imageFromData:UIImage? = UIImage(data: data)
                                     if let image  = imageFromData {
                                         updatedCell.prof_pic.image = image
+                                        updatedCell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
                                         Images.save(imageurl as String, imageData: data)
                                     }
                                 }

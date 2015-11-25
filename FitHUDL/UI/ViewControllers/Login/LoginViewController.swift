@@ -40,8 +40,8 @@ class LoginViewController: UIViewController {
         
         signInButton.layer.borderColor = UIColor.whiteColor().CGColor
         
-        emailTextField.text     = "ardra@test.com"
-        passwordTextField.text  = "123456"
+//        emailTextField.text     = "ardra@test.com"
+//        passwordTextField.text  = "123456"
         
         // Do any additional setup after loading the view.
     }

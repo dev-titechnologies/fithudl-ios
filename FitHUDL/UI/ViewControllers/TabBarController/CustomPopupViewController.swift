@@ -87,6 +87,8 @@ class CustomPopupViewController: UIViewController {
     func setUpBookConfirmView() {
         let predicate       = NSPredicate(format: "id = %d", argumentArray: [sessionDictionary!["sports_id"] as! Int])
         let filteredArray   = appDelegate.sportsArray.filteredArrayUsingPredicate(predicate)
+        sportsImageView.image = UIImage(named: "default_image")
+        sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if filteredArray.count > 0 {
             let imageURL    = (filteredArray[0] as! NSDictionary)["logo"] as! String
             CustomURLConnection.downloadAndSetImage(imageURL, imageView: sportsImageView, activityIndicatorView: indicatorView)

@@ -72,6 +72,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         }
        
         favoriteButton.selected = user.isFavorite
+        profileImageView.image = UIImage(named: "default_image")
+        profileImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: profileImageView, activityIndicatorView: indicatorView)
         } else {
@@ -121,6 +123,19 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             self.monthPicker.superview!.frame = CGRect(origin: CGPoint(x: 0.0, y: self.view.frame.size.height), size: self.monthPicker.superview!.frame.size)
             return
         })
+    }
+    
+    func clearSessionBooking() {
+        if let date = datePicker.selectedDate {
+            if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as? NSArray {
+                for time in timeArray {
+                    time.setObject("", forKey: "location")
+                }
+                bookingTableView.reloadData()
+            }
+        }
+        selectedIndexArray.removeAllObjects()
+        sportsCarousel.reloadData()
     }
     
    //MARK: Unfavourite API
@@ -178,14 +193,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     }
     
     @IBAction func cancelViewTapped(sender: UITapGestureRecognizer) {
-
-        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
-        for time in timeArray {
-            time.setObject("", forKey: "location")
-        }
-        bookingTableView.reloadData()
-        selectedIndexArray.removeAllObjects()
-        sportsCarousel.reloadData()
+        clearSessionBooking()
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
@@ -209,6 +217,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+        println(response)
         var error: NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
@@ -228,6 +237,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                 }else  if connection.connectionTag == Connection.bookingRequest {
                     if status == ResponseStatus.success {
                         showDismissiveAlertMesssage("Session booked successfully")
+                        clearSessionBooking()
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message.capitalizedString)
@@ -241,7 +251,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                     if let data = jsonResult["data"] as? NSArray {
                         var datesArray  = NSSet(array:data.valueForKey("date") as! [String])
                         for date in datesArray {
-                            var filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
+                            var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
                             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
                         }
                     }
@@ -362,6 +372,8 @@ extension BookingSessionViewController: iCarouselDataSource {
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         let sports          = user.sportsArray[index] as! NSDictionary
+        sportsImageView.image = UIImage(named: "default_image")
+        sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let logo = sports["logo"] as? String {
             CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
         } else {
@@ -479,7 +491,7 @@ extension BookingSessionViewController: UITableViewDataSource {
         } else {
             cell.locationTextField.text = ""
         }
-        
+        cell.disabledView.hidden = time["status"]!.boolValue
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.font = UIFont(name: "OpenSans", size: 12.0)
         cell.locationTextField.delegate = self

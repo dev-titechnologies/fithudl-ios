@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var sportsArray         = NSMutableArray()
     var locationManager     = CLLocationManager()
     var user                = User()
-   
+    var pushNotification    = NSDictionary()
+    var notificationArray   = NSMutableArray()
     
 //    var sportsArray: NSMutableArray = [NSMutableDictionary(objects: ["Run", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Tennis", ""], forKeys: ["sport","level"]), NSMutableDictionary(objects: ["Cycle", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Workout", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Yoga", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Kayak", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Dance", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Walk", ""], forKeys: ["sport", "level"]), NSMutableDictionary(objects: ["Swim", ""], forKeys: ["sport", "level"]),NSMutableDictionary(objects: ["Calisthenics", ""], forKeys: ["sport", "level"])]
     
@@ -45,6 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
         sendRequestToGetAllUserNames()
+        
+//        if let options = launchOptions { //If Launching through  Remote Notification
+//            if let userInfo = options["UIApplicationLaunchOptionsRemoteNotificationKey"] as? NSDictionary { //Remote
+//                pushNotification = userInfo
+//            }
+//        }
         return true
     }
 
@@ -63,6 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
+        application.applicationIconBadgeNumber = 0
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
@@ -150,14 +158,84 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             tokenAsString.appendFormat("%02hhX", byte)
         }
         self.deviceToken =   tokenAsString as String
+        NSUserDefaults.standardUserDefaults().setObject(tokenAsString, forKey: "deviceToken")
         print("Token = \(tokenAsString)")
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        UIAlertView(title: "FitHUDL", message: "\(userInfo)", delegate: nil, cancelButtonTitle: "OK").show()
+        notificationArray.addObject(userInfo)
+        if application.applicationState == UIApplicationState.Active {
+            if let aps = userInfo["aps"] as? NSDictionary {
+                if let message = aps["alert"] as? String {
+                    if let details = userInfo["details"] as? NSDictionary {
+                        if let type = details["type"] as? String {
+                            if type == PushNotification.sessionStart {
+                                deepLinkNotification()
+                            } else {
+                                showNotificationAlert(message)
+                            }
+                        } else {
+                            showNotificationAlert(message)
+                        }
+                    } else {
+                        showNotificationAlert(message)
+                    }
+                }
+            }
+        } else {
+            deepLinkNotification()
+        }
+    }
+    
+    
+    func deepLinkNotification() {
+        if notificationArray.count > 0 {
+            let notificationInfo = notificationArray.lastObject as? NSDictionary
+            if let userInfo = notificationInfo {
+                if let details = userInfo["details"] as? NSDictionary {
+                    if let type = details["type"] as? String {
+                        if type == PushNotification.sessionStart {
+                            if Globals.convertDate(NSDate()) == (details["alloted_date"] as! String) {
+                                if Globals.convertTime(NSDate()) > (details["start_time"] as! String) {
+                                    return
+                                }
+                                NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details])
+                            }
+                        }
+                    }
+                }
+            }
+            notificationArray.removeLastObject()
+        }
+    }
+    
+    func showNotificationAlert(message: String) {
+        var alertView       =   UIAlertView()
+        alertView.delegate  =   self
+        alertView.title     =   alertTitle
+        alertView.message   =   message
+        alertView.addButtonWithTitle("Cancel")
+        alertView.addButtonWithTitle("Ok")
+        alertView.show()
+    }
+    
+    func alertView(View: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
+        switch buttonIndex{
+        case 1:
+            deepLinkNotification()
+        case 0:
+            if notificationArray.count > 0 {
+                let notificationUserInfo = notificationArray.lastObject as? NSDictionary
+                notificationArray.removeLastObject()
+            }
+        default:
+            break;
+            
+        }
     }
     
     // MARK: - CLLocationManagerDelegate

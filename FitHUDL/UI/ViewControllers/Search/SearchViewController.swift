@@ -28,6 +28,8 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     @IBOutlet weak var tableView: UITableView!
     var user: User!
     
+    @IBOutlet weak var allSportsCollectionView: UICollectionView!
+    @IBOutlet weak var allSportsView: UIView!
     var selectedIndexArray  = NSMutableArray()
     var usersListArray      = NSMutableArray()
     var searchString:String = ""
@@ -174,6 +176,10 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     @IBAction func downArrowAction(sender: AnyObject) {
         searchItemsContainerView.hidden=true
+        
+    }
+    
+    @IBAction func viewAllButtonClicked(sender: UIButton) {
         
     }
     
@@ -616,7 +622,8 @@ extension SearchViewController: iCarouselDataSource {
         let source          = allSportsArray
         let sports          = source[index] as! NSDictionary
         
-        
+        sportsImageView.image = UIImage(named: "default_image")
+        sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let logo = sports["logo"] as? String {
             CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
         } else {

@@ -46,10 +46,18 @@ class BookingHistoryViewController: UIViewController {
     }
     
     func cancelBooking(sender: UIButton) {
-        let cell        = sender.superview?.superview as! HistoryTableViewCell
-        let indexPath   = historyTableView.indexPathForCell(cell)
-        let request     = bookingSegmentControl.selectedSegmentIndex == 0 ? (myBookings[indexPath!.row] as! NSDictionary) : (bookings[indexPath!.row] as! NSDictionary)
-        sendRequestToCancelSession(request["request_id"] as! Int)
+        let alert       = UIAlertController(title: "Cancel Session", message: "Do you wish to cancel the booked session?", preferredStyle: UIAlertControllerStyle.Alert)
+        let noAction    = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (noAction) -> Void in
+            return
+        }
+        let yesAction   = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
+            let cell        = sender.superview?.superview as! HistoryTableViewCell
+            let indexPath   = self.historyTableView.indexPathForCell(cell)
+            let request     = self.bookingSegmentControl.selectedSegmentIndex == 0 ? (self.myBookings[indexPath!.row] as! NSDictionary) : (self.bookings[indexPath!.row] as! NSDictionary)
+            self.sendRequestToCancelSession(request["request_id"] as! Int)
+        }
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
     }
     
     func sendRequestToCancelSession(requestID: Int) {
@@ -180,6 +188,8 @@ extension BookingHistoryViewController: UITableViewDataSource {
         let history = source[indexPath.row] as! NSDictionary
         let imageURL = bookingSegmentControl.selectedSegmentIndex == 0 ? (history["trainer_profile_pic"] as? String) : (history["user_profile_pic"] as? String)
         if let url  = imageURL {
+            cell.userImageView.image        = UIImage(named: "default_image")
+            cell.userImageView.contentMode  = UIViewContentMode.ScaleAspectFit
             cell.indicatorView.startAnimating()
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
@@ -187,6 +197,7 @@ extension BookingHistoryViewController: UITableViewDataSource {
                     let image      = imagesArray[0] as! Images
                     let coverImage = UIImage(data: image.imageData)!
                     cell.userImageView.image   =   UIImage(data: image.imageData)!
+                    cell.userImageView.contentMode = UIViewContentMode.ScaleAspectFit
                     cell.indicatorView.stopAnimating()
                 } else {
                     if let imageURL = NSURL(string: imageurl as String){
@@ -197,6 +208,7 @@ extension BookingHistoryViewController: UITableViewDataSource {
                                     let imageFromData:UIImage? = UIImage(data: data)
                                     if let image  = imageFromData {
                                         updatedCell.userImageView.image = image
+                                        updatedCell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
                                         Images.save(imageurl as String, imageData: data)
                                     }
                                 }

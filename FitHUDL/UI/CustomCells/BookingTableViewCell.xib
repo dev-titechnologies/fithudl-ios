@@ -62,26 +62,35 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PJF-dE-OxY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Xqe-Ah-wpr" firstAttribute="leading" secondItem="cPl-9l-HBt" secondAttribute="trailing" constant="4" id="0zY-BY-RoZ"/>
                     <constraint firstItem="aW0-nh-vlb" firstAttribute="width" secondItem="Lg9-2i-XkU" secondAttribute="width" id="6WF-zf-LcZ"/>
                     <constraint firstItem="cPl-9l-HBt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="6kD-WS-r4H"/>
+                    <constraint firstAttribute="bottom" secondItem="PJF-dE-OxY" secondAttribute="bottom" id="99P-jm-fCI"/>
                     <constraint firstItem="Lg9-2i-XkU" firstAttribute="centerY" secondItem="Xqe-Ah-wpr" secondAttribute="centerY" constant="-1.5" id="F1g-cS-Z7B"/>
                     <constraint firstItem="4fu-bf-cJx" firstAttribute="leading" secondItem="Lg9-2i-XkU" secondAttribute="trailing" constant="8" id="KF0-Es-r9a"/>
                     <constraint firstItem="cPl-9l-HBt" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="LfX-K6-Vpx"/>
                     <constraint firstItem="aW0-nh-vlb" firstAttribute="leading" secondItem="Lg9-2i-XkU" secondAttribute="leading" id="R7U-0D-DCN"/>
                     <constraint firstItem="aW0-nh-vlb" firstAttribute="centerY" secondItem="Lg9-2i-XkU" secondAttribute="centerY" constant="17.5" id="Xbt-Ko-RgB"/>
+                    <constraint firstAttribute="trailing" secondItem="PJF-dE-OxY" secondAttribute="trailing" id="aaR-EX-4sf"/>
                     <constraint firstItem="4fu-bf-cJx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="dQq-xR-lkJ"/>
                     <constraint firstItem="aW0-nh-vlb" firstAttribute="top" secondItem="Lg9-2i-XkU" secondAttribute="bottom" constant="2" id="epD-lL-PfV"/>
                     <constraint firstAttribute="trailingMargin" secondItem="aW0-nh-vlb" secondAttribute="trailing" constant="52" id="hsk-Ox-ToW"/>
+                    <constraint firstItem="PJF-dE-OxY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="kIB-AS-3JU"/>
                     <constraint firstItem="Lg9-2i-XkU" firstAttribute="leading" secondItem="Xqe-Ah-wpr" secondAttribute="trailing" constant="6" id="kvG-XY-Frh"/>
                     <constraint firstAttribute="trailing" secondItem="4fu-bf-cJx" secondAttribute="trailing" constant="2" id="r4O-zq-ifK"/>
+                    <constraint firstItem="PJF-dE-OxY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="vJZ-KX-frR"/>
                     <constraint firstItem="cPl-9l-HBt" firstAttribute="centerY" secondItem="Xqe-Ah-wpr" secondAttribute="centerY" id="xny-O4-6mh"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="bookButton" destination="4fu-bf-cJx" id="mKO-A0-gtX"/>
+                <outlet property="disabledView" destination="PJF-dE-OxY" id="Qgp-mq-9jj"/>
                 <outlet property="locationTextField" destination="Lg9-2i-XkU" id="ZZZ-nF-ne9"/>
                 <outlet property="timeLabel" destination="cPl-9l-HBt" id="8aU-uz-z1H"/>
             </connections>

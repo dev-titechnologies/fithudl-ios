@@ -44,7 +44,7 @@ class SessionTimerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        appDelegate.configDictionary.setObject(1, forKey: TimeOut.sessionDuration)
+//        appDelegate.configDictionary.setObject(1, forKey: TimeOut.sessionDuration)
         let radius        = max(circleView.frame.size.width,circleView.frame.size.height)
         circleView.layer.cornerRadius = CGFloat(radius)/2.0
         circleView.layer.borderWidth  = 2.0
@@ -84,7 +84,9 @@ class SessionTimerViewController: UIViewController {
         
         if !isTrainer {
             let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sessionDictionary.objectForKey("sports_id") as! Int])) as NSArray
-            let sportsUrl = (filteredArray.firstObject as! NSDictionary).objectForKey("logo") as! String
+            let sportsUrl   = (filteredArray.firstObject as! NSDictionary).objectForKey("logo") as! String
+            sportsImageView.image = UIImage(named: "default_image")
+            sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
             CustomURLConnection.downloadAndSetImage(sportsUrl, imageView: sportsImageView, activityIndicatorView: indicatorView)
             let name        = sessionDictionary["user_name"] as! String
             let sport       = (sessionDictionary["sports_name"] as! String).uppercaseString
@@ -96,7 +98,7 @@ class SessionTimerViewController: UIViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
-        let timer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(secondsValue*1), target: self, selector: Selector("startTimer"), userInfo: nil, repeats: false)
+        startTimer()
     }
    
     func startTimer() {
@@ -231,19 +233,22 @@ class SessionTimerViewController: UIViewController {
         let alert = UIAlertController(title: "", message: "The session is complete. Do you wish to extend the session?", preferredStyle: UIAlertControllerStyle.Alert)
         let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
             self.sendRequestToExtendSession(Session.extend)
-//            self.timerView.layer.sublayers.removeLast()
-//            self.timerView.setNeedsDisplay()
-//            self.timerLabel.reset()
-//            self.timerView.resetView()
-//            self.timerLabel.start()
-//            self.statusLabel.text = "This session has been started."
         }
         let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (noAction) -> Void in
             self.sendRequestToExtendSession(Session.complete)
-//            self.showUserRateView()
         }
         alert.addAction(yesAction)
         alert.addAction(noAction)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func showSessionAlert(message: String) {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (okAction) -> Void in
+            self.showUserRateView()
+            return
+        }
+        alert.addAction(okAction)
         presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -339,12 +344,22 @@ class SessionTimerViewController: UIViewController {
                 } else {
                     if status == ResponseStatus.success {
                         if connection.connectionTag == Connection.sessionExtend {
-                            timerView.layer.sublayers.removeLast()
-                            timerView.setNeedsDisplay()
-                            timerLabel.reset()
-                            timerView.resetView()
-                            timerLabel.start()
-                            statusLabel.text = "This session has been started."
+                            if let extend = jsonResult["extend"] as? Int {
+                                if extend == 1 {
+                                    timerView.layer.sublayers.removeLast()
+                                    timerView.setNeedsDisplay()
+                                    timerLabel.reset()
+                                    timerView.resetView()
+                                    timerLabel.start()
+                                    statusLabel.text = "This session has been started."
+                                } else {
+                                    if let message = jsonResult["message"] as? String {
+                                        showSessionAlert(message)
+                                    } else {
+                                        showSessionAlert("This session cannot be extended!")
+                                    }
+                                }
+                            }
                         } else if connection.connectionTag == Connection.sessionComplete {
                             showUserRateView()
                         }
@@ -354,12 +369,14 @@ class SessionTimerViewController: UIViewController {
                         } else {
                             showDismissiveAlertMesssage(ErrorMessage.invalid)
                         }
+                        rateOkButton.hidden = false
                     } else {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
+                        rateOkButton.hidden = false
                     }
                 }
             }
@@ -370,6 +387,9 @@ class SessionTimerViewController: UIViewController {
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
         showLoadingView(false)
+        if connection.connectionTag == Connection.sessionComplete || connection.connectionTag == Connection.sessionExtend {
+            rateOkButton.hidden = false
+        }
     }
     
     override func didReceiveMemoryWarning() {

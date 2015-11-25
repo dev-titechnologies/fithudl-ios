@@ -329,6 +329,8 @@ class MyProfileViewController: UIViewController {
                 bookView.hidden = true
             }
         }
+        userImageView.image = UIImage(named: "default_image")
+        userImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
         } else {
@@ -774,6 +776,8 @@ extension MyProfileViewController: iCarouselDataSource {
         }
         let source          = profileID == nil ? appDelegate.user.sportsArray : profileUser.sportsArray
         let sports          = source[index] as! NSDictionary
+        sportsImageView.image = UIImage(named: "default_image")
+        sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let logo = sports["logo"] as? String {
             CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
         } else {
@@ -878,6 +882,8 @@ extension MyProfileViewController: UICollectionViewDataSource {
             cell.reviewView.reviewTextView.text = review["user_review"] as! String
             cell.reviewView.nameLabel.text      = review["profile_name"] as? String
             cell.reviewView.userImageView.backgroundColor = AppColor.statusBarColor
+            cell.reviewView.userImageView.image = UIImage(named: "default_image")
+            cell.reviewView.userImageView.contentMode = UIViewContentMode.ScaleAspectFit
             if let userImage = review["image_url"] as? String {
                 CustomURLConnection.downloadAndSetImage(userImage, imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
             } else {
@@ -889,6 +895,8 @@ extension MyProfileViewController: UICollectionViewDataSource {
             let source = profileID == nil ? appDelegate.user.badgesArray : profileUser.badgesArray
             let badge = source[indexPath.row] as! NSDictionary
             cell.titleLabel.text = badge["name"] as? String
+            cell.badgeImageView.image = UIImage(named: "default_image")
+            cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
             if let badgeImage = badge["image_url"] as? String {
                 CustomURLConnection.downloadAndSetImage(badgeImage, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
             } else {
@@ -962,13 +970,15 @@ extension MyProfileViewController : UITableViewDataSource {
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("trainer_name") as? String
             cell.bodyLabel.text = "has accepted your booking request"
         }
-        
+        cell.profilePic.image = UIImage(named: "default_image")
+        cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFit
         let imageurl = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
         if imageurl.length != 0 {
             if var imagesArray = Images.fetch(imageUrl as String) {
                 let image      = imagesArray[0] as! Images
                 let coverImage = UIImage(data: image.imageData)!
                 cell.profilePic.image = UIImage(data: image.imageData)!
+                cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFill
                 cell.indicatorView.stopAnimating()
             } else {
                 if let imageURL = NSURL(string: imageurl as String){
@@ -979,6 +989,7 @@ extension MyProfileViewController : UITableViewDataSource {
                                 let imageFromData:UIImage? = UIImage(data: data)
                                 if let image  = imageFromData {
                                     updatedCell.profilePic.image = image
+                                    updatedCell.profilePic.contentMode = UIViewContentMode.ScaleAspectFill
                                     Images.save(imageurl as String, imageData: data)
                                 }
                             }

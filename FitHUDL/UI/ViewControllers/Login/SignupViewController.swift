@@ -325,6 +325,8 @@ extension SignupViewController: iCarouselDataSource {
         }
         
         let sports          = appDelegate.sportsArray[index] as! NSDictionary
+        sportsImageView.image = UIImage(named: "default_image")
+        sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let logo = sports["logo"] as? String {
             CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
         } else {

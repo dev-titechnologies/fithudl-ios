@@ -121,6 +121,11 @@ struct Session {
     static let extend   = 1
 }
 
+struct PushNotification {
+    static let sessionStart = "session_start"
+    static let sessionEnd   = "session_end"
+    static let timerNotif   = "TimerNotification"
+}
 
 class AppConstants: NSObject {
 

@@ -59,6 +59,7 @@ class CustomURLConnection: NSURLConnection {
                 let image      = imagesArray[0] as! Images
                 let coverImage = UIImage(data: image.imageData)!
                 imageView.image   =   UIImage(data: image.imageData)!
+                imageView.contentMode = UIViewContentMode.ScaleAspectFill
                 activityIndicatorView.stopAnimating()
             } else {
                 if let imageURL = NSURL(string: imageurl as String){
@@ -68,6 +69,7 @@ class CustomURLConnection: NSURLConnection {
                             let imageFromData:UIImage? = UIImage(data: data)
                             if let image  = imageFromData {
                                 imageView.image =   image
+                                imageView.contentMode = UIViewContentMode.ScaleAspectFill
                                 Images.save(imageurl as String, imageData: data)
                             }
                         }

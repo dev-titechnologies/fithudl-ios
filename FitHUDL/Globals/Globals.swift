@@ -76,6 +76,7 @@ class Globals: NSObject {
     
     class func clearSession() {
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "API_TOKEN")
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "deviceToken")
         Images.deleteImages()
     }
     
