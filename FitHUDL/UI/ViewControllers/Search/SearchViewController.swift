@@ -372,9 +372,9 @@ extension SearchViewController:UISearchBarDelegate {
         
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchActive=false
+         searchActive=false
          searchBar.resignFirstResponder()
-        tableView.hidden=true
+         tableView.hidden=true
          searchBar.showsCancelButton=false
         searchBar.text=""
         self.sendRequestToGetSearchUsers()
@@ -436,9 +436,17 @@ extension SearchViewController:UISearchBarDelegate {
         }
         
         if maleButton.selected {
+            
             requestDictionary.setObject(Gender.male, forKey: "gender")
-        } else {
+            
+        } else if femaleButton.selected
+        {
             requestDictionary.setObject(Gender.female, forKey: "gender")
+        }
+        else if (femaleButton.selected && maleButton.selected) || (!femaleButton.selected && !maleButton.selected) {
+            
+            requestDictionary.setObject("", forKey: "gender")
+            
         }
         
         if userSelectedArray.count > 0 {
