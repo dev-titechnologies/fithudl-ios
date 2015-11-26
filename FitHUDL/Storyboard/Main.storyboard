@@ -2187,9 +2187,10 @@
                                                         <constraint firstAttribute="width" constant="26" id="VdV-Cf-7r8"/>
                                                         <constraint firstAttribute="height" constant="25" id="aVm-QO-D1e"/>
                                                     </constraints>
-                                                    <state key="normal" image="favorites-fill">
+                                                    <state key="normal" image="Favorites-unfill">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <state key="selected" image="favorites-fill"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RCu-vV-Ipy">
                                                     <rect key="frame" x="55" y="0.0" width="1" height="75"/>
@@ -4038,7 +4039,7 @@
                                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khs-os-Ww6">
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khs-os-Ww6">
                                                                 <rect key="frame" x="0.0" y="7" width="20" height="73"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="20" id="XAD-QQ-etd"/>
@@ -4067,7 +4068,7 @@
                                                                     <outlet property="delegate" destination="uzi-1t-L5K" id="gob-WE-SpI"/>
                                                                 </connections>
                                                             </collectionView>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBK-g0-nDx">
+                                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cBK-g0-nDx">
                                                                 <rect key="frame" x="197" y="7" width="20" height="73"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="20" id="R9P-DY-LvS"/>
@@ -4397,7 +4398,7 @@
                                                             <outlet property="delegate" destination="uzi-1t-L5K" id="xt9-Rt-0Sj"/>
                                                         </connections>
                                                     </collectionView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rTB-VL-CaZ">
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rTB-VL-CaZ">
                                                         <rect key="frame" x="219" y="0.0" width="61" height="33"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x7f-b1-0Qj">
@@ -4830,6 +4831,7 @@
                         <outlet property="beginnerButton" destination="lhG-01-vEn" id="Nt4-OW-2iR"/>
                         <outlet property="bioLabel" destination="oAu-fq-W7U" id="GBx-5L-Yi3"/>
                         <outlet property="bookView" destination="SRS-sk-Eub" id="tzH-jL-3VT"/>
+                        <outlet property="buttonView" destination="rTB-VL-CaZ" id="7GU-4B-F9U"/>
                         <outlet property="calloutView" destination="qh5-9S-wjb" id="2FV-VO-cFF"/>
                         <outlet property="carouselBackgroundView" destination="76r-4g-qhd" id="XAB-SN-9bm"/>
                         <outlet property="completedTitleLabel" destination="fvb-RK-Gxe" id="VgO-M0-JDK"/>

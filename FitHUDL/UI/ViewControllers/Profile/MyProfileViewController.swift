@@ -56,6 +56,7 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var NotificationView: UIView!
     @IBOutlet weak var notificationBackgroundView: UIView!
     @IBOutlet weak var notificationBgtrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
     var searchResultId:String?
     var profileID: String?
@@ -128,9 +129,9 @@ class MyProfileViewController: UIViewController {
         badgesCollectionView.hidden = false
         noreviewLabel.hidden        = true
         reviewCollectionView.hidden = false
-        badgeNextButton.hidden      = false
-        badgePrevButton.hidden      = false
-        reviewNextButton.superview?.hidden = false
+        badgeNextButton.hidden      = true
+        badgePrevButton.hidden      = true
+        buttonView.hidden           = true
         
         calloutView.removeFromSuperview()
         calloutView.setTranslatesAutoresizingMaskIntoConstraints(true)
@@ -269,6 +270,12 @@ class MyProfileViewController: UIViewController {
             return
         }
         if calloutView.frame.size.height == 0 {
+            if notificationBackgroundView.hidden == false {
+                notificationButton.tag = 0
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.notificationBackgroundView.hidden  = true
+                    }, completion: nil)
+            }
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 152.0)
                 }, completion: nil)
@@ -281,6 +288,11 @@ class MyProfileViewController: UIViewController {
     
     @IBAction func notificationsButtonClicked(sender: UIButton) {
         if sender.tag == 0 {
+            if calloutView.frame.size.height != 0 {
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+                    }, completion: nil)
+            }
             sender.tag = 1
             notificationBackgroundView.hidden   = false
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -399,9 +411,14 @@ class MyProfileViewController: UIViewController {
         if user.badgesArray.count <= 3 {
             badgeNextButton.hidden = true
             badgePrevButton.hidden = true
+        } else {
+            badgeNextButton.hidden = false
+            badgePrevButton.hidden = false
         }
         if user.userReviewsArray.count <= 1 {
-            reviewNextButton.superview?.hidden = true
+            buttonView.hidden = true
+        } else {
+            buttonView.hidden = false
         }
         
         if filteredArray.count == 0 {
