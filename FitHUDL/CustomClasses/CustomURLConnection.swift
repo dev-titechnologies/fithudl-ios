@@ -58,8 +58,8 @@ class CustomURLConnection: NSURLConnection {
             if var imagesArray = Images.fetch(imageurl as String) {
                 let image      = imagesArray[0] as! Images
                 let coverImage = UIImage(data: image.imageData)!
-                imageView.image   =   UIImage(data: image.imageData)!
                 imageView.contentMode = UIViewContentMode.ScaleAspectFill
+                imageView.image   =   UIImage(data: image.imageData)!
                 activityIndicatorView.stopAnimating()
             } else {
                 if let imageURL = NSURL(string: imageurl as String){
@@ -68,8 +68,8 @@ class CustomURLConnection: NSURLConnection {
                         if error == nil {
                             let imageFromData:UIImage? = UIImage(data: data)
                             if let image  = imageFromData {
-                                imageView.image =   image
                                 imageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                imageView.image =   image
                                 Images.save(imageurl as String, imageData: data)
                             }
                         }

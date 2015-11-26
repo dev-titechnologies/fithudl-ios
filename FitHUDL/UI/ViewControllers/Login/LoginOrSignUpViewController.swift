@@ -114,7 +114,11 @@ class LoginOrSignUpViewController: UIViewController {
             if error == nil {
                 self.fbUserDictionary = result as! NSDictionary
                 print(self.fbUserDictionary)
-                self.sendRequestToCheckNewUser()
+                if let email = self.fbUserDictionary["email"] as? String {
+                    self.sendRequestToCheckNewUser()
+                } else {
+                    self.showDismissiveAlertMesssage("Failed to retrieve your email!")
+                }
             }
         }
     }

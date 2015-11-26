@@ -75,9 +75,31 @@ class Globals: NSObject {
     }
     
     class func clearSession() {
+        FBSDKAccessToken.setCurrentAccessToken(nil)
+        FBSDKLoginManager().logOut()
         NSUserDefaults.standardUserDefaults().setObject("", forKey: "API_TOKEN")
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "deviceToken")
         Images.deleteImages()
+        Globals.clearUserValues()
+    }
+    
+    private class func clearUserValues() {
+        appDelegate.user.name           = ""
+        appDelegate.user.profileID      = 0
+        appDelegate.user.email          = ""
+        appDelegate.user.bio            = nil
+        appDelegate.user.imageURL       = nil
+        appDelegate.user.totalHours     = nil
+        appDelegate.user.usageCount     = nil
+        appDelegate.user.rating         = nil
+        appDelegate.user.isFavorite     = false
+        appDelegate.user.walletBalance  = nil
+        appDelegate.user.isVerified     = 0
+        appDelegate.user.availableTimeArray.removeAllObjects()
+        appDelegate.user.userReviewsArray.removeAllObjects()
+        appDelegate.user.sportsArray.removeAllObjects()
+        appDelegate.user.badgesArray.removeAllObjects()
+        appDelegate.user.userSportsArray.removeAllObjects()
     }
     
     class func endOfMonth() -> NSDate? {

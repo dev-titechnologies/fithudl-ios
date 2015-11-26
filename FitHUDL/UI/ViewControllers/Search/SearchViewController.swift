@@ -37,7 +37,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var filtered            = NSMutableArray()
     var allSportsArray      = NSMutableArray()
     var searchResultArray   = Array<NSDictionary>()
-    var sliderValue:Int     = 0
+    var sliderValue:Int     = 10
     var locationManager     = CLLocationManager()
     var expertFlag:Bool     = false
     var userSelectedArray   = NSMutableArray()
@@ -138,12 +138,12 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     @IBAction func maleButtonClicked(sender: UIButton) {
-        Globals.selectButton(maleButton, button2: femaleButton)
+        maleButton.selected = !maleButton.selected
     }
     
     
     @IBAction func femaleButtonClicked(sender: UIButton) {
-        Globals.selectButton(femaleButton, button2: maleButton)
+        femaleButton.selected = !femaleButton.selected
     }
     
     @IBAction func beginnerButtonClicked(sender: UIButton) {
@@ -408,11 +408,9 @@ extension SearchViewController:UISearchBarDelegate {
     //MARK: Serach API CALL
     
     @IBAction func searchButtonClicked(sender: AnyObject) {
-        
         self.sendRequestToGetSearchUsers()
-     
-        
     }
+    
     func sendRequestToGetUsersSports() {
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(Int(appDelegate.user.profileID), forKey: "user_id")
@@ -466,18 +464,22 @@ extension SearchViewController:UISearchBarDelegate {
         var rating_categoryTemp_array = Array<NSDictionary>()
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         var error : NSError?
+        println(response)
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.searchUserName {
                     if status == ResponseStatus.success {
-                        if let favourites = jsonResult["search_list"] as? NSArray {
-                            searchResultArray = favourites as! Array
-                             performSegueWithIdentifier("searchToSearchResult", sender: self)
+                        if let results = jsonResult["search_list"] as? NSArray {
+                            searchResultArray = results as! Array
+                            if searchResultArray.count > 0 {
+                                performSegueWithIdentifier("searchToSearchResult", sender: self)
+                            } else {
+                                showDismissiveAlertMesssage("No search results found!")
+                            }
                         }
                         else {
                         }
-                        
                     }
                     else
                         if status == ResponseStatus.error {

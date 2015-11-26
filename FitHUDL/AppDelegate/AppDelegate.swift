@@ -218,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         alertView.delegate  =   self
         alertView.title     =   alertTitle
         alertView.message   =   message
-        alertView.addButtonWithTitle("Cancel")
+//        alertView.addButtonWithTitle("Cancel")
         alertView.addButtonWithTitle("Ok")
         alertView.show()
     }

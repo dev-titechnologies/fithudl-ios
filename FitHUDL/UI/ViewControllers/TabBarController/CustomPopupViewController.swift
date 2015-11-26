@@ -32,6 +32,7 @@ class CustomPopupViewController: UIViewController {
     @IBOutlet weak var bookButton: UIButton!
     @IBOutlet weak var confirmView: UIView!
     
+    @IBOutlet weak var closeButton: UIButton!
     var delegate:ConfirmBookDelegate?
     var viewTag = 0
     var bioText: String?
@@ -50,12 +51,15 @@ class CustomPopupViewController: UIViewController {
         timeOkButton.layer.cornerRadius = 23.0
         timeOkButton.layer.borderWidth  = 2.0
         timeOkButton.layer.borderColor  = AppColor.statusBarColor.CGColor
+        
+        
         bookButton.layer.borderColor    = AppColor.statusBarColor.CGColor
         bookButton.layer.borderWidth    = 1.0
         
         switch (viewTag) {
         case ViewTag.bioText:
-            bioView.hidden = false
+            bioView.hidden      = false
+            closeButton.hidden  = false
             attributedBioText()
         case ViewTag.timeView:
             timeView.hidden = false

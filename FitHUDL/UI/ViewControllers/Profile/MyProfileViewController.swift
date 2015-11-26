@@ -310,12 +310,16 @@ class MyProfileViewController: UIViewController {
         let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
         custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         custompopController.viewTag = ViewTag.bioText
-        custompopController.bioText = "IT IS A LONG ESTABLISHED FACT THAT A READER WILL BE ASSIGNING"
+        custompopController.bioText = appDelegate.user.bio
         presentViewController(custompopController, animated: true, completion: nil)
     }
     
     @IBAction func bookSessionTapped(sender: UITapGestureRecognizer) {
-        performSegueWithIdentifier("pushToBookingSession", sender: self)
+        if profileUser.availableTimeArray.count > 0 {
+            performSegueWithIdentifier("pushToBookingSession", sender: self)
+        } else {
+            showDismissiveAlertMesssage("\(profileUser.name) have no available timings")
+        }
     }
     
     func populateProfileContents(user: User) {
@@ -501,7 +505,9 @@ class MyProfileViewController: UIViewController {
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
                 profileUser.badgesArray.removeAllObjects()
-                profileUser.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+                if profileUser.usageCount > 0 {
+                    profileUser.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+                }
             }
             if let comments = responseDictionary["User_comments"] as? NSArray {
                 profileUser.userReviewsArray.removeAllObjects()
@@ -562,7 +568,9 @@ class MyProfileViewController: UIViewController {
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
                 appDelegate.user.badgesArray.removeAllObjects()
-                appDelegate.user.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+                if appDelegate.user.usageCount > 0 {
+                    appDelegate.user.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+                }
             }
             if let comments = responseDictionary["User_comments"] as? NSArray {
                 appDelegate.user.userReviewsArray.removeAllObjects()
@@ -894,13 +902,16 @@ extension MyProfileViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
             let source = profileID == nil ? appDelegate.user.badgesArray : profileUser.badgesArray
             let badge = source[indexPath.row] as! NSDictionary
-            cell.titleLabel.text = badge["name"] as? String
+            cell.titleLabel.text = (badge["name"] as? String)!.uppercaseString
             cell.badgeImageView.image = UIImage(named: "default_image")
             cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
             if let badgeImage = badge["image_url"] as? String {
                 CustomURLConnection.downloadAndSetImage(badgeImage, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
             } else {
                 CustomURLConnection.downloadAndSetImage("", imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
+            }
+            if let count = badge["session_count"] as? Int {
+                cell.countLabel.text = "\(count)"
             }
             return cell
         } else {
@@ -936,7 +947,7 @@ extension MyProfileViewController: UICollectionViewDelegateFlowLayout {
         } else if collectionView.isEqual(availableTimeCollectionView) {
             return CGSize(width: 60.0, height: 22.0)
         }
-        return CGSize(width: (collectionView.frame.size.width-6.0)/3.0, height: ((collectionView.frame.size.width-6.0)/3.0)+10.0)
+        return CGSize(width: 65.0, height: 75.0)
     }
 }
 
@@ -977,8 +988,8 @@ extension MyProfileViewController : UITableViewDataSource {
             if var imagesArray = Images.fetch(imageUrl as String) {
                 let image      = imagesArray[0] as! Images
                 let coverImage = UIImage(data: image.imageData)!
-                cell.profilePic.image = UIImage(data: image.imageData)!
                 cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFill
+                cell.profilePic.image = UIImage(data: image.imageData)!
                 cell.indicatorView.stopAnimating()
             } else {
                 if let imageURL = NSURL(string: imageurl as String){
@@ -988,8 +999,8 @@ extension MyProfileViewController : UITableViewDataSource {
                             if error == nil {
                                 let imageFromData:UIImage? = UIImage(data: data)
                                 if let image  = imageFromData {
-                                    updatedCell.profilePic.image = image
                                     updatedCell.profilePic.contentMode = UIViewContentMode.ScaleAspectFill
+                                    updatedCell.profilePic.image = image
                                     Images.save(imageurl as String, imageData: data)
                                 }
                             }

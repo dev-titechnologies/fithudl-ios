@@ -368,7 +368,6 @@ extension SignupViewController: iCarouselDelegate {
     }
     
     func carouselCurrentItemIndexDidChange(carousel: iCarousel) {
-        println("value changes")
         beginnerButton.selected = false
         moderateButton.selected = false
         expertButton.selected   = false
@@ -376,9 +375,7 @@ extension SignupViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-        
-        println("select index at icarooo")
-        
+              
     }
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {

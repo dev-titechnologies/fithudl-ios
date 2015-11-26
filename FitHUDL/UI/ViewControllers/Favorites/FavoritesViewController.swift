@@ -164,11 +164,11 @@ extension FavoritesViewController : UITableViewDelegate {
         if let url = self.favouriteList_array[indexPath.row].objectForKey("profile_pic") as? String {
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
-                if var imagesArray = Images.fetch(url as String) {
+                if var imagesArray = Images.fetch(imageurl as String) {
                     let image      = imagesArray[0] as! Images
                     let coverImage = UIImage(data: image.imageData)!
-                    cell.prof_pic.image = UIImage(data: image.imageData)!
                     cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
+                    cell.prof_pic.image = UIImage(data: image.imageData)!
                     cell.indicatorView.stopAnimating()
                 } else {
                     if let imageURL = NSURL(string: imageurl as String){
@@ -178,8 +178,8 @@ extension FavoritesViewController : UITableViewDelegate {
                                 if error == nil {
                                     let imageFromData:UIImage? = UIImage(data: data)
                                     if let image  = imageFromData {
-                                        updatedCell.prof_pic.image = image
                                         updatedCell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
+                                        updatedCell.prof_pic.image = image
                                         Images.save(imageurl as String, imageData: data)
                                     }
                                 }

@@ -196,8 +196,8 @@ extension BookingHistoryViewController: UITableViewDataSource {
                 if var imagesArray = Images.fetch(imageurl as String) {
                     let image      = imagesArray[0] as! Images
                     let coverImage = UIImage(data: image.imageData)!
+                    cell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
                     cell.userImageView.image   =   UIImage(data: image.imageData)!
-                    cell.userImageView.contentMode = UIViewContentMode.ScaleAspectFit
                     cell.indicatorView.stopAnimating()
                 } else {
                     if let imageURL = NSURL(string: imageurl as String){
@@ -207,8 +207,8 @@ extension BookingHistoryViewController: UITableViewDataSource {
                                 if error == nil {
                                     let imageFromData:UIImage? = UIImage(data: data)
                                     if let image  = imageFromData {
-                                        updatedCell.userImageView.image = image
                                         updatedCell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                        updatedCell.userImageView.image = image
                                         Images.save(imageurl as String, imageData: data)
                                     }
                                 }

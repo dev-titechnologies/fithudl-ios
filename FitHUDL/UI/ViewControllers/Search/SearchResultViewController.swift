@@ -10,11 +10,10 @@ import UIKit
 
 class SearchResultViewController: UIViewController {
 
-    @IBOutlet weak var nofavourites_label: UILabel!
+    @IBOutlet weak var noResultsLabel: UILabel!
+    @IBOutlet weak var searchTableView: UITableView!
     var searchResultArray = Array<NSDictionary>()
     var searchIndex : Int = 0
-    @IBOutlet weak var searchTableView: UITableView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,18 +37,6 @@ class SearchResultViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
-    //MARK: - FavouriteList API
-    
-    func sendRequestToGetFavouriteList() {
-        let requestDictionary = NSMutableDictionary()
-        if !Globals.isInternetConnected() {
-            return
-        }
-        showLoadingView(true)
-        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "favourite/favoritesList", requestType: HttpMethod.post),delegate: self,tag: Connection.favouriteList)
-    }
-    
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         return connection.receiveData.length=0
     }
@@ -65,57 +52,25 @@ class SearchResultViewController: UIViewController {
         var error : NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
-                if connection.connectionTag == Connection.favouriteList {
-                    if status == ResponseStatus.success {
-                        if let favourites = jsonResult["details"] as? NSArray {
-                            searchResultArray = favourites as! Array
-                            println(searchResultArray)
-                            searchTableView.reloadData()
-                        }
-                        else {
-                        }
-                        
-                    }
-                    else if status == ResponseStatus.error {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.invalid)
-                        }
+                if status == ResponseStatus.success {
+                    let favUser      = searchResultArray[searchIndex]
+                    let value: Int   = (favUser["favourite"] as! Int) == 0 ? 1 : 0
+                    favUser.setValue(value, forKey: "favourite")
+                    searchTableView.reloadData()
+                }
+                else if status == ResponseStatus.error {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
                     } else {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                        }
+                        showDismissiveAlertMesssage(ErrorMessage.invalid)
+                    }
+                } else {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
+                    } else {
+                        showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                     }
                 }
-                else {
-                    
-                    if status == ResponseStatus.success {
-                        searchResultArray.removeAtIndex(searchIndex)
-                        searchTableView.reloadData()
-                        if (searchResultArray.count==0) {
-                            
-                        }
-                        
-                    }
-                    else if status == ResponseStatus.error {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.invalid)
-                        }
-                    } else {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                        }
-                    }
-                    
-                }
-                
             }
         }
         
@@ -133,7 +88,7 @@ class SearchResultViewController: UIViewController {
         
         searchIndex = sender.tag
         let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(0, forKey: "favorite")
+        requestDictionary.setObject(sender.selected ? 1:0, forKey: "favorite")
         requestDictionary.setObject(self.searchResultArray[sender.tag].objectForKey("id")!, forKey: "trainer_id")
         if !Globals.isInternetConnected() {
             return
@@ -164,14 +119,15 @@ extension SearchResultViewController : UITableViewDataSource {
         cell.prof_pic.clipsToBounds         = true
         cell.prof_pic.image = UIImage(named: "default_image")
         cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFit
+        
         if let url = self.searchResultArray[indexPath.row].objectForKey("profile_pic") as? String {
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
                 if var imagesArray = Images.fetch(url as String) {
                     let image      = imagesArray[0] as! Images
                     let coverImage = UIImage(data: image.imageData)!
-                    cell.prof_pic.image = UIImage(data: image.imageData)!
                     cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
+                    cell.prof_pic.image = UIImage(data: image.imageData)!
                     cell.indicatorView.stopAnimating()
                 } else {
                     if let imageURL = NSURL(string: imageurl as String){
@@ -181,8 +137,8 @@ extension SearchResultViewController : UITableViewDataSource {
                                 if error == nil {
                                     let imageFromData:UIImage? = UIImage(data: data)
                                     if let image  = imageFromData {
-                                        updatedCell.prof_pic.image = image
                                         updatedCell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
+                                        updatedCell.prof_pic.image = image
                                         Images.save(imageurl as String, imageData: data)
                                     }
                                 }
@@ -200,8 +156,8 @@ extension SearchResultViewController : UITableViewDataSource {
         }
         
         
-        cell.nameLabel?.text = self.searchResultArray[indexPath.row].objectForKey("name") as? String
-        
+        cell.nameLabel?.text            = searchResultArray[indexPath.row].objectForKey("name") as? String
+        cell.favouriteButton.selected   = searchResultArray[indexPath.row].objectForKey("favourite")!.boolValue
         if let ratevalue = self.searchResultArray[indexPath.row].objectForKey("rating_count") as? Float {
             cell.starView.rating = ratevalue
         }

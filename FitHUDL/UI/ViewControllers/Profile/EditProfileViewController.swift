@@ -13,7 +13,7 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
-    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var monthPick: SRMonthPicker!
     @IBOutlet weak var timeCollectionView: UICollectionView!
     @IBOutlet weak var datePicker: DIDatepicker!
@@ -44,23 +44,33 @@ class EditProfileViewController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.setStatusBarColor()
-        let colorAttributes     = [NSForegroundColorAttributeName: UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1.0)]
-        var placeHolderString   = NSAttributedString(string: nameTextField.placeholder!, attributes: colorAttributes)
-        nameTextField.attributedPlaceholder = placeHolderString
         
         if IS_IPHONE6PLUS {
             contentViewHeightConstriant.constant = view.frame.size.height-64.0
             view.layoutIfNeeded()
         }
-        nameTextField.superview?.layer.borderColor = AppColor.boxBorderColor.CGColor
-        
         monthPick.superview!.setTranslatesAutoresizingMaskIntoConstraints(true)
         monthPick.superview!.frame = CGRect(x: 0.0, y: view.frame.size.height, width: view.frame.size.width, height: monthPick.frame.size.height)
+        bioTextView.superview?.layer.borderColor = UIColor.clearColor().CGColor
         
+        nameLabel.text = appDelegate.user.name
+        
+        if let bio = appDelegate.user.bio {
+            bioTextView.text = bio
+            placeholderLabel.hidden = true
+        }
+        
+        if let url = appDelegate.user.imageURL {
+            CustomURLConnection.downloadAndSetImage(url, imageView: photoImageView, activityIndicatorView: indicatorView)
+        }
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         datePicker.addTarget(self, action: "dateValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
         datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
-
+        
         timePicker.minimumDate   = NSDate()
         
         let dateFormatter        = NSDateFormatter()
@@ -73,24 +83,11 @@ class EditProfileViewController: UIViewController {
         monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPick.monthPickerDelegate = self
         
-        nameTextField.text = appDelegate.user.name
-        if let bio = appDelegate.user.bio {
-            bioTextView.text = bio
-            placeholderLabel.hidden = true
-        }
-        
         var datesArray  = NSSet(array: appDelegate.user.availableTimeArray.valueForKey("date") as! [String])
         for date in datesArray {
             let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
         }
-        if let url = appDelegate.user.imageURL {
-            CustomURLConnection.downloadAndSetImage(url, imageView: photoImageView, activityIndicatorView: indicatorView)
-//            photoButton.hidden = true
-        } else {
-//            photoButton.hidden = false
-        }
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidLayoutSubviews() {
@@ -100,8 +97,6 @@ class EditProfileViewController: UIViewController {
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
         }
     }
-    
-
     
     func setTimePickerValues() {
         let dateString       = Globals.convertDate(datePicker.selectedDate)
@@ -261,7 +256,6 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
-        nameTextField.resignFirstResponder()
         bioTextView.resignFirstResponder()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             if IS_IPHONE4S {
@@ -354,8 +348,8 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func setButtonClicked(sender: UIButton) {
         if validateTimeRange() {
-            let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text) \((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
-            let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text) \((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"
+            let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text):\((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
+            let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text):\((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"
             splitTimeToIntervals(startTime, endTime: endTime)
             timeCollectionView.reloadData()
         }
@@ -467,7 +461,6 @@ class EditProfileViewController: UIViewController {
         showLoadingView(true)
         
         let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(nameTextField.text, forKey: "name")
         requestDictionary.setObject(bioTextView.text, forKey: "bio")
         let timeArray = NSMutableArray()
         for value in availSessionTime.allValues {
@@ -555,36 +548,13 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     }
 }
 
-extension EditProfileViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(textField: UITextField) {
-        hidePickerView()
-        if IS_IPHONE4S {
-            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
-                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.nameTextField.superview!.frame.origin.y)
-                return
-            })
-        }
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        textField.resignFirstResponder()
-    }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
-            self.contentScrollView.contentOffset = CGPointZero
-            return
-        })
-        return true
-    }
-}
-
 extension EditProfileViewController: UITextViewDelegate {
     func textViewDidBeginEditing(textView: UITextView) {
+        bioTextView.superview?.layer.borderColor = AppColor.boxBorderColor.CGColor
         hidePickerView()
         if IS_IPHONE4S {
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
-                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.nameTextField.superview!.frame.origin.y)
+                self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.bioTextView.superview!.frame.origin.y)
                 return
             })
         }
@@ -600,6 +570,7 @@ extension EditProfileViewController: UITextViewDelegate {
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
+            bioTextView.superview?.layer.borderColor = UIColor.clearColor().CGColor
             textView.resignFirstResponder()
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.contentScrollView.contentOffset = CGPointZero
