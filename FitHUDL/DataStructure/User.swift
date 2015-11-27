@@ -14,6 +14,7 @@ class User: NSObject {
     var email: String = ""
     var bio: String?
     var imageURL: String?
+    var profileImage: UIImage?
     var totalHours: String?
     var usageCount: Int?
     var rating: String?

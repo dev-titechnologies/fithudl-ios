@@ -223,7 +223,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
-                        
+                        user.isFavorite = favoriteButton.selected
+                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser])
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message.capitalizedString)

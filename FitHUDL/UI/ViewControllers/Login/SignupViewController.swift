@@ -179,6 +179,12 @@ class SignupViewController: UIViewController {
     func setExpertiseLevel(level: String) {
         let sports  = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
         sports!.setObject(level, forKey: "level")
+        if let selected = sports!["isSelected"] as? Bool {
+            sports!.setValue(!selected, forKey: "isSelected")
+        } else {
+            sports!.setValue(true, forKey: "isSelected")
+        }
+        sportsCarousel.reloadData()
     }
     
     func sendSignupRequest() {
@@ -393,13 +399,6 @@ extension SignupViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-        let sports = appDelegate.sportsArray[index] as! NSDictionary
-        if let selected = sports["isSelected"] as? Bool {
-            sports.setValue(!selected, forKey: "isSelected")
-        } else {
-            sports.setValue(true, forKey: "isSelected")
-        }
-        carousel.reloadData()
     }
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {

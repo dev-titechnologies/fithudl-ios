@@ -347,7 +347,10 @@ class MyProfileViewController: UIViewController {
         }
         userImageView.image = UIImage(named: "default_image")
         userImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let url = user.imageURL {
+        if let image = user.profileImage {
+            userImageView.image = image
+            indicatorView.stopAnimating()
+        } else if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
         } else {
             CustomURLConnection.downloadAndSetImage("", imageView: userImageView, activityIndicatorView: indicatorView)
@@ -678,7 +681,8 @@ class MyProfileViewController: UIViewController {
                     }
                 } else if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
-                        
+                        profileUser.isFavorite = favoriteButton.selected
+                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser])
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -755,7 +759,7 @@ class MyProfileViewController: UIViewController {
             let bookViewController = segue.destinationViewController as! BookingSessionViewController
             bookViewController.user = profileUser
             if let id = searchResultId {
-                bookViewController.searchResultId=searchResultId
+                bookViewController.searchResultId = searchResultId
             }
         }
     }
@@ -919,6 +923,7 @@ extension MyProfileViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
             let source = profileID == nil ? appDelegate.user.badgesArray : profileUser.badgesArray
             let badge = source[indexPath.row] as! NSDictionary
+            cell.titleLabel.hidden = (badge["name"] as? String) == "no badge" ? true : false
             cell.titleLabel.text = (badge["name"] as? String)!.uppercaseString
             cell.badgeImageView.image = UIImage(named: "default_image")
             cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
