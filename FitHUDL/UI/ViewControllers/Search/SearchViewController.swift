@@ -125,10 +125,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             for i=0;i<usersArray.count;i++ {
                 
                 let User      = usersArray[i] as! UsersList
+                
+                let searchUserId:Int? = User.userID.toInt()
+                
+                if appDelegate.user.profileID as Int != searchUserId {
                 let userDictionary = NSMutableDictionary()
                 userDictionary.setObject(User.userName, forKey: "userName")
                 userDictionary.setObject(User.userID, forKey: "userID")
                 usersListArray.addObject(userDictionary)
+                }
             }
             tableView.reloadData()
             
