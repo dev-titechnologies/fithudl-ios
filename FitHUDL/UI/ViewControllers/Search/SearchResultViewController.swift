@@ -88,7 +88,7 @@ class SearchResultViewController: UIViewController {
         
         searchIndex = sender.tag
         let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(sender.selected ? 1:0, forKey: "favorite")
+        requestDictionary.setObject(sender.selected ? 0:1, forKey: "favorite")
         requestDictionary.setObject(self.searchResultArray[sender.tag].objectForKey("id")!, forKey: "trainer_id")
         if !Globals.isInternetConnected() {
             return
@@ -117,9 +117,9 @@ extension SearchResultViewController : UITableViewDataSource {
         cell.prof_pic.layer.borderColor     = UIColor.clearColor().CGColor
         cell.prof_pic.layer.cornerRadius    = cell.prof_pic.frame.size.height/2
         cell.prof_pic.clipsToBounds         = true
-        cell.prof_pic.image = UIImage(named: "default_image")
-        cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFit
-        
+        cell.prof_pic.image                 = UIImage(named: "default_image")
+        cell.prof_pic.contentMode           = UIViewContentMode.ScaleAspectFit
+        cell.favouriteButton.selected       = false
         if let url = self.searchResultArray[indexPath.row].objectForKey("profile_pic") as? String {
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
@@ -155,9 +155,10 @@ extension SearchResultViewController : UITableViewDataSource {
             }
         }
         
-        
         cell.nameLabel?.text            = searchResultArray[indexPath.row].objectForKey("name") as? String
-        cell.favouriteButton.selected   = searchResultArray[indexPath.row].objectForKey("favourite")!.boolValue
+        let favorite                    = searchResultArray[indexPath.row].objectForKey("favourite") as? Int
+        cell.favouriteButton.selected   = favorite == 0 ? false : true
+        
         if let ratevalue = self.searchResultArray[indexPath.row].objectForKey("rating_count") as? Float {
             cell.starView.rating = ratevalue
         }

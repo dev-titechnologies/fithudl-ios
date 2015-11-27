@@ -41,7 +41,7 @@ struct Message {
 
 struct TimeOut {
     static let Image: NSTimeInterval = 60
-    static let Data: NSTimeInterval  = 20
+    static let Data: NSTimeInterval  = 60
     static let sessionDuration: String = "GENERAL_SESSION_DURATION"
     static let sessionInterval: String = "GENERAL_BOOKING_INTERVAL"
 }

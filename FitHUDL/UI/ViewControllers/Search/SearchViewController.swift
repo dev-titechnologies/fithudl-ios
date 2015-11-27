@@ -11,7 +11,6 @@ import MapKit
 import CoreLocation
 class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate{
     
-    var tickImageView: UIImageView!
     @IBOutlet weak var maleButton: UIButton!
     @IBOutlet weak var femaleButton: UIButton!
     @IBOutlet weak var searchItemsContainerView: UIView!
@@ -436,21 +435,14 @@ extension SearchViewController:UISearchBarDelegate {
         }
         
         if maleButton.selected {
-            
             requestDictionary.setObject(Gender.male, forKey: "gender")
-            
-        } else if femaleButton.selected
-        {
+        } else if femaleButton.selected{
             requestDictionary.setObject(Gender.female, forKey: "gender")
-        }
-        else if (femaleButton.selected && maleButton.selected) || (!femaleButton.selected && !maleButton.selected) {
-            
+        } else if (femaleButton.selected && maleButton.selected) || (!femaleButton.selected && !maleButton.selected) {
             requestDictionary.setObject("", forKey: "gender")
-            
         }
         
         if userSelectedArray.count > 0 {
-            
              requestDictionary.setObject(self.userSelectedArray, forKey: "sportsList")
         }
         if !Globals.isInternetConnected() {
@@ -592,7 +584,8 @@ extension SearchViewController: iCarouselDataSource {
         var contentView: UIView
         var titleLabel: UILabel
         var sportsImageView: UIImageView
-       
+        var tickImageView: UIImageView
+        
         var indicatorView: UIActivityIndicatorView
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 78.0, height: carousel.frame.size.height)))
@@ -628,6 +621,7 @@ extension SearchViewController: iCarouselDataSource {
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
+            tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         let source          = allSportsArray
         let sports          = source[index] as! NSDictionary
@@ -640,19 +634,15 @@ extension SearchViewController: iCarouselDataSource {
             CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
         }
         if index == carousel.currentItemIndex {
+            tickImageView.hidden = false
             titleLabel.text = sports["sport_name"]!.uppercaseString as String
-                if sports["expert_level"] as? String == SportsLevel.beginner {
-                    beginnerButton.selected = true
-                    tickImageView.hidden = false
-                } else if sports["expert_level"] as? String == SportsLevel.moderate {
-                    moderateButton.selected = true
-                    tickImageView.hidden = false
-                } else if sports["expert_level"] as? String == SportsLevel.expert {
-                    expertButton.selected = true
-                    tickImageView.hidden = false
-                }
-                else {
-            }
+            if sports["expert_level"] as? String == SportsLevel.beginner {
+                beginnerButton.selected = true
+            } else if sports["expert_level"] as? String == SportsLevel.moderate {
+                moderateButton.selected = true
+            } else if sports["expert_level"] as? String == SportsLevel.expert {
+                expertButton.selected = true
+            } else {}
             
         } else {
             titleLabel.text = sports["sport_name"] as? String
@@ -661,8 +651,7 @@ extension SearchViewController: iCarouselDataSource {
         if level == "NO"
         {
             tickImageView.hidden=true
-        }
-        else {
+        } else {
             
             tickImageView.hidden=false
         }

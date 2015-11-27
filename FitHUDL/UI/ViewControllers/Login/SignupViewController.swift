@@ -30,6 +30,7 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var expertButton: UIButton!
     
     var fbUserDictionary: NSDictionary?
+    var selectedSportsArray = NSMutableArray()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,7 +149,7 @@ class SignupViewController: UIViewController {
     }
     
     func validateFields() -> Bool {
-        if nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
+        if nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" || nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")).count <= 1 {
             showDismissiveAlertMesssage("Please enter your full name")
             return false
         }
@@ -167,18 +168,17 @@ class SignupViewController: UIViewController {
             showDismissiveAlertMesssage("Please choose your gender")
             return false
         }
+        let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
+        if filteredArray.count == 0 {
+            showDismissiveAlertMesssage("Please select sports and your expertise level")
+            return false
+        }
         return true
     }
     
     func setExpertiseLevel(level: String) {
         let sports  = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
         sports!.setObject(level, forKey: "level")
-        
-        println("SPOrtsLISSS\(sports)")
-        
-        println("SportslisgggtArray\(appDelegate.sportsArray)")
-        
-        
     }
     
     func sendSignupRequest() {
@@ -258,6 +258,7 @@ class SignupViewController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         for sport in appDelegate.sportsArray {
             sport.setObject("", forKey: "level")
+            sport.setObject(false, forKey: "isSelected")
         }
     }
     
@@ -297,6 +298,8 @@ extension SignupViewController: iCarouselDataSource {
         var titleLabel: UILabel
         var sportsImageView: UIImageView
         var indicatorView: UIActivityIndicatorView
+        var tickImageView: UIImageView
+        
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 70.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
@@ -311,17 +314,26 @@ extension SignupViewController: iCarouselDataSource {
             titleLabel.textAlignment = NSTextAlignment.Center
             titleLabel.tag       = 2
             contentView.addSubview(titleLabel)
+            
             indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
             indicatorView.center = sportsImageView.center
             indicatorView.hidesWhenStopped = true
             indicatorView.tag = 3
             indicatorView.startAnimating()
             contentView.addSubview(indicatorView)
+            
+            tickImageView           = UIImageView(image: UIImage(named: "tick"))
+            tickImageView.frame     = CGRect(origin: CGPoint(x: 12.0, y: 0.0), size: tickImageView.image!.size)
+            tickImageView.tag       = 4
+            tickImageView.hidden    = true
+            contentView.addSubview(tickImageView)
+            
         } else {
             contentView     = view!
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
+            tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         
         let sports          = appDelegate.sportsArray[index] as! NSDictionary
@@ -333,6 +345,7 @@ extension SignupViewController: iCarouselDataSource {
             CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
         }
         if index == carousel.currentItemIndex {
+            tickImageView.hidden = false
             titleLabel.text = sports["title"]!.uppercaseString as String
             if sports["level"] as? String == SportsLevel.beginner {
                 beginnerButton.selected = true
@@ -343,6 +356,11 @@ extension SignupViewController: iCarouselDataSource {
             }
         } else {
             titleLabel.text = sports["title"] as? String
+        }
+        if appDelegate.sportsArray[index].objectForKey("isSelected") as? Bool == true{
+            tickImageView.hidden = false
+        } else {
+            tickImageView.hidden = true
         }
         
         return contentView
@@ -375,7 +393,13 @@ extension SignupViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-              
+        let sports = appDelegate.sportsArray[index] as! NSDictionary
+        if let selected = sports["isSelected"] as? Bool {
+            sports.setValue(!selected, forKey: "isSelected")
+        } else {
+            sports.setValue(true, forKey: "isSelected")
+        }
+        carousel.reloadData()
     }
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
