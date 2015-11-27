@@ -496,6 +496,7 @@ class EditProfileViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
+                    appDelegate.user.profileImage = photoImageView.image
                     dismissViewControllerAnimated(true, completion: nil)
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {
