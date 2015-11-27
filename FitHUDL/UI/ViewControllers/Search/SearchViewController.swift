@@ -109,6 +109,14 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.sendRequestToGetUsersSports()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        searchActive     = false
+        searchBar.resignFirstResponder()
+        searchBar.showsCancelButton=false
+        searchBar.text   = ""
+        tableView.hidden = true
+    }
+    
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()
