@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -4971,6 +4971,9 @@
                                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="yoO-1H-K1M" id="zgr-SN-MkE"/>
+                                                        </connections>
                                                     </textView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -5566,6 +5569,7 @@
                         </view>
                     </navigationItem>
                     <connections>
+                        <outlet property="bioTextView" destination="oVE-vx-2al" id="ddW-kd-Xqi"/>
                         <outlet property="contentScrollView" destination="x9j-KK-iwQ" id="OqV-yA-dSY"/>
                         <outlet property="contentViewHeightConstriant" destination="YvF-uf-Xed" id="cwZ-2S-l31"/>
                         <outlet property="datePicker" destination="rfp-zs-1oJ" id="LZH-u3-3sU"/>
@@ -5574,8 +5578,10 @@
                         <outlet property="indicatorView" destination="2yf-6l-ESr" id="Xd1-Z1-5MS"/>
                         <outlet property="monthButton" destination="tdI-RK-6ON" id="DpZ-iL-P10"/>
                         <outlet property="monthPick" destination="Wfy-7z-yGE" id="4qG-WY-oXD"/>
+                        <outlet property="nameLabel" destination="UZ8-FQ-GMI" id="Z9l-UN-ga2"/>
                         <outlet property="photoButton" destination="HCk-yt-DGZ" id="isJ-Bl-h9m"/>
                         <outlet property="photoImageView" destination="nl8-aH-vit" id="e7u-e3-5ce"/>
+                        <outlet property="placeholderLabel" destination="H06-xD-gXY" id="XVc-hO-q2u"/>
                         <outlet property="starttimeView" destination="fjj-yH-6YA" id="ruG-li-4gY"/>
                         <outlet property="timeCollectionView" destination="c6y-Af-Ay5" id="77a-gj-ZZL"/>
                         <outlet property="timePicker" destination="74m-Lp-6jZ" id="IXV-pT-OJG"/>
