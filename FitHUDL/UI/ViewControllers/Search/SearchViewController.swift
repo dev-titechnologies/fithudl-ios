@@ -439,12 +439,12 @@ extension SearchViewController:UISearchBarDelegate {
             requestDictionary.setObject(-122.406417, forKey: "longitude")
         }
         
-        if maleButton.selected {
+        if (femaleButton.selected && maleButton.selected) || (!femaleButton.selected && !maleButton.selected) {
+            requestDictionary.setObject("", forKey: "gender")
+        } else if maleButton.selected {
             requestDictionary.setObject(Gender.male, forKey: "gender")
         } else if femaleButton.selected{
             requestDictionary.setObject(Gender.female, forKey: "gender")
-        } else if (femaleButton.selected && maleButton.selected) || (!femaleButton.selected && !maleButton.selected) {
-            requestDictionary.setObject("", forKey: "gender")
         }
         
         if userSelectedArray.count > 0 {

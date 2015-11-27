@@ -58,6 +58,7 @@ class BookingHistoryViewController: UIViewController {
         }
         alert.addAction(noAction)
         alert.addAction(yesAction)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func sendRequestToCancelSession(requestID: Int) {
@@ -88,11 +89,11 @@ class BookingHistoryViewController: UIViewController {
         let checkTime = formatter.stringFromDate(NSDate())
         
         if let data = resultDictionary["data"] as? NSArray {
-            var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "alloted_date >= %@", argumentArray: [checkDate])) as NSArray
-            filteredArray     = filteredArray.filteredArrayUsingPredicate(NSPredicate(format: "start_time > %@", argumentArray: [checkTime])) as NSArray
-            filteredArray = filteredArray.filteredArrayUsingPredicate(NSPredicate(format: "user_id = %@", argumentArray: [appDelegate.user.profileID]))
+//            var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "alloted_date >= %@", argumentArray: [checkDate])) as NSArray
+//            filteredArray     = filteredArray.filteredArrayUsingPredicate(NSPredicate(format: "start_time > %@", argumentArray: [checkTime])) as NSArray
+            var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "user_id = %@", argumentArray: [appDelegate.user.profileID]))
             myBookings.addObjectsFromArray(filteredArray as [AnyObject])
-            filteredArray = filteredArray.filteredArrayUsingPredicate(NSPredicate(format: "trainer_id = %@", argumentArray: [appDelegate.user.profileID]))
+            filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "trainer_id = %@", argumentArray: [appDelegate.user.profileID]))
             bookings.addObjectsFromArray(filteredArray as [AnyObject])
         }
         noAvailLabel.hidden = myBookings.count > 0 ? true : false

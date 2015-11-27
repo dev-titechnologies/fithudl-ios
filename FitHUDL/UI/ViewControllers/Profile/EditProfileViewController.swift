@@ -573,13 +573,17 @@ extension EditProfileViewController: UITextViewDelegate {
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
         if text == "\n" {
-            textView.layer.borderColor = UIColor.clearColor().CGColor
+            textView.layer.borderColor = UIColor.lightGrayColor().CGColor
+            textView.layer.borderWidth = 1.0
             textView.resignFirstResponder()
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.contentScrollView.contentOffset = CGPointZero
                 return
             })
-        return false
+            return false
+        }
+        if text == "" {
+            return true
         }
         
         return count(textView.text) + (count(text) - range.length) <= 60;

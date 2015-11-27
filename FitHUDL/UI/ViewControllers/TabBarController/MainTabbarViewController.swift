@@ -38,6 +38,12 @@ class MainTabbarViewController: UITabBarController {
         selectedViewController!.presentViewController(controller, animated: true, completion: nil)
     }
     
+    override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
+        if selectedIndex == 1 {
+            (selectedViewController as! UINavigationController).popToRootViewControllerAnimated(true)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

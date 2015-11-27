@@ -351,6 +351,7 @@ class MyProfileViewController: UIViewController {
             userImageView.contentMode = UIViewContentMode.ScaleAspectFill
             userImageView.image = image
             indicatorView.stopAnimating()
+            user.profileImage = nil
         } else if let url = user.imageURL {
             CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
         } else {

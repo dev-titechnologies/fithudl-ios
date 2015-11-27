@@ -154,7 +154,7 @@
         <!--Login Or Sign Up View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginOrSignUpViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginOrSignUpViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -295,7 +295,7 @@
         <!--Signup View Controller-->
         <scene sceneID="RLD-bf-nak">
             <objects>
-                <viewController storyboardIdentifier="SignupViewController" id="3Sl-E1-e4Y" customClass="SignupViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignupViewController" id="3Sl-E1-e4Y" customClass="SignupViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mi6-jj-3rD"/>
                         <viewControllerLayoutGuide type="bottom" id="Gf9-3d-8ud"/>
@@ -683,7 +683,7 @@
         <!--Booking Request View Controller-->
         <scene sceneID="0f8-ke-BbO">
             <objects>
-                <viewController storyboardIdentifier="BookingRequestViewController" id="t0A-fM-MhV" customClass="BookingRequestViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BookingRequestViewController" id="t0A-fM-MhV" customClass="BookingRequestViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KJI-Ge-0sU"/>
                         <viewControllerLayoutGuide type="bottom" id="rtM-qI-J2J"/>
@@ -874,7 +874,7 @@
         <!--Session Timer View Controller-->
         <scene sceneID="KB6-1l-Ru0">
             <objects>
-                <viewController storyboardIdentifier="SessionTimerViewController" id="ENb-Gh-ava" customClass="SessionTimerViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SessionTimerViewController" id="ENb-Gh-ava" customClass="SessionTimerViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hQT-WI-NEy"/>
                         <viewControllerLayoutGuide type="bottom" id="TDJ-LI-mvE"/>
@@ -940,7 +940,7 @@
                                             <constraint firstAttribute="height" constant="160" id="7mA-e2-yaD"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HYW-er-44X" customClass="TimerView" customModule="FiTHudL" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HYW-er-44X" customClass="TimerView" customModule="FitHudl" customModuleProvider="target">
                                         <rect key="frame" x="80" y="105" width="160" height="160"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -1335,7 +1335,7 @@
         <!--Custom Popup View Controller-->
         <scene sceneID="Za7-g2-Hmi">
             <objects>
-                <viewController storyboardIdentifier="CustomPopupViewController" id="qti-DH-rxN" customClass="CustomPopupViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CustomPopupViewController" id="qti-DH-rxN" customClass="CustomPopupViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="E6e-We-zUD"/>
                         <viewControllerLayoutGuide type="bottom" id="lPV-yT-8Fg"/>
@@ -1689,7 +1689,7 @@
         <!--Main Tabbar View Controller-->
         <scene sceneID="xoP-fy-ZCV">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabbarViewController" id="F1K-lc-MaG" customClass="MainTabbarViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabbarViewController" id="F1K-lc-MaG" customClass="MainTabbarViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="rCf-ia-vlk"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="YJx-23-7nk">
@@ -1714,7 +1714,7 @@
         <!--Login View Controller-->
         <scene sceneID="vSC-FO-UCO">
             <objects>
-                <viewController id="RvG-AN-3PR" customClass="LoginViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="RvG-AN-3PR" customClass="LoginViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NRm-fh-cr5"/>
                         <viewControllerLayoutGuide type="bottom" id="qEW-Cr-jA3"/>
@@ -2046,7 +2046,7 @@
         <!--Booking History View Controller-->
         <scene sceneID="MsD-5j-M5z">
             <objects>
-                <viewController id="ct6-K0-JXl" customClass="BookingHistoryViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ct6-K0-JXl" customClass="BookingHistoryViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Bkt-bz-56Y"/>
                         <viewControllerLayoutGuide type="bottom" id="aCh-jG-iBd"/>
@@ -2161,7 +2161,7 @@
         <!--Favorites View Controller-->
         <scene sceneID="QZQ-xN-Si3">
             <objects>
-                <viewController id="tHn-Xb-7fA" customClass="FavoritesViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="tHn-Xb-7fA" customClass="FavoritesViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UFY-i9-Diq"/>
                         <viewControllerLayoutGuide type="bottom" id="Gz0-3k-tyI"/>
@@ -2174,7 +2174,7 @@
                                 <rect key="frame" x="0.0" y="13" width="320" height="440"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="76" id="lXq-iD-SSX" customClass="FavouritesListCell" customModule="FiTHudL" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="76" id="lXq-iD-SSX" customClass="FavouritesListCell" customModule="FitHudl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="22" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lXq-iD-SSX" id="vXG-ob-Uwv">
@@ -2218,7 +2218,7 @@
                                                     <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sj7-mV-igN" customClass="StarRateView" customModule="FiTHudL" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sj7-mV-igN" customClass="StarRateView" customModule="FitHudl" customModuleProvider="target">
                                                     <rect key="frame" x="124" y="32" width="80" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="Aqf-GR-m5d"/>
@@ -2369,7 +2369,7 @@
         <!--Booking Session View Controller-->
         <scene sceneID="Kyd-Y5-kSR">
             <objects>
-                <viewController storyboardIdentifier="BookingSessionViewController" id="gc7-xc-sep" customClass="BookingSessionViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BookingSessionViewController" id="gc7-xc-sep" customClass="BookingSessionViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9uY-iT-jxK"/>
                         <viewControllerLayoutGuide type="bottom" id="RM4-aq-53w"/>
@@ -2765,7 +2765,7 @@
         <!--Feedback View Controller-->
         <scene sceneID="uYg-Ca-1Y8">
             <objects>
-                <viewController id="kXF-vE-LEe" customClass="FeedbackViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="kXF-vE-LEe" customClass="FeedbackViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jAa-hq-2ZH"/>
                         <viewControllerLayoutGuide type="bottom" id="tC3-Pl-aVg"/>
@@ -2920,7 +2920,7 @@
         <!--Package View Controller-->
         <scene sceneID="Rjy-xc-87O">
             <objects>
-                <viewController id="fG4-N1-QKd" customClass="PackageViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fG4-N1-QKd" customClass="PackageViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iuR-SX-s6V"/>
                         <viewControllerLayoutGuide type="bottom" id="4rA-EP-zf5"/>
@@ -3188,7 +3188,7 @@
         <!--My Profile View Controller-->
         <scene sceneID="BZc-jg-TxM">
             <objects>
-                <viewController storyboardIdentifier="MyProfileViewController" id="uzi-1t-L5K" customClass="MyProfileViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyProfileViewController" id="uzi-1t-L5K" customClass="MyProfileViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rUb-te-Dqh"/>
                         <viewControllerLayoutGuide type="bottom" id="fLV-Yh-bfj"/>
@@ -3295,7 +3295,7 @@
                                                                 <color key="textColor" red="0.24313725489999999" green="0.24313725489999999" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ei-Hf-fPw" customClass="StarRateView" customModule="FiTHudL" customModuleProvider="target">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ei-Hf-fPw" customClass="StarRateView" customModule="FitHudl" customModuleProvider="target">
                                                                 <rect key="frame" x="230" y="31" width="80" height="10"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 <constraints>
@@ -3463,7 +3463,7 @@
                                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                         </collectionViewFlowLayout>
                                                                         <cells>
-                                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="timeCell" id="E3s-YX-Co2" customClass="AvailableTimeCollectionViewCell" customModule="FiTHudL" customModuleProvider="target">
+                                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="timeCell" id="E3s-YX-Co2" customClass="AvailableTimeCollectionViewCell" customModule="FitHudl" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="60" height="22"/>
                                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -4010,7 +4010,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="7" y="10" width="290" height="400"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
                                                 <rect key="frame" x="102" y="11" width="87" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="TAc-CO-NF3"/>
@@ -4182,7 +4182,7 @@
         <!--Search View Controller-->
         <scene sceneID="GbS-I4-ssF">
             <objects>
-                <viewController id="jJI-fI-5la" customClass="SearchViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jJI-fI-5la" customClass="SearchViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kWd-D7-a2k"/>
                         <viewControllerLayoutGuide type="bottom" id="PV8-k5-6Lw"/>
@@ -4633,7 +4633,7 @@
         <!--Search Result View Controller-->
         <scene sceneID="IzX-vO-nwl">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="QII-87-hxX" customClass="SearchResultViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="QII-87-hxX" customClass="SearchResultViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VnC-Wa-YxA"/>
                         <viewControllerLayoutGuide type="bottom" id="tmj-C8-vQ2"/>
@@ -4646,7 +4646,7 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="76" id="jtb-i8-e3l" customClass="FavouritesListCell" customModule="FiTHudL" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="76" id="jtb-i8-e3l" customClass="FavouritesListCell" customModule="FitHudl" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="22" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jtb-i8-e3l" id="uB4-nf-gZD">
@@ -4690,7 +4690,7 @@
                                                     <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6AX-EN-Mwc" customClass="StarRateView" customModule="FiTHudL" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6AX-EN-Mwc" customClass="StarRateView" customModule="FitHudl" customModuleProvider="target">
                                                     <rect key="frame" x="124" y="32" width="80" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="10" id="5Ty-IU-9SJ"/>
@@ -4900,7 +4900,7 @@
         <!--Edit Profile View Controller-->
         <scene sceneID="0M7-tt-Uw9">
             <objects>
-                <viewController id="yoO-1H-K1M" customClass="EditProfileViewController" customModule="FiTHudL" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="yoO-1H-K1M" customClass="EditProfileViewController" customModule="FitHudl" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bg5-AJ-h9w"/>
                         <viewControllerLayoutGuide type="bottom" id="y9f-Eq-86L"/>
@@ -5089,7 +5089,7 @@
                                                     <inset key="sectionInset" minX="5" minY="2" maxX="5" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="timeCell" id="Hs5-2d-myN" customClass="AvailableTimeCollectionViewCell" customModule="FiTHudL" customModuleProvider="target">
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="timeCell" id="Hs5-2d-myN" customClass="AvailableTimeCollectionViewCell" customModule="FitHudl" customModuleProvider="target">
                                                         <rect key="frame" x="5" y="2" width="98" height="40"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">

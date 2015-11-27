@@ -65,9 +65,10 @@ class FavoritesViewController: UIViewController {
                         if let favourites = jsonResult["details"] as? NSArray {
                             favouriteList_array = favourites as! Array
                             favourite_tableview.reloadData()
+                            nofavourites_label.hidden = true
                         }
                         else {
-                            nofavourites_label.hidden=false
+                            nofavourites_label.hidden = false
                         }
                         
 
@@ -85,19 +86,17 @@ class FavoritesViewController: UIViewController {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
-                }
-                else {
-                    
+                } else {
                      if status == ResponseStatus.success {
                         favouriteList_array.removeAtIndex(favouritelist_index)
                         favourite_tableview.reloadData()
                         if (favouriteList_array.count==0) {
-                            nofavourites_label.hidden=false
+                            nofavourites_label.hidden = false
                             
+                        } else {
+                            nofavourites_label.hidden = true
                         }
-                        
-                    }
-                     else if status == ResponseStatus.error {
+                    } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
@@ -110,12 +109,9 @@ class FavoritesViewController: UIViewController {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
-                    
-                    }
-                    
                 }
             }
-       
+        }
         showLoadingView(false)
         
     }

@@ -149,6 +149,7 @@ class SignupViewController: UIViewController {
     }
     
     func validateFields() -> Bool {
+        println(nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")))
         if nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" || nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")).count <= 1 {
             showDismissiveAlertMesssage("Please enter your full name")
             return false
