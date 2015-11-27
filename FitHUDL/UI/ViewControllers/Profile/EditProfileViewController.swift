@@ -43,8 +43,9 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bioTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        bioTextView.layer.borderWidth = 1.0
         navigationController?.setStatusBarColor()
-        
         if IS_IPHONE6PLUS {
             contentViewHeightConstriant.constant = view.frame.size.height-64.0
             view.layoutIfNeeded()
@@ -57,7 +58,7 @@ class EditProfileViewController: UIViewController {
         
         if let bio = appDelegate.user.bio {
             bioTextView.text = bio
-            placeholderLabel.hidden = true
+            //placeholderLabel.hidden = true
         }
         
         if let url = appDelegate.user.imageURL {
@@ -549,10 +550,14 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
 }
 
 extension EditProfileViewController: UITextViewDelegate {
+    
     func textViewDidBeginEditing(textView: UITextView) {
-        bioTextView.superview?.layer.borderColor = AppColor.boxBorderColor.CGColor
+        println("IN textviewwww")
+        textView.layer.borderColor = AppColor.boxBorderColor.CGColor
+        textView.layer.borderWidth = 1.0
         hidePickerView()
         if IS_IPHONE4S {
+            
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.bioTextView.superview!.frame.origin.y)
                 return
@@ -561,27 +566,22 @@ extension EditProfileViewController: UITextViewDelegate {
     }
     
     func textViewDidChange(textView: UITextView) {
-        if count(textView.text) == 0 {
-            placeholderLabel.hidden = false
-        } else {
-            placeholderLabel.hidden = true
-        }
+        
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
         if text == "\n" {
-            bioTextView.superview?.layer.borderColor = UIColor.clearColor().CGColor
+            textView.layer.borderColor = UIColor.clearColor().CGColor
             textView.resignFirstResponder()
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.contentScrollView.contentOffset = CGPointZero
                 return
             })
-            if count(textView.text) == 0 {
-                placeholderLabel.hidden = false
-            }
-            return false
+        return false
         }
-        return true
+        
+        return count(textView.text) + (count(text) - range.length) <= 60;
     }
 }
 
