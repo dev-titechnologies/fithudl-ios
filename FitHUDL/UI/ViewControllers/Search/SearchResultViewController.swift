@@ -85,7 +85,6 @@ class SearchResultViewController: UIViewController {
     }
     
     func unFavouriteAction(sender:UIButton) {
-        
         searchIndex = sender.tag
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(sender.selected ? 0:1, forKey: "favorite")
@@ -95,14 +94,27 @@ class SearchResultViewController: UIViewController {
         }
         showLoadingView(true)
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "favourite/manage", requestType: HttpMethod.post),delegate: self,tag: Connection.unfavourite)
-        
+    }
+    
+    func manageFavorite (notif: NSNotification) {
+        let userInfo: NSDictionary  = notif.userInfo!
+        let favUser                 = userInfo["user"] as? User
+        let filteredArray           = (searchResultArray as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [favUser!.profileID]))
+        if filteredArray.count > 0 {
+            let user = filteredArray.first as? NSDictionary
+            user?.setValue(favUser!.isFavorite, forKey: "favourite")
+            (NSMutableArray(array: searchResultArray)).replaceObjectAtIndex(NSMutableArray(array: searchResultArray).indexOfObject(user!), withObject: user!)
+            searchTableView.reloadData()
+        }
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: PushNotification.favNotif, object: nil)
     }
 }
+
 extension SearchResultViewController : UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.searchResultArray.count;
+        return searchResultArray.count
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -180,6 +192,7 @@ extension SearchResultViewController : UITableViewDelegate {
         let id                  = self.searchResultArray[indexPath.row].objectForKey("id") as! Int
         userProfile.profileID   = "\(id)"
         userProfile.searchResultId = "SEARCH"
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "manageFavorite:", name: PushNotification.favNotif, object: nil)
         navigationController?.pushViewController(userProfile, animated: true)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

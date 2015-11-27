@@ -156,7 +156,7 @@
 		F3A2AD261BD4A77000DA6F7B /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateView.swift; sourceTree = "<group>"; };
 		F3A2AD281BD4A78600DA6F7B /* RateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateView.xib; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
-		F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitHUDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3CDCB2A1BB27D490070EDAF /* FiTHudL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiTHudL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB2E1BB27D490070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3CDCB341BB27D4A0070EDAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F3CDCB391BB27D4A0070EDAF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -491,7 +491,7 @@
 		F3CDCB2B1BB27D490070EDAF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */,
+				F3CDCB2A1BB27D490070EDAF /* FiTHudL.app */,
 				F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */,
 			);
 			name = Products;
@@ -559,7 +559,7 @@
 			);
 			name = FitHUDL;
 			productName = FitHUDL;
-			productReference = F3CDCB2A1BB27D490070EDAF /* FitHUDL.app */;
+			productReference = F3CDCB2A1BB27D490070EDAF /* FiTHudL.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F3CDCB411BB27D4A0070EDAF /* FitHUDLTests */ = {
@@ -846,7 +846,7 @@
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FiTHudL;
 				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
@@ -866,7 +866,7 @@
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FiTHudL;
 				PROVISIONING_PROFILE = "c83d0796-fa79-4a10-a03f-3833615a92fb";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};

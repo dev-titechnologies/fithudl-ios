@@ -125,6 +125,7 @@ struct PushNotification {
     static let sessionStart = "session_start"
     static let sessionEnd   = "session_end"
     static let timerNotif   = "TimerNotification"
+    static let favNotif     = "FavoriteNotification"
 }
 
 class AppConstants: NSObject {

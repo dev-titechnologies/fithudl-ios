@@ -678,7 +678,8 @@ class MyProfileViewController: UIViewController {
                     }
                 } else if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
-                        
+                        profileUser.isFavorite = favoriteButton.selected
+                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser])
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -755,7 +756,7 @@ class MyProfileViewController: UIViewController {
             let bookViewController = segue.destinationViewController as! BookingSessionViewController
             bookViewController.user = profileUser
             if let id = searchResultId {
-                bookViewController.searchResultId=searchResultId
+                bookViewController.searchResultId = searchResultId
             }
         }
     }
