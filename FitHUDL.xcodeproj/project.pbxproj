@@ -836,7 +836,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -856,7 +856,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -867,7 +867,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "c83d0796-fa79-4a10-a03f-3833615a92fb";
+				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;

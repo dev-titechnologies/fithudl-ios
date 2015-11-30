@@ -439,7 +439,7 @@ extension SearchViewController:UISearchBarDelegate {
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(searchString, forKey: "search_name")
         requestDictionary.setObject(sliderValue, forKey: "distance")
-        if let location = appDelegate.currentLocation {
+        if let location = point {
             requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
             requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
         } else {

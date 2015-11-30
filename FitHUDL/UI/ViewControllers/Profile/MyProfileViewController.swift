@@ -542,23 +542,22 @@ class MyProfileViewController: UIViewController {
             
             if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
                 profileUser.sportsArray.removeAllObjects()
-                for sports in appDelegate.sportsArray {
+                for sports in sportsArray {
                     let sport = NSMutableDictionary()
-                    sport.setObject(sports["id"] as! Int, forKey: "sports_id")
-                    sport.setObject(sports["title"] as! String, forKey: "sport_name")
-                    if let logo = sports["logo"] as? String {
-                        sport.setObject(logo, forKey: "logo")
+                    sport.setObject(sports["sports_id"] as! Int, forKey: "sports_id")
+                    sport.setObject(sports["sport_name"] as! String, forKey: "sport_name")
+                    let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sports["sports_id"] as! Int]))
+                    if filteredArray.count > 0 {
+                        let mysport = filteredArray[0] as! NSDictionary
+                        if let logo = mysport["logo"] as? String {
+                            sport.setObject(logo, forKey: "logo")
+                        } else {
+                            sport.setObject("", forKey: "logo")
+                        }
                     } else {
                         sport.setObject("", forKey: "logo")
                     }
-                    
-                    if sportsArray.valueForKey("sports_id")!.containsObject(sports["id"] as! Int) {
-                        let index = sportsArray.valueForKey("sports_id")?.indexOfObject(sports["id"] as! Int)
-                        let dict  = sportsArray.objectAtIndex(index!) as! NSDictionary
-                        sport.setObject(dict["expert_level"] as! String, forKey: "expert_level")
-                    } else {
-                        sport.setObject("", forKey: "expert_level")
-                    }
+                    sport.setObject(sports["expert_level"] as! String, forKey: "expert_level")
                     profileUser.sportsArray.addObject(sport)
                 }
             }
@@ -605,28 +604,39 @@ class MyProfileViewController: UIViewController {
             
             if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
                 appDelegate.user.sportsArray.removeAllObjects()
-                for sports in appDelegate.sportsArray {
+                for sports in sportsArray {
                     let sport = NSMutableDictionary()
-                    sport.setObject(sports["id"] as! Int, forKey: "sports_id")
-                    sport.setObject(sports["title"] as! String, forKey: "sport_name")
-                    if let logo = sports["logo"] as? String {
-                        sport.setObject(logo, forKey: "logo")
+                    sport.setObject(sports["sports_id"] as! Int, forKey: "sports_id")
+                    sport.setObject(sports["sport_name"] as! String, forKey: "sport_name")
+                    let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sports["sports_id"] as! Int]))
+                    if filteredArray.count > 0 {
+                        let mysport = filteredArray[0] as! NSDictionary
+                        if let logo = mysport["logo"] as? String {
+                            sport.setObject(logo, forKey: "logo")
+                        } else {
+                            sport.setObject("", forKey: "logo")
+                        }
                     } else {
                         sport.setObject("", forKey: "logo")
                     }
-                    
-                    if sportsArray.valueForKey("sports_id")!.containsObject(sports["id"] as! Int) {
-                        let index = sportsArray.valueForKey("sports_id")?.indexOfObject(sports["id"] as! Int)
-                        let dict  = sportsArray.objectAtIndex(index!) as! NSDictionary
-                        sport.setObject(dict["expert_level"] as! String, forKey: "expert_level")
-                        
-                    } else {
-                        sport.setObject("", forKey: "expert_level")
-                    }
+                    sport.setObject(sports["expert_level"] as! String, forKey: "expert_level")
                     appDelegate.user.sportsArray.addObject(sport)
-                    
                 }
-            
+                for sports in appDelegate.sportsArray {
+                    if sportsArray.valueForKey("sports_id")!.containsObject(sports["id"] as! Int) {
+                    } else {
+                        let sport = NSMutableDictionary()
+                        sport.setObject(sports["id"] as! Int, forKey: "sports_id")
+                        sport.setObject(sports["title"] as! String, forKey: "sport_name")
+                        if let logo = sports["logo"] as? String {
+                            sport.setObject(logo, forKey: "logo")
+                        } else {
+                            sport.setObject("", forKey: "logo")
+                        }
+                        sport.setObject("", forKey: "expert_level")
+                        appDelegate.user.sportsArray.addObject(sport)
+                    }
+                }
            }
         }
     }
