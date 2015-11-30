@@ -186,13 +186,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         var sliderMiles = " Miles"
         distanceLabel.text = sliderDistacce+sliderMiles
     }
+    
     @IBAction func downArrowAction(sender: AnyObject) {
         searchItemsContainerView.hidden=true
-        
     }
     
     @IBAction func viewAllButtonClicked(sender: UIButton) {
-        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.allSportsView.alpha = 1.0
+        })
     }
     
     @IBAction func upArrowAction(sender: AnyObject) {
@@ -286,31 +288,23 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     
     func displayLocationInfo(placemark: CLPlacemark) {
-        
-        
-        
         self.locationManager.stopUpdatingLocation()
-        
         println(placemark.locality)
-        
         println(placemark.postalCode)
-        
         println(placemark.administrativeArea)
-        
         println(placemark.country)
-        
-        
     }
     
-    
-    
-    
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        
         println("Error: " + error.localizedDescription)
         
     }
 
+    @IBAction func viewAllCloseButtonClicked(sender: UIButton) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.allSportsView.alpha = 0.0
+        })
+    }
     
     
     // MARK: - Navigation
@@ -443,8 +437,8 @@ extension SearchViewController:UISearchBarDelegate {
             requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
             requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
         } else {
-            requestDictionary.setObject(37.785834, forKey: "latitude")
-            requestDictionary.setObject(-122.406417, forKey: "longitude")
+//            requestDictionary.setObject(37.785834, forKey: "latitude")
+//            requestDictionary.setObject(-122.406417, forKey: "longitude")
         }
         
         if (femaleButton.selected && maleButton.selected) || (!femaleButton.selected && !maleButton.selected) {
@@ -474,7 +468,6 @@ extension SearchViewController:UISearchBarDelegate {
         connection.receiveData.appendData(data)
     }
     func connectionDidFinishLoading(connection: CustomURLConnection) {
-        var rating_categoryTemp_array = Array<NSDictionary>()
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         var error : NSError?
         println(response)
@@ -490,11 +483,9 @@ extension SearchViewController:UISearchBarDelegate {
                             } else {
                                 showDismissiveAlertMesssage("No search results found!")
                             }
+                        } else {
                         }
-                        else {
-                        }
-                    }
-                    else
+                    } else {
                         if status == ResponseStatus.error {
                             if let message = jsonResult["message"] as? String {
                                 showDismissiveAlertMesssage(message)
@@ -507,37 +498,26 @@ extension SearchViewController:UISearchBarDelegate {
                             } else {
                                 showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                             }
+                        }
                     }
-                }
-                
-                
-                else if  connection.connectionTag == Connection.userSportsList
-                
-                {
+                } else if  connection.connectionTag == Connection.userSportsList {
                     if status == ResponseStatus.success {
                         if let favourites = jsonResult["data"] as? NSMutableArray {
                             userSelectedArray = favourites as NSMutableArray
                             for userSports in allSportsArray {
-                                
                                 if userSelectedArray.valueForKey("sports_id")!.containsObject(userSports["sports_id"] as! Int) {
-                                    
                                     var index = userSelectedArray.valueForKey("sports_id")?.indexOfObject(userSports["sports_id"] as! Int)
                                     allSportsArray.replaceObjectAtIndex(count, withObject: userSelectedArray.objectAtIndex(index!))
-                                    
-                                } else
-                                {
+                                } else {
                                     userSports.setObject("NO", forKey: "level")
                                     allSportsArray.replaceObjectAtIndex(count, withObject: userSports)
                                 }
                                 count=count+1
                             }
                             sportsCarousel.reloadData()
+                        } else {
                         }
-                        else {
-                        }
-                        
-                }
-                    else
+                    } else {
                         if status == ResponseStatus.error {
                             if let message = jsonResult["message"] as? String {
                                 showDismissiveAlertMesssage(message)
@@ -550,14 +530,11 @@ extension SearchViewController:UISearchBarDelegate {
                             } else {
                                 showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                             }
+                        }
                     }
-                }
-                
-                else {
-                    
+                } else {
                     if status == ResponseStatus.success {
-                    }
-                    else if status == ResponseStatus.error {
+                    } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
                         } else {
@@ -570,14 +547,10 @@ extension SearchViewController:UISearchBarDelegate {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
-                    
                 }
-                
             }
         }
-        
         showLoadingView(false)
-        
     }
     
     
@@ -587,6 +560,51 @@ extension SearchViewController:UISearchBarDelegate {
     }
     
 }
+
+extension SearchViewController: UICollectionViewDataSource {
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return appDelegate.sportsArray.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("sportCell", forIndexPath: indexPath) as! AllSportsCollectionViewCell
+        let sport = appDelegate.sportsArray[indexPath.row] as! NSDictionary
+        cell.sportNameLabel.text = sport["title"] as? String
+        cell.sportImageView.image = UIImage(named: "default_image")
+        if let url = sport["logo"] as? NSString {
+            let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
+            if imageurl.length != 0 {
+                if var imagesArray = Images.fetch(imageurl as String) {
+                    let image      = imagesArray[0] as! Images
+                    let sportImage = UIImage(data: image.imageData)!
+                    cell.sportImageView.image = UIImage(data: image.imageData)!
+                } else {
+                    if let imageURL = NSURL(string: imageurl as String){
+                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                            if let updatedCell = collectionView.cellForItemAtIndexPath(indexPath) as? AllSportsCollectionViewCell {
+                                if error == nil {
+                                    let imageFromData:UIImage? = UIImage(data: data)
+                                    if let image  = imageFromData {
+                                        updatedCell.sportImageView.image = image
+                                        Images.save(imageurl as String, imageData: data)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return cell
+    }
+    
+}
+
 
 extension SearchViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
@@ -696,32 +714,23 @@ extension SearchViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-        
-            if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int){
-                
-                 var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int)
-                userSelectedArray.removeObjectAtIndex(indexValue!)
-                
-                var allSports = NSMutableDictionary()
-                allSports  = allSportsArray[index] as! NSMutableDictionary
-                allSports.setObject("NO", forKey: "level")
-                allSportsArray.replaceObjectAtIndex(index, withObject: allSports)
-                
-                }
-            else{
-                var userSport = NSMutableDictionary()
-                userSport  = allSportsArray[index] as! NSMutableDictionary
-                userSport.setObject("Beginner", forKey: "level")
-                userSelectedArray.addObject(userSport)
-                allSportsArray.replaceObjectAtIndex(index, withObject: userSport)
-              
-
-            }
-        
+        if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int) {
+             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int)
+            
+            userSelectedArray.removeObjectAtIndex(indexValue!)
+            var allSports = NSMutableDictionary()
+            allSports  = allSportsArray[index] as! NSMutableDictionary
+            allSports.setObject("NO", forKey: "level")
+            allSportsArray.replaceObjectAtIndex(index, withObject: allSports)
+        } else{
+            var userSport = NSMutableDictionary()
+            userSport  = allSportsArray[index] as! NSMutableDictionary
+            userSport.setObject("Beginner", forKey: "level")
+            userSelectedArray.addObject(userSport)
+            allSportsArray.replaceObjectAtIndex(index, withObject: userSport)
+        }
         carousel.reloadData()
-        
     }
-    
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
         if option == .Spacing {
