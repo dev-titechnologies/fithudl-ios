@@ -201,8 +201,8 @@ class SignupViewController: UIViewController {
             requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
             requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
         } else {
-            requestDictionary.setObject(37.785834, forKey: "latitude")
-            requestDictionary.setObject(-122.406417, forKey: "longitude")
+//            requestDictionary.setObject(37.785834, forKey: "latitude")
+//            requestDictionary.setObject(-122.406417, forKey: "longitude")
         }
 
         if maleButton.selected {

@@ -73,9 +73,7 @@ class SearchResultViewController: UIViewController {
                 }
             }
         }
-        
         showLoadingView(false)
-        
     }
     
     
