@@ -311,9 +311,8 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "searchToSearchResult" {
-            var DestViewController = segue.destinationViewController as! UINavigationController
-            let targetController = DestViewController.topViewController as! SearchResultViewController
-            targetController.searchResultArray = searchResultArray
+            var DestViewController = segue.destinationViewController as! SearchResultViewController
+            DestViewController.searchResultArray = searchResultArray
         }
     }
 
@@ -479,7 +478,7 @@ extension SearchViewController:UISearchBarDelegate {
                         if let results = jsonResult["search_list"] as? NSArray {
                             searchResultArray = results as! Array
                             if searchResultArray.count > 0 {
-                                performSegueWithIdentifier("searchToSearchResult", sender: self)
+                               performSegueWithIdentifier("searchToSearchResult", sender: self)
                             } else {
                                 showDismissiveAlertMesssage("No search results found!")
                             }
