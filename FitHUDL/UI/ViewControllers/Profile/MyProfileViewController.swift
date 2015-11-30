@@ -157,7 +157,6 @@ class MyProfileViewController: UIViewController {
         calloutView.frame = CGRect(x: 0.0, y: -17.0, width: calloutView.frame.size.width, height: 0)
         self.view.addSubview(calloutView)
        
-        
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.frame = CGRect(x: 18.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
         self.view.addSubview(notificationBackgroundView)
@@ -320,11 +319,7 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
-        let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
-        custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-        custompopController.viewTag = ViewTag.bioText
-        custompopController.bioText = appDelegate.user.bio
-        presentViewController(custompopController, animated: true, completion: nil)
+        showBioView(appDelegate.user.bio!)
     }
     
     @IBAction func bookSessionTapped(sender: UITapGestureRecognizer) {
@@ -449,8 +444,16 @@ class MyProfileViewController: UIViewController {
         }
     }
     
-    //MARK: - NoticationList API
+    func showBioView(bioText: String) {
+        let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
+        custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        custompopController.viewTag = ViewTag.bioText
+        custompopController.bioText = bioText
+        presentViewController(custompopController, animated: true, completion: nil)
+    }
     
+    
+    //MARK: - NoticationList API
     func sendRequestForNotificationList() {
         if !Globals.isInternetConnected() {
             return
@@ -586,6 +589,11 @@ class MyProfileViewController: UIViewController {
             
             if let bio = responseDictionary["profile_desc"] as? String {
                 appDelegate.user.bio = bio
+                if bio == "" {
+                    showBioView(bio)
+                }
+            } else {
+                showBioView("")
             }
             if let session = responseDictionary["Training_session"] as? NSArray {
                 appDelegate.user.availableTimeArray.removeAllObjects()
