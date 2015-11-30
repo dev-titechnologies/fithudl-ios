@@ -32,6 +32,7 @@ class CustomPopupViewController: UIViewController {
     @IBOutlet weak var bookButton: UIButton!
     @IBOutlet weak var confirmView: UIView!
     
+    @IBOutlet weak var updateButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     var delegate:ConfirmBookDelegate?
     var viewTag = 0
@@ -52,14 +53,24 @@ class CustomPopupViewController: UIViewController {
         timeOkButton.layer.borderWidth  = 2.0
         timeOkButton.layer.borderColor  = AppColor.statusBarColor.CGColor
         
-        
         bookButton.layer.borderColor    = AppColor.statusBarColor.CGColor
         bookButton.layer.borderWidth    = 1.0
         
         switch (viewTag) {
         case ViewTag.bioText:
             bioView.hidden      = false
-            closeButton.hidden  = false
+            if bioText == "" {
+                closeButton.hidden  = true
+                updateButton.hidden = false
+                updateButton.layer.borderColor = UIColor.whiteColor().CGColor
+                bioTextView.becomeFirstResponder()
+            } else {
+                closeButton.hidden  = false
+                updateButton.hidden = true
+                bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)
+                bioTextView.frame   = CGRect(origin: CGPointZero, size: CGSize(width: bioView.frame.size.width, height: bioView.frame.size.height))
+            }
+            
             attributedBioText()
         case ViewTag.timeView:
             timeView.hidden = false
@@ -71,7 +82,6 @@ class CustomPopupViewController: UIViewController {
             timeView.hidden = false
         }
 
-        println(timeDictionary)
         // Do any additional setup after loading the view.
     }
 
@@ -87,6 +97,17 @@ class CustomPopupViewController: UIViewController {
             }
         }
     }
+    
+    func sendRequestToEditProfile() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject((bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4)), forKey: "bio")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/editProfile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
+    }
+
     
     func setUpBookConfirmView() {
         let predicate       = NSPredicate(format: "id = %d", argumentArray: [sessionDictionary!["sports_id"] as! Int])
@@ -112,6 +133,14 @@ class CustomPopupViewController: UIViewController {
         bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
         bioTitle.appendAttributedString(NSAttributedString(string: " \(bioText!)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 13.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
         bioTextView.attributedText = bioTitle
+    }
+    
+    @IBAction func updateBioClicked(sender: UIButton) {
+        if count(bioTextView.text) > 4 {
+            sendRequestToEditProfile()
+        } else {
+            showDismissiveAlertMesssage("Please enter your profile description")
+        }
     }
     
     @IBAction func timeOkButtonClicked(sender: UIButton) {
@@ -141,6 +170,43 @@ class CustomPopupViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
+        connection.receiveData.length = 0
+    }
+    
+    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
+        connection.receiveData.appendData(data)
+    }
+    
+    func connectionDidFinishLoading(connection: CustomURLConnection) {
+        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+        println(response)
+        var error: NSError?
+        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+            if let status = jsonResult["status"] as? Int {
+                if status == ResponseStatus.success {
+                    appDelegate.user.bio = (bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4))
+                    dismissViewControllerAnimated(true, completion: nil)
+                } else if status == ResponseStatus.error {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
+                    } else {
+                        showDismissiveAlertMesssage(Message.Error)
+                    }
+                } else {
+                    dismissViewControllerAnimated(false, completion: nil)
+                    self.presentingViewController?.dismissOnSessionExpire()
+                }
+            }
+        }
+        showLoadingView(false)
+    }
+    
+    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
+        showDismissiveAlertMesssage(error.localizedDescription)
+        showLoadingView(false)
+    }
+
 
     /*
     // MARK: - Navigation

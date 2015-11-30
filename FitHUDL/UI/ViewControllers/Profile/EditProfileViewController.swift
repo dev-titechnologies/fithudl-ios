@@ -29,7 +29,7 @@ class EditProfileViewController: UIViewController {
     let imagePicker = UIImagePickerController()
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
-    
+    var bioOnly     = false
     let hourField   = 97
     let minuteField = 98
     let timeField   = 99
@@ -253,7 +253,10 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func doneButtonClicked(sender: UIButton) {
-        sendRequestToEditProfile()
+        if validateBio() {
+            bioOnly = false
+            sendRequestToEditProfile()
+        }
     }
     
     @IBAction func monthButtonClicked(sender: UIButton) {
@@ -374,6 +377,14 @@ class EditProfileViewController: UIViewController {
         return true
     }
     
+    func validateBio() -> Bool {
+        if bioTextView.text == "" {
+            showDismissiveAlertMesssage("Please enter your profile description")
+            return false
+        }
+        return true
+    }
+    
     func hidePickerView() {
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.monthPick.superview!.frame = CGRect(origin: CGPoint(x: 0.0, y: self.view.frame.size.height), size: self.monthPick.superview!.frame.size)
@@ -459,25 +470,26 @@ class EditProfileViewController: UIViewController {
         if !Globals.isInternetConnected() {
             return
         }
-        showLoadingView(true)
         
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(bioTextView.text, forKey: "bio")
-        let timeArray = NSMutableArray()
-        for value in availSessionTime.allValues {
-            for time in (value as! [NSMutableDictionary]) {
-                time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_starts") as! String), forKey: "time_starts")
-                time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_ends") as! String), forKey: "time_ends")
+        if !bioOnly {
+            showLoadingView(true)
+            let timeArray = NSMutableArray()
+            for value in availSessionTime.allValues {
+                for time in (value as! [NSMutableDictionary]) {
+                    time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_starts") as! String), forKey: "time_starts")
+                    time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_ends") as! String), forKey: "time_ends")
+                }
+                timeArray.addObjectsFromArray(value as! [NSDictionary])
             }
-            timeArray.addObjectsFromArray(value as! [NSDictionary])
+            requestDictionary.setObject(timeArray, forKey: "session")
+            if let image = photoImageView.image {
+                let imageData = UIImageJPEGRepresentation(image, 0.5)
+                let imageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
+                requestDictionary.setObject(imageString, forKey: "file")
+            }
         }
-        requestDictionary.setObject(timeArray, forKey: "session")
-        if let image = photoImageView.image {
-            let imageData = UIImageJPEGRepresentation(image, 0.5)
-            let imageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
-            requestDictionary.setObject(imageString, forKey: "file")
-        }
-        
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/editProfile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
     
@@ -496,8 +508,13 @@ class EditProfileViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    appDelegate.user.profileImage = photoImageView.image
-                    dismissViewControllerAnimated(true, completion: nil)
+                    if !bioOnly {
+                        appDelegate.user.profileImage = photoImageView.image
+                        dismissViewControllerAnimated(true, completion: nil)
+                    } else {
+                        appDelegate.user.bio = bioTextView.text
+                        bioOnly = false
+                    }
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {
                         showDismissiveAlertMesssage(message)
@@ -571,11 +588,14 @@ extension EditProfileViewController: UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        
         if text == "\n" {
             textView.layer.borderColor = UIColor.lightGrayColor().CGColor
             textView.layer.borderWidth = 1.0
             textView.resignFirstResponder()
+            if validateBio() {
+                bioOnly = true
+                sendRequestToEditProfile()
+            }
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.contentScrollView.contentOffset = CGPointZero
                 return
