@@ -22,6 +22,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var expertLevelLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var noAvailLabel: UILabel!
     var selectedIndexArray = NSMutableArray()
     var searchResultId : String?
     var profileID: String?
@@ -115,6 +117,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     }
 
     func dateValueChanged(collectionView: UICollectionView) {
+        noAvailLabel.hidden = true
         bookingTableView.reloadData()
     }
     
@@ -470,7 +473,10 @@ extension BookingSessionViewController: UITableViewDataSource {
                     let time = Globals.convertTime(NSDate())
                     timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
                 }
+                noAvailLabel.hidden = timeArray.count > 0 ? true : false
                 return timeArray.count
+            } else {
+                noAvailLabel.hidden = false
             }
         }
         return 0

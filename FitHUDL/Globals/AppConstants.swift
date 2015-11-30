@@ -25,13 +25,14 @@ let animateInterval: NSTimeInterval = 0.3
 let secondsValue: Int    = 60
 
 struct AppColor {
-    static let statusBarColor  = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
-    static let placeholderText = UIColor(red: 216/255, green: 1, blue: 251/255, alpha: 1.0)
-    static let yellowTextColor = UIColor(red: 1, green: 204/255, blue: 59/255, alpha: 1.0)
+    static let statusBarColor   = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
+    static let placeholderText  = UIColor(red: 216/255, green: 1, blue: 251/255, alpha: 1.0)
+    static let yellowTextColor  = UIColor(red: 1, green: 204/255, blue: 59/255, alpha: 1.0)
     static let textDisableColor = UIColor(red: 0, green: 170/255, blue: 155/255, alpha: 1.0)
     static let boxBorderColor   = UIColor(red: 242/255, green: 141/255, blue: 44/255, alpha: 1.0)
     static let badgeSilverColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1.0)
     static let timerColor       = UIColor(red: 183/255, green: 183/255, blue: 183/255, alpha: 1.0)
+    static let notifReadColor   = UIColor(red: 140/255, green: 138/255, blue: 143/255, alpha: 1.0)
 }
 
 struct Message {
@@ -77,6 +78,7 @@ struct Connection {
     static let sessionComplete      = 31
     static let sessionsList         = 32
     static let sessionCancel        = 33
+    static let notifReadStatus      = 34
 }
 
 struct SportsLevel {

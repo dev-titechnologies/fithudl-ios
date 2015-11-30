@@ -148,6 +148,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -2570,7 +2571,7 @@
                                                     <inset key="titleEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="0.0"/>
                                                     <inset key="imageEdgeInsets" minX="75" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="OCT 2015" image="calendar_arrow">
-                                                        <color key="titleColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" red="0.94901960780000005" green="0.55294117649999996" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -2622,6 +2623,16 @@
                                     <outlet property="delegate" destination="gc7-xc-sep" id="z9j-IH-95j"/>
                                 </connections>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No available time on this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPs-9G-O00">
+                                <rect key="frame" x="16" y="399" width="288" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="MfN-Ck-dZf"/>
+                                    <constraint firstAttribute="height" constant="21" id="h1s-cs-MML"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TVP-F3-qAz" userLabel="Monthpicker view">
                                 <rect key="frame" x="0.0" y="460" width="320" height="180"/>
                                 <subviews>
@@ -2683,7 +2694,9 @@
                             <constraint firstAttribute="trailing" secondItem="TVP-F3-qAz" secondAttribute="trailing" id="6QO-Rf-ehl"/>
                             <constraint firstItem="axv-CG-lHx" firstAttribute="top" secondItem="9uY-iT-jxK" secondAttribute="bottom" id="AvN-M6-9yW"/>
                             <constraint firstItem="RM4-aq-53w" firstAttribute="top" secondItem="axv-CG-lHx" secondAttribute="bottom" id="DRs-Bt-DZ0"/>
+                            <constraint firstItem="PPs-9G-O00" firstAttribute="centerY" secondItem="axv-CG-lHx" secondAttribute="centerY" constant="182" id="tlV-wG-njj"/>
                             <constraint firstItem="TVP-F3-qAz" firstAttribute="leading" secondItem="9a6-EJ-COa" secondAttribute="leading" id="xG7-pV-hU2"/>
+                            <constraint firstItem="PPs-9G-O00" firstAttribute="centerX" secondItem="axv-CG-lHx" secondAttribute="centerX" id="yVT-TH-Uxd"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="QV8-lA-Z3e">
@@ -2724,6 +2737,7 @@
                         <outlet property="monthButton" destination="kKU-aV-MwR" id="oK2-yM-LuY"/>
                         <outlet property="monthPicker" destination="1eQ-gS-wfV" id="Zkp-nk-11F"/>
                         <outlet property="nameLabel" destination="k1Q-vM-YDO" id="dFK-xq-1jc"/>
+                        <outlet property="noAvailLabel" destination="PPs-9G-O00" id="DQO-88-cdq"/>
                         <outlet property="profileImageView" destination="LtC-Ih-2la" id="gvH-Wj-1T5"/>
                         <outlet property="sportsCarousel" destination="BeU-6f-Z9H" id="50a-5Z-5qo"/>
                         <outlet property="tableViewTopConstraint" destination="AvN-M6-9yW" id="k4X-Cc-Vzu"/>
@@ -4017,6 +4031,9 @@
                                                     <outlet property="delegate" destination="uzi-1t-L5K" id="rZC-nA-q3h"/>
                                                 </connections>
                                             </tableView>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OXh-bT-jvy">
+                                                <rect key="frame" x="135" y="209" width="20" height="20"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.94509803921568625" green="0.5490196078431373" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -4024,6 +4041,8 @@
                                             <constraint firstItem="Pqj-Xy-K9s" firstAttribute="leading" secondItem="yoJ-0a-XC4" secondAttribute="leading" constant="5" id="2fj-9q-xkA"/>
                                             <constraint firstAttribute="bottom" secondItem="Pqj-Xy-K9s" secondAttribute="bottom" constant="3" id="8X3-kK-35p"/>
                                             <constraint firstAttribute="centerX" secondItem="00B-fC-4zb" secondAttribute="centerX" id="Abt-yt-Dwc"/>
+                                            <constraint firstItem="Pqj-Xy-K9s" firstAttribute="centerY" secondItem="OXh-bT-jvy" secondAttribute="centerY" constant="-0.5" id="a8g-pg-EFZ"/>
+                                            <constraint firstItem="Pqj-Xy-K9s" firstAttribute="centerX" secondItem="OXh-bT-jvy" secondAttribute="centerX" constant="2.5" id="bq6-gy-cVT"/>
                                             <constraint firstAttribute="trailing" secondItem="Pqj-Xy-K9s" secondAttribute="trailing" id="k75-AQ-24F"/>
                                             <constraint firstItem="Pqj-Xy-K9s" firstAttribute="top" secondItem="00B-fC-4zb" secondAttribute="bottom" constant="8" id="r4R-uc-iyx"/>
                                             <constraint firstAttribute="height" constant="400" id="rTC-8w-1dt"/>
@@ -4129,6 +4148,7 @@
                         <outlet property="nameLabel" destination="fMw-qF-mHp" id="vOY-Ie-kg5"/>
                         <outlet property="noBadgeLabel" destination="xdk-va-IZx" id="dfJ-Dh-PJa"/>
                         <outlet property="noreviewLabel" destination="nHM-5e-cy3" id="QxI-u1-vlL"/>
+                        <outlet property="notifIndicatorView" destination="OXh-bT-jvy" id="9qM-2U-TTP"/>
                         <outlet property="notificationArrowTrailingConstraint" destination="u6k-OV-UUn" id="Tvw-M6-ZrR"/>
                         <outlet property="notificationBackgroundView" destination="8SN-yw-6MI" id="hqe-uc-nHh"/>
                         <outlet property="notificationBgtrailingConstraint" destination="r7r-J5-EXh" id="Juv-jH-ZjO"/>
@@ -5047,7 +5067,7 @@
                                                         <inset key="titleEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="0.0"/>
                                                         <inset key="imageEdgeInsets" minX="75" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         <state key="normal" title="OCT 2015" image="calendar_arrow">
-                                                            <color key="titleColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="titleColor" red="0.94901960780000005" green="0.55294117649999996" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>

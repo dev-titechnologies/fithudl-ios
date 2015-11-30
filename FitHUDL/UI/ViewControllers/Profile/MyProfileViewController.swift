@@ -64,6 +64,7 @@ class MyProfileViewController: UIViewController {
     let profileUser = User()
     var notificationListArray =  Array<NSDictionary>()
     
+    @IBOutlet weak var notifIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var packagesButton: UIButton!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
@@ -454,7 +455,7 @@ class MyProfileViewController: UIViewController {
         if !Globals.isInternetConnected() {
             return
         }
-        showLoadingView(true)
+        notifIndicatorView.startAnimating()
         let requestDictionary = NSMutableDictionary()
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/notification", requestType: HttpMethod.post), delegate: self, tag: Connection.notificationRequest)
     }
@@ -482,6 +483,15 @@ class MyProfileViewController: UIViewController {
         requestDictionary.setObject(sports["expert_level"]!, forKey: "expert_level")
         requestDictionary.setObject(type, forKey: "type")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/modifyUserSports", requestType: HttpMethod.post), delegate: self, tag: Connection.updateSports)
+    }
+    
+    func sendRequestForUpdateNotifReadStatus(requestID: Int) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(requestID, forKey: "request_id")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/notificationRead", requestType: HttpMethod.post), delegate: self, tag: Connection.notifReadStatus)
     }
     
     func sendRequestToManageFavorite(favorite: Int) {
@@ -707,13 +717,10 @@ class MyProfileViewController: UIViewController {
                     }
                 }  else if connection.connectionTag == Connection.notificationRequest {
                     if status == ResponseStatus.success {
-                        
                         if let notifications = jsonResult["data"] as? NSArray {
                             self.notificationListArray = notifications as! Array
                             notificationTableView.reloadData()
                         }
-
-                        
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -723,6 +730,11 @@ class MyProfileViewController: UIViewController {
                         favoriteButton.selected = !favoriteButton.selected
                     } else {
                         dismissOnSessionExpire()
+                    }
+                    notifIndicatorView.stopAnimating()
+                } else if connection.connectionTag == Connection.notifReadStatus {
+                    if status == ResponseStatus.success {
+                        
                     }
                 }
             }
@@ -845,13 +857,10 @@ extension MyProfileViewController: iCarouselDataSource {
                 } else {
                     expertLevelLabel.superview?.superview?.hidden = true
                 }
-                
             }
-
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
-        
         return contentView
     }
 }
@@ -1005,6 +1014,12 @@ extension MyProfileViewController : UITableViewDataSource {
         cell.profilePic.layer.cornerRadius  = 25.0
         cell.profilePic.layer.borderColor   = UIColor.clearColor().CGColor
         cell.profilePic.clipsToBounds       = true
+        let readStatus                      = notificationListArray[indexPath.row].objectForKey("read_status") as! Int
+        if  readStatus == 0{
+            cell.roundLabel.backgroundColor = AppColor.boxBorderColor
+        } else {
+            cell.roundLabel.backgroundColor = AppColor.notifReadColor
+        }
         
         if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
             imageUrl = notificationListArray[indexPath.row].objectForKey("user_image") as! String
@@ -1056,17 +1071,24 @@ extension MyProfileViewController : UITableViewDataSource {
 
 extension MyProfileViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if notificationListArray[indexPath.row].objectForKey("read_status") as! Int == 0 {
+            sendRequestForUpdateNotifReadStatus(notificationListArray[indexPath.row].objectForKey("request_id") as! Int)
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! NotificationCell
+            cell.roundLabel.backgroundColor = AppColor.notifReadColor
+        }
         if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
             controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             controller.notificationDictionary = notificationListArray[indexPath.row] as! NSMutableDictionary
             presentViewController(controller, animated: true, completion: nil)
+            notificationBackgroundView.hidden = true
         } //else {
 //            let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
 //            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
 //            controller.sessionDictionary      = notificationListArray[indexPath.row] as NSDictionary
 //            presentViewController(controller, animated: true, completion: nil)
 //        }
-        notificationBackgroundView.hidden = true
+        
     }
 }
