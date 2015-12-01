@@ -95,6 +95,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         
+        
+        if CLLocationManager.locationServicesEnabled() {
+            if self.locationManager.respondsToSelector("requestWhenInUseAuthorization") {
+               self.locationManager.requestWhenInUseAuthorization()
+            } else {
+                 self.locationManager.startUpdatingLocation()
+            }
+        }
+        
         var tapGesture = UITapGestureRecognizer(target: self, action: "mapViewToch:")
         self.mapView.addGestureRecognizer(tapGesture)
 

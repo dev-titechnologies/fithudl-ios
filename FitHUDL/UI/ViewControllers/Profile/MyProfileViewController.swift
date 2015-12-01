@@ -91,11 +91,11 @@ class MyProfileViewController: UIViewController {
         sportsCarousel.type = iCarouselType.Custom
         navigationController?.setStatusBarColor()
         
-        if let id = searchResultId {
-        scrollViewBottomConstraint.constant = -65
-        carouselBackgroundView.constant     = 226.0
-        view.layoutIfNeeded()
-        }
+//        if let id = searchResultId {
+//        scrollViewBottomConstraint.constant = -65
+//        carouselBackgroundView.constant     = 226.0
+//        view.layoutIfNeeded()
+//        }
         if IS_IPHONE6PLUS {
             profileViewHeightConstraint.constant = 260.0
             reviewTopConstraint.constant         = 30.0
