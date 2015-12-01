@@ -37,9 +37,7 @@ class SignupViewController: UIViewController {
 
         navigationController?.navigationBarHidden = false
         sportsCarousel.type             = .Custom
-        
-        nameTextField.superview!.layer.borderColor  = AppColor.boxBorderColor.CGColor
-        
+                
         if appDelegate.sportsArray.count == 0 {
             sportsCarousel.superview?.hidden = true
         }

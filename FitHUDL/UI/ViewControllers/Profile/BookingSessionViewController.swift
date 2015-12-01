@@ -66,10 +66,10 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         if let bioText = user.bio {
             if count(bioText) > BIOTEXT_LENGTH {
                 bioLabel.userInteractionEnabled = true
-                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel)
+                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
             } else {
                 bioLabel.userInteractionEnabled = false
-                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel)
+                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
             }
         }
        

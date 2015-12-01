@@ -61,6 +61,18 @@ class BookingHistoryViewController: UIViewController {
         presentViewController(alert, animated: true, completion: nil)
     }
     
+    func userImageTapped(tapGesture: UITapGestureRecognizer) {
+        let imageView = tapGesture.view as! UIImageView
+        let cell      = imageView.superview?.superview as! HistoryTableViewCell
+        let indexPath = historyTableView.indexPathForCell(cell)
+        let profile   = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings[indexPath!.row] as! NSDictionary : bookings[indexPath!.row] as! NSDictionary
+        let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
+        let id                  = bookingSegmentControl.selectedSegmentIndex == 0 ? profile["trainer_id"] as! Int : profile["user_id"] as! Int
+        userProfile.profileID   = "\(id)"
+        navigationController?.pushViewController(userProfile, animated: true)        
+    }
+    
+    
     func sendRequestToCancelSession(requestID: Int) {
         if !Globals.isInternetConnected() {
             return
@@ -232,6 +244,7 @@ extension BookingHistoryViewController: UITableViewDataSource {
             let endTime          = Globals.convertTimeTo12Hours(history["end_time"] as! String)
             cell.timeLabel.text  = "On \(date) at \(startTime) to \(endTime)"
             cell.closeButton.addTarget(self, action: "cancelBooking:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.userImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userImageTapped:"))
         }
         return cell
     }

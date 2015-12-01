@@ -115,12 +115,12 @@ class Globals: NSObject {
         return nil
     }
     
-    class func attributedBioText(bio: String, lengthExceed: Bool, bioLabel: UILabel) {
-        var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 15.0)!, NSForegroundColorAttributeName: AppColor.boxBorderColor])
-        bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: AppColor.statusBarColor]))
-        bioTitle.appendAttributedString(NSAttributedString(string: " \(bio)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 13.0)!, NSForegroundColorAttributeName: AppColor.statusBarColor]))
+    class func attributedBioText(bio: String, lengthExceed: Bool, bioLabel: UILabel, titleColor: UIColor, bioColor: UIColor) {
+        var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 16.0)!, NSForegroundColorAttributeName: titleColor])
+        bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: bioColor]))
+        bioTitle.appendAttributedString(NSAttributedString(string: " \(bio)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 15.0)!, NSForegroundColorAttributeName: bioColor]))
         if lengthExceed == true {
-            bioTitle.appendAttributedString(NSAttributedString(string: "...", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: AppColor.statusBarColor]))
+            bioTitle.appendAttributedString(NSAttributedString(string: "...", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: bioColor]))
         }
         bioLabel.attributedText = bioTitle
     }
