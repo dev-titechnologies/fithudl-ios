@@ -322,7 +322,11 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
-        showBioView(appDelegate.user.bio!)
+        if let id = profileID {
+            showBioView(profileUser.bio!)
+        } else {
+            showBioView(appDelegate.user.bio!)
+        }
     }
     
     @IBAction func bookSessionTapped(sender: UITapGestureRecognizer) {
@@ -360,10 +364,10 @@ class MyProfileViewController: UIViewController {
         if let bioText = user.bio {
             if count(bioText) > BIOTEXT_LENGTH {
                 bioLabel.userInteractionEnabled = true
-                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel)
+                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
             } else {
                 bioLabel.userInteractionEnabled = false
-                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel)
+                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
             }
         }
         if user.sportsArray.count == 0 {
@@ -775,6 +779,7 @@ class MyProfileViewController: UIViewController {
         }
         sports!.setObject(level, forKey: "expert_level")
         sendRequestForUpdateSportsLevel(sports!, type: type)
+        sportsCarousel.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -811,6 +816,8 @@ extension MyProfileViewController: iCarouselDataSource {
         var titleLabel: UILabel
         var sportsImageView: UIImageView
         var indicatorView: UIActivityIndicatorView
+        var tickImageView: UIImageView
+        
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 78.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
@@ -818,6 +825,7 @@ extension MyProfileViewController: iCarouselDataSource {
             sportsImageView.tag                 = 1
             sportsImageView.layer.cornerRadius  = sportsImageView.frame.size.height/2.0
             contentView.addSubview(sportsImageView)
+           
             titleLabel           = UILabel(frame: CGRect(x: 0.0, y: sportsImageView.frame.size.height+2.0, width: contentView.frame.size.width, height: 20.0))
             titleLabel.center    = CGPoint(x: sportsImageView.center.x, y: titleLabel.center.y)
             titleLabel.font      = UIFont(name: "OpenSans", size: 13.0)
@@ -826,17 +834,25 @@ extension MyProfileViewController: iCarouselDataSource {
             titleLabel.textAlignment = NSTextAlignment.Center
             titleLabel.tag       = 2
             contentView.addSubview(titleLabel)
+            
             indicatorView           = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
             indicatorView.center    = sportsImageView.center
             indicatorView.hidesWhenStopped  = true
             indicatorView.tag       = 3
             indicatorView.startAnimating()
             contentView.addSubview(indicatorView)
+            
+            tickImageView           = UIImageView(image: UIImage(named: "tick"))
+            tickImageView.frame     = CGRect(origin: CGPoint(x: 12.0, y: 0.0), size: tickImageView.image!.size)
+            tickImageView.tag       = 4
+            tickImageView.hidden    = true
+            contentView.addSubview(tickImageView)
         } else {
             contentView     = view!
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
+            tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         let source          = profileID == nil ? appDelegate.user.sportsArray : profileUser.sportsArray
         let sports          = source[index] as! NSDictionary
@@ -872,6 +888,14 @@ extension MyProfileViewController: iCarouselDataSource {
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
+        
+        if sports["expert_level"] as? String == "" {
+            tickImageView.hidden = true
+        } else {
+            tickImageView.hidden = false
+        }
+        
+        
         return contentView
     }
 }
@@ -942,7 +966,6 @@ extension MyProfileViewController: UICollectionViewDataSource {
             cell.reviewView.reviewTextView.scrollRangeToVisible(NSMakeRange(0, 0))
             cell.reviewView.reviewTextView.text = review["user_review"] as! String
             cell.reviewView.nameLabel.text      = review["profile_name"] as? String
-            cell.reviewView.userImageView.backgroundColor = AppColor.statusBarColor
             cell.reviewView.userImageView.image = UIImage(named: "default_image")
             cell.reviewView.userImageView.contentMode = UIViewContentMode.ScaleAspectFit
             if let userImage = review["image_url"] as? String {
