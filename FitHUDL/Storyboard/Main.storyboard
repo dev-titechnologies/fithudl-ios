@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dgt-O7-P4A">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -195,7 +195,7 @@
                                     <constraint firstAttribute="width" secondItem="1D3-3l-zLb" secondAttribute="height" multiplier="1:1" id="e1d-oJ-Ppj"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © Ascension Dynamik LLC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k5t-6O-Qos">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2015 FitHudl" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k5t-6O-Qos">
                                 <rect key="frame" x="9" y="423" width="302" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Rxc-JU-bHS"/>
@@ -2106,8 +2106,8 @@
                                             <constraint firstAttribute="height" constant="28" id="7Ae-y4-5DF"/>
                                         </constraints>
                                         <segments>
-                                            <segment title="My bookings" width="145"/>
-                                            <segment title="Bookings" width="145"/>
+                                            <segment title="My appointments" width="145"/>
+                                            <segment title="Appointments" width="145"/>
                                         </segments>
                                         <color key="tintColor" red="0.0" green="0.49803921568627452" blue="0.43529411764705883" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
@@ -2122,7 +2122,7 @@
                                     <constraint firstItem="JcW-UB-GZ8" firstAttribute="top" secondItem="5DA-hs-6k2" secondAttribute="top" constant="11" id="d9d-Lb-2wq"/>
                                 </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No bookings available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xMD-Ex-cxl">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No appointments available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xMD-Ex-cxl">
                                 <rect key="frame" x="30" y="217" width="260" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="260" id="1le-QV-lft"/>
@@ -2160,7 +2160,7 @@
                             <rect key="frame" x="96" y="6" width="128" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="BOOKING" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwC-Y0-lwT">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Appointments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwC-Y0-lwT">
                                     <rect key="frame" x="0.0" y="0.0" width="128" height="33"/>
                                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2543,6 +2543,11 @@
                                                                 <constraint firstAttribute="trailing" secondItem="fQH-sz-BvT" secondAttribute="trailing" id="oVk-cy-YWw"/>
                                                                 <constraint firstItem="fQH-sz-BvT" firstAttribute="leading" secondItem="jdm-Hg-en3" secondAttribute="leading" id="sni-le-F5x"/>
                                                             </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="10"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3905,6 +3910,11 @@
                                                                     <constraint firstAttribute="trailing" secondItem="qNo-TW-9Di" secondAttribute="trailing" id="fP9-Bl-MeL"/>
                                                                     <constraint firstItem="qNo-TW-9Di" firstAttribute="leading" secondItem="95C-bM-KXM" secondAttribute="leading" id="zEw-g1-J99"/>
                                                                 </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                        <integer key="value" value="10"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B7t-Mf-CLF">
                                                                 <rect key="frame" x="0.0" y="3" width="200" height="20"/>
@@ -3994,6 +4004,11 @@
                                                                     <constraint firstItem="Ec9-nQ-4Wt" firstAttribute="centerY" secondItem="lhG-01-vEn" secondAttribute="centerY" id="s4x-Aq-eNL"/>
                                                                     <constraint firstItem="PAc-Fh-5eb" firstAttribute="centerY" secondItem="lhG-01-vEn" secondAttribute="centerY" id="sZV-mD-GT7"/>
                                                                 </constraints>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                        <integer key="value" value="10"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                             </view>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -4514,6 +4529,11 @@
                                             <constraint firstAttribute="centerX" secondItem="8nX-oi-pJv" secondAttribute="centerX" constant="-7" id="sR1-IW-Chp"/>
                                             <constraint firstAttribute="centerX" secondItem="veI-MC-6dy" secondAttribute="centerX" constant="28.5" id="tM7-gn-S1X"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="1" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="RHa-sv-S9e">
                                         <rect key="frame" x="64" y="130" width="176" height="31"/>
@@ -5006,11 +5026,11 @@
             </objects>
             <point key="canvasLocation" x="1838" y="-591"/>
         </scene>
-        <!--Booking-->
+        <!--Appointments-->
         <scene sceneID="TrZ-zX-7AH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3tN-2h-nvM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Booking" image="booking_tabicon" id="eDK-9s-oGh"/>
+                    <tabBarItem key="tabBarItem" title="Appointments" image="booking_tabicon" id="eDK-9s-oGh"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="yWW-FX-uq9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -5802,6 +5822,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="yyH-6q-B63"/>
+        <segue reference="QaT-RG-m6h"/>
     </inferredMetricsTieBreakers>
 </document>

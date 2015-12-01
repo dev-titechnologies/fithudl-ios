@@ -71,6 +71,7 @@
 		F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD261BD4A77000DA6F7B /* RateView.swift */; };
 		F3A2AD291BD4A78600DA6F7B /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD281BD4A78600DA6F7B /* RateView.xib */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
+		F3CC9DDC1C0DC2F2006DAF6A /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */; };
 		F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB341BB27D4A0070EDAF /* ViewController.swift */; };
 		F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3CDCB391BB27D4A0070EDAF /* Images.xcassets */; };
 		F3CDCB491BB27D4A0070EDAF /* FitHUDLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */; };
@@ -159,6 +160,7 @@
 		F3A2AD261BD4A77000DA6F7B /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateView.swift; sourceTree = "<group>"; };
 		F3A2AD281BD4A78600DA6F7B /* RateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateView.xib; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
+		F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		F3CDCB2A1BB27D490070EDAF /* FitHudl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitHudl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB2E1BB27D490070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3CDCB341BB27D4A0070EDAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 		F3884C651BF35D9100A62547 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */,
 				F3884C661BF35DB300A62547 /* PackageViewController.swift */,
 			);
 			name = Packages;
@@ -688,6 +691,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3CC9DDC1C0DC2F2006DAF6A /* IAPHelper.swift in Sources */,
 				F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */,
 				F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */,
 				F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */,
@@ -854,7 +858,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
+				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -863,8 +867,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
@@ -875,7 +879,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;
@@ -898,7 +902,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
+				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Debug;
@@ -908,7 +912,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -917,7 +921,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Release;
