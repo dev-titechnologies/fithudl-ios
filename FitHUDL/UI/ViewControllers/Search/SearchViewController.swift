@@ -42,6 +42,8 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var userSelectedArray   = NSMutableArray()
     var count:Int           = 0
     var point: MKPointAnnotation! = MKPointAnnotation()
+    var mapViewTouchFlag : Bool = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +60,8 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     func mapViewToch(getstureRecognizer : UITapGestureRecognizer){
         
+    
+        self.mapViewTouchFlag = true
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations(annotationsToRemove)
         let touchLocation       = getstureRecognizer.locationInView(mapView)
@@ -115,6 +119,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.fetchUserListFromDb()
         filtered            = NSMutableArray()
         mapView.delegate    = self
+        searchButton.layer.cornerRadius = searchButton.frame.size.height/2
         searchButton.layer.borderColor  = AppColor.statusBarColor.CGColor
         searchButton.layer.borderWidth  = 1.0
         searchButton.backgroundColor    = UIColor.clearColor()
@@ -130,7 +135,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchBar.showsCancelButton=false
         searchBar.text   = ""
         tableView.hidden = true
-      //  self.locationManager.stopUpdatingLocation()
     }
     
     override func didReceiveMemoryWarning() {
@@ -220,8 +224,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     func setExpertiseLevel(level: String)
     {
 
-        if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int){
-            
+            if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int){
             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int)
             userSelectedArray.removeObjectAtIndex(indexValue!)
             var userSport = NSMutableDictionary()
@@ -282,7 +285,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             }
             
             if placemarks.count > 0 {
-                
+                if !self.mapViewTouchFlag {
                 let pm = placemarks[0] as! CLPlacemark
                 self.point = MKPointAnnotation()
                 self.point.coordinate = location.coordinate
@@ -291,6 +294,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                 self.point.subtitle = pm.administrativeArea
                 self.mapView.addAnnotation(self.point)
                 self.locationManager.stopUpdatingLocation()
+                }
                 
             }else {
                 
