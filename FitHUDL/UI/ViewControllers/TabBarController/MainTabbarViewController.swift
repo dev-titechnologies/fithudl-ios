@@ -17,7 +17,7 @@ class MainTabbarViewController: UITabBarController {
         tabBar.tintColor = UIColor.whiteColor()
         
         for tabItem in tabBar.items! {
-            (tabItem as! UITabBarItem).setTitleTextAttributes([NSFontAttributeName: UIFont(name: "OpenSans", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
+            (tabItem as! UITabBarItem).setTitleTextAttributes([NSFontAttributeName: UIFont(name: "OpenSans", size: 12.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
             (tabItem as! UITabBarItem).image = (tabItem as! UITabBarItem).image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         }
         tabBar.selectionIndicatorImage = UIImage(named: "tabselection")

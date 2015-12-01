@@ -2025,11 +2025,11 @@
             </objects>
             <point key="canvasLocation" x="162" y="396"/>
         </scene>
-        <!--PROFILE-->
+        <!--Profile-->
         <scene sceneID="qXD-58-bnZ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="D6X-NE-lnK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="PROFILE" image="profile_tabicon" id="ds7-ta-EFO"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="profile_tabicon" id="ds7-ta-EFO"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="XXZ-VZ-fHo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2045,11 +2045,11 @@
             </objects>
             <point key="canvasLocation" x="1350" y="404"/>
         </scene>
-        <!--FAVORITES-->
+        <!--Favorites-->
         <scene sceneID="eft-cI-qcF">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QWp-ym-LjH" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="FAVORITES" image="favorites_tabicon" id="jws-lN-zsY"/>
+                    <tabBarItem key="tabBarItem" title="Favorites" image="favorites_tabicon" id="jws-lN-zsY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Izd-6O-00m">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2065,11 +2065,11 @@
             </objects>
             <point key="canvasLocation" x="1648" y="1845"/>
         </scene>
-        <!--FEEDBACK-->
+        <!--Feedback-->
         <scene sceneID="oCX-C5-WUa">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="c3F-6r-Y5M" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="FEEDBACK" image="feedback_tabicon" id="ZeB-Fc-9IJ"/>
+                    <tabBarItem key="tabBarItem" title="Feedback" image="feedback_tabicon" id="ZeB-Fc-9IJ"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="WFv-yW-pnk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2180,11 +2180,11 @@
             </objects>
             <point key="canvasLocation" x="899" y="1783"/>
         </scene>
-        <!--SEARCH-->
+        <!--Search-->
         <scene sceneID="BsQ-2I-fk4">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XQG-Rv-WkZ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="SEARCH" image="search_tabicon" id="sH1-7r-pnT"/>
+                    <tabBarItem key="tabBarItem" title="Search" image="search_tabicon" id="sH1-7r-pnT"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="AQF-Lf-fXt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2362,7 +2362,7 @@
                                     <outlet property="delegate" destination="tHn-Xb-7fA" id="ccM-xy-afd"/>
                                 </connections>
                             </tableView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no favourites" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NR0-Z7-PhF">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no favorites" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NR0-Z7-PhF">
                                 <rect key="frame" x="0.0" y="217" width="320" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="KxF-OM-Sr3"/>
@@ -3328,7 +3328,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xkn-fk-wWM">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhT-Ae-nBi">
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhT-Ae-nBi">
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                                                         <color key="backgroundColor" red="0.0" green="0.5568627451" blue="0.50588235290000005" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                                     </view>
@@ -3366,7 +3366,7 @@
                                                             <constraint firstAttribute="height" constant="21" id="cDT-Cb-U8W"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="textColor" red="0.0" green="0.47058823529999999" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed this week" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fvb-RK-Gxe">
@@ -3551,7 +3551,7 @@
                                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="45" id="GCz-mi-5Zh"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="14"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="textColor" red="0.0" green="0.47058823529999999" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <connections>
                                                             <outletCollection property="gestureRecognizers" destination="9Jc-uy-Msf" appends="YES" id="6Kf-ug-ubh"/>
@@ -5006,11 +5006,11 @@
             </objects>
             <point key="canvasLocation" x="1838" y="-591"/>
         </scene>
-        <!--BOOKING-->
+        <!--Booking-->
         <scene sceneID="TrZ-zX-7AH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3tN-2h-nvM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="BOOKING" image="booking_tabicon" id="eDK-9s-oGh"/>
+                    <tabBarItem key="tabBarItem" title="Booking" image="booking_tabicon" id="eDK-9s-oGh"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="yWW-FX-uq9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -5802,6 +5802,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="QaT-RG-m6h"/>
+        <segue reference="yyH-6q-B63"/>
     </inferredMetricsTieBreakers>
 </document>
