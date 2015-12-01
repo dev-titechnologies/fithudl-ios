@@ -85,6 +85,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        
+       println("View DidAppear")
+        
         selectedIndexArray      = NSMutableArray()
         allSportsArray          = appDelegate.user.sportsArray
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
@@ -95,13 +98,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         
-        
         if CLLocationManager.locationServicesEnabled() {
+            println("location enabled")
             if self.locationManager.respondsToSelector("requestWhenInUseAuthorization") {
                self.locationManager.requestWhenInUseAuthorization()
             } else {
                  self.locationManager.startUpdatingLocation()
             }
+        } else {
+            println("locaton not")
         }
         
         var tapGesture = UITapGestureRecognizer(target: self, action: "mapViewToch:")
@@ -118,12 +123,14 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.sendRequestToGetUsersSports()
     }
     
+    
     override func viewWillDisappear(animated: Bool) {
         searchActive     = false
         searchBar.resignFirstResponder()
         searchBar.showsCancelButton=false
         searchBar.text   = ""
         tableView.hidden = true
+      //  self.locationManager.stopUpdatingLocation()
     }
     
     override func didReceiveMemoryWarning() {
