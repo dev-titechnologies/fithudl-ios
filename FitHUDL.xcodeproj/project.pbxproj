@@ -43,11 +43,9 @@
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
 		F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F37968F01BCE812E0074B57D /* SRMonthPicker.m */; };
 		F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37968F31BCE81500074B57D /* EditProfileViewController.swift */; };
-		F382355F1C0816DC00B14F8E /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F382355E1C0816DC00B14F8E /* NewRelicAgent.framework */; };
 		F38235611C08173E00B14F8E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235601C08173E00B14F8E /* CoreTelephony.framework */; };
 		F38235631C08174D00B14F8E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235621C08174D00B14F8E /* SystemConfiguration.framework */; };
 		F38235651C08175F00B14F8E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235641C08175F00B14F8E /* libz.dylib */; };
-		F38235671C08177400B14F8E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235661C08177400B14F8E /* libc++.dylib */; };
 		F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576A91BDDD9460072486B /* BookingSessionViewController.swift */; };
 		F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */; };
 		F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */; };
@@ -56,6 +54,12 @@
 		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
 		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
 		F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */; };
+		F395D9761C0C29EA00BF26AC /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */; };
+		F395D9771C0C2A4700BF26AC /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		F395D9781C0C2BCF00BF26AC /* NewRelicAgent.framework in Resources */ = {isa = PBXBuildFile; fileRef = F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */; };
+		F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235621C08174D00B14F8E /* SystemConfiguration.framework */; };
+		F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235601C08173E00B14F8E /* CoreTelephony.framework */; };
+		F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235641C08175F00B14F8E /* libz.dylib */; };
 		F39E61C11C02D524001D8576 /* BookingHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39E61C01C02D524001D8576 /* BookingHistoryViewController.swift */; };
 		F39E61C41C02D878001D8576 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39E61C21C02D878001D8576 /* HistoryTableViewCell.swift */; };
 		F39E61C51C02D878001D8576 /* HistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F39E61C31C02D878001D8576 /* HistoryTableViewCell.xib */; };
@@ -129,11 +133,9 @@
 		F37968F01BCE812E0074B57D /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
 		F37968F11BCE812E0074B57D /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
 		F37968F31BCE81500074B57D /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
-		F382355E1C0816DC00B14F8E /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NewRelicAgent.framework; sourceTree = "<group>"; };
 		F38235601C08173E00B14F8E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		F38235621C08174D00B14F8E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F38235641C08175F00B14F8E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		F38235661C08177400B14F8E /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		F38576A91BDDD9460072486B /* BookingSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingSessionViewController.swift; sourceTree = "<group>"; };
 		F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewCell.swift; sourceTree = "<group>"; };
 		F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookingTableViewCell.xib; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
 		F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepickerDateView.m; sourceTree = "<group>"; };
+		F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NewRelicAgent.framework; sourceTree = "<group>"; };
 		F39E61C01C02D524001D8576 /* BookingHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingHistoryViewController.swift; sourceTree = "<group>"; };
 		F39E61C21C02D878001D8576 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		F39E61C31C02D878001D8576 /* HistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTableViewCell.xib; sourceTree = "<group>"; };
@@ -176,10 +179,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */,
+				F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */,
+				F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */,
 				F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */,
 				F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */,
 				F3E8C5F41BFEE726003D5790 /* FBSDKShareKit.framework in Frameworks */,
-				F382355F1C0816DC00B14F8E /* NewRelicAgent.framework in Frameworks */,
+				F395D9761C0C29EA00BF26AC /* NewRelicAgent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,7 +193,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F38235671C08177400B14F8E /* libc++.dylib in Frameworks */,
+				F395D9771C0C2A4700BF26AC /* NewRelicAgent.framework in Frameworks */,
 				F38235651C08175F00B14F8E /* libz.dylib in Frameworks */,
 				F38235631C08174D00B14F8E /* SystemConfiguration.framework in Frameworks */,
 				F38235611C08173E00B14F8E /* CoreTelephony.framework in Frameworks */,
@@ -366,8 +372,6 @@
 			isa = PBXGroup;
 			children = (
 				F38235641C08175F00B14F8E /* libz.dylib */,
-				F38235661C08177400B14F8E /* libc++.dylib */,
-				F382355E1C0816DC00B14F8E /* NewRelicAgent.framework */,
 				F38235601C08173E00B14F8E /* CoreTelephony.framework */,
 				F305F51E1BB9069A006BEFA2 /* iCarousel */,
 				F38235621C08174D00B14F8E /* SystemConfiguration.framework */,
@@ -519,6 +523,7 @@
 		F3CDCB2D1BB27D490070EDAF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */,
 				F3CDCB2E1BB27D490070EDAF /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -656,6 +661,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F395D9781C0C2BCF00BF26AC /* NewRelicAgent.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,8 +770,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -787,7 +793,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "1a28c41a-a738-4f03-84f8-16776db7d7cd";
+				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -810,8 +816,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -826,7 +832,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "1a28c41a-a738-4f03-84f8-16776db7d7cd";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -842,12 +848,13 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
 					"$(PROJECT_DIR)/FitHUDL/Libs",
+					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
+				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -856,18 +863,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
 					"$(PROJECT_DIR)/FitHUDL/Libs",
+					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;
@@ -875,10 +883,13 @@
 		F3CDCB501BB27D4A0070EDAF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/FitHUDL",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -887,7 +898,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c83d0796-fa79-4a10-a03f-3833615a92fb";
+				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Debug;
@@ -895,15 +906,18 @@
 		F3CDCB511BB27D4A0070EDAF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c83d0796-fa79-4a10-a03f-3833615a92fb";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Release;

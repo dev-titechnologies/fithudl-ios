@@ -34,7 +34,9 @@ class SearchResultViewController: UIViewController {
     
     @IBAction func backBauttonClicked(sender: AnyObject) {
         
-        dismissViewControllerAnimated(true, completion: nil)
+        //dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.popViewControllerAnimated(true)
+        
     }
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
