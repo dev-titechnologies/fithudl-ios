@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class PackageViewController: UIViewController {
 
@@ -24,12 +25,31 @@ class PackageViewController: UIViewController {
     
     var packageListArray = Array<NSDictionary>()
     @IBOutlet weak var purchaseButton: UIButton!
+    
+    var products = [SKProduct]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         purchaseButton.layer.borderColor = AppColor.statusBarColor.CGColor
         purchaseButton.layer.borderWidth = 1.0
+        self.reload()
     }
+    
+    //MARK: InAppPurchase Product Request
+    
+    func reload() {
+        
+        println("In Reload")
+        products = []
+        RageProducts.store.requestProductsWithCompletionHandler { success, products in
+            if success {
+                self.products = products
+                println("In app products \(self.products)")
+            }
+        }
+    }
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
