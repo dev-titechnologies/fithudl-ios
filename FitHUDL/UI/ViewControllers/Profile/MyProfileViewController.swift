@@ -326,7 +326,7 @@ class MyProfileViewController: UIViewController {
         if profileUser.availableTimeArray.count > 0 {
             performSegueWithIdentifier("pushToBookingSession", sender: self)
         } else {
-            showDismissiveAlertMesssage("\(profileUser.name) have no available timings")
+            showDismissiveAlertMesssage("\(profileUser.name) have no available time")
         }
     }
     
