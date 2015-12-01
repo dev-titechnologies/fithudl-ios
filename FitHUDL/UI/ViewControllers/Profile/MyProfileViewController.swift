@@ -91,6 +91,9 @@ class MyProfileViewController: UIViewController {
         sportsCarousel.type = iCarouselType.Custom
         navigationController?.setStatusBarColor()
         
+        userImageView.layer.borderColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0).CGColor
+        userImageView.layer.borderWidth = 1.0
+        
 //        if let id = searchResultId {
 //        scrollViewBottomConstraint.constant = -65
 //        carouselBackgroundView.constant     = 226.0
