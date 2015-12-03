@@ -120,11 +120,29 @@ class MyProfileViewController: UIViewController {
             notificationButton.hidden  = true
             settingsButton.setImage(UIImage(named: "back_button"), forState: UIControlState.Normal)
         }
+        
         beginnerButton.selected = false
         moderateButton.selected = false
         expertButton.selected   = false
         
+        var tapGesture = UITapGestureRecognizer(target: self, action: "viewTap:")
+        self.notificationBackgroundView.addGestureRecognizer(tapGesture)
+        
+        var tapGestureView = UITapGestureRecognizer(target: self, action: "viewTap:")
+        self.view.addGestureRecognizer(tapGestureView)
+
+
+        
         // Do any additional setup after loading the view.
+    }
+    
+     func viewTap(getstureRecognizer : UITapGestureRecognizer){
+        notificationButton.tag=0
+        UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.notificationBackgroundView.hidden  = true
+            }, completion: nil)
+        println("self.view touched")
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -146,10 +164,10 @@ class MyProfileViewController: UIViewController {
         calloutView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: calloutView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(calloutView)
         
-        
+        notificationButton.tag=0
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
-        notificationBackgroundView.frame = CGRect(x: 18.0, y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
+        notificationBackgroundView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(notificationBackgroundView)
         notificationBackgroundView.backgroundColor = UIColor.clearColor()
         notificationBackgroundView.hidden=true
@@ -165,7 +183,7 @@ class MyProfileViewController: UIViewController {
         self.view.addSubview(calloutView)
        
         notificationBackgroundView.removeFromSuperview()
-        notificationBackgroundView.frame = CGRect(x: 18.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
+        notificationBackgroundView.frame = CGRect(x: 0.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
         self.view.addSubview(notificationBackgroundView)
     }
     
@@ -313,7 +331,7 @@ class MyProfileViewController: UIViewController {
             sender.tag = 1
             notificationBackgroundView.hidden   = false
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.notificationBackgroundView.frame = CGRect(x: 18.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 411.0)
+                self.notificationBackgroundView.frame = CGRect(x: 0.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 700)
                 self.notificationTableView.reloadData()
             }, completion: nil)
             self.sendRequestForNotificationList()
@@ -954,10 +972,23 @@ extension MyProfileViewController: iCarouselDelegate {
     }
     
     func carouselCurrentItemIndexDidChange(carousel: iCarousel) {
+        if !notificationBackgroundView.hidden {
+            
+            notificationButton.tag=0
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.notificationBackgroundView.hidden  = true
+                }, completion: nil)
+
+        }
+        else {
+            
+      
         beginnerButton.selected = false
         moderateButton.selected = false
         expertButton.selected   = false
         carousel.reloadData()
+            
+        }
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
