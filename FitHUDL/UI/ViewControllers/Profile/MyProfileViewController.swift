@@ -58,6 +58,7 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var notificationBgtrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var availBalanceLabel: UILabel!
    
     @IBOutlet weak var changeButton: UIButton!
     @IBOutlet weak var notifIndicatorView: UIActivityIndicatorView!
@@ -179,7 +180,7 @@ class MyProfileViewController: UIViewController {
         calloutView.setTranslatesAutoresizingMaskIntoConstraints(true)
         calloutView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: calloutView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(calloutView)
-        
+
         notificationButton.tag=0
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
@@ -328,6 +329,7 @@ class MyProfileViewController: UIViewController {
             return
         }
         if calloutView.frame.size.height == 0 {
+            calloutView.hidden = false
             if notificationBackgroundView.hidden == false {
                 notificationButton.tag = 0
                 UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -335,7 +337,7 @@ class MyProfileViewController: UIViewController {
                     }, completion: nil)
             }
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 260.0)
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 300.0)
                 }, completion: nil)
         } else {
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -669,7 +671,7 @@ class MyProfileViewController: UIViewController {
             } else {
                 appDelegate.user.imageURL = ""
             }
-            
+            availBalanceLabel.text = "Available balance: $\(appDelegate.user.walletBalance!)"
             if let bio = responseDictionary["profile_desc"] as? String {
                 appDelegate.user.bio = bio
                 if bio == "" {
