@@ -48,23 +48,28 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setStatusBarColor()
+        selectedIndexArray              = NSMutableArray()
+        allSportsArray.addObjectsFromArray(appDelegate.user.sportsArray as [AnyObject])
+        for userSports in allSportsArray {
+            userSports.setObject("NO", forKey: "level")
+        }
         sportsCarousel.type             = iCarouselType.Custom
         sportsCarousel.currentItemIndex = 0
+
         tableView.layer.cornerRadius    = 4.0
         tableView.layer.borderColor     = UIColor.lightGrayColor().CGColor
         userSelectedArray               = NSMutableArray()
-        
-        let searchField         = searchBar.valueForKey("searchField") as? UITextField
-        searchField?.textColor  = UIColor.whiteColor()
+        let searchField                 = searchBar.valueForKey("searchField") as? UITextField
+        searchField?.textColor          = UIColor.whiteColor()
+        searchButton.enabled            = false
+        moderateButton.superview?.hidden = true
     }
     
-    func mapViewToch(getstureRecognizer : UITapGestureRecognizer){
-        
-    
+    func mapViewToch(gestureRecognizer: UITapGestureRecognizer){
         self.mapViewTouchFlag = true
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations(annotationsToRemove)
-        let touchLocation       = getstureRecognizer.locationInView(mapView)
+        let touchLocation       = gestureRecognizer.locationInView(mapView)
         let locationCoordinate  = mapView.convertPoint(touchLocation, toCoordinateFromView: mapView)
         self.point              = MKPointAnnotation()
         self.point.coordinate   = locationCoordinate
@@ -85,15 +90,12 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                 println("Problem with the data received from geocoder")
             }
         })
-        
     }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
        println("View DidAppear")
-        
-        selectedIndexArray      = NSMutableArray()
-        allSportsArray          = appDelegate.user.sportsArray
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations(annotationsToRemove)
         mapView.showsUserLocation       = true
@@ -125,7 +127,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchButton.backgroundColor    = UIColor.clearColor()
         
         count = 0
-        self.sendRequestToGetUsersSports()
+//        self.sendRequestToGetUsersSports()
     }
     
     
@@ -179,21 +181,18 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     @IBAction func beginnerButtonClicked(sender: UIButton) {
-        
         expertFlag=true
         Globals.selectButton([beginnerButton, moderateButton, expertButton], selectButton: beginnerButton)
         beginnerButton.selected == true ? setExpertiseLevel(SportsLevel.beginner) : setExpertiseLevel("")
     }
     
     @IBAction func moderateButtonClicked(sender: UIButton) {
-        
         expertFlag=true
         Globals.selectButton([beginnerButton, moderateButton, expertButton], selectButton: moderateButton)
         moderateButton.selected == true ? setExpertiseLevel(SportsLevel.moderate) : setExpertiseLevel("")
     }
     
     @IBAction func expertButtonClicked(sender: UIButton) {
-        
         expertFlag=true
         Globals.selectButton([beginnerButton, moderateButton, expertButton], selectButton: expertButton)
         expertButton.selected == true ? setExpertiseLevel(SportsLevel.expert) : setExpertiseLevel("")
@@ -207,10 +206,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         distanceLabel.text = sliderDistacce+sliderMiles
     }
     
-    @IBAction func downArrowAction(sender: AnyObject) {
-        searchItemsContainerView.hidden=true
-    }
-    
     @IBAction func viewAllButtonClicked(sender: UIButton) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.allSportsView.alpha = 1.0
@@ -218,35 +213,39 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     @IBAction func upArrowAction(sender: AnyObject) {
-        
-        searchItemsContainerView.hidden=false
+        let arrowButton = sender as! UIButton
+        searchItemsContainerView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        if arrowButton.selected == false {
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+                self.searchItemsContainerView.frame = CGRect(x: self.searchItemsContainerView.frame.origin.x, y: self.view.frame.size.height-self.searchItemsContainerView.frame.size.height, width: self.searchItemsContainerView.frame.size.width, height: self.searchItemsContainerView.frame.size.height)
+            })
+        } else {
+            UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+                self.searchItemsContainerView.frame = CGRect(x: self.searchItemsContainerView.frame.origin.x, y: self.view.frame.size.height-75.0, width: self.searchItemsContainerView.frame.size.width, height: self.searchItemsContainerView.frame.size.height)
+            })
+        }
+        arrowButton.selected = !arrowButton.selected
     }
-    func setExpertiseLevel(level: String)
-    {
-
-            if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int){
+    
+    func setExpertiseLevel(level: String) {
+        if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int){
             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int)
             userSelectedArray.removeObjectAtIndex(indexValue!)
             var userSport = NSMutableDictionary()
             userSport  = allSportsArray[sportsCarousel.currentItemIndex] as! NSMutableDictionary
             userSport.setObject(level, forKey: "level")
             userSelectedArray.addObject(userSport)
-            
-        }
-        else
-        {
+        } else {
             var userSport = NSMutableDictionary()
             userSport  = allSportsArray[sportsCarousel.currentItemIndex] as! NSMutableDictionary
             userSport.setObject(level, forKey: "level")
             userSelectedArray.addObject(userSport)
         }
-        
     }
 
     //MARK: MKMapView Functions
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-      
         if (annotation is MKUserLocation) {
             //if annotation is not an MKPointAnnotation (eg. MKUserLocation),
             //return nil so map draws default view for it (eg. blue dot)....
@@ -259,53 +258,39 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             anView.image = UIImage(named:"map-pointer.png")
             anView.canShowCallout = false
-        }
-        else {
-            
+        } else {
             anView.annotation = annotation
         }
-        
         return anView
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-    
         let location = locations.last as! CLLocation
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         self.mapView.setRegion(region, animated: true)
         
         CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: { (placemarks, error) -> Void in
-            
             if (error != nil) {
-                
                 println("Error:" + error.localizedDescription)
-                
                 return
             }
-            
             if placemarks.count > 0 {
                 if !self.mapViewTouchFlag {
-                let pm = placemarks[0] as! CLPlacemark
-                self.point = MKPointAnnotation()
-                self.point.coordinate = location.coordinate
-                self.point.title = pm.locality
-                self.locationName.text = pm.locality
-                self.point.subtitle = pm.administrativeArea
-                self.mapView.addAnnotation(self.point)
-                self.locationManager.stopUpdatingLocation()
+                    let pm                  = placemarks[0] as! CLPlacemark
+                    self.point              = MKPointAnnotation()
+                    self.point.coordinate   = location.coordinate
+                    self.point.title        = pm.locality
+                    self.locationName.text  = pm.locality
+                    self.point.subtitle     = pm.administrativeArea
+                    self.mapView.addAnnotation(self.point)
+                    self.locationManager.stopUpdatingLocation()
                 }
-                
-            }else {
-                
+            } else {
                 println("Error with data")
-                
             }
-            
         })
-        
     }
-    
     
     func displayLocationInfo(placemark: CLPlacemark) {
         self.locationManager.stopUpdatingLocation()
@@ -326,7 +311,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         })
     }
     
-    
     // MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -335,8 +319,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             DestViewController.searchResultArray = searchResultArray
         }
     }
-
-    
 }
 
 extension SearchViewController: UITableViewDataSource {
@@ -344,18 +326,17 @@ extension SearchViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if(searchActive) {
             return filtered.count
         }
         return usersListArray.count;
     }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell=tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-        cell.textLabel?.font=UIFont(name: "Open Sans",
-            size: 15.0)
+        let cell                 = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        cell.textLabel?.font     = UIFont(name: "Open Sans",size: 15.0)
         if(searchActive){
             cell.textLabel?.text = filtered[indexPath.row].objectForKey("userName") as? String
         } else {
@@ -368,13 +349,13 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
-       let id                  = self.filtered[indexPath.row].objectForKey("userID") as! String
+       let id                   = self.filtered[indexPath.row].objectForKey("userID") as! String
         userProfile.profileID   = "\(id)"
         navigationController?.pushViewController(userProfile, animated: true)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        searchBar.text=""
+        searchBar.text          = ""
         searchBar.resignFirstResponder()
-        tableView.hidden=true
+        tableView.hidden        = true
     }
 }
 
@@ -436,17 +417,17 @@ extension SearchViewController:UISearchBarDelegate {
         self.sendRequestToGetSearchUsers()
     }
     
-    func sendRequestToGetUsersSports() {
-        let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(Int(appDelegate.user.profileID), forKey: "user_id")
-       
-               if !Globals.isInternetConnected() {
-            return
-        }
-        showLoadingView(true)
-        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sports/userSports", requestType: HttpMethod.post),delegate: self,tag: Connection.userSportsList)
-        
-    }
+//    func sendRequestToGetUsersSports() {
+//        let requestDictionary = NSMutableDictionary()
+//        requestDictionary.setObject(Int(appDelegate.user.profileID), forKey: "user_id")
+//       
+//        if !Globals.isInternetConnected() {
+//            return
+//        }
+//        showLoadingView(true)
+//        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sports/userSports", requestType: HttpMethod.post),delegate: self,tag: Connection.userSportsList)
+//        
+//    }
 
     func sendRequestToGetSearchUsers() {
         let requestDictionary = NSMutableDictionary()
@@ -697,14 +678,8 @@ extension SearchViewController: iCarouselDataSource {
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
-        var level = allSportsArray.objectAtIndex(index).valueForKey("level") as? String
-        if level == "NO"
-        {
-            tickImageView.hidden=true
-        } else {
-            
-            tickImageView.hidden=false
-        }
+        var level            = allSportsArray.objectAtIndex(index).valueForKey("level") as? String
+        tickImageView.hidden = level == "NO" ? true : false
         return contentView
     }
 }
@@ -737,17 +712,19 @@ extension SearchViewController: iCarouselDelegate {
              var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int)
             
             userSelectedArray.removeObjectAtIndex(indexValue!)
-            var allSports = NSMutableDictionary()
-            allSports  = allSportsArray[index] as! NSMutableDictionary
+            var allSports   = NSMutableDictionary()
+            allSports       = allSportsArray[index] as! NSMutableDictionary
             allSports.setObject("NO", forKey: "level")
             allSportsArray.replaceObjectAtIndex(index, withObject: allSports)
         } else{
-            var userSport = NSMutableDictionary()
-            userSport  = allSportsArray[index] as! NSMutableDictionary
-            userSport.setObject("Beginner", forKey: "level")
+            var userSport   = NSMutableDictionary()
+            userSport       = allSportsArray[index] as! NSMutableDictionary
+            userSport.setObject("", forKey: "level")
             userSelectedArray.addObject(userSport)
             allSportsArray.replaceObjectAtIndex(index, withObject: userSport)
         }
+        moderateButton.superview?.hidden = false
+        searchButton.enabled             = true
         carousel.reloadData()
     }
     
