@@ -17,9 +17,8 @@ class LoginOrSignUpViewController: UIViewController {
     @IBOutlet weak var bgImageView: UIImageView!
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var connectFBButton: UIButton!
-    @IBOutlet weak var copyrightLabel: UILabel!
-    @IBOutlet weak var tosButton: UIButton!
-    @IBOutlet weak var contactusButton: UIButton!
+    @IBOutlet weak var connectTwitterButton: UIButton!
+    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
     
@@ -49,10 +48,9 @@ class LoginOrSignUpViewController: UIViewController {
             if token != "" {
                 signInButton.hidden = true
                 signUpButton.hidden = true
-                contactusButton.hidden = true
-                tosButton.hidden       = true
-                copyrightLabel.hidden  = true
+                bottomView.hidden   = true
                 connectFBButton.hidden = true
+                connectTwitterButton.hidden = true
             }
         }
         sendRequestToGetSportsList()
@@ -64,16 +62,57 @@ class LoginOrSignUpViewController: UIViewController {
                 let mainTabController = storyboard?.instantiateViewControllerWithIdentifier("MainTabbarViewController") as! MainTabbarViewController
                 presentViewController(mainTabController, animated: true, completion: { () -> Void in
                     self.navigationController?.navigationBarHidden = false
-                    self.signInButton.hidden = false
-                    self.signUpButton.hidden = false
-                    self.contactusButton.hidden = false
-                    self.tosButton.hidden       = false
-                    self.copyrightLabel.hidden  = false
+                    self.signInButton.hidden    = false
+                    self.signUpButton.hidden    = false
+                    self.bottomView.hidden      = false
                     self.connectFBButton.hidden = false
+                    self.connectTwitterButton.hidden = false
                 })
             }
         }
     }
+    
+    @IBAction func connectWithTwitterClicked(sender: UIButton) {
+        let account = ACAccountStore()
+        let type    = account.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+        account.requestAccessToAccountsWithType(type, options: nil) { (granted, error) -> Void in
+            if granted {
+                let accountsArray = account.accountsWithAccountType(type) as! [ACAccount]
+                if accountsArray.count > 0 {
+                    let twitterAccount = accountsArray.last
+                    let properties = twitterAccount!.dictionaryWithValuesForKeys(["properties"])
+                    println(properties)
+                    let details = properties["properties"] as! NSDictionary
+                    println(details)
+                    let request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: NSURL(string: "https://api.twitter.com/1.1/users/show.json"), parameters: details as [NSObject : AnyObject])
+                    request.account = twitterAccount
+                    
+                    request.performRequestWithHandler({ (responseData: NSData!, urlResponse: NSHTTPURLResponse!, error: NSError!) -> Void in
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            println(responseData)
+                            println(urlResponse)
+                            println(error)
+                            if urlResponse.statusCode == 429 {
+                                return
+                            }
+                            if let err = error {
+                                return
+                            }
+                            if let response = responseData {
+                                var error: NSError?
+                                if let data = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.MutableLeaves, error: &error) as? NSDictionary{
+                                    println(data)
+                                }
+                            }
+                        })
+                    })
+                    println(twitterAccount?.accountDescription)
+                    println(twitterAccount?.username)
+                    println(twitterAccount?.credential)
+                }
+            }
+        }
+    }    
     
     @IBAction func connectWithFBClicked(sender: UIButton) {
         if FBSDKAccessToken.currentAccessToken() != nil {
