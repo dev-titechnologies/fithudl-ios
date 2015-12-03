@@ -43,6 +43,7 @@
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
 		F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F37968F01BCE812E0074B57D /* SRMonthPicker.m */; };
 		F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37968F31BCE81500074B57D /* EditProfileViewController.swift */; };
+		F38159C61C0EAB2300DDD514 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38159C51C0EAB2200DDD514 /* StoreKit.framework */; };
 		F38235611C08173E00B14F8E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235601C08173E00B14F8E /* CoreTelephony.framework */; };
 		F38235631C08174D00B14F8E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235621C08174D00B14F8E /* SystemConfiguration.framework */; };
 		F38235651C08175F00B14F8E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235641C08175F00B14F8E /* libz.dylib */; };
@@ -135,6 +136,7 @@
 		F37968F01BCE812E0074B57D /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
 		F37968F11BCE812E0074B57D /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
 		F37968F31BCE81500074B57D /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		F38159C51C0EAB2200DDD514 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F38235601C08173E00B14F8E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		F38235621C08174D00B14F8E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		F38235641C08175F00B14F8E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -186,6 +188,7 @@
 				F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */,
 				F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */,
 				F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */,
+				F38159C61C0EAB2300DDD514 /* StoreKit.framework in Frameworks */,
 				F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */,
 				F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */,
 				F3E8C5F41BFEE726003D5790 /* FBSDKShareKit.framework in Frameworks */,
@@ -492,6 +495,7 @@
 		F3CDCB211BB27D490070EDAF = {
 			isa = PBXGroup;
 			children = (
+				F38159C51C0EAB2200DDD514 /* StoreKit.framework */,
 				F3CDCB2C1BB27D490070EDAF /* FitHUDL */,
 				F3CDCB451BB27D4A0070EDAF /* FitHUDLTests */,
 				F3CDCB2B1BB27D490070EDAF /* Products */,
@@ -605,6 +609,9 @@
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = 7QVT6YDQZ2;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.OMC = {
 								enabled = 0;
 							};
@@ -801,7 +808,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
+				PROVISIONING_PROFILE = "a37a9ee0-3f6d-46cb-9032-db08aaa58435";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -862,7 +869,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
+				PROVISIONING_PROFILE = "a37a9ee0-3f6d-46cb-9032-db08aaa58435";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -906,7 +913,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ebc8702-55a0-4e8f-be50-0b023629c3e2";
+				PROVISIONING_PROFILE = "a37a9ee0-3f6d-46cb-9032-db08aaa58435";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Debug;

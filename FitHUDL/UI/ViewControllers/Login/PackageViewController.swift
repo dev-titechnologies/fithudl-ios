@@ -24,7 +24,14 @@ class PackageViewController: UIViewController {
     @IBOutlet weak var bronzeDiscountLabel: UILabel!
     
     var packageListArray = Array<NSDictionary>()
+    
+    @IBOutlet weak var goldButton: UIButton!
+    
     @IBOutlet weak var purchaseButton: UIButton!
+    
+    @IBOutlet weak var silverButton: UIButton!
+    
+    @IBOutlet weak var bronzeButton: UIButton!
     
     var products = [SKProduct]()
     
@@ -33,10 +40,13 @@ class PackageViewController: UIViewController {
         
         purchaseButton.layer.borderColor = AppColor.statusBarColor.CGColor
         purchaseButton.layer.borderWidth = 1.0
+        
         self.reload()
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: "productPurchased:", name: IAPHelperProductPurchasedNotification, object: nil)
     }
     
     //MARK: InAppPurchase Product Request
+    
     
     func reload() {
         
@@ -46,6 +56,9 @@ class PackageViewController: UIViewController {
             if success {
                 self.products = products
                 println("In app products \(self.products)")
+            }
+            else {
+                println("IAP FAILUre")
             }
         }
     }
@@ -69,6 +82,25 @@ class PackageViewController: UIViewController {
     
     @IBAction func purchseButtonClicked(sender: AnyObject) {
         
+        println("Products \(products)")
+        let product = products[0]
+        RageProducts.store.purchaseProduct(product)
+
+        
+    }
+    
+    @IBAction func goldPackageSelectButtonClicked(sender: UIButton) {
+        
+        sender.selected=true
+        
+    }
+    
+    @IBAction func silverPackageSelectButtonClicked(sender: UIButton) {
+        
+    }
+    
+    
+    @IBAction func bronzeSelectButtonClicked(sender: AnyObject) {
     }
     
     //MARK: PackageList API 
@@ -86,7 +118,7 @@ class PackageViewController: UIViewController {
         silverDiscountLabel.text = "get a " + (packageListArray[1].objectForKey("discount") as? String)! + " discount"
 
         bronzeNameLabel.text     = packageListArray[2].objectForKey("name") as? String
-        cost                     = packageListArray[1].objectForKey("cost") as? Int
+        cost                     = packageListArray[2].objectForKey("cost") as? Int
         bronzeDollarLabel.text   = "\(cost!)" + "$"
         bronzeDiscountLabel.text = "get a " + (packageListArray[2].objectForKey("discount") as? String)! + " discount"
 

@@ -16,14 +16,12 @@ public enum RageProducts {
   
   /// MARK: - Supported Product Identifiers
   
-  public static let goldPackage   = Prefix + "gold"
-  public static let silverPackage = Prefix + "silver"
-  public static let bronzePackage = Prefix + "bronze"
+  public static let goldPackage   = "fithudl.gold"
+//  public static let silverPackage = Prefix + "silver"
+//  public static let bronzePackage = Prefix + "bronze"
   
   // All of the products assembled into a set of product identifiers.
-  private static let productIdentifiers: Set<ProductIdentifier> = [RageProducts.goldPackage,
-                                                                   RageProducts.silverPackage,
-                                                                   RageProducts.bronzePackage,
+  private static let productIdentifiers: Set<ProductIdentifier> = [RageProducts.goldPackage
                                                                    ]
   
   /// Static instance of IAPHelper that for rage products.

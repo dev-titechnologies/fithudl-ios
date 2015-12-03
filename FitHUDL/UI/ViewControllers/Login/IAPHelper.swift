@@ -87,8 +87,11 @@ public class IAPHelper : NSObject  {
 
 extension IAPHelper: SKProductsRequestDelegate {
   public func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
-    println("Loaded list of products...")
+    println("Loaded list of products...\(response)")
     let products = response.products as! [SKProduct]
+    
+    println("IAP products \(products)")
+    
     completionHandler?(success: true, products: products)
     clearRequest()
     
