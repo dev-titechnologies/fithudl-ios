@@ -416,6 +416,14 @@
 			path = Globals;
 			sourceTree = "<group>";
 		};
+		F358D5F21C0FF9F100833A47 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				F3CDCB2E1BB27D490070EDAF /* Info.plist */,
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		F36B81F11BB536DB00CB8043 /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,7 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */,
-				F3CDCB2E1BB27D490070EDAF /* Info.plist */,
+				F358D5F21C0FF9F100833A47 /* New Group */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
