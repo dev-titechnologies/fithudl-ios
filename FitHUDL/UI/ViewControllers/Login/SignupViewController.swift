@@ -11,6 +11,8 @@ import CoreLocation
 
 class SignupViewController: UIViewController {
 
+    @IBOutlet weak var confirmPasswordTextField: UITextField!
+    @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -19,15 +21,16 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var femaleButton: UIButton!
     @IBOutlet weak var femaleYConstraint: NSLayoutConstraint!
     @IBOutlet weak var maleYConstraint: NSLayoutConstraint!
-    @IBOutlet weak var nameViewYConstraint: NSLayoutConstraint!
-    @IBOutlet weak var sportsViewYConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageViewYConstraint: NSLayoutConstraint!
-    @IBOutlet weak var genderViewYConstraint: NSLayoutConstraint!
-    @IBOutlet weak var signupButtonHeight: NSLayoutConstraint!
+//    @IBOutlet weak var nameViewYConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var sportsViewYConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var imageViewYConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var genderViewYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var sportsCarousel: iCarousel!
     @IBOutlet weak var beginnerButton: UIButton!
     @IBOutlet weak var moderateButton: UIButton!
     @IBOutlet weak var expertButton: UIButton!
+    @IBOutlet weak var signupButton: UIButton!
     
     var fbUserDictionary: NSDictionary?
     var selectedSportsArray = NSMutableArray()
@@ -45,17 +48,17 @@ class SignupViewController: UIViewController {
         maleYConstraint.constant   = 0
         femaleYConstraint.constant = 0
         
-        if IS_IPHONE4S {
-            imageViewYConstraint.constant  = 5
-            nameViewYConstraint.constant   = 1
-            sportsViewYConstraint.constant = 1
-            genderViewYConstraint.constant = 3
-            signupButtonHeight.constant    = 40
-        } else if IS_IPHONE6 || IS_IPHONE6PLUS {
-            genderViewYConstraint.constant = 40
-        }
-        view.layoutIfNeeded()
-
+//        if IS_IPHONE4S {
+//            imageViewYConstraint.constant  = 5
+//            nameViewYConstraint.constant   = 1
+//            sportsViewYConstraint.constant = 1
+//            genderViewYConstraint.constant = 3
+//            signupButtonHeight.constant    = 40
+//        } else if IS_IPHONE6 || IS_IPHONE6PLUS {
+//            genderViewYConstraint.constant = 40
+//        }
+//        view.layoutIfNeeded()
+       
         
         let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText]
         var placeHolderString   = NSAttributedString(string: emailTextField.placeholder!, attributes: colorAttributes)
@@ -66,6 +69,9 @@ class SignupViewController: UIViewController {
         
         placeHolderString   = NSAttributedString(string: passwordTextField.placeholder!, attributes: colorAttributes)
         passwordTextField.attributedPlaceholder = placeHolderString
+        
+        placeHolderString = NSAttributedString(string: confirmPasswordTextField.placeholder!, attributes: colorAttributes)
+        confirmPasswordTextField.attributedPlaceholder = placeHolderString
         
         genderButton.layer.borderColor = AppColor.statusBarColor.CGColor
         
@@ -85,12 +91,26 @@ class SignupViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewDidLayoutSubviews() {
+        if IS_IPHONE4S || IS_IPHONE5 {
+            contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 550.0)
+            contentViewHeight.constant = 550.0
+        } else {
+            contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
+            contentViewHeight.constant = view.frame.size.height
+            signupButton.setTranslatesAutoresizingMaskIntoConstraints(true)
+            signupButton.frame = CGRect(origin: CGPoint(x: 10.0, y: view.frame.size.height - 50.0), size: CGSize(width: view.frame.size.width - 20.0, height: signupButton.frame.size.height))
+        }
+        view.layoutIfNeeded()
+    }
+    
+    
     @IBAction func genderButtonClicked(sender: UIButton) {
         genderButton.selected = !genderButton.selected
         if genderButton.selected {
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
-                self.maleYConstraint.constant   = 40.0
-                self.femaleYConstraint.constant = -41.0
+                self.maleYConstraint.constant   = -40.0
+                self.femaleYConstraint.constant = 41.0
                 self.view.layoutIfNeeded()
                 self.maleButton.hidden   = false
                 self.femaleButton.hidden = false
@@ -161,6 +181,13 @@ class SignupViewController: UIViewController {
         }
         if passwordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
             showDismissiveAlertMesssage("Please provide a password")
+            return false
+        }
+        if confirmPasswordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
+            showDismissiveAlertMesssage("Please confirm your password")
+            return false
+        } else if passwordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) != confirmPasswordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()){
+            showDismissiveAlertMesssage("Password mismatch. Make sure the passwords are identical.")
             return false
         }
         if !maleButton.selected && !femaleButton.selected {

@@ -58,17 +58,19 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var notificationBgtrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
-    var searchResultId:String?
-    var profileID: String?
-    let calloutViewYAxis:CGFloat = 52.0
-    let profileUser = User()
-    var notificationListArray =  Array<NSDictionary>()
-    
+   
+    @IBOutlet weak var changeButton: UIButton!
     @IBOutlet weak var notifIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var packagesButton: UIButton!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
     @IBOutlet weak var notificationTableView: UITableView!
+    
+    var searchResultId:String?
+    var profileID: String?
+    let calloutViewYAxis:CGFloat = 52.0
+    let profileUser = User()
+    var notificationListArray =  Array<NSDictionary>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +95,8 @@ class MyProfileViewController: UIViewController {
         
         userImageView.layer.borderColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0).CGColor
         userImageView.layer.borderWidth = 1.0
+        
+        changeButton.titleLabel?.numberOfLines = 2
         
 //        if let id = searchResultId {
 //        scrollViewBottomConstraint.constant = -65
@@ -249,6 +253,16 @@ class MyProfileViewController: UIViewController {
         performSegueWithIdentifier("segueToPackages", sender: self)
     }
     
+    @IBAction func changePasswordClicked(sender: UIButton) {
+        let feedNavigationController = storyboard?.instantiateViewControllerWithIdentifier("ChangeNavigationController") as! UINavigationController
+        presentViewController(feedNavigationController, animated: true, completion: nil)
+    }
+    
+    @IBAction func feedbackButtonClicked(sender: UIButton) {
+        let feedNavigationController = storyboard?.instantiateViewControllerWithIdentifier("FeedbackNavigationController") as! UINavigationController
+        presentViewController(feedNavigationController, animated: true, completion: nil)
+    }
+    
     @IBAction func reviewBackButtonClicked(sender: UIButton) {
         reviewNextButton.enabled = true
         let currentIndexPath:Int = Int(reviewCollectionView.contentOffset.x/reviewCollectionView.frame.size.width)
@@ -280,7 +294,7 @@ class MyProfileViewController: UIViewController {
                     }, completion: nil)
             }
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 152.0)
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 260.0)
                 }, completion: nil)
         } else {
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -459,6 +473,24 @@ class MyProfileViewController: UIViewController {
         presentViewController(custompopController, animated: true, completion: nil)
     }
     
+    func showEmailVerifyAlert() {
+        let alert = UIAlertController(title: alertTitle, message: "You have not verified your email. Please verify inorder to proceed further.\n Do you want to resend the mail?", preferredStyle: UIAlertControllerStyle.Alert)
+        let resendAction = UIAlertAction(title: "Resend Email", style: UIAlertActionStyle.Default) { (resendAction) -> Void in
+            self.sendRequestEmailResent()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        alert.addAction(resendAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func sendRequestEmailResent() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        let requestDictionary = NSMutableDictionary()
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/resendEmailVerifyCode", requestType: HttpMethod.post), delegate: self, tag: Connection.resetPassword)
+    }
     
     //MARK: - NoticationList API
     func sendRequestForNotificationList() {
@@ -583,6 +615,9 @@ class MyProfileViewController: UIViewController {
             }
             profileUser.isFavorite = responseDictionary["favourite"] as! Bool
         } else {
+            if responseDictionary["email_verify"] as! Int == 0 {
+                showEmailVerifyAlert()
+            }
             appDelegate.user.profileID  = responseDictionary["profile_id"] as! Int
             appDelegate.user.name       = responseDictionary["profile_name"] as! String
             appDelegate.user.email      = responseDictionary["email"] as! String
@@ -747,7 +782,7 @@ class MyProfileViewController: UIViewController {
                         dismissOnSessionExpire()
                     }
                     notifIndicatorView.stopAnimating()
-                } else if connection.connectionTag == Connection.notifReadStatus {
+                } else {
                     if status == ResponseStatus.success {
                         
                     }

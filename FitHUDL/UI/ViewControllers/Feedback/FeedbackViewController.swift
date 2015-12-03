@@ -38,8 +38,8 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
         }
         var touch = UITapGestureRecognizer(target:self, action:"scrollviewTouchAction")
         contentScrollView.addGestureRecognizer(touch)
-        
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -52,6 +52,10 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func backButtonClicked(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - keyboardWillHide
