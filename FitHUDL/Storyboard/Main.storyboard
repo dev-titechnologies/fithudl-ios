@@ -4205,7 +4205,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="23" y="10" width="290" height="400"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
                                                 <rect key="frame" x="102" y="11" width="87" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="TAc-CO-NF3"/>
@@ -4322,6 +4322,7 @@
                         <outlet property="bookView" destination="SRS-sk-Eub" id="tzH-jL-3VT"/>
                         <outlet property="buttonView" destination="rTB-VL-CaZ" id="7GU-4B-F9U"/>
                         <outlet property="calloutView" destination="qh5-9S-wjb" id="2FV-VO-cFF"/>
+                        <outlet property="carouselBackgoundView" destination="bhE-6l-uco" id="jqQ-WY-A40"/>
                         <outlet property="carouselBackgroundView" destination="76r-4g-qhd" id="XAB-SN-9bm"/>
                         <outlet property="changeButton" destination="BYW-C1-JF7" id="SDE-OQ-8RG"/>
                         <outlet property="completedTitleLabel" destination="fvb-RK-Gxe" id="VgO-M0-JDK"/>
@@ -6033,6 +6034,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="XyB-39-z9L"/>
+        <segue reference="QaT-RG-m6h"/>
     </inferredMetricsTieBreakers>
 </document>

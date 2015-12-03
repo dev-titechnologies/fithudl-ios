@@ -65,6 +65,9 @@ class MyProfileViewController: UIViewController {
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
     @IBOutlet weak var notificationTableView: UITableView!
+    @IBOutlet weak var carouselBackgoundView: UIView!
+    
+    
     
     var searchResultId:String?
     var profileID: String?
@@ -103,6 +106,7 @@ class MyProfileViewController: UIViewController {
 //        carouselBackgroundView.constant     = 226.0
 //        view.layoutIfNeeded()
 //        }
+        
         if IS_IPHONE6PLUS {
             profileViewHeightConstraint.constant = 260.0
             reviewTopConstraint.constant         = 30.0
@@ -130,13 +134,25 @@ class MyProfileViewController: UIViewController {
         
         var tapGestureView = UITapGestureRecognizer(target: self, action: "viewTap:")
         self.view.addGestureRecognizer(tapGestureView)
-
-
+        
+        var tapGesturecarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
+        self.carouselBackgoundView.addGestureRecognizer(tapGesturecarousel)
+        
+        var tapGesturesportscarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
+        self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
         
         // Do any additional setup after loading the view.
     }
     
      func viewTap(getstureRecognizer : UITapGestureRecognizer){
+        
+        if calloutView.frame.size.height != 0 {
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+                }, completion: nil)
+        }
+
+        
         notificationButton.tag=0
         UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.notificationBackgroundView.hidden  = true
@@ -234,6 +250,13 @@ class MyProfileViewController: UIViewController {
     }
     
     @IBAction func editButtonClicked(sender: UIButton) {
+        
+        if calloutView.frame.size.height != 0 {
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+                }, completion: nil)
+        }
+
         performSegueWithIdentifier("segueToEditProfile", sender: self)
     }
     
@@ -980,6 +1003,12 @@ extension MyProfileViewController: iCarouselDelegate {
                 }, completion: nil)
 
         }
+      else if calloutView.frame.size.height != 0 {
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+                }, completion: nil)
+        }
+
         else {
             
       
@@ -992,6 +1021,21 @@ extension MyProfileViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
+        
+        if !notificationBackgroundView.hidden {
+            
+            notificationButton.tag=0
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.notificationBackgroundView.hidden  = true
+                }, completion: nil)
+            
+        }
+        else if calloutView.frame.size.height != 0 {
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+                }, completion: nil)
+        }
+
         
     }
     
