@@ -76,6 +76,10 @@ class LoginOrSignUpViewController: UIViewController {
         let account = ACAccountStore()
         let type    = account.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         account.requestAccessToAccountsWithType(type, options: nil) { (granted, error) -> Void in
+            if error != nil {
+                println(error)
+                return
+            }
             if granted {
                 let accountsArray = account.accountsWithAccountType(type) as! [ACAccount]
                 if accountsArray.count > 0 {
@@ -109,10 +113,24 @@ class LoginOrSignUpViewController: UIViewController {
                     println(twitterAccount?.accountDescription)
                     println(twitterAccount?.username)
                     println(twitterAccount?.credential)
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        let alert = UIAlertController(title: alertTitle, message: "No twitter accounts configured! Go to settings to configure your account.", preferredStyle: UIAlertControllerStyle.Alert)
+                        let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
+                            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                            return
+                        })
+                        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: { (okAction) -> Void in
+                            return
+                        })
+                        alert.addAction(okAction)
+                        alert.addAction(settingsAction)
+                        self.presentViewController(alert, animated: false, completion: nil)
+                    })
                 }
             }
         }
-    }    
+    }
     
     @IBAction func connectWithFBClicked(sender: UIButton) {
         if FBSDKAccessToken.currentAccessToken() != nil {
