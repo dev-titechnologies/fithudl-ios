@@ -12,6 +12,7 @@ class LoginOrSignUpViewController: UIViewController {
     var fbAccessToken: String!
     var fbUserID: String!
     var fbUserDictionary: NSDictionary!
+    var twitterID: Int!
     let faceBookPermissions = ["public_profile", "email"]
     
     @IBOutlet weak var bgImageView: UIImageView!
@@ -106,6 +107,8 @@ class LoginOrSignUpViewController: UIViewController {
                                 var error: NSError?
                                 if let data = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.MutableLeaves, error: &error) as? NSDictionary{
                                     println(data)
+                                    self.twitterID = data["id"] as! Int
+                                    self.sendRequestToCheckNewTwitterUser()
                                 }
                             }
                         })
@@ -169,10 +172,10 @@ class LoginOrSignUpViewController: UIViewController {
     func getUserData() {
         FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "id, name, first_name, last_name, email, gender"]).startWithCompletionHandler { (connection: FBSDKGraphRequestConnection!, result: AnyObject!, error: NSError!) -> Void in
             if error == nil {
-                self.fbUserDictionary = result as! NSDictionary
+                self.fbUserDictionary = result as? NSDictionary
                 print(self.fbUserDictionary)
                 if let email = self.fbUserDictionary["email"] as? String {
-                    self.sendRequestToCheckNewUser()
+                    self.sendRequestToCheckNewFBUser()
                 } else {
                     self.showDismissiveAlertMesssage("Failed to retrieve your email!")
                 }
@@ -180,13 +183,23 @@ class LoginOrSignUpViewController: UIViewController {
         }
     }
         
-    func sendRequestToCheckNewUser() {
+    func sendRequestToCheckNewFBUser() {
         if !Globals.isInternetConnected() {
             return
         }
         showLoadingView(true)
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(fbUserDictionary["email"]!, forKey: "email")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/emailExists", requestType: HttpMethod.post), delegate: self, tag: Connection.checkUserFB)
+    }
+    
+    func sendRequestToCheckNewTwitterUser() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(twitterID!, forKey: "twitter_id")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/emailExists", requestType: HttpMethod.post), delegate: self, tag: Connection.checkUser)
     }
     
@@ -224,7 +237,11 @@ class LoginOrSignUpViewController: UIViewController {
                         if let newUser = jsonResult["new_user"] as? Bool {
                             if newUser == true {
                                 let signupController = storyboard?.instantiateViewControllerWithIdentifier("SignupViewController") as! SignupViewController
-                                signupController.fbUserDictionary = fbUserDictionary
+                                if connection.connectionTag == Connection.checkUserFB {
+                                    signupController.fbUserDictionary = fbUserDictionary
+                                } else {
+                                    signupController.twitterID = twitterID
+                                }
                                 navigationController?.pushViewController(signupController, animated: true)
                             } else {
                                 if let token = jsonResult["token"] as? String {
