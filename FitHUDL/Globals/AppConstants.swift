@@ -79,6 +79,7 @@ struct Connection {
     static let sessionsList         = 32
     static let sessionCancel        = 33
     static let notifReadStatus      = 34
+    static let transactionRequest   = 35
 }
 
 struct SportsLevel {
@@ -88,6 +89,7 @@ struct SportsLevel {
     static let typeAdd  = "ADD"
     static let typeDelete = "DELETE"
     static let typeUpdate = "UPDATE"
+    static let noType   = "NO"
 }
 
 struct Gender {

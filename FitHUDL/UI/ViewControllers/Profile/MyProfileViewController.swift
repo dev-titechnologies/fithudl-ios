@@ -98,7 +98,6 @@ class MyProfileViewController: UIViewController {
         
         userImageView.layer.borderColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0).CGColor
         userImageView.layer.borderWidth = 1.0
-        
         changeButton.titleLabel?.numberOfLines = 2
         
 //        if let id = searchResultId {
@@ -138,7 +137,9 @@ class MyProfileViewController: UIViewController {
         var tapGesturecarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
         self.carouselBackgoundView.addGestureRecognizer(tapGesturecarousel)
         
+        self.sportsCarousel.userInteractionEnabled = true
         var tapGesturesportscarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
+        tapGesturesportscarousel.cancelsTouchesInView = false
         self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
         
         // Do any additional setup after loading the view.
@@ -894,6 +895,8 @@ extension MyProfileViewController: iCarouselDataSource {
         var indicatorView: UIActivityIndicatorView
         var tickImageView: UIImageView
         
+        
+        
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 78.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
@@ -930,6 +933,11 @@ extension MyProfileViewController: iCarouselDataSource {
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
+        
+        var tapGesturesportscarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
+        tapGesturesportscarousel.cancelsTouchesInView = false
+        contentView.addGestureRecognizer(tapGesturesportscarousel)
+        
         let source          = profileID == nil ? appDelegate.user.sportsArray : profileUser.sportsArray
         let sports          = source[index] as! NSDictionary
         sportsImageView.image = UIImage(named: "default_image")

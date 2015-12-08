@@ -132,9 +132,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     
     override func viewWillDisappear(animated: Bool) {
+        
+        allSportsArray.addObjectsFromArray(appDelegate.user.sportsArray as [AnyObject])
+        for userSports in allSportsArray {
+            userSports.setObject("NO", forKey: "level")
+        }
+        self.sportsCarousel.reloadData()
         searchActive     = false
         searchBar.resignFirstResponder()
-        searchBar.showsCancelButton=false
+        searchBar.showsCancelButton = false
         searchBar.text   = ""
         tableView.hidden = true
     }
@@ -452,6 +458,11 @@ extension SearchViewController:UISearchBarDelegate {
         if userSelectedArray.count > 0 {
              requestDictionary.setObject(self.userSelectedArray, forKey: "sportsList")
         }
+        else {
+            
+            UIAlertView(title: "Please Select Atleast one sport", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            return
+        }
         if !Globals.isInternetConnected() {
             return
         }
@@ -647,7 +658,8 @@ extension SearchViewController: iCarouselDataSource {
             tickImageView.hidden    = true
             contentView.addSubview(tickImageView)
             
-        } else {
+        } else  {
+            
             contentView     = view!
             sportsImageView = contentView.viewWithTag(1) as! UIImageView
             titleLabel      = contentView.viewWithTag(2) as! UILabel
@@ -656,6 +668,8 @@ extension SearchViewController: iCarouselDataSource {
         }
         let source          = allSportsArray
         let sports          = source[index] as! NSDictionary
+        
+//         println("ALL Sports Array : \(allSportsArray)")
         
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
@@ -667,17 +681,24 @@ extension SearchViewController: iCarouselDataSource {
         if index == carousel.currentItemIndex {
             tickImageView.hidden = false
             titleLabel.text = sports["sport_name"]!.uppercaseString as String
-            if sports["expert_level"] as? String == SportsLevel.beginner {
+            if sports["level"] as? String == SportsLevel.beginner {
                 beginnerButton.selected = true
-            } else if sports["expert_level"] as? String == SportsLevel.moderate {
+            } else if sports["level"] as? String == SportsLevel.moderate {
                 moderateButton.selected = true
-            } else if sports["expert_level"] as? String == SportsLevel.expert {
+            } else if sports["level"] as? String == SportsLevel.expert {
                 expertButton.selected = true
-            } else {}
+            } else if sports["level"] as? String == SportsLevel.noType {
+                
+                expertButton.selected   = false
+                beginnerButton.selected = false
+                moderateButton.selected = false
+                
+            }  else {}
             
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
+        
         var level            = allSportsArray.objectAtIndex(index).valueForKey("level") as? String
         tickImageView.hidden = level == "NO" ? true : false
         return contentView
@@ -701,6 +722,9 @@ extension SearchViewController: iCarouselDelegate {
     }
     
     func carouselCurrentItemIndexDidChange(carousel: iCarousel) {
+        
+        println("currentItemIndexdidchange")
+        
         beginnerButton.selected = false
         moderateButton.selected = false
         expertButton.selected   = false
@@ -709,8 +733,8 @@ extension SearchViewController: iCarouselDelegate {
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
         if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int) {
-             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int)
             
+             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int)
             userSelectedArray.removeObjectAtIndex(indexValue!)
             var allSports   = NSMutableDictionary()
             allSports       = allSportsArray[index] as! NSMutableDictionary

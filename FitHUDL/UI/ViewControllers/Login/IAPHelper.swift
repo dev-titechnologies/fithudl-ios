@@ -5,7 +5,7 @@
 //  Created by Ray Fix on 5/1/15.
 //  Copyright (c) 2015 Razeware LLC. All rights reserved.
 //
-
+import UIKit
 import StoreKit
 
 /// Notification that is generated when a product is purchased.
@@ -20,10 +20,21 @@ public typealias RequestProductsCompletionHandler = (success: Bool, products: [S
 
 /// A Helper class for In-App-Purchases, it can fetch products, tell you if a product has been purchased,
 /// purchase products, and restore purchases.  Uses NSUserDefaults to cache if a product has been purchased.
+
+protocol IAPHelperClassDelegate {
+    
+    func requestForSendingTransactionId(string: NSString)
+}
+
+
+
+
 public class IAPHelper : NSObject  {
   
   /// MARK: - Private Properties
   
+    var helperdelegate : IAPHelperClassDelegate?
+    
   // Used to keep track of the possible products and which ones have been purchased.
   private let productIdentifiers: Set<ProductIdentifier>
   private var purchasedProductIdentifiers = Set<ProductIdentifier>()
@@ -36,6 +47,7 @@ public class IAPHelper : NSObject  {
   
   /// Initialize the helper.  Pass in the set of ProductIdentifiers supported by the app.
   public init(productIdentifiers: Set<ProductIdentifier>) {
+    
     self.productIdentifiers = productIdentifiers
     for productIdentifier in productIdentifiers {
       let purchased = NSUserDefaults.standardUserDefaults().boolForKey(productIdentifier)
@@ -53,6 +65,7 @@ public class IAPHelper : NSObject  {
   
   /// Gets the list of SKProducts from the Apple server calls the handler with the list of products.
   public func requestProductsWithCompletionHandler(handler: RequestProductsCompletionHandler) {
+    println("Request product with completion handler")
     completionHandler = handler
     productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
     productsRequest?.delegate = self
@@ -61,6 +74,7 @@ public class IAPHelper : NSObject  {
   
   /// Initiates purchase of a product.
   public func purchaseProduct(product: SKProduct) {
+    
     println("Buying \(product.productIdentifier)...")
     let payment = SKPayment(product: product)
     SKPaymentQueue.defaultQueue().addPayment(payment)
@@ -74,6 +88,7 @@ public class IAPHelper : NSObject  {
   /// If the state of whether purchases have been made is lost  (e.g. the
   /// user deletes and reinstalls the app) this will recover the purchases.
   public func restoreCompletedTransactions() {
+    
     SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
   }
   
@@ -99,12 +114,16 @@ extension IAPHelper: SKProductsRequestDelegate {
     for p in products {
       println("Found product: \(p.productIdentifier) \(p.localizedTitle) \(p.price.floatValue)")
     }
+    
+  NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
+
   }
   
   public func request(request: SKRequest!, didFailWithError error: NSError!) {
     println("Failed to load list of products.")
     println("Error: \(error)")
     clearRequest()
+    NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
   }
   
   private func clearRequest() {
@@ -115,17 +134,26 @@ extension IAPHelper: SKProductsRequestDelegate {
 
 
 extension IAPHelper: SKPaymentTransactionObserver {
+    
+    
+    
   /// This is a function called by the payment queue, not to be called directly.
   /// For each transaction act accordingly, save in the purchased cache, issue notifications,
-  /// mark the transaction as complete.
-  public func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
+  /// mark the transaction as complete.o
+    
+  public func paymentQueue(queue:
+    SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
+        
+        println("IN LLLOOOOO")
     for transaction in transactions as! [SKPaymentTransaction] {
       switch (transaction.transactionState) {
       case .Purchased:
         completeTransaction(transaction)
         break
       case .Failed:
-        failedTransaction(transaction)
+        println("failed trnsaction")
+        NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
+      // failedTransaction(transaction)
         break
       case .Restored:
         restoreTransaction(transaction)
@@ -139,30 +167,52 @@ extension IAPHelper: SKPaymentTransactionObserver {
   }
   
   private func completeTransaction(transaction: SKPaymentTransaction) {
-    println("completeTransaction...")
+    
+    //self.helperdelegate?.requestForSendingTransactionId(transaction.transactionIdentifier)
+    println("completeTransaction... \(transaction.transactionIdentifier)")
     provideContentForProductIdentifier(transaction.payment.productIdentifier)
+    
     SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    defaults.setObject(transaction.transactionIdentifier, forKey: "transaction_id")
+    
+   // NSUserDefaults().setValue(transaction.transactionIdentifier, forKey: "transaction_id")
+    NSNotificationCenter.defaultCenter().postNotificationName("transactionCompleted", object: nil)
+    NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
+    
   }
   
   private func restoreTransaction(transaction: SKPaymentTransaction) {
+    
     let productIdentifier = transaction.originalTransaction.payment.productIdentifier
     println("restoreTransaction... \(productIdentifier)")
     provideContentForProductIdentifier(productIdentifier)
     SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+    
   }
   
   // Helper: Saves the fact that the product has been purchased and posts a notification.
+    
   private func provideContentForProductIdentifier(productIdentifier: String) {
+    
     purchasedProductIdentifiers.insert(productIdentifier)
     NSUserDefaults.standardUserDefaults().setBool(true, forKey: productIdentifier)
     NSUserDefaults.standardUserDefaults().synchronize()
     NSNotificationCenter.defaultCenter().postNotificationName(IAPHelperProductPurchasedNotification, object: productIdentifier)
+    
   }
   
   private func failedTransaction(transaction: SKPaymentTransaction) {
-    println("failedTransaction...")
+    
+    println("failedTransaction... ghgh")
     if transaction.error.code != SKErrorPaymentCancelled {
+        println("transaction cancelled")
       println("Transaction error: \(transaction.error.localizedDescription)")
+    }
+    else {
+        
+        println("transaction not cancelled")
     }
     SKPaymentQueue.defaultQueue().finishTransaction(transaction)
   }
