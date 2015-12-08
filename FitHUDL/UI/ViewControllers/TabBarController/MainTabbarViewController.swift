@@ -22,8 +22,34 @@ class MainTabbarViewController: UITabBarController {
         }
         tabBar.selectionIndicatorImage = UIImage(named: "tabselection")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "timerStartNotification:", name: PushNotification.timerNotif, object: nil)
+        
+        let toLeftSwipe = UISwipeGestureRecognizer(target: self, action: "swipeRightToLeft")
+        toLeftSwipe.direction = UISwipeGestureRecognizerDirection.Left
+        view.addGestureRecognizer(toLeftSwipe)
+       
+        let toRightSwipe = UISwipeGestureRecognizer(target: self, action: "swipeLeftToRight")
+        toRightSwipe.direction = UISwipeGestureRecognizerDirection.Right
+        view.addGestureRecognizer(toRightSwipe)
+        
         // Do any additional setup after loading the view.
     }
+    
+    func swipeRightToLeft() {
+        println("to left")
+        if selectedIndex == 3 {
+            return
+        }
+        selectedIndex += 1
+    }
+    
+    func swipeLeftToRight() {
+        println("to right")
+        if selectedIndex == 0 {
+            return
+        }
+        selectedIndex -= 1
+    }
+    
     
     func timerStartNotification(notif:NSNotification) {
         let userInfo: NSDictionary  = notif.userInfo!
