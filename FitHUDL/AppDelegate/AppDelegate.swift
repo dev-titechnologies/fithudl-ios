@@ -178,6 +178,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         if let type = details["type"] as? String {
                             if type == PushNotification.sessionStart {
                                 deepLinkNotification()
+                            } else if type == PushNotification.sessionExtend {
+                            
                             } else {
                                 showNotificationAlert(message)
                             }

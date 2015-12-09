@@ -54,8 +54,9 @@ struct HttpMethod {
 }
 
 struct Connection {
-    static let login         = 10
-    static let signup        = 11
+    static let login         = 9
+    static let signup        = 10
+    static let checkUserFB   = 11
     static let checkUser     = 12
     static let resetPassword = 13
     static let sportsList    = 14
@@ -128,6 +129,7 @@ struct Session {
 struct PushNotification {
     static let sessionStart = "session_start"
     static let sessionEnd   = "session_end"
+    static let sessionExtend = "session_extension"
     static let timerNotif   = "TimerNotification"
     static let favNotif     = "FavoriteNotification"
 }

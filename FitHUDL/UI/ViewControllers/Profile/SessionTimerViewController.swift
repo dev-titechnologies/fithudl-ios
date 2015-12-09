@@ -245,7 +245,9 @@ class SessionTimerViewController: UIViewController {
     func showSessionAlert(message: String) {
         let alert = UIAlertController(title: "", message: message, preferredStyle: UIAlertControllerStyle.Alert)
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (okAction) -> Void in
-            self.showUserRateView()
+            if !self.isTrainer {
+                self.showUserRateView()
+            }
             return
         }
         alert.addAction(okAction)
@@ -361,7 +363,9 @@ class SessionTimerViewController: UIViewController {
                                 }
                             }
                         } else if connection.connectionTag == Connection.sessionComplete {
-                            showUserRateView()
+                            if !isTrainer {
+                                showUserRateView()
+                            }
                         }
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
@@ -413,7 +417,11 @@ class SessionTimerViewController: UIViewController {
 extension SessionTimerViewController: MZTimerLabelDelegate {
     func timerLabel(timerLabel: MZTimerLabel!, finshedCountDownTimerWithTime countTime: NSTimeInterval) {
         statusLabel.text = "This session is complete."
-        showSessionExtensionAlert()
+        if !isTrainer {
+            showSessionExtensionAlert()
+        } else {
+            showUserRateView()
+        }
     }
 }
 
