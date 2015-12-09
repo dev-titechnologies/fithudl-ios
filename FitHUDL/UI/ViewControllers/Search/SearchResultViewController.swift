@@ -78,7 +78,6 @@ class SearchResultViewController: UIViewController {
         showLoadingView(false)
     }
     
-    
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
         showLoadingView(false)

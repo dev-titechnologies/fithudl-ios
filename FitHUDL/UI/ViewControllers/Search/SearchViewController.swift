@@ -93,31 +93,32 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
         
-       println("View DidAppear")
+        super.viewDidAppear(true)
+        println("View DidAppear SEARCH")
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations(annotationsToRemove)
         mapView.showsUserLocation       = true
+        
+        self.locationManager     = CLLocationManager()
         self.locationManager.delegate   = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestAlwaysAuthorization()
         self.locationManager.startUpdatingLocation()
         
-        if CLLocationManager.locationServicesEnabled() {
-            println("location enabled")
-            if self.locationManager.respondsToSelector("requestWhenInUseAuthorization") {
-               self.locationManager.requestWhenInUseAuthorization()
-            } else {
-                 self.locationManager.startUpdatingLocation()
-            }
-        } else {
-            println("locaton not")
-        }
+//        if CLLocationManager.locationServicesEnabled() {
+//            println("location enabled")
+//            if self.locationManager.respondsToSelector("requestWhenInUseAuthorization") {
+//               self.locationManager.requestWhenInUseAuthorization()
+//            } else {
+//                 self.locationManager.startUpdatingLocation()
+//            }
+//        } else {
+//            println("locaton not")
+//        }
         
         var tapGesture = UITapGestureRecognizer(target: self, action: "mapViewToch:")
         self.mapView.addGestureRecognizer(tapGesture)
-
         self.fetchUserListFromDb()
         filtered            = NSMutableArray()
         mapView.delegate    = self
@@ -125,14 +126,15 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchButton.layer.borderColor  = AppColor.statusBarColor.CGColor
         searchButton.layer.borderWidth  = 1.0
         searchButton.backgroundColor    = UIColor.clearColor()
-        
         count = 0
+        
 //        self.sendRequestToGetUsersSports()
     }
     
     
     override func viewWillDisappear(animated: Bool) {
         
+        allSportsArray.removeAllObjects()
         allSportsArray.addObjectsFromArray(appDelegate.user.sportsArray as [AnyObject])
         for userSports in allSportsArray {
             userSports.setObject("NO", forKey: "level")
@@ -143,6 +145,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchBar.showsCancelButton = false
         searchBar.text   = ""
         tableView.hidden = true
+        self.mapViewTouchFlag = false
+        self.locationManager.delegate   =  nil
+        self.locationManager.stopUpdatingLocation()
     }
     
     override func didReceiveMemoryWarning() {
@@ -271,6 +276,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        
+        println("Did update location")
+        
         let location = locations.last as! CLLocation
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
@@ -283,6 +291,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             }
             if placemarks.count > 0 {
                 if !self.mapViewTouchFlag {
+                    println("setting map pin image")
                     let pm                  = placemarks[0] as! CLPlacemark
                     self.point              = MKPointAnnotation()
                     self.point.coordinate   = location.coordinate
