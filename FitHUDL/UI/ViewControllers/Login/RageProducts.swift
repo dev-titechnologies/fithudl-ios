@@ -26,10 +26,14 @@ public enum RageProducts {
                                                                    ]
   
   /// Static instance of IAPHelper that for rage products.
+    
   public static let store = IAPHelper(productIdentifiers: RageProducts.productIdentifiers)
+    
 }
 
 /// Return the resourcename for the product identifier.
 func resourceNameForProductIdentifier(productIdentifier: String) -> String? {
+    
   return productIdentifier.componentsSeparatedByString(".").last
+    
 }

@@ -202,7 +202,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
             requestDictionary.setObject((packageListArray[2].objectForKey("name") as? String)!, forKey: "package_name")
             
         }
-
+        requestDictionary.setObject("InAppPurchase", forKey: "transaction_method")
         if !Globals.isInternetConnected() {
             return
         }
