@@ -21,6 +21,16 @@ class Globals: NSObject {
         }
     }
     
+    class func checkNetworkConnectivity() -> Bool {
+        let networkReachability = Reachability.reachabilityForInternetConnection()
+        let networkStatus:Int   = networkReachability.currentReachabilityStatus().value
+        if networkStatus == NotReachable.value {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     class func isValidEmail (email: String) -> Bool {
         let emailRegex  = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         var emailText   = NSPredicate(format: "SELF MATCHES %@", emailRegex)
@@ -84,22 +94,15 @@ class Globals: NSObject {
     }
     
     private class func clearUserValues() {
-        appDelegate.user.name           = ""
-        appDelegate.user.profileID      = 0
-        appDelegate.user.email          = ""
-        appDelegate.user.bio            = nil
-        appDelegate.user.imageURL       = nil
-        appDelegate.user.totalHours     = nil
-        appDelegate.user.usageCount     = nil
-        appDelegate.user.rating         = nil
-        appDelegate.user.isFavorite     = false
-        appDelegate.user.walletBalance  = nil
-        appDelegate.user.isVerified     = 0
-        appDelegate.user.availableTimeArray.removeAllObjects()
-        appDelegate.user.userReviewsArray.removeAllObjects()
-        appDelegate.user.sportsArray.removeAllObjects()
-        appDelegate.user.badgesArray.removeAllObjects()
-        appDelegate.user.userSportsArray.removeAllObjects()
+        UserSports.deleteUserSportsList(appDelegate.user?.profileID.integerValue)
+        UserReview.deleteUserReviewList(appDelegate.user?.profileID.integerValue)
+        UserSports.deleteUserSportsList(appDelegate.user?.profileID.integerValue)
+        UserTime.deleteUserTimeList(appDelegate.user?.profileID.integerValue)
+        User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [appDelegate.user!.profileID.integerValue]))
+        Bookings.deleteBookings()
+        Packages.deletePackages()
+        Favorites.deleteFavorites()
+        Notification.deleteNotificationList()
     }
     
     class func endOfMonth() -> NSDate? {

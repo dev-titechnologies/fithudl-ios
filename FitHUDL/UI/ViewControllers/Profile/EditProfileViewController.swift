@@ -54,16 +54,10 @@ class EditProfileViewController: UIViewController {
         monthPick.superview!.frame = CGRect(x: 0.0, y: view.frame.size.height, width: view.frame.size.width, height: monthPick.frame.size.height)
         bioTextView.superview?.layer.borderColor = UIColor.clearColor().CGColor
         
-        nameLabel.text = appDelegate.user.name
+        nameLabel.text   = appDelegate.user!.name
+        bioTextView.text = appDelegate.user!.bio
+        CustomURLConnection.downloadAndSetImage(appDelegate.user!.imageURL, imageView: photoImageView, activityIndicatorView: indicatorView)
         
-        if let bio = appDelegate.user.bio {
-            bioTextView.text = bio
-            //placeholderLabel.hidden = true
-        }
-        
-        if let url = appDelegate.user.imageURL {
-            CustomURLConnection.downloadAndSetImage(url, imageView: photoImageView, activityIndicatorView: indicatorView)
-        }
         // Do any additional setup after loading the view.
     }
     
@@ -84,10 +78,11 @@ class EditProfileViewController: UIViewController {
         monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPick.monthPickerDelegate = self
         
-        var datesArray  = NSSet(array: appDelegate.user.availableTimeArray.valueForKey("date") as! [String])
+        var datesArray  = appDelegate.user?.availableTime.valueForKey("date") as! NSSet
         for date in datesArray {
-            let filteredArray = appDelegate.user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
-            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
+            var filteredArray = NSMutableArray(array: appDelegate.user!.availableTime.allObjects).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date]))
+            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String
+            )
         }
     }
     
@@ -509,10 +504,10 @@ class EditProfileViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
                     if !bioOnly {
-                        appDelegate.user.profileImage = photoImageView.image
+                        appDelegate.user!.profileImage = UIImagePNGRepresentation(photoImageView.image)
                         dismissViewControllerAnimated(true, completion: nil)
                     } else {
-                        appDelegate.user.bio = bioTextView.text
+                        appDelegate.user!.bio = bioTextView.text
                         bioOnly = false
                     }
                 } else if status == ResponseStatus.error {

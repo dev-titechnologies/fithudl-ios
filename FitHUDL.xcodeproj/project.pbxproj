@@ -17,7 +17,6 @@
 		F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */; };
 		F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */; };
 		F321BDBF1C0EF76A0060FECD /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F321BDBE1C0EF76A0060FECD /* ChangePasswordViewController.swift */; };
-		F340903F1BCBAEC600FF977A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F340903E1BCBAEC600FF977A /* User.swift */; };
 		F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34262761BD8E86400A1EF69 /* UsersList.swift */; };
 		F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */; };
 		F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */; };
@@ -78,6 +77,17 @@
 		F3CDCB351BB27D4A0070EDAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB341BB27D4A0070EDAF /* ViewController.swift */; };
 		F3CDCB3A1BB27D4A0070EDAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3CDCB391BB27D4A0070EDAF /* Images.xcassets */; };
 		F3CDCB491BB27D4A0070EDAF /* FitHUDLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */; };
+		F3D99C1B1C180EC3007A20F9 /* SportsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C1A1C180EC3007A20F9 /* SportsList.swift */; };
+		F3D99C1D1C180EC4007A20F9 /* UserBadges.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C1C1C180EC4007A20F9 /* UserBadges.swift */; };
+		F3D99C1F1C180EC4007A20F9 /* UserTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C1E1C180EC4007A20F9 /* UserTime.swift */; };
+		F3D99C211C180EC4007A20F9 /* UserSports.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C201C180EC4007A20F9 /* UserSports.swift */; };
+		F3D99C231C180EC4007A20F9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C221C180EC4007A20F9 /* User.swift */; };
+		F3D99C251C180EC4007A20F9 /* UserReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C241C180EC4007A20F9 /* UserReview.swift */; };
+		F3D99C271C180EC4007A20F9 /* Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C261C180EC4007A20F9 /* Packages.swift */; };
+		F3D99C291C180EC5007A20F9 /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C281C180EC5007A20F9 /* Favorites.swift */; };
+		F3D99C2B1C180EC5007A20F9 /* Bookings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C2A1C180EC5007A20F9 /* Bookings.swift */; };
+		F3D99C2D1C180EC5007A20F9 /* Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C2C1C180EC5007A20F9 /* Configurations.swift */; };
+		F3D99C2F1C180EC5007A20F9 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C2E1C180EC5007A20F9 /* Notification.swift */; };
 		F3E266651BECCB2E00717724 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E266631BECCB2E00717724 /* NotificationCell.swift */; };
 		F3E266661BECCB2E00717724 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E266641BECCB2E00717724 /* NotificationCell.xib */; };
 		F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */; };
@@ -108,7 +118,6 @@
 		F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		F321BDBE1C0EF76A0060FECD /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
-		F340903E1BCBAEC600FF977A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F34262761BD8E86400A1EF69 /* UsersList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersList.swift; sourceTree = "<group>"; };
 		F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpViewController.swift; sourceTree = "<group>"; };
 		F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +183,17 @@
 		F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitHUDLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB471BB27D4A0070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3CDCB481BB27D4A0070EDAF /* FitHUDLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitHUDLTests.swift; sourceTree = "<group>"; };
+		F3D99C1A1C180EC3007A20F9 /* SportsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SportsList.swift; sourceTree = "<group>"; };
+		F3D99C1C1C180EC4007A20F9 /* UserBadges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBadges.swift; sourceTree = "<group>"; };
+		F3D99C1E1C180EC4007A20F9 /* UserTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTime.swift; sourceTree = "<group>"; };
+		F3D99C201C180EC4007A20F9 /* UserSports.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSports.swift; sourceTree = "<group>"; };
+		F3D99C221C180EC4007A20F9 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F3D99C241C180EC4007A20F9 /* UserReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReview.swift; sourceTree = "<group>"; };
+		F3D99C261C180EC4007A20F9 /* Packages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Packages.swift; sourceTree = "<group>"; };
+		F3D99C281C180EC5007A20F9 /* Favorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Favorites.swift; sourceTree = "<group>"; };
+		F3D99C2A1C180EC5007A20F9 /* Bookings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bookings.swift; sourceTree = "<group>"; };
+		F3D99C2C1C180EC5007A20F9 /* Configurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configurations.swift; sourceTree = "<group>"; };
+		F3D99C2E1C180EC5007A20F9 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		F3E266631BECCB2E00717724 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		F3E266641BECCB2E00717724 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopupViewController.swift; sourceTree = "<group>"; };
@@ -363,9 +383,19 @@
 		F3438A851BB27F1F001BA5E6 /* DataStructure */ = {
 			isa = PBXGroup;
 			children = (
-				F340903E1BCBAEC600FF977A /* User.swift */,
 				F36691621BCD072A00B74CFE /* Images.swift */,
 				F34262761BD8E86400A1EF69 /* UsersList.swift */,
+				F3D99C221C180EC4007A20F9 /* User.swift */,
+				F3D99C2E1C180EC5007A20F9 /* Notification.swift */,
+				F3D99C2C1C180EC5007A20F9 /* Configurations.swift */,
+				F3D99C2A1C180EC5007A20F9 /* Bookings.swift */,
+				F3D99C281C180EC5007A20F9 /* Favorites.swift */,
+				F3D99C261C180EC4007A20F9 /* Packages.swift */,
+				F3D99C241C180EC4007A20F9 /* UserReview.swift */,
+				F3D99C201C180EC4007A20F9 /* UserSports.swift */,
+				F3D99C1E1C180EC4007A20F9 /* UserTime.swift */,
+				F3D99C1C1C180EC4007A20F9 /* UserBadges.swift */,
+				F3D99C1A1C180EC3007A20F9 /* SportsList.swift */,
 			);
 			path = DataStructure;
 			sourceTree = "<group>";
@@ -718,6 +748,7 @@
 				F321BDBF1C0EF76A0060FECD /* ChangePasswordViewController.swift in Sources */,
 				F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */,
 				F3CC9DDE1C0DC64D006DAF6A /* RageProducts.swift in Sources */,
+				F3D99C291C180EC5007A20F9 /* Favorites.swift in Sources */,
 				F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */,
 				F35FAE591BFB3A3E00FDB777 /* BookingRequestViewController.swift in Sources */,
 				F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */,
@@ -727,17 +758,24 @@
 				F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */,
 				F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */,
 				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
+				F3D99C2D1C180EC5007A20F9 /* Configurations.swift in Sources */,
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
-				F340903F1BCBAEC600FF977A /* User.swift in Sources */,
+				F3D99C1F1C180EC4007A20F9 /* UserTime.swift in Sources */,
+				F3D99C1D1C180EC4007A20F9 /* UserBadges.swift in Sources */,
 				F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */,
 				F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */,
 				F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */,
 				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
+				F3D99C251C180EC4007A20F9 /* UserReview.swift in Sources */,
+				F3D99C1B1C180EC3007A20F9 /* SportsList.swift in Sources */,
 				F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */,
 				F39E61C11C02D524001D8576 /* BookingHistoryViewController.swift in Sources */,
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
 				F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */,
+				F3D99C271C180EC4007A20F9 /* Packages.swift in Sources */,
 				F3884C671BF35DB300A62547 /* PackageViewController.swift in Sources */,
+				F3D99C2B1C180EC5007A20F9 /* Bookings.swift in Sources */,
+				F3D99C231C180EC4007A20F9 /* User.swift in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
 				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
 				F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */,
@@ -752,9 +790,11 @@
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */,
 				F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */,
+				F3D99C211C180EC4007A20F9 /* UserSports.swift in Sources */,
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
 				F39F4AD31BF9EE5600056A0B /* MZTimerLabel.m in Sources */,
 				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
+				F3D99C2F1C180EC5007A20F9 /* Notification.swift in Sources */,
 				F39F4ACB1BF9BA3600056A0B /* SessionTimerViewController.swift in Sources */,
 				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
 				F39E61C41C02D878001D8576 /* HistoryTableViewCell.swift in Sources */,
@@ -881,7 +921,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "a37a9ee0-3f6d-46cb-9032-db08aaa58435";
+				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -925,7 +965,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a37a9ee0-3f6d-46cb-9032-db08aaa58435";
+				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Debug;

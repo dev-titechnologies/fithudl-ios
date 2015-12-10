@@ -1,20 +1,136 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Configurations" syncable="YES">
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Bookings" representedClassName="PRODUCT_MODULE_NAME.Bookings" syncable="YES">
+        <attribute name="allotedDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bookingID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="endTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="requestID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sportsID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sportsName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trainerID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="trainerImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trainerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="userImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Configurations" representedClassName="FitHudl.Configurations" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Favorites" representedClassName="PRODUCT_MODULE_NAME.Favorites" syncable="YES">
+        <attribute name="favID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profilePic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rateCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="session" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Images" representedClassName="FitHudl.Images" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Notification" representedClassName="FitHudl.Notification" syncable="YES">
+        <attribute name="allotedDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="endTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="readStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="requestID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sportsID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sportsName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trainerID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="trainerImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trainerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="userImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Packages" representedClassName="FitHudl.Packages" syncable="YES">
+        <attribute name="cost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currencyFormat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayPrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SportsList" representedClassName="FitHudl.SportsList" syncable="YES">
+        <attribute name="level" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sportsId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sportsName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="FitHudl.User" syncable="YES">
+        <attribute name="bio" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="emailVerified" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="interests" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profileID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="profileImage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalHours" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="usageCount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userVerified" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
+        <attribute name="walletBalance" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="availableTime" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserTime" inverseName="user" inverseEntity="UserTime" syncable="YES"/>
+        <relationship name="badges" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserBadges" inverseName="user" inverseEntity="UserBadges" syncable="YES"/>
+        <relationship name="reviews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserReview" inverseName="user" inverseEntity="UserReview" syncable="YES"/>
+        <relationship name="sports" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserSports" inverseName="user" inverseEntity="UserSports" syncable="YES"/>
+    </entity>
+    <entity name="UserBadges" representedClassName="FitHudl.UserBadges" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sessionCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="badges" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="UserReview" representedClassName="FitHudl.UserReview" syncable="YES">
+        <attribute name="profileID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="profileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profilePic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userRating" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="userReview" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="reviews" inverseEntity="User" syncable="YES"/>
+    </entity>
     <entity name="UsersList" representedClassName="FitHudl.UsersList" syncable="YES">
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="UserSports" representedClassName="FitHudl.UserSports" syncable="YES">
+        <attribute name="expertLevel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sportsID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="sportsName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sports" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="UserTime" representedClassName="FitHudl.UserTime" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeEnds" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeStarts" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="availableTime" inverseEntity="User" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Configurations" positionX="-63" positionY="9" width="128" height="75"/>
-        <element name="Images" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="UsersList" positionX="-63" positionY="0" width="128" height="75"/>
+        <element name="Configurations" positionX="-63" positionY="9" width="128" height="88"/>
+        <element name="Images" positionX="-324" positionY="54" width="128" height="75"/>
+        <element name="Notification" positionX="-54" positionY="218" width="128" height="268"/>
+        <element name="Packages" positionX="-630" positionY="191" width="128" height="133"/>
+        <element name="SportsList" positionX="-171" positionY="59" width="128" height="120"/>
+        <element name="User" positionX="268" positionY="9" width="128" height="330"/>
+        <element name="UserBadges" positionX="124" positionY="-18" width="128" height="118"/>
+        <element name="UserReview" positionX="115" positionY="342" width="128" height="133"/>
+        <element name="UsersList" positionX="-252" positionY="204" width="128" height="73"/>
+        <element name="UserSports" positionX="70" positionY="135" width="128" height="120"/>
+        <element name="UserTime" positionX="243" positionY="486" width="128" height="103"/>
+        <element name="Favorites" positionX="-432" positionY="126" width="128" height="120"/>
+        <element name="Bookings" positionX="-423" positionY="135" width="128" height="270"/>
     </elements>
 </model>

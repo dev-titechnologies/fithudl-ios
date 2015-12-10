@@ -207,7 +207,13 @@ class LoginOrSignUpViewController: UIViewController {
     }
     
     func sendRequestToGetSportsList() {
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
+            if let sportsArray = SportsList.fetchSportsList() {
+                appDelegate.sportsArray.removeAllObjects()
+                appDelegate.sportsArray.addObjectsFromArray(sportsArray as! [SportsList])
+            } else {
+                showDismissiveAlertMesssage(Message.Offline)
+            }
             return
         }
         CustomURLConnection(request: CustomURLConnection.createRequest(nil, methodName: "sports/list", requestType: HttpMethod.get), delegate: self, tag: Connection.sportsList)
@@ -232,7 +238,12 @@ class LoginOrSignUpViewController: UIViewController {
                     if status == ResponseStatus.success {
                         appDelegate.sportsArray.removeAllObjects()
                         if let sportsList = jsonResult["sportsList"] as? NSArray {
-                            appDelegate.sportsArray.addObjectsFromArray(sportsList as [AnyObject])
+                            for sports in sportsList {
+                                SportsList.saveSportsList(sports["id"] as! Int, spName: sports["title"] as! String, status: sports["status"] as! Int, logo: sports["logo"] as! String, level: "")
+                            }
+                            if let sportsArray = SportsList.fetchSportsList() as? [SportsList]{
+                                appDelegate.sportsArray.addObjectsFromArray(sportsArray)
+                            }
                         }
                     }
                 } else {

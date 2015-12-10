@@ -120,7 +120,7 @@ class CustomPopupViewController: UIViewController {
             let sportName   = ((filteredArray[0] as! NSDictionary)["title"] as! String).uppercaseString
             sportsLabel.text = "\(sportName) session on"
         }
-        nameLabel.text      = appDelegate.user.name.uppercaseString
+        nameLabel.text      = appDelegate.user!.name.uppercaseString
         let startTime       = Globals.convertTimeTo12Hours(sessionDictionary!["start_time"] as! String)
         let endTime         = Globals.convertTimeTo12Hours(sessionDictionary!["end_time"] as! String)
         timeValueLabel.text = "\(startTime) to \(endTime)"
@@ -185,7 +185,7 @@ class CustomPopupViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    appDelegate.user.bio = (bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4))
+                    appDelegate.user!.bio = (bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4))
                     dismissViewControllerAnimated(true, completion: nil)
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {

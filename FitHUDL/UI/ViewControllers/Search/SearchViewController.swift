@@ -49,9 +49,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         super.viewDidLoad()
         navigationController?.setStatusBarColor()
         selectedIndexArray              = NSMutableArray()
-        allSportsArray.addObjectsFromArray(appDelegate.user.sportsArray as [AnyObject])
+        allSportsArray.addObjectsFromArray(appDelegate.sportsArray as [AnyObject])
         for userSports in allSportsArray {
-            userSports.setObject("NO", forKey: "level")
+            (userSports as! SportsList).level = "NO"
         }
         sportsCarousel.type             = iCarouselType.Custom
         sportsCarousel.currentItemIndex = 0
@@ -135,9 +135,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     override func viewWillDisappear(animated: Bool) {
         
         allSportsArray.removeAllObjects()
-        allSportsArray.addObjectsFromArray(appDelegate.user.sportsArray as [AnyObject])
+        allSportsArray.addObjectsFromArray(appDelegate.sportsArray as [AnyObject])
         for userSports in allSportsArray {
-            userSports.setObject("NO", forKey: "level")
+            (userSports as! SportsList).level = "NO"
         }
         self.sportsCarousel.reloadData()
         searchActive     = false
@@ -169,11 +169,11 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                 
                 let searchUserId:Int? = User.userID.toInt()
                 
-                if appDelegate.user.profileID as Int != searchUserId {
-                let userDictionary = NSMutableDictionary()
-                userDictionary.setObject(User.userName, forKey: "userName")
-                userDictionary.setObject(User.userID, forKey: "userID")
-                usersListArray.addObject(userDictionary)
+                if appDelegate.user!.profileID as Int != searchUserId {
+                    let userDictionary = NSMutableDictionary()
+                    userDictionary.setObject(User.userName, forKey: "userName")
+                    userDictionary.setObject(User.userID, forKey: "userID")
+                    usersListArray.addObject(userDictionary)
                 }
             }
             tableView.reloadData()

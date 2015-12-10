@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var configDictionary    = NSMutableDictionary()
     var sportsArray         = NSMutableArray()
     var locationManager     = CLLocationManager()
-    var user                = User()
+    var user: User?
     var pushNotification    = NSDictionary()
     var notificationArray   = NSMutableArray()
     
@@ -80,6 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        Globals.clearSession()
         self.saveContext()
     }
     
@@ -87,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: - Get Search Name
     
     func sendRequestToGetAllUserNames() {
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
             return
         }
         
@@ -126,25 +127,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     //MARK: - General Settings API
     func sendRequestToGetConfig() {
-        let request = NSMutableURLRequest(URL: NSURL(string: SERVER_URL.stringByAppendingString("settings/generalSettings"))!)
-        request.HTTPMethod = HttpMethod.get
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            if error == nil {
-                if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
-                    println("generalSettings",jsonResult)
-                    if let status = jsonResult["status"] as? Int {
-                        if status == ResponseStatus.success {
-                            self.configDictionary.removeAllObjects()
-                            let configArray = jsonResult["data"] as! Array<NSMutableDictionary>
-                            for config in configArray {
-                                let value: AnyObject? = config["value"]
-                                self.configDictionary.setObject(value!, forKey: config["code"] as! String)
+        if !Globals.checkNetworkConnectivity() {
+            if let configs = Configurations.fetchConfig() {
+                configDictionary.removeAllObjects()
+                for config in configs {
+                    configDictionary.setObject(config["value"] as! String, forKey: config["code"] as! String)
+                }
+            }
+        } else {
+            let request = NSMutableURLRequest(URL: NSURL(string: SERVER_URL.stringByAppendingString("settings/generalSettings"))!)
+            request.HTTPMethod = HttpMethod.get
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                if error == nil {
+                    if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
+                        println("generalSettings",jsonResult)
+                        if let status = jsonResult["status"] as? Int {
+                            if status == ResponseStatus.success {
+                                self.configDictionary.removeAllObjects()
+                                let configArray = jsonResult["data"] as! Array<NSMutableDictionary>
+                                for config in configArray {
+                                    let value: AnyObject? = config["value"]
+                                    self.configDictionary.setObject(value!, forKey: config["code"] as! String)
+                                    Configurations.saveConfig(config["id"] as! Int, code: config["code"] as! String , value: value as! String)
+                                }
                             }
                         }
                     }
+                } else {
+                    
                 }
-            } else {
-                
             }
         }
     }

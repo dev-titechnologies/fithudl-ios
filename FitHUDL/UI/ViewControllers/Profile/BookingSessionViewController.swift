@@ -63,24 +63,19 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             tableViewTopConstraint.constant = -65
             view.layoutIfNeeded()
         }
-        if let bioText = user.bio {
-            if count(bioText) > BIOTEXT_LENGTH {
-                bioLabel.userInteractionEnabled = true
-                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
-            } else {
-                bioLabel.userInteractionEnabled = false
-                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
-            }
+        if count(user.bio) > BIOTEXT_LENGTH {
+            bioLabel.userInteractionEnabled = true
+            Globals.attributedBioText((user.bio as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
+        } else {
+            bioLabel.userInteractionEnabled = false
+            Globals.attributedBioText((user.bio as NSString).substringToIndex((user.bio as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
         }
        
-        favoriteButton.selected = user.isFavorite
+        favoriteButton.selected = user.isFavorite.boolValue
         profileImageView.image = UIImage(named: "default_image")
         profileImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let url = user.imageURL {
-            CustomURLConnection.downloadAndSetImage(url, imageView: profileImageView, activityIndicatorView: indicatorView)
-        } else {
-            
-        }
+        CustomURLConnection.downloadAndSetImage(user.imageURL, imageView: profileImageView, activityIndicatorView: indicatorView)
+
     
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
@@ -279,10 +274,10 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     func bookingAction(sender:UIButton) {
         let requestDictionary = NSMutableDictionary()
         if  selectedIndexArray.count > 0 {
-            let filteredArray = user.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "sports_id = %d", argumentArray: [selectedIndexArray[0]]))
+            let filteredArray = (user.sports.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "sports_id = %d", argumentArray: [selectedIndexArray[0]]))
             if filteredArray.count > 0 {
                 let level = filteredArray[0].objectForKey("expert_level") as! String
-                if appDelegate.user.walletBalance?.toInt() < appDelegate.configDictionary[level] as? Int {
+                if appDelegate.user!.walletBalance.toInt() < appDelegate.configDictionary[level] as? Int {
                     showDismissiveAlertMesssage("Insufficient balance to book this session")
                     return
                 }
@@ -331,7 +326,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
 
 extension BookingSessionViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
-        return user.sportsArray.count
+        return user.sports.count
     }
     
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
@@ -375,7 +370,7 @@ extension BookingSessionViewController: iCarouselDataSource {
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
-        let sports          = user.sportsArray[index] as! NSDictionary
+        let sports          = user.sports.allObjects[index] as! NSDictionary
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if let logo = sports["logo"] as? String {
@@ -398,7 +393,7 @@ extension BookingSessionViewController: iCarouselDataSource {
         } else {
             titleLabel.text = sports["sport_name"] as? String
         }
-        if selectedIndexArray.containsObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!) {
+        if selectedIndexArray.containsObject(user.sports.allObjects[index].objectForKey("sports_id")!) {
             tickImageView.hidden = false
         } else {
             tickImageView.hidden = true
@@ -429,11 +424,11 @@ extension BookingSessionViewController: iCarouselDelegate {
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
         
-        if selectedIndexArray.containsObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!) {
-            selectedIndexArray.removeObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!)
+        if selectedIndexArray.containsObject(user.sports.allObjects[index].objectForKey("sports_id")!) {
+            selectedIndexArray.removeObject(user.sports.allObjects[index].objectForKey("sports_id")!)
         } else {
             selectedIndexArray.removeAllObjects()
-            selectedIndexArray.addObject(user.sportsArray.objectAtIndex(index).objectForKey("sports_id")!)
+            selectedIndexArray.addObject(user.sports.allObjects[index].objectForKey("sports_id")!)
         }
         carousel.reloadData()
     }

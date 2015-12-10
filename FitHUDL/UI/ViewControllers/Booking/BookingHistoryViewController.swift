@@ -85,7 +85,10 @@ class BookingHistoryViewController: UIViewController {
     }
 
     func sendRequestToGetSessions() {
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
+            if let bookingArray = Bookings.fetchBookings() {
+                parseBookingHistory(bookingArray)
+            }
             return
         }
         showLoadingView(true)
@@ -93,21 +96,16 @@ class BookingHistoryViewController: UIViewController {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/getUserSessions", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionsList)
     }
     
-    func parseBookingHistory(resultDictionary: NSDictionary) {
-        let formatter = NSDateFormatter()
+    func parseBookingHistory(dataArray: NSArray) {
+        let formatter        = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        let checkDate = formatter.stringFromDate(NSDate())
+        let checkDate        = formatter.stringFromDate(NSDate())
         formatter.dateFormat = "HH:mm"
-        let checkTime = formatter.stringFromDate(NSDate())
-        
-        if let data = resultDictionary["data"] as? NSArray {
-//            var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "alloted_date >= %@", argumentArray: [checkDate])) as NSArray
-//            filteredArray     = filteredArray.filteredArrayUsingPredicate(NSPredicate(format: "start_time > %@", argumentArray: [checkTime])) as NSArray
-            var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "user_id = %@", argumentArray: [appDelegate.user.profileID]))
-            myBookings.addObjectsFromArray(filteredArray as [AnyObject])
-            filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "trainer_id = %@", argumentArray: [appDelegate.user.profileID]))
-            bookings.addObjectsFromArray(filteredArray as [AnyObject])
-        }
+        let checkTime        = formatter.stringFromDate(NSDate())
+        var filteredArray    = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "user_id = %@", argumentArray: [appDelegate.user!.profileID]))
+        myBookings.addObjectsFromArray(filteredArray as [AnyObject])
+        filteredArray        = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "trainer_id = %@", argumentArray: [appDelegate.user!.profileID]))
+        bookings.addObjectsFromArray(filteredArray as [AnyObject])
         noAvailLabel.hidden = myBookings.count > 0 ? true : false
     }
 
@@ -136,7 +134,14 @@ class BookingHistoryViewController: UIViewController {
                     } else {
                         myBookings.removeAllObjects()
                         bookings.removeAllObjects()
-                        parseBookingHistory(jsonResult)
+                        let bookingsArray = NSMutableArray()
+                        if let data = jsonResult["data"] as? NSArray {
+                            for book in data {
+                                let booking = Bookings.saveBooking(book["user_name"] as! String, userID: book["user_id"] as! Int, requestID: book["request_id"] as! Int, trainerID: book["trainer_id"] as! Int, spID: book["sports_id"] as! Int, spName: book["sports_name"] as! String, status: book["status"] as! String, loc: book["location"] as! String, bookID: book["booking_id"] as! Int, startTime: book["start_time"] as! String, endTime: book["end_time"] as! String, allotedDate: book["alloted_date"] as! String, userImage: book["user_profile_pic"] as! String, trainerName: book["trainer_name"] as! String, trainerImage: book["trainer_profile_pic"] as! String)
+                                bookingsArray.addObject(booking)
+                            }
+                        }
+                        parseBookingHistory(bookingsArray)
                     }
                     historyTableView.reloadData()
                 } else if status == ResponseStatus.error {
@@ -198,54 +203,51 @@ extension BookingHistoryViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell    = tableView.dequeueReusableCellWithIdentifier("historyCell") as! HistoryTableViewCell
         let source  = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings : bookings
-        let history = source[indexPath.row] as! NSDictionary
-        let imageURL = bookingSegmentControl.selectedSegmentIndex == 0 ? (history["trainer_profile_pic"] as? String) : (history["user_profile_pic"] as? String)
-        if let url  = imageURL {
-            cell.userImageView.image        = UIImage(named: "default_image")
-            cell.userImageView.contentMode  = UIViewContentMode.ScaleAspectFit
-            cell.indicatorView.startAnimating()
-            let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
-            if imageurl.length != 0 {
-                if var imagesArray = Images.fetch(imageurl as String) {
-                    let image      = imagesArray[0] as! Images
-                    let coverImage = UIImage(data: image.imageData)!
-                    cell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
-                    cell.userImageView.image   =   UIImage(data: image.imageData)!
-                    cell.indicatorView.stopAnimating()
-                } else {
-                    if let imageURL = NSURL(string: imageurl as String){
-                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                            if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? HistoryTableViewCell {
-                                if error == nil {
-                                    let imageFromData:UIImage? = UIImage(data: data)
-                                    if let image  = imageFromData {
-                                        updatedCell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
-                                        updatedCell.userImageView.image = image
-                                        Images.save(imageurl as String, imageData: data)
-                                    }
-                                }
-                                updatedCell.indicatorView.stopAnimating()
-                            }
-                        }
-                    } else {
-                        cell.indicatorView.stopAnimating()
-                    }
-                }
-            } else {
+        let history = source[indexPath.row] as! Bookings
+        let imageURL = bookingSegmentControl.selectedSegmentIndex == 0 ? history.trainerImage : history.userImage
+        cell.userImageView.image        = UIImage(named: "default_image")
+        cell.userImageView.contentMode  = UIViewContentMode.ScaleAspectFit
+        cell.indicatorView.startAnimating()
+        let imageurl = SERVER_URL.stringByAppendingString(imageURL) as NSString
+        if imageurl.length != 0 {
+            if var imagesArray = Images.fetch(imageurl as String) {
+                let image      = imagesArray[0] as! Images
+                let coverImage = UIImage(data: image.imageData)!
+                cell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                cell.userImageView.image   =   UIImage(data: image.imageData)!
                 cell.indicatorView.stopAnimating()
+            } else {
+                if let imageURL = NSURL(string: imageurl as String){
+                    let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                        if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? HistoryTableViewCell {
+                            if error == nil {
+                                let imageFromData:UIImage? = UIImage(data: data)
+                                if let image  = imageFromData {
+                                    updatedCell.userImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                    updatedCell.userImageView.image = image
+                                    Images.save(imageurl as String, imageData: data)
+                                }
+                            }
+                            updatedCell.indicatorView.stopAnimating()
+                        }
+                    }
+                } else {
+                    cell.indicatorView.stopAnimating()
+                }
             }
-
-            cell.sportLabel.text = (history["sports_name"] as! String)+" session"
-            cell.nameLabel.text  = bookingSegmentControl.selectedSegmentIndex == 0 ? history["trainer_name"] as? String : history["user_name"] as? String
-            cell.placeLabel.text = history["location"] as? String
-            let date             = dateConversion(history["alloted_date"] as! String)
-            let startTime        = Globals.convertTimeTo12Hours(history["start_time"] as! String)
-            let endTime          = Globals.convertTimeTo12Hours(history["end_time"] as! String)
-            cell.timeLabel.text  = "On \(date) at \(startTime) to \(endTime)"
-            cell.closeButton.addTarget(self, action: "cancelBooking:", forControlEvents: UIControlEvents.TouchUpInside)
-            cell.userImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userImageTapped:"))
+        } else {
+            cell.indicatorView.stopAnimating()
         }
+        cell.sportLabel.text = history.sportsName+" session"
+        cell.nameLabel.text  = bookingSegmentControl.selectedSegmentIndex == 0 ? history.trainerName : history.userName
+        cell.placeLabel.text = history.location
+        let date             = dateConversion(history.allotedDate)
+        let startTime        = Globals.convertTimeTo12Hours(history.startTime)
+        let endTime          = Globals.convertTimeTo12Hours(history.endTime)
+        cell.timeLabel.text  = "On \(date) at \(startTime) to \(endTime)"
+        cell.closeButton.addTarget(self, action: "cancelBooking:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.userImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userImageTapped:"))
         return cell
     }
 }

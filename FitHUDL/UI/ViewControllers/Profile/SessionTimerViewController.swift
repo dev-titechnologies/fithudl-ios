@@ -69,10 +69,10 @@ class SessionTimerViewController: UIViewController {
         starFour    = starView.viewWithTag(93) as! UIButton
         starFive    = starView.viewWithTag(94) as! UIButton
         
-        if sessionDictionary["user_id"] as! Int == appDelegate.user.profileID {
+        if sessionDictionary["user_id"] as! Int == appDelegate.user!.profileID {
             isTrainer = false
             nameLabel.text = sessionDictionary["trainer_name"] as? String
-        } else if sessionDictionary["trainer_id"] as! Int == appDelegate.user.profileID {
+        } else if sessionDictionary["trainer_id"] as! Int == appDelegate.user!.profileID {
             isTrainer = true
             nameLabel.text = sessionDictionary["user_name"] as? String
         }

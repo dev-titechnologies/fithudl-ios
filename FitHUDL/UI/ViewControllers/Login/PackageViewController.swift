@@ -23,7 +23,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     @IBOutlet weak var bronzeDollarLabel: UILabel!
     @IBOutlet weak var bronzeDiscountLabel: UILabel!
     
-    var packageListArray = Array<NSDictionary>()
+    var packageListArray = Array<Packages>()
     
     @IBOutlet weak var goldButton: UIButton!
     
@@ -77,7 +77,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-          self.sendRequestToGetPackageList()
+        sendRequestToGetPackageList()
         
     }
     override func viewDidDisappear(animated: Bool) {
@@ -147,73 +147,73 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     //MARK: PackageList API 
     
     func parsePackageList() {
+        var pack                = packageListArray[0] as Packages
+        goldNameLabel.text      = pack.name
+        goldDollarLabel.text    = "\(pack.displayPrice)" + "$"
+        goldDiscountLabel.text  = "get a " + pack.discount + " discount"
         
-        goldNameLabel.text      = packageListArray[0].objectForKey("name") as? String
-        var cost                = packageListArray[0].objectForKey("display_price") as? String
-        goldDollarLabel.text    = "\(cost!)" + "$"
-        goldDiscountLabel.text  = "get a " + (packageListArray[0].objectForKey("discount") as? String)! + " discount"
-        
-        silverNameLabel.text     = packageListArray[1].objectForKey("name") as? String
-        cost                     = packageListArray[1].objectForKey("display_price") as? String
-        silverDollarLabel.text   = "\(cost!)" + "$"
-        silverDiscountLabel.text = "get a " + (packageListArray[1].objectForKey("discount") as? String)! + " discount"
+        pack                     = packageListArray[1] as Packages
+        silverNameLabel.text     = pack.name
+        silverDollarLabel.text   = "\(pack.displayPrice)" + "$"
+        silverDiscountLabel.text = "get a " + pack.discount + " discount"
 
-        bronzeNameLabel.text     = packageListArray[2].objectForKey("name") as? String
-        cost                     = packageListArray[2].objectForKey("display_price") as? String
-        bronzeDollarLabel.text   = "\(cost!)" + "$"
-        bronzeDiscountLabel.text = "get a " + (packageListArray[2].objectForKey("discount") as? String)! + " discount"
-
+        pack                     = packageListArray[2] as Packages
+        bronzeNameLabel.text     = pack.name
+        bronzeDollarLabel.text   = "\(pack.displayPrice)" + "$"
+        bronzeDiscountLabel.text = "get a " + pack.discount + " discount"
     }
     
     func requestForSendingTransactionId(string: NSString) {
         
         println("GOT TRANSACTion ID : \(string)")
-        
-        let requestDictionary = NSMutableDictionary()
-        
-        if let transaction_id = NSUserDefaults.standardUserDefaults().stringForKey("transaction_id") {
-            
-            println(transaction_id)
-            
-            requestDictionary.setObject(transaction_id, forKey: "transaction_id")
-        }
-       
-        if goldButton.selected {
-            
-            println("gold button clicked")
-           requestDictionary.setObject((packageListArray[0].objectForKey("display_price") as? String)!, forKey: "amount")
-            requestDictionary.setObject((packageListArray[0].objectForKey("discount") as? String)!, forKey: "discount")
-            requestDictionary.setObject((packageListArray[0].objectForKey("id") as? Int)!, forKey: "package_id")
-            requestDictionary.setObject((packageListArray[0].objectForKey("name") as? String)!, forKey: "package_name")
-         
-        } else if silverButton.selected {
-            println("silver button clicked")
-          requestDictionary.setObject((packageListArray[1].objectForKey("display_price") as? String)!, forKey: "amount")
-            requestDictionary.setObject((packageListArray[1].objectForKey("discount") as? String)!, forKey: "discount")
-            requestDictionary.setObject((packageListArray[1].objectForKey("id") as? Int)!, forKey: "package_id")
-            requestDictionary.setObject((packageListArray[1].objectForKey("name") as? String)!, forKey: "package_name")
-            
-        } else if bronzeButton.selected {
-            
-            println("bronze button clicked")
-            requestDictionary.setObject((packageListArray[2].objectForKey("display_price") as? String)!, forKey: "amount")
-            requestDictionary.setObject((packageListArray[2].objectForKey("discount") as? String)!, forKey: "discount")
-            requestDictionary.setObject((packageListArray[2].objectForKey("id") as? Int)!, forKey: "package_id")
-            requestDictionary.setObject((packageListArray[2].objectForKey("name") as? String)!, forKey: "package_name")
-            
-        }
-        requestDictionary.setObject("InAppPurchase", forKey: "transaction_method")
         if !Globals.isInternetConnected() {
             return
         }
         showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        if let transaction_id = NSUserDefaults.standardUserDefaults().stringForKey("transaction_id") {
+            println(transaction_id)
+            requestDictionary.setObject(transaction_id, forKey: "transaction_id")
+        }
+       
+        let pack1   = packageListArray[0] as Packages
+        let pack2   = packageListArray[1] as Packages
+        let pack3   = packageListArray[2] as Packages
+        
+        if goldButton.selected {
+            println("gold button clicked")
+            requestDictionary.setObject(pack1.displayPrice, forKey: "amount")
+            requestDictionary.setObject(pack1.discount, forKey: "discount")
+            requestDictionary.setObject(pack1.id, forKey: "package_id")
+            requestDictionary.setObject(pack1.name, forKey: "package_name")
+        } else if silverButton.selected {
+            println("silver button clicked")
+            requestDictionary.setObject(pack2.displayPrice, forKey: "amount")
+            requestDictionary.setObject(pack2.discount, forKey: "discount")
+            requestDictionary.setObject(pack2.id, forKey: "package_id")
+            requestDictionary.setObject(pack2.name, forKey: "package_name")
+        } else if bronzeButton.selected {
+            println("bronze button clicked")
+            requestDictionary.setObject(pack3.displayPrice, forKey: "amount")
+            requestDictionary.setObject(pack3.discount, forKey: "discount")
+            requestDictionary.setObject(pack3.id, forKey: "package_id")
+            requestDictionary.setObject(pack3.name, forKey: "package_name")
+        }
+        requestDictionary.setObject("InAppPurchase", forKey: "transaction_method")
+
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/transaction", requestType: HttpMethod.post),delegate: self,tag: Connection.transactionRequest)
 
     }
     
     func sendRequestToGetPackageList() {
         let requestDictionary = NSMutableDictionary()
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
+            if let packageList = Packages.fetchPackages() {
+                packageListArray = packageList as! Array<Packages>
+                parsePackageList()
+            } else {
+                showDismissiveAlertMesssage(Message.Offline)
+            }
             return
         }
         showLoadingView(true)
@@ -237,7 +237,11 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                 if connection.connectionTag == Connection.packagesListRequest {
                     if status == ResponseStatus.success {
                         if let packages = jsonResult["data"] as? NSArray {
-                            packageListArray = packages as! Array
+                            for package in packages {
+                                let pack = Packages.savePackage(package["id"] as! Int, displayPrice: package["display_price"] as! String, format: package["currency_format"] as! String, cost: package["cost"] as! String, discount: package["discount"] as! String, name: package["name"] as! String)
+                                packageListArray.append(pack)
+                            }
+                            appDelegate.saveContext()
                             parsePackageList()
                         } else {
                             
@@ -257,9 +261,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                     }
                 } else if connection.connectionTag == Connection.transactionRequest {
                     if status == ResponseStatus.success {
-                        
-                       UIAlertView(title: "FITHUDL", message: "Package purchase successful", delegate: self, cancelButtonTitle: "OK").show()
-                        
+                       UIAlertView(title: alertTitle, message: "Package purchased successful", delegate: nil, cancelButtonTitle: "OK").show()
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)

@@ -11,8 +11,8 @@ import UIKit
 class FavoritesViewController: UIViewController {
     
     @IBOutlet weak var nofavourites_label: UILabel!
-    var favouriteList_array = Array<NSDictionary>()
-    var favouritelist_index : Int = 0
+    var favouriteListArray = Array<Favorites>()
+    var favouritelistIndex : Int = 0
     @IBOutlet weak var favourite_tableview: UITableView!
     
     
@@ -38,7 +38,13 @@ class FavoritesViewController: UIViewController {
     
     func sendRequestToGetFavouriteList() {
         let requestDictionary = NSMutableDictionary()
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
+            if let favList = Favorites.fetchFavorites() {
+                favouriteListArray = favList as! Array<Favorites>
+                favourite_tableview.reloadData()
+            } else {
+                showDismissiveAlertMesssage(Message.Offline)
+            }
             return
         }
         showLoadingView(true)
@@ -63,15 +69,16 @@ class FavoritesViewController: UIViewController {
                 if connection.connectionTag == Connection.favouriteList {
                     if status == ResponseStatus.success {
                         if let favourites = jsonResult["details"] as? NSArray {
-                            favouriteList_array = favourites as! Array
+                            for favorite in favourites {
+                                let fav = Favorites.saveFavorite(favorite["id"] as! Int, name: favorite["user_name"] as! String, picURL: favorite["image_url"] as! String, rate: favorite["rate_count"] as! Int, session: favorite["session"] as! Int)
+                                favouriteListArray.append(fav)
+                            }
+                            appDelegate.saveContext()
                             favourite_tableview.reloadData()
                             nofavourites_label.hidden = true
-                        }
-                        else {
+                        } else {
                             nofavourites_label.hidden = false
                         }
-                        
-
                     }
                     else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
@@ -88,9 +95,9 @@ class FavoritesViewController: UIViewController {
                     }
                 } else {
                      if status == ResponseStatus.success {
-                        favouriteList_array.removeAtIndex(favouritelist_index)
+                        favouriteListArray.removeAtIndex(favouritelistIndex)
                         favourite_tableview.reloadData()
-                        if (favouriteList_array.count==0) {
+                        if (favouriteListArray.count==0) {
                             nofavourites_label.hidden = false
                             
                         } else {
@@ -122,11 +129,10 @@ class FavoritesViewController: UIViewController {
     }
     
     func unFavouriteAction(sender:UIButton) {
-        
-        favouritelist_index = sender.tag
+        favouritelistIndex = sender.tag
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(0, forKey: "favorite")
-        requestDictionary.setObject(self.favouriteList_array[sender.tag].objectForKey("id")!, forKey: "trainer_id")
+        requestDictionary.setObject((favouriteListArray[sender.tag] as Favorites).favID, forKey: "trainer_id")
         if !Globals.isInternetConnected() {
             return
         }
@@ -140,7 +146,7 @@ extension FavoritesViewController : UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
      
-        return self.favouriteList_array.count;
+        return favouriteListArray.count;
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -157,50 +163,44 @@ extension FavoritesViewController : UITableViewDelegate {
         cell.prof_pic.clipsToBounds         = true
         cell.prof_pic.image = UIImage(named: "default_image")
         cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFit
-        if let url = self.favouriteList_array[indexPath.row].objectForKey("profile_pic") as? String {
-            let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
-            if imageurl.length != 0 {
-                if var imagesArray = Images.fetch(imageurl as String) {
-                    let image      = imagesArray[0] as! Images
-                    let coverImage = UIImage(data: image.imageData)!
-                    cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
-                    cell.prof_pic.image = UIImage(data: image.imageData)!
-                    cell.indicatorView.stopAnimating()
-                } else {
-                    if let imageURL = NSURL(string: imageurl as String){
-                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                            if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? FavouritesListCell {
-                                if error == nil {
-                                    let imageFromData:UIImage? = UIImage(data: data)
-                                    if let image  = imageFromData {
-                                        updatedCell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
-                                        updatedCell.prof_pic.image = image
-                                        Images.save(imageurl as String, imageData: data)
-                                    }
+        let favorite = favouriteListArray[indexPath.row] as Favorites
+        
+        let imageurl = SERVER_URL.stringByAppendingString(favorite.profilePic) as NSString
+        if imageurl.length != 0 {
+            if var imagesArray = Images.fetch(imageurl as String) {
+                let image      = imagesArray[0] as! Images
+                let coverImage = UIImage(data: image.imageData)!
+                cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
+                cell.prof_pic.image = UIImage(data: image.imageData)!
+                cell.indicatorView.stopAnimating()
+            } else {
+                if let imageURL = NSURL(string: imageurl as String){
+                    let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                        if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? FavouritesListCell {
+                            if error == nil {
+                                let imageFromData:UIImage? = UIImage(data: data)
+                                if let image  = imageFromData {
+                                    updatedCell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
+                                    updatedCell.prof_pic.image = image
+                                    Images.save(imageurl as String, imageData: data)
                                 }
-                                updatedCell.indicatorView.stopAnimating()
                             }
-                            cell.indicatorView.stopAnimating()
+                            updatedCell.indicatorView.stopAnimating()
                         }
-                    } else {
                         cell.indicatorView.stopAnimating()
                     }
+                } else {
+                    cell.indicatorView.stopAnimating()
                 }
-            } else {
-                cell.indicatorView.stopAnimating()
             }
+        } else {
+            cell.indicatorView.stopAnimating()
         }
        
-        cell.nameLabel?.text = self.favouriteList_array[indexPath.row].objectForKey("name") as? String
-        
-        if let ratevalue = self.favouriteList_array[indexPath.row].objectForKey("rating_count") as? Float {
-            cell.starView.rating = ratevalue
-        }
-        
-        if let session_count = self.favouriteList_array[indexPath.row].objectForKey("session") as? Int {
-            cell.sessionCounterLabel?.text = "\(session_count)"
-        }
+        cell.nameLabel?.text = favorite.name
+        cell.starView.rating = favorite.rateCount.floatValue
+        cell.sessionCounterLabel?.text = "\(favorite.session)"
         
         cell.favouriteButton.tag = indexPath.row
         cell.favouriteButton.addTarget(self, action: "unFavouriteAction:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -211,7 +211,7 @@ extension FavoritesViewController : UITableViewDelegate {
 extension FavoritesViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
-        let id                  = self.favouriteList_array[indexPath.row].objectForKey("id") as! Int
+        let id                  = (favouriteListArray[indexPath.row] as Favorites).favID as! Int
         userProfile.profileID   = "\(id)"
         navigationController?.pushViewController(userProfile, animated: true)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
