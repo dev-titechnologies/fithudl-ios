@@ -13,7 +13,8 @@ class AvailableTimeCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var deleteButton: UIButton!
 }
 
-class MyProfileViewController: UIViewController {
+class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
+
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var expertButton: UIButton!
@@ -130,16 +131,20 @@ class MyProfileViewController: UIViewController {
         expertButton.selected   = false
         
         var tapGesture = UITapGestureRecognizer(target: self, action: "viewTap:")
+        tapGesture.delegate = self
         self.notificationBackgroundView.addGestureRecognizer(tapGesture)
         
         var tapGestureView = UITapGestureRecognizer(target: self, action: "viewTap:")
+        tapGestureView.delegate = self
         self.view.addGestureRecognizer(tapGestureView)
         
         var tapGesturecarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
+        tapGesturecarousel.delegate = self
         self.carouselBackgoundView.addGestureRecognizer(tapGesturecarousel)
         
         self.sportsCarousel.userInteractionEnabled = true
         var tapGesturesportscarousel = UITapGestureRecognizer(target: self, action: "viewTap:")
+        tapGesturesportscarousel.delegate = self
         tapGesturesportscarousel.cancelsTouchesInView = false
         self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
         
@@ -163,6 +168,27 @@ class MyProfileViewController: UIViewController {
         
     }
     
+//    - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+//    shouldReceiveTouch:(UITouch *)touch
+//    {
+//    if([touch.view class] == tableview.class){
+//    return //YES/NO
+//    }
+//    
+//    return //YES/NO
+//    
+//    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        
+        println("touch view is \(touch.view)")
+        println("touch superview is \(touch.view.superview)")
+        if touch.view.superview is UITableViewCell {
+            return false
+        }
+        return true
+    }
+
     override func viewWillAppear(animated: Bool) {
         availableTimeCollectionView.reloadData()
         morebgView.hidden   = false
@@ -1161,7 +1187,7 @@ extension MyProfileViewController : UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! NotificationCell
-        var imageUrl:String
+        var imageUrl:String = ""
         cell.roundLabel.layer.cornerRadius  = 10.0
         cell.roundLabel.layer.borderColor   = UIColor.clearColor().CGColor
         cell.roundLabel.clipsToBounds       = true
@@ -1176,16 +1202,30 @@ extension MyProfileViewController : UITableViewDataSource {
         }
         
         if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
-            imageUrl = notificationListArray[indexPath.row].objectForKey("user_image") as! String
+            if let image = notificationListArray[indexPath.row].objectForKey("user_image") as? String {
+                imageUrl = image
+            }
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
             cell.bodyLabel.text = "has requested for Sports"
-        } else {
-            imageUrl = notificationListArray[indexPath.row].objectForKey("trainer_image") as! String
+        } else if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.accepted {
+            
+            if let image = notificationListArray[indexPath.row].objectForKey("trainer_image") as? String {
+                imageUrl = image
+            }
             cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("trainer_name") as? String
             cell.bodyLabel.text = "has accepted your booking request"
+        } else {
+            
+            if let image = notificationListArray[indexPath.row].objectForKey("user_image") as? String {
+                imageUrl = image
+            }
+            cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
+            cell.bodyLabel.text = notificationListArray[indexPath.row].objectForKey("ntfn_body") as? String
         }
+        
         cell.profilePic.image = UIImage(named: "default_image")
         cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFit
+        
         let imageurl = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
         if imageurl.length != 0 {
             if var imagesArray = Images.fetch(imageUrl as String) {
@@ -1230,6 +1270,8 @@ extension MyProfileViewController : UITableViewDelegate {
             sendRequestForUpdateNotifReadStatus(notificationListArray[indexPath.row].objectForKey("request_id") as! Int)
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NotificationCell
             cell.roundLabel.backgroundColor = AppColor.notifReadColor
+            notificationListArray[indexPath.row].setValue(1, forKey: "read_status")
+            
         }
         if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
