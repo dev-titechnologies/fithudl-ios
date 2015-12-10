@@ -277,9 +277,11 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
+                    
+                    showLoadingView(false)
                 }            }
         }
-        showLoadingView(false)
+        
     }
     
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {

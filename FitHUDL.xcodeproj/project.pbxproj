@@ -55,9 +55,6 @@
 		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
 		F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950061BCF94FD00ED0C77 /* DIDatepicker.m */; };
 		F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */; };
-		F395D9761C0C29EA00BF26AC /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */; };
-		F395D9771C0C2A4700BF26AC /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		F395D9781C0C2BCF00BF26AC /* NewRelicAgent.framework in Resources */ = {isa = PBXBuildFile; fileRef = F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */; };
 		F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235621C08174D00B14F8E /* SystemConfiguration.framework */; };
 		F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235601C08173E00B14F8E /* CoreTelephony.framework */; };
 		F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235641C08175F00B14F8E /* libz.dylib */; };
@@ -71,6 +68,9 @@
 		F3A2AD251BD4A73800DA6F7B /* RateFeedbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */; };
 		F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD261BD4A77000DA6F7B /* RateView.swift */; };
 		F3A2AD291BD4A78600DA6F7B /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD281BD4A78600DA6F7B /* RateView.xib */; };
+		F3ABEC0D1C19B1720051D997 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC0C1C19B1720051D997 /* NewRelicAgent.framework */; };
+		F3ABEC0F1C19B2F50051D997 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC0E1C19B2F50051D997 /* libc++.dylib */; };
+		F3ABEC111C19B2FE0051D997 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
 		F3CC9DDC1C0DC2F2006DAF6A /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */; };
 		F3CC9DDE1C0DC64D006DAF6A /* RageProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CC9DDD1C0DC64D006DAF6A /* RageProducts.swift */; };
@@ -161,7 +161,6 @@
 		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
 		F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepickerDateView.m; sourceTree = "<group>"; };
-		F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NewRelicAgent.framework; sourceTree = "<group>"; };
 		F39E61C01C02D524001D8576 /* BookingHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingHistoryViewController.swift; sourceTree = "<group>"; };
 		F39E61C21C02D878001D8576 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		F39E61C31C02D878001D8576 /* HistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTableViewCell.xib; sourceTree = "<group>"; };
@@ -173,6 +172,10 @@
 		F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateFeedbackCell.xib; sourceTree = "<group>"; };
 		F3A2AD261BD4A77000DA6F7B /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateView.swift; sourceTree = "<group>"; };
 		F3A2AD281BD4A78600DA6F7B /* RateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateView.xib; sourceTree = "<group>"; };
+		F3ABEC0C1C19B1720051D997 /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NewRelicAgent.framework; sourceTree = "<group>"; };
+		F3ABEC0E1C19B2F50051D997 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F3ABEC121C19B3B50051D997 /* FitHUDL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FitHUDL-Prefix.pch"; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		F3CC9DDD1C0DC64D006DAF6A /* RageProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RageProducts.swift; sourceTree = "<group>"; };
@@ -207,14 +210,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3ABEC111C19B2FE0051D997 /* CoreGraphics.framework in Frameworks */,
+				F3ABEC0F1C19B2F50051D997 /* libc++.dylib in Frameworks */,
 				F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */,
 				F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */,
 				F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */,
+				F3ABEC0D1C19B1720051D997 /* NewRelicAgent.framework in Frameworks */,
 				F38159C61C0EAB2300DDD514 /* StoreKit.framework in Frameworks */,
 				F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */,
 				F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */,
 				F3E8C5F41BFEE726003D5790 /* FBSDKShareKit.framework in Frameworks */,
-				F395D9761C0C29EA00BF26AC /* NewRelicAgent.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +227,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F395D9771C0C2A4700BF26AC /* NewRelicAgent.framework in Frameworks */,
 				F38235651C08175F00B14F8E /* libz.dylib in Frameworks */,
 				F38235631C08174D00B14F8E /* SystemConfiguration.framework in Frameworks */,
 				F38235611C08173E00B14F8E /* CoreTelephony.framework in Frameworks */,
@@ -536,6 +540,8 @@
 		F3CDCB211BB27D490070EDAF = {
 			isa = PBXGroup;
 			children = (
+				F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */,
+				F3ABEC0E1C19B2F50051D997 /* libc++.dylib */,
 				F38159C51C0EAB2200DDD514 /* StoreKit.framework */,
 				F3CDCB2C1BB27D490070EDAF /* FitHUDL */,
 				F3CDCB451BB27D4A0070EDAF /* FitHUDLTests */,
@@ -574,7 +580,8 @@
 		F3CDCB2D1BB27D490070EDAF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F395D9751C0C29EA00BF26AC /* NewRelicAgent.framework */,
+				F3ABEC121C19B3B50051D997 /* FitHUDL-Prefix.pch */,
+				F3ABEC0C1C19B1720051D997 /* NewRelicAgent.framework */,
 				F358D5F21C0FF9F100833A47 /* New Group */,
 			);
 			name = "Supporting Files";
@@ -715,7 +722,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F395D9781C0C2BCF00BF26AC /* NewRelicAgent.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

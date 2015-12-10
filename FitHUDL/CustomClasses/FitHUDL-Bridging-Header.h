@@ -20,5 +20,5 @@
 #import "SRMonthPicker.h"
 #import "DIDatePicker.h"
 #import "MZTimerLabel.h"
-#import <NewRelicAgent/NewRelic.h>
+#import "NewRelicAgent/NewRelic.h"
 #import <Social/Social.h>

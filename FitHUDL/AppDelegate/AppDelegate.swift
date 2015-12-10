@@ -46,14 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         application.registerForRemoteNotifications()
         sendRequestToGetAllUserNames()
         
-//        if let options = launchOptions { //If Launching through  Remote Notification
-//            if let userInfo = options["UIApplicationLaunchOptionsRemoteNotificationKey"] as? NSDictionary { //Remote
-//                pushNotification = userInfo
-//            }
-//        } [NewRelic enableFeatures:NRFeatureFlag_SwiftInteractionTracing];
-        
-      //  [NewRelicAgent startWithApplicationToken:@"AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899"];
-     //  NewRelic.startWithApplicationToken("AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899")
+        NewRelicAgent.enableFeatures(NRMAFeatureFlags.NRFeatureFlag_SwiftInteractionTracing);
+        NewRelic.startWithApplicationToken("AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899")
        
         return true
     }

@@ -152,7 +152,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         break
       case .Failed:
         println("failed trnsaction")
-        NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
+       // NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
       // failedTransaction(transaction)
         break
       case .Restored:
