@@ -1,0 +1,15 @@
+//
+//  FitHUDL-Prefix.pch
+//  FitHUDL
+//
+//  Created by Ti Technologies on 10/12/15.
+//  Copyright (c) 2015 Ti Technologies. All rights reserved.
+//
+$(SRCROOT)/FitHUDL-Prefix.pch
+#ifndef FitHUDL_FitHUDL_Prefix_pch
+#define FitHUDL_FitHUDL_Prefix_pch
+#import <NewRelicAgent/NewRelic.h>
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif
