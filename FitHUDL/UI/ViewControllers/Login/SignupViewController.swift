@@ -32,7 +32,7 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var expertButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
     
-    var twitterID: Int = 0
+    var networkingID: String = "0"
     var fbUserDictionary: NSDictionary?
     var selectedSportsArray = NSMutableArray()
     
@@ -236,7 +236,7 @@ class SignupViewController: UIViewController {
         } else {
             requestDictionary.setObject(Gender.female, forKey: "gender")
         }
-        requestDictionary.setObject(twitterID, forKey: "twitter_id")
+        requestDictionary.setObject(networkingID, forKey: "social_networking_id")
         
         let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
         if filteredArray.count > 0 {
