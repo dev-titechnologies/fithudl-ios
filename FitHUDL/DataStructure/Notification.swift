@@ -26,8 +26,11 @@ class Notification: NSManagedObject {
     @NSManaged var userID: NSNumber
     @NSManaged var userImage: String
     @NSManaged var userName: String
+    @NSManaged var message: String
+    @NSManaged var bookingID: NSNumber
+    @NSManaged var reqAmount: NSNumber
 
-    class func saveNotification(name: String, userID: Int, requestID: Int, trainerID: Int, spID: Int, spName: String, type: String, loc: String, readStatus: Int, startTime: String, endTime: String, allotedDate: String, userImage: String, trainerName: String, trainerImage: String) {
+    class func saveNotification(name: String, userID: Int, requestID: Int, trainerID: Int, spID: Int, spName: String, type: String, loc: String, readStatus: Int, startTime: String, endTime: String, allotedDate: String, userImage: String, trainerName: String, trainerImage: String, body: String) {
         var notification: Notification = NSEntityDescription.insertNewObjectForEntityForName("Notification", inManagedObjectContext: appDelegate.managedObjectContext!) as! Notification
         notification.userName   = name
         notification.userID     = userID
@@ -44,6 +47,7 @@ class Notification: NSManagedObject {
         notification.userImage  = userImage
         notification.trainerImage = trainerImage
         notification.trainerName  = trainerName
+        notification.message    = body
         appDelegate.saveContext()
     }
     

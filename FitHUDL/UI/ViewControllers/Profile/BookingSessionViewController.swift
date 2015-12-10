@@ -27,7 +27,6 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     var selectedIndexArray = NSMutableArray()
     var searchResultId : String?
     var profileID: String?
-    let profileUser = User()
     let availSessionTime = NSMutableDictionary()
     var activeText: UITextField!
     var bookingDictionary: NSMutableDictionary?
@@ -222,7 +221,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                 if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
                         user.isFavorite = favoriteButton.selected
-                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser])
+                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : user])
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message.capitalizedString)
@@ -274,9 +273,9 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     func bookingAction(sender:UIButton) {
         let requestDictionary = NSMutableDictionary()
         if  selectedIndexArray.count > 0 {
-            let filteredArray = (user.sports.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "sports_id = %d", argumentArray: [selectedIndexArray[0]]))
+            let filteredArray = (user.sports.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "sportsID = %d", argumentArray: [selectedIndexArray[0]]))
             if filteredArray.count > 0 {
-                let level = filteredArray[0].objectForKey("expert_level") as! String
+                let level = (filteredArray[0] as! UserSports).expertLevel
                 if appDelegate.user!.walletBalance.toInt() < appDelegate.configDictionary[level] as? Int {
                     showDismissiveAlertMesssage("Insufficient balance to book this session")
                     return
@@ -370,30 +369,23 @@ extension BookingSessionViewController: iCarouselDataSource {
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
-        let sports          = user.sports.allObjects[index] as! NSDictionary
+        let sports          = user.sports.allObjects[index] as! UserSports
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let logo = sports["logo"] as? String {
-            CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
-        } else {
-            CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
-        }
+        CustomURLConnection.downloadAndSetImage(sports.logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
+
         if index == carousel.currentItemIndex {
-            titleLabel.text = sports["sport_name"]!.uppercaseString as String
+            titleLabel.text = sports.sportsName.uppercaseString
             expertLevelLabel.superview?.superview?.hidden = false
-            if let level = sports["expert_level"] as? String {
-                if level ==  "" {
-                    expertLevelLabel.superview?.superview?.hidden = true
-                } else {
-                    expertLevelLabel.text = level
-                }
-            } else {
+            if sports.expertLevel ==  "" {
                 expertLevelLabel.superview?.superview?.hidden = true
+            } else {
+                expertLevelLabel.text = sports.expertLevel
             }
         } else {
-            titleLabel.text = sports["sport_name"] as? String
+            titleLabel.text = sports.sportsName
         }
-        if selectedIndexArray.containsObject(user.sports.allObjects[index].objectForKey("sports_id")!) {
+        if selectedIndexArray.containsObject((user.sports.allObjects[index] as! UserSports).sportsID) {
             tickImageView.hidden = false
         } else {
             tickImageView.hidden = true
@@ -424,11 +416,11 @@ extension BookingSessionViewController: iCarouselDelegate {
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
         
-        if selectedIndexArray.containsObject(user.sports.allObjects[index].objectForKey("sports_id")!) {
-            selectedIndexArray.removeObject(user.sports.allObjects[index].objectForKey("sports_id")!)
+        if selectedIndexArray.containsObject((user.sports.allObjects[index] as! UserSports).sportsID) {
+            selectedIndexArray.removeObject((user.sports.allObjects[index] as! UserSports).sportsID)
         } else {
             selectedIndexArray.removeAllObjects()
-            selectedIndexArray.addObject(user.sports.allObjects[index].objectForKey("sports_id")!)
+            selectedIndexArray.addObject((user.sports.allObjects[index] as! UserSports).sportsID)
         }
         carousel.reloadData()
     }

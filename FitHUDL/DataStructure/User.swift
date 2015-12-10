@@ -69,6 +69,10 @@ class User: NSManagedObject {
         var i:Int = 0
         for i = 0; i<result.count; i++ {
             let users: User = result[i] as! User
+            UserReview.deleteUserReviewList(users.profileID.integerValue)
+            UserSports.deleteUserSportsList(users.profileID.integerValue)
+            UserTime.deleteUserTimeList(users.profileID.integerValue)
+            UserBadges.deleteUserBadgesList(users.profileID.integerValue)
             appDelegate.managedObjectContext?.deleteObject(users)
             
         }

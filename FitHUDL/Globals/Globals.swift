@@ -94,15 +94,13 @@ class Globals: NSObject {
     }
     
     private class func clearUserValues() {
-        UserSports.deleteUserSportsList(appDelegate.user?.profileID.integerValue)
-        UserReview.deleteUserReviewList(appDelegate.user?.profileID.integerValue)
-        UserSports.deleteUserSportsList(appDelegate.user?.profileID.integerValue)
-        UserTime.deleteUserTimeList(appDelegate.user?.profileID.integerValue)
         User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [appDelegate.user!.profileID.integerValue]))
         Bookings.deleteBookings()
         Packages.deletePackages()
         Favorites.deleteFavorites()
         Notification.deleteNotificationList()
+        SportsList.deleteSportsList()
+        Configurations.deleteConfigList()
     }
     
     class func endOfMonth() -> NSDate? {
@@ -178,6 +176,20 @@ class Globals: NSObject {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
+    }
+    
+    class func checkStringNull(val: String?) -> String {
+        if let value = val {
+            return value
+        }
+        return ""
+    }
+    
+    class func checkIntNull(val: Int?) -> Int {
+        if let value = val {
+            return value
+        }
+        return 0
     }
     
 }

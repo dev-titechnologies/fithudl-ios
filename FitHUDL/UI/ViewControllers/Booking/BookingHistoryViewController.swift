@@ -65,9 +65,9 @@ class BookingHistoryViewController: UIViewController {
         let imageView = tapGesture.view as! UIImageView
         let cell      = imageView.superview?.superview as! HistoryTableViewCell
         let indexPath = historyTableView.indexPathForCell(cell)
-        let profile   = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings[indexPath!.row] as! NSDictionary : bookings[indexPath!.row] as! NSDictionary
+        let profile   = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings[indexPath!.row] as! Bookings : bookings[indexPath!.row] as! Bookings
         let userProfile         = storyboard?.instantiateViewControllerWithIdentifier("MyProfileViewController") as! MyProfileViewController
-        let id                  = bookingSegmentControl.selectedSegmentIndex == 0 ? profile["trainer_id"] as! Int : profile["user_id"] as! Int
+        let id                  = bookingSegmentControl.selectedSegmentIndex == 0 ? profile.trainerID.integerValue : profile.userID.integerValue
         userProfile.profileID   = "\(id)"
         navigationController?.pushViewController(userProfile, animated: true)        
     }
@@ -102,9 +102,9 @@ class BookingHistoryViewController: UIViewController {
         let checkDate        = formatter.stringFromDate(NSDate())
         formatter.dateFormat = "HH:mm"
         let checkTime        = formatter.stringFromDate(NSDate())
-        var filteredArray    = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "user_id = %@", argumentArray: [appDelegate.user!.profileID]))
+        var filteredArray    = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "userID = %@", argumentArray: [appDelegate.user!.profileID]))
         myBookings.addObjectsFromArray(filteredArray as [AnyObject])
-        filteredArray        = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "trainer_id = %@", argumentArray: [appDelegate.user!.profileID]))
+        filteredArray        = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "trainerID = %@", argumentArray: [appDelegate.user!.profileID]))
         bookings.addObjectsFromArray(filteredArray as [AnyObject])
         noAvailLabel.hidden = myBookings.count > 0 ? true : false
     }
@@ -132,12 +132,13 @@ class BookingHistoryViewController: UIViewController {
                             source.removeObjectAtIndex(source.indexOfObject(filteredArray[0]))
                         }
                     } else {
+                        Bookings.deleteBookings()
                         myBookings.removeAllObjects()
                         bookings.removeAllObjects()
                         let bookingsArray = NSMutableArray()
                         if let data = jsonResult["data"] as? NSArray {
                             for book in data {
-                                let booking = Bookings.saveBooking(book["user_name"] as! String, userID: book["user_id"] as! Int, requestID: book["request_id"] as! Int, trainerID: book["trainer_id"] as! Int, spID: book["sports_id"] as! Int, spName: book["sports_name"] as! String, status: book["status"] as! String, loc: book["location"] as! String, bookID: book["booking_id"] as! Int, startTime: book["start_time"] as! String, endTime: book["end_time"] as! String, allotedDate: book["alloted_date"] as! String, userImage: book["user_profile_pic"] as! String, trainerName: book["trainer_name"] as! String, trainerImage: book["trainer_profile_pic"] as! String)
+                                let booking = Bookings.saveBooking(Globals.checkStringNull(book["user_name"] as? String), userID: Globals.checkIntNull(book["user_id"] as? Int), requestID: Globals.checkIntNull(book["request_id"] as? Int), trainerID: Globals.checkIntNull(book["trainer_id"] as? Int), spID: Globals.checkIntNull(book["sports_id"] as? Int), spName: Globals.checkStringNull(book["sports_name"] as? String), status: Globals.checkStringNull(book["status"] as?String), loc: Globals.checkStringNull(book["location"] as? String), bookID: Globals.checkIntNull(book["booking_id"] as? Int), startTime: Globals.checkStringNull(book["start_time"] as? String), endTime: Globals.checkStringNull(book["end_time"] as? String), allotedDate: Globals.checkStringNull(book["alloted_date"] as? String), userImage: Globals.checkStringNull(book["user_profile_pic"] as? String), trainerName: Globals.checkStringNull(book["trainer_name"] as? String), trainerImage: Globals.checkStringNull(book["trainer_profile_pic"] as? String))
                                 bookingsArray.addObject(booking)
                             }
                         }

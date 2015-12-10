@@ -68,9 +68,11 @@ class FavoritesViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.favouriteList {
                     if status == ResponseStatus.success {
+                        Favorites.deleteFavorites()
+                        favouriteListArray.removeAll(keepCapacity: true)
                         if let favourites = jsonResult["details"] as? NSArray {
                             for favorite in favourites {
-                                let fav = Favorites.saveFavorite(favorite["id"] as! Int, name: favorite["user_name"] as! String, picURL: favorite["image_url"] as! String, rate: favorite["rate_count"] as! Int, session: favorite["session"] as! Int)
+                                let fav = Favorites.saveFavorite(Globals.checkIntNull(favorite["id"] as? Int), name: Globals.checkStringNull(favorite["name"] as? String), picURL: Globals.checkStringNull(favorite["profile_pic"] as? String), rate: Globals.checkIntNull(favorite["rating_count"] as? Int), session: Globals.checkIntNull(favorite["session"] as? Int))
                                 favouriteListArray.append(fav)
                             }
                             appDelegate.saveContext()

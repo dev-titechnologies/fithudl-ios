@@ -236,6 +236,7 @@ class LoginOrSignUpViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.sportsList {
                     if status == ResponseStatus.success {
+                        SportsList.deleteSportsList()
                         appDelegate.sportsArray.removeAllObjects()
                         if let sportsList = jsonResult["sportsList"] as? NSArray {
                             for sports in sportsList {

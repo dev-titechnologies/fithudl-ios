@@ -18,13 +18,13 @@ class Packages: NSManagedObject {
     @NSManaged var id: NSNumber
     @NSManaged var name: String
 
-    class func savePackage(id: Int, displayPrice: String, format: String, cost: String, discount: String, name: String) -> Packages {
+    class func savePackage(id: Int, displayPrice: String, format: String, cost: Int, discount: String, name: String) -> Packages {
         var package:Packages = NSEntityDescription.insertNewObjectForEntityForName("Packages", inManagedObjectContext: appDelegate.managedObjectContext!) as! Packages
         package.id   = id
         package.name = name
         package.displayPrice    = displayPrice
         package.currencyFormat  = format
-        package.cost        = cost
+        package.cost        = "\(cost)"
         package.discount    = discount
         return package
     }

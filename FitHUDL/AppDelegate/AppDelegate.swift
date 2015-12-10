@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             if let configs = Configurations.fetchConfig() {
                 configDictionary.removeAllObjects()
                 for config in configs {
-                    configDictionary.setObject(config["value"] as! String, forKey: config["code"] as! String)
+                    configDictionary.setObject((config as! Configurations).value, forKey: (config as! Configurations).code)
                 }
             }
         } else {
@@ -148,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                 for config in configArray {
                                     let value: AnyObject? = config["value"]
                                     self.configDictionary.setObject(value!, forKey: config["code"] as! String)
-                                    Configurations.saveConfig(config["id"] as! Int, code: config["code"] as! String , value: value as! String)
+                                    Configurations.saveConfig(config["id"] as! Int, code: config["code"] as! String , value: "\(value)")
                                 }
                             }
                         }

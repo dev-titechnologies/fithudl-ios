@@ -592,27 +592,26 @@ extension SearchViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("sportCell", forIndexPath: indexPath) as! AllSportsCollectionViewCell
-        let sport = appDelegate.sportsArray[indexPath.row] as! NSDictionary
-        cell.sportNameLabel.text = sport["title"] as? String
+        let sport = appDelegate.sportsArray[indexPath.row] as! SportsList
+        cell.sportNameLabel.text = sport.sportsName
         cell.sportImageView.image = UIImage(named: "default_image")
-        if let url = sport["logo"] as? NSString {
-            let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
-            if imageurl.length != 0 {
-                if var imagesArray = Images.fetch(imageurl as String) {
-                    let image      = imagesArray[0] as! Images
-                    let sportImage = UIImage(data: image.imageData)!
-                    cell.sportImageView.image = UIImage(data: image.imageData)!
-                } else {
-                    if let imageURL = NSURL(string: imageurl as String){
-                        let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
-                        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                            if let updatedCell = collectionView.cellForItemAtIndexPath(indexPath) as? AllSportsCollectionViewCell {
-                                if error == nil {
-                                    let imageFromData:UIImage? = UIImage(data: data)
-                                    if let image  = imageFromData {
-                                        updatedCell.sportImageView.image = image
-                                        Images.save(imageurl as String, imageData: data)
-                                    }
+        let url = sport.logo
+        let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
+        if imageurl.length != 0 {
+            if var imagesArray = Images.fetch(imageurl as String) {
+                let image      = imagesArray[0] as! Images
+                let sportImage = UIImage(data: image.imageData)!
+                cell.sportImageView.image = UIImage(data: image.imageData)!
+            } else {
+                if let imageURL = NSURL(string: imageurl as String){
+                    let request  = NSURLRequest(URL: imageURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: TimeOut.Image)
+                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                        if let updatedCell = collectionView.cellForItemAtIndexPath(indexPath) as? AllSportsCollectionViewCell {
+                            if error == nil {
+                                let imageFromData:UIImage? = UIImage(data: data)
+                                if let image  = imageFromData {
+                                    updatedCell.sportImageView.image = image
+                                    Images.save(imageurl as String, imageData: data)
                                 }
                             }
                         }
@@ -676,27 +675,24 @@ extension SearchViewController: iCarouselDataSource {
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         let source          = allSportsArray
-        let sports          = source[index] as! NSDictionary
+        let sports          = source[index] as! SportsList
         
 //         println("ALL Sports Array : \(allSportsArray)")
         
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let logo = sports["logo"] as? String {
-            CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
-        } else {
-            CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
-        }
+        CustomURLConnection.downloadAndSetImage(sports.logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
+
         if index == carousel.currentItemIndex {
             tickImageView.hidden = false
-            titleLabel.text = sports["sport_name"]!.uppercaseString as String
-            if sports["level"] as? String == SportsLevel.beginner {
+            titleLabel.text = sports.sportsName.uppercaseString as String
+            if sports.level == SportsLevel.beginner {
                 beginnerButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.moderate {
+            } else if sports.level == SportsLevel.moderate {
                 moderateButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.expert {
+            } else if sports.level == SportsLevel.expert {
                 expertButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.noType {
+            } else if sports.level == SportsLevel.noType {
                 
                 expertButton.selected   = false
                 beginnerButton.selected = false
@@ -705,11 +701,10 @@ extension SearchViewController: iCarouselDataSource {
             }  else {}
             
         } else {
-            titleLabel.text = sports["sport_name"] as? String
+            titleLabel.text = sports.sportsName
         }
         
-        var level            = allSportsArray.objectAtIndex(index).valueForKey("level") as? String
-        tickImageView.hidden = level == "NO" ? true : false
+        tickImageView.hidden = sports.level == "NO" ? true : false
         return contentView
     }
 }
@@ -741,18 +736,16 @@ extension SearchViewController: iCarouselDelegate {
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
-        if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int) {
+        if userSelectedArray.valueForKey("sportsId")!.containsObject((allSportsArray.objectAtIndex(index) as! SportsList).sportsId.integerValue) {
             
-             var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(index).valueForKey("sports_id") as! Int)
+             var indexValue = userSelectedArray.valueForKey("sportsId")?.indexOfObject((allSportsArray.objectAtIndex(index) as! SportsList).sportsId.integerValue)
             userSelectedArray.removeObjectAtIndex(indexValue!)
-            var allSports   = NSMutableDictionary()
-            allSports       = allSportsArray[index] as! NSMutableDictionary
-            allSports.setObject("NO", forKey: "level")
+            let allSports   = allSportsArray[index] as! SportsList
+            allSports.level = "NO"
             allSportsArray.replaceObjectAtIndex(index, withObject: allSports)
         } else{
-            var userSport   = NSMutableDictionary()
-            userSport       = allSportsArray[index] as! NSMutableDictionary
-            userSport.setObject("", forKey: "level")
+            let userSport   = allSportsArray[index] as! SportsList
+            userSport.level = ""
             userSelectedArray.addObject(userSport)
             allSportsArray.replaceObjectAtIndex(index, withObject: userSport)
         }

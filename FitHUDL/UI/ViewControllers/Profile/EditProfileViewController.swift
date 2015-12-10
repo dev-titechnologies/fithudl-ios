@@ -504,7 +504,9 @@ class EditProfileViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
                     if !bioOnly {
-                        appDelegate.user!.profileImage = UIImagePNGRepresentation(photoImageView.image)
+                        if photoImageView.image != nil {
+                            appDelegate.user!.profileImage = UIImagePNGRepresentation(photoImageView.image)
+                        }
                         dismissViewControllerAnimated(true, completion: nil)
                     } else {
                         appDelegate.user!.bio = bioTextView.text

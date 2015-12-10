@@ -237,8 +237,10 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                 if connection.connectionTag == Connection.packagesListRequest {
                     if status == ResponseStatus.success {
                         if let packages = jsonResult["data"] as? NSArray {
+                            Packages.deletePackages()
+                            packageListArray.removeAll(keepCapacity: true)
                             for package in packages {
-                                let pack = Packages.savePackage(package["id"] as! Int, displayPrice: package["display_price"] as! String, format: package["currency_format"] as! String, cost: package["cost"] as! String, discount: package["discount"] as! String, name: package["name"] as! String)
+                                let pack = Packages.savePackage(Globals.checkIntNull(package["id"] as? Int), displayPrice: Globals.checkStringNull(package["display_price"] as? String), format: Globals.checkStringNull(package["currency_format"] as? String), cost: Globals.checkIntNull(package["cost"] as? Int), discount: Globals.checkStringNull(package["discount"] as? String), name: Globals.checkStringNull(package["name"] as? String))
                                 packageListArray.append(pack)
                             }
                             appDelegate.saveContext()

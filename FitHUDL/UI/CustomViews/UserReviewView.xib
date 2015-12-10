@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="OpenSans-LightItalic.ttf">
@@ -13,7 +12,7 @@
         </mutableArray>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserReviewView" customModule="FitHUDL" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserReviewView" customModule="FitHudl" customModuleProvider="target">
             <connections>
                 <outlet property="indicatorView" destination="ZwT-mV-JSC" id="dSl-4Z-Y7c"/>
                 <outlet property="nameLabel" destination="XFL-nY-Jqb" id="R9l-DX-xrz"/>
@@ -33,7 +32,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FX2-QG-2h8">
                             <rect key="frame" x="0.0" y="33" width="300" height="95"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SlJ-5C-Xyo" customClass="StarRateView" customModule="FitHUDL" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SlJ-5C-Xyo" customClass="StarRateView" customModule="FitHudl" customModuleProvider="target">
                                     <rect key="frame" x="65" y="4" width="80" height="10"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -76,7 +75,8 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CwL-3L-CJu">
                             <rect key="frame" x="10" y="5" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="CwL-3L-CJu" secondAttribute="height" multiplier="1:1" id="eDc-16-ia7"/>
+                                <constraint firstAttribute="width" constant="50" id="0na-XE-b0C"/>
+                                <constraint firstAttribute="height" constant="50" id="Vha-XC-afd"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">

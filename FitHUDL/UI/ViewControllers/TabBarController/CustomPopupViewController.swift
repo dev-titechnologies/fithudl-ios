@@ -60,15 +60,17 @@ class CustomPopupViewController: UIViewController {
         case ViewTag.bioText:
             bioView.hidden      = false
             if bioText == "" {
-                closeButton.hidden  = true
-                updateButton.hidden = false
+                closeButton.hidden   = true
+                updateButton.hidden  = false
                 updateButton.layer.borderColor = UIColor.whiteColor().CGColor
+                bioTextView.editable = true
                 bioTextView.becomeFirstResponder()
             } else {
-                closeButton.hidden  = false
-                updateButton.hidden = true
+                closeButton.hidden   = false
+                updateButton.hidden  = true
+                bioTextView.editable = false
                 bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)
-                bioTextView.frame   = CGRect(origin: CGPointZero, size: CGSize(width: bioView.frame.size.width, height: bioView.frame.size.height))
+                bioTextView.frame    = CGRect(origin: CGPointZero, size: CGSize(width: bioView.frame.size.width, height: bioView.frame.size.height))
             }
             
             attributedBioText()
@@ -110,14 +112,14 @@ class CustomPopupViewController: UIViewController {
 
     
     func setUpBookConfirmView() {
-        let predicate       = NSPredicate(format: "id = %d", argumentArray: [sessionDictionary!["sports_id"] as! Int])
+        let predicate       = NSPredicate(format: "sportsId = %d", argumentArray: [sessionDictionary!["sports_id"] as! Int])
         let filteredArray   = appDelegate.sportsArray.filteredArrayUsingPredicate(predicate)
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         if filteredArray.count > 0 {
-            let imageURL    = (filteredArray[0] as! NSDictionary)["logo"] as! String
+            let imageURL    = (filteredArray[0] as! SportsList).logo
             CustomURLConnection.downloadAndSetImage(imageURL, imageView: sportsImageView, activityIndicatorView: indicatorView)
-            let sportName   = ((filteredArray[0] as! NSDictionary)["title"] as! String).uppercaseString
+            let sportName   = (filteredArray[0] as! SportsList).sportsName.uppercaseString
             sportsLabel.text = "\(sportName) session on"
         }
         nameLabel.text      = appDelegate.user!.name.uppercaseString

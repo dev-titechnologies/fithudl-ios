@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 class AvailableTimeCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
 }
 
-class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
+class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -69,13 +70,11 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
     @IBOutlet weak var notificationTableView: UITableView!
     @IBOutlet weak var carouselBackgoundView: UIView!
     
-    
-    
     var searchResultId:String?
     var profileID: String?
     let calloutViewYAxis:CGFloat = 52.0
-    let profileUser = User()
-    var notificationListArray =  Array<NSDictionary>()
+    var profileUser: User?
+    var notificationListArray =  Array<Notification>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,37 +157,13 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
                 }, completion: nil)
         }
-
-        
-        notificationButton.tag=0
+        notificationButton.tag = 0
         UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.notificationBackgroundView.hidden  = true
-            }, completion: nil)
+        }, completion: nil)
         println("self.view touched")
-        
     }
     
-//    - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-//    shouldReceiveTouch:(UITouch *)touch
-//    {
-//    if([touch.view class] == tableview.class){
-//    return //YES/NO
-//    }
-//    
-//    return //YES/NO
-//    
-//    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        
-        println("touch view is \(touch.view)")
-        println("touch superview is \(touch.view.superview)")
-        if touch.view.superview is UITableViewCell {
-            return false
-        }
-        return true
-    }
-
     override func viewWillAppear(animated: Bool) {
         availableTimeCollectionView.reloadData()
         morebgView.hidden   = false
@@ -219,6 +194,15 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
         notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
         sendRequestForProfile()
         appDelegate.sendRequestToGetConfig()
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        println("touch view is \(touch.view)")
+        println("touch superview is \(touch.view.superview)")
+        if touch.view.superview is UITableViewCell {
+            return false
+        }
+        return true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -407,26 +391,26 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
         if let id = profileID {
-            showBioView(profileUser.bio!)
+            showBioView(profileUser!.bio)
         } else {
-            showBioView(appDelegate.user.bio!)
+            showBioView(appDelegate.user!.bio)
         }
     }
     
     @IBAction func bookSessionTapped(sender: UITapGestureRecognizer) {
-        if profileUser.availableTimeArray.count > 0 {
+        if profileUser!.availableTime.count > 0 {
             performSegueWithIdentifier("pushToBookingSession", sender: self)
         } else {
-            showDismissiveAlertMesssage("\(profileUser.name) have no available time")
+            showDismissiveAlertMesssage("\(profileUser!.name) have no available time")
         }
     }
     
     func populateProfileContents(user: User) {
         nameLabel.text = user.name
-        favoriteButton.selected = user.isFavorite
-        packagesButton.enabled = Bool(appDelegate.user.isVerified)
+        favoriteButton.selected = user.isFavorite.boolValue
+        packagesButton.enabled = Bool(appDelegate.user!.userVerified.boolValue)
         if let id = profileID {
-            if Bool(appDelegate.user.isVerified) == true {
+            if appDelegate.user!.userVerified.boolValue == true {
                 bookView.hidden = false
             } else {
                 bookView.hidden = true
@@ -434,80 +418,64 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
         }
         userImageView.image = UIImage(named: "default_image")
         userImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let image = user.profileImage {
+        if user.profileImage.length != 0 {
             userImageView.contentMode = UIViewContentMode.ScaleAspectFill
-            userImageView.image = image
+            userImageView.image       = UIImage(data: user.profileImage)
             indicatorView.stopAnimating()
-            user.profileImage = nil
-        } else if let url = user.imageURL {
-            CustomURLConnection.downloadAndSetImage(url, imageView: userImageView, activityIndicatorView: indicatorView)
+            user.profileImage = NSData()
         } else {
-            CustomURLConnection.downloadAndSetImage("", imageView: userImageView, activityIndicatorView: indicatorView)
+            CustomURLConnection.downloadAndSetImage(user.imageURL, imageView: userImageView, activityIndicatorView: indicatorView)
         }
         
-        if let bioText = user.bio {
-            if count(bioText) > BIOTEXT_LENGTH {
-                bioLabel.userInteractionEnabled = true
-                Globals.attributedBioText((bioText as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
-            } else {
-                bioLabel.userInteractionEnabled = false
-                Globals.attributedBioText((bioText as NSString).substringToIndex((bioText as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
-            }
+        if count(user.bio) > BIOTEXT_LENGTH {
+            bioLabel.userInteractionEnabled = true
+            Globals.attributedBioText((user.bio as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
+        } else {
+            bioLabel.userInteractionEnabled = false
+            Globals.attributedBioText((user.bio as NSString).substringToIndex((user.bio as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
         }
-        if user.sportsArray.count == 0 {
+        
+        if user.sports.count == 0 {
             beginnerButton.superview?.superview?.hidden = true
         }
         sportsCarousel.currentItemIndex = 0
         sportsCarousel.reloadData()
         
-        if let hours = user.totalHours {
-            let components = hours.componentsSeparatedByString(":")
-            let hour = components[0].toInt()!
-            if hour < 2 {
-                hoursLabel.textColor = AppColor.boxBorderColor
-            } else if (hour>=2 && hour<5) {
-                hoursLabel.textColor = AppColor.yellowTextColor
-            } else if (hour>=5 && hour<10) {
-                hoursLabel.textColor = AppColor.statusBarColor
-            } else {
-                hoursLabel.font = UIFont(name: "OpenSans-Bold", size: 16.0)
-                hoursLabel.textColor = AppColor.badgeSilverColor
-            }
-            completedTitleLabel.textColor = hoursLabel.textColor
-            hoursLabel.text = "\(hours) hours"
-            
+        let hours = user.totalHours
+        let components = hours.componentsSeparatedByString(":")
+        let hour = components[0].toInt()!
+        if hour < 2 {
+            hoursLabel.textColor = AppColor.boxBorderColor
+        } else if (hour>=2 && hour<5) {
+            hoursLabel.textColor = AppColor.yellowTextColor
+        } else if (hour>=5 && hour<10) {
+            hoursLabel.textColor = AppColor.statusBarColor
         } else {
-            hoursLabel.text = "0 hours"
+            hoursLabel.font = UIFont(name: "OpenSans-Bold", size: 16.0)
+            hoursLabel.textColor = AppColor.badgeSilverColor
         }
+        completedTitleLabel.textColor = hoursLabel.textColor
+        hoursLabel.text = "\(hours) hours"
         
-        if let count = user.usageCount {
-            sessionCountLabel.text = "\(count)"
-        } else {
-            sessionCountLabel.text = "0"
-        }
+        sessionCountLabel.text = "\(user.usageCount)"
         
-        if let rate = user.rating {
-            rateLabel.text  = rate
-            starView.rating = (rate as NSString).floatValue
-        } else {
-            rateLabel.text  = "0"
-            starView.rating = 0.0
-        }
+        rateLabel.text  = "\(user.rating)"
+        starView.rating = user.rating.floatValue
         
-        let filteredArray = user.availableTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+        let filteredArray = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
         
         if filteredArray.count <= 3 {
             morebgView.hidden = true
             moreButton.hidden = true
         }
-        if user.badgesArray.count <= 3 {
+        if user.badges.count <= 3 {
             badgeNextButton.hidden = true
             badgePrevButton.hidden = true
         } else {
             badgeNextButton.hidden = false
             badgePrevButton.hidden = false
         }
-        if user.userReviewsArray.count <= 1 {
+        if user.reviews.count <= 1 {
             buttonView.hidden = true
         } else {
             buttonView.hidden = false
@@ -520,14 +488,14 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
             availableTimeCollectionView.reloadData()
         }
         
-        if user.badgesArray.count == 0 {
+        if user.badges.count == 0 {
             noBadgeLabel.hidden = false
             badgesCollectionView.hidden = true
         } else {
             badgesCollectionView.reloadData()
         }
         
-        if user.userReviewsArray.count == 0 {
+        if user.reviews.count == 0 {
             noreviewLabel.hidden = false
             reviewCollectionView.hidden = true
         } else {
@@ -564,7 +532,13 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
     
     //MARK: - NoticationList API
     func sendRequestForNotificationList() {
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
+            if let notifArray = Notification.fetchNotifications() {
+                notificationListArray = notifArray as! Array<Notification>
+                notificationTableView.reloadData()
+            } else {
+                showDismissiveAlertMesssage(Message.Offline)
+            }
             return
         }
         notifIndicatorView.startAnimating()
@@ -575,7 +549,22 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
     //MARK: - Profile API
     
     func sendRequestForProfile() {
-        if !Globals.isInternetConnected() {
+        if !Globals.checkNetworkConnectivity() {
+            if let id = profileID {
+                if let user = User.fetchUser(NSPredicate(format: "profileID = %d", argumentArray: [id.toInt()!])) {
+                    profileUser = user
+                    populateProfileContents(profileUser!)
+                } else {
+                    showDismissiveAlertMesssage(Message.Offline)
+                }
+            } else {
+                if let user = User.fetchUser(NSPredicate(format: "currentUser = %d", argumentArray: [1])) {
+                    appDelegate.user = user
+                    populateProfileContents(appDelegate.user!)
+                } else {
+                    showDismissiveAlertMesssage(Message.Offline)
+                }
+            }
             return
         }
         showLoadingView(true)
@@ -586,13 +575,13 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "profile/profile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
     
-    func sendRequestForUpdateSportsLevel(sports: NSDictionary, type: String) {
+    func sendRequestForUpdateSportsLevel(sports: UserSports, type: String) {
         if !Globals.isInternetConnected() {
             return
         }
         let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(sports["sports_id"]!, forKey: "sports_id")
-        requestDictionary.setObject(sports["expert_level"]!, forKey: "expert_level")
+        requestDictionary.setObject(sports.sportsID, forKey: "sports_id")
+        requestDictionary.setObject(sports.expertLevel, forKey: "expert_level")
         requestDictionary.setObject(type, forKey: "type")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/modifyUserSports", requestType: HttpMethod.post), delegate: self, tag: Connection.updateSports)
     }
@@ -623,152 +612,156 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
         
         println("Response Dictionary\(responseDictionary)")
         if let id = profileID {
-            profileUser.profileID  = responseDictionary["profile_id"] as! Int
-            profileUser.name       = responseDictionary["profile_name"] as! String
-            profileUser.email      = responseDictionary["email"] as! String
-            profileUser.isVerified = responseDictionary["user_verified"] as! Int
-            profileUser.walletBalance = responseDictionary["wallet_balance"] as? String
+            User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [id.toInt()!]))
+            profileUser            = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDelegate.managedObjectContext!) as? User
+            profileUser!.currentUser = 0
+            profileUser!.profileID  = Globals.checkIntNull(responseDictionary["profile_id"] as? Int)
+            profileUser!.name       = Globals.checkStringNull(responseDictionary["profile_name"] as? String)
+            profileUser!.email      = Globals.checkStringNull(responseDictionary["email"] as? String)
+            profileUser!.userVerified = Globals.checkIntNull(responseDictionary["user_verified"] as? Int)
+            profileUser!.walletBalance = Globals.checkStringNull(responseDictionary["wallet_balance"] as? String)
+            profileUser!.interests     = Globals.checkStringNull(responseDictionary["other_interests"] as? String)
+            profileUser!.bio           = Globals.checkStringNull(responseDictionary["profile_desc"] as? String)
             if let imageUrl = responseDictionary["profile_image"] as? String {
-                profileUser.imageURL = imageUrl
+                profileUser!.imageURL = imageUrl
             } else {
-                profileUser.imageURL = ""
+                profileUser!.imageURL = ""
             }
             
-            if let bio = responseDictionary["profile_desc"] as? String {
-                profileUser.bio = bio
-            }
             if let session = responseDictionary["Training_session"] as? NSArray {
-                profileUser.availableTimeArray.removeAllObjects()
-                profileUser.availableTimeArray.addObjectsFromArray(session as! [NSDictionary])
+                profileUser!.availableTime.removeAllObjects()
+                for sess in session {
+                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: profileUser!)
+                    profileUser!.availableTime.addObject(time)
+                }
             }
             if let usageCount = responseDictionary["usage_count"] as? Int {
-                profileUser.usageCount = usageCount
+                profileUser!.usageCount = "\(usageCount)"
             }
             if let rate = responseDictionary["rating"] as? String {
-                profileUser.rating = rate
+                profileUser!.rating = rate.toInt()!
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
-                profileUser.badgesArray.removeAllObjects()
-                if profileUser.usageCount > 0 {
-                    profileUser.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+                profileUser!.badges.removeAllObjects()
+                for badge in badges {
+                    let badge = UserBadges.saveUserBadgesList(badge["count"] as! Int, sessionCount: badge["session_count"] as! Int, name: badge["name"] as! String, imageURL: badge["image_url"] as! String, user: profileUser!)
+                    profileUser!.badges.addObject(badge)
                 }
             }
             if let comments = responseDictionary["User_comments"] as? NSArray {
-                profileUser.userReviewsArray.removeAllObjects()
-                profileUser.userReviewsArray.addObjectsFromArray(comments as! [NSDictionary])
+                profileUser!.reviews.removeAllObjects()
+                for comment in comments {
+                    let review = UserReview.saveUserReviewList(comment["profile_id"] as! Int, name: comment["profile_name"] as! String, imageURL: comment["profile_pic"] as! String, rate: comment["user_rating"] as! Int, review: comment["user_review"] as! String, user: profileUser!)
+                    profileUser!.reviews.addObject(review)
+                }
             }
             
             if let hours = responseDictionary["weekly_hours"] as? String {
-                profileUser.totalHours = hours
+                profileUser!.totalHours = hours
             }
             
             if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
-                profileUser.sportsArray.removeAllObjects()
+                profileUser!.sports.removeAllObjects()
                 for sports in sportsArray {
-                    let sport = NSMutableDictionary()
-                    sport.setObject(sports["sports_id"] as! Int, forKey: "sports_id")
-                    sport.setObject(sports["sport_name"] as! String, forKey: "sport_name")
-                    let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sports["sports_id"] as! Int]))
+                    let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "sportsId = %d", argumentArray: [sports["sports_id"] as! Int]))
                     if filteredArray.count > 0 {
-                        let mysport = filteredArray[0] as! NSDictionary
-                        if let logo = mysport["logo"] as? String {
-                            sport.setObject(logo, forKey: "logo")
-                        } else {
-                            sport.setObject("", forKey: "logo")
-                        }
+                        let mysport = filteredArray[0] as! SportsList
+                        let sport = UserSports.saveUserSportsList(sports["sports_id"] as! Int, sportsName: sports["sport_name"] as! String, level: sports["expert_level"] as! String, imageURL: mysport.logo, user: profileUser!)
+                        profileUser!.sports.addObject(sport)
                     } else {
-                        sport.setObject("", forKey: "logo")
+                        let sport = UserSports.saveUserSportsList(sports["sports_id"] as! Int, sportsName: sports["sport_name"] as! String, level: sports["expert_level"] as! String, imageURL: "", user: profileUser!)
+                        profileUser!.sports.addObject(sport)
                     }
-                    sport.setObject(sports["expert_level"] as! String, forKey: "expert_level")
-                    profileUser.sportsArray.addObject(sport)
                 }
             }
-            profileUser.isFavorite = responseDictionary["favourite"] as! Bool
+            profileUser!.isFavorite = responseDictionary["favourite"] as! Bool
         } else {
             if responseDictionary["email_verify"] as! Int == 0 {
                 showEmailVerifyAlert()
             }
-            appDelegate.user.profileID  = responseDictionary["profile_id"] as! Int
-            appDelegate.user.name       = responseDictionary["profile_name"] as! String
-            appDelegate.user.email      = responseDictionary["email"] as! String
-            appDelegate.user.isVerified = responseDictionary["user_verified"] as! Int
-            appDelegate.user.walletBalance = responseDictionary["wallet_balance"] as? String
+            User.deleteUser(NSPredicate(format: "currentUser = %d", argumentArray: [1]))
+            appDelegate.user            = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDelegate.managedObjectContext!) as? User
+            appDelegate.user!.currentUser = 1
+            appDelegate.user!.profileID  = Globals.checkIntNull(responseDictionary["profile_id"] as? Int)
+            appDelegate.user!.name       = Globals.checkStringNull(responseDictionary["profile_name"] as? String)
+            appDelegate.user!.email      = Globals.checkStringNull(responseDictionary["email"] as? String)
+            appDelegate.user!.userVerified = Globals.checkIntNull(responseDictionary["user_verified"] as? Int)
+            appDelegate.user!.walletBalance = Globals.checkStringNull(responseDictionary["wallet_balance"] as? String)
             if let imageUrl = responseDictionary["profile_image"] as? String {
-                appDelegate.user.imageURL = imageUrl
+                appDelegate.user!.imageURL = imageUrl
             } else {
-                appDelegate.user.imageURL = ""
+                appDelegate.user!.imageURL = ""
             }
-            availBalanceLabel.text = "Available balance: $\(appDelegate.user.walletBalance!)"
+            availBalanceLabel.text = "Available balance: $\(appDelegate.user!.walletBalance)"
             if let bio = responseDictionary["profile_desc"] as? String {
-                appDelegate.user.bio = bio
+                appDelegate.user!.bio = bio
                 if bio == "" {
                     showBioView(bio)
                 }
             } else {
+                appDelegate.user!.bio = ""
                 showBioView("")
             }
             if let session = responseDictionary["Training_session"] as? NSArray {
-                appDelegate.user.availableTimeArray.removeAllObjects()
-                appDelegate.user.availableTimeArray.addObjectsFromArray(session as! [NSDictionary])
+                appDelegate.user!.availableTime.removeAllObjects()
+                for sess in session {
+                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: appDelegate.user!)
+                    appDelegate.user!.availableTime.addObject(time)
+                }
             }
             if let usageCount = responseDictionary["usage_count"] as? Int {
-                appDelegate.user.usageCount = usageCount
+                appDelegate.user!.usageCount = "\(usageCount)"
             }
             if let rate = responseDictionary["rating"] as? String {
-                appDelegate.user.rating = rate
+                appDelegate.user!.rating = rate.toInt()!
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
-                appDelegate.user.badgesArray.removeAllObjects()
-                if appDelegate.user.usageCount > 0 {
-                    appDelegate.user.badgesArray.addObjectsFromArray(badges as! [NSDictionary])
+                appDelegate.user!.badges.removeAllObjects()
+                for badge in badges {
+                    let userBadge = UserBadges.saveUserBadgesList(badge["count"] as! Int, sessionCount: badge["session_count"] as! Int, name: badge["name"] as! String, imageURL: badge["image_url"] as! String, user: appDelegate.user!)
+                    appDelegate.user!.badges.addObject(userBadge)
                 }
             }
             if let comments = responseDictionary["User_comments"] as? NSArray {
-                appDelegate.user.userReviewsArray.removeAllObjects()
-                appDelegate.user.userReviewsArray.addObjectsFromArray(comments as! [NSDictionary])
+                appDelegate.user!.reviews.removeAllObjects()
+                for comment in comments {
+                    let review = UserReview.saveUserReviewList(comment["profile_id"] as! Int, name: comment["profile_name"] as! String, imageURL: comment["profile_pic"] as! String, rate: comment["user_rating"] as! Int, review: comment["user_review"] as! String, user: appDelegate.user!)
+                    appDelegate.user!.reviews.addObject(review)
+                }
             }
             
             if let hours = responseDictionary["weekly_hours"] as? String {
-                appDelegate.user.totalHours = hours
+                appDelegate.user!.totalHours = hours
             }
             
             if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
-                appDelegate.user.sportsArray.removeAllObjects()
+                appDelegate.user!.sports.removeAllObjects()
+                println(appDelegate.sportsArray)
                 for sports in sportsArray {
-                    let sport = NSMutableDictionary()
-                    sport.setObject(sports["sports_id"] as! Int, forKey: "sports_id")
-                    sport.setObject(sports["sport_name"] as! String, forKey: "sport_name")
-                    let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sports["sports_id"] as! Int]))
+                    let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "sportsId = %d", argumentArray: [sports["sports_id"] as! Int]))
                     if filteredArray.count > 0 {
-                        let mysport = filteredArray[0] as! NSDictionary
-                        if let logo = mysport["logo"] as? String {
-                            sport.setObject(logo, forKey: "logo")
-                        } else {
-                            sport.setObject("", forKey: "logo")
-                        }
-                    } else {
-                        sport.setObject("", forKey: "logo")
-                    }
-                    sport.setObject(sports["expert_level"] as! String, forKey: "expert_level")
-                    appDelegate.user.sportsArray.addObject(sport)
+                        let mysport = filteredArray[0] as! SportsList
+                        let userSport = UserSports.saveUserSportsList(sports["sports_id"] as! Int, sportsName: sports["sport_name"] as! String, level: sports["expert_level"] as! String, imageURL: mysport.logo, user: appDelegate.user!)
+                        appDelegate.user!.sports.addObject(userSport)
+                    } 
                 }
-                for sports in appDelegate.sportsArray {
-                    if sportsArray.valueForKey("sports_id")!.containsObject(sports["id"] as! Int) {
+                for sport in appDelegate.sportsArray {
+                    if sportsArray.valueForKey("sports_id")!.containsObject((sport as! SportsList).sportsId.integerValue) {
                     } else {
-                        let sport = NSMutableDictionary()
-                        sport.setObject(sports["id"] as! Int, forKey: "sports_id")
-                        sport.setObject(sports["title"] as! String, forKey: "sport_name")
-                        if let logo = sports["logo"] as? String {
-                            sport.setObject(logo, forKey: "logo")
-                        } else {
-                            sport.setObject("", forKey: "logo")
-                        }
-                        sport.setObject("", forKey: "expert_level")
-                        appDelegate.user.sportsArray.addObject(sport)
+                        let userSport = UserSports.saveUserSportsList((sport as! SportsList).sportsId.integerValue, sportsName: (sport as! SportsList).sportsName, level: "", imageURL: (sport as! SportsList).logo, user: appDelegate.user!)
+                        appDelegate.user!.sports.addObject(userSport)
                     }
                 }
-           }
+                println (appDelegate.user!.sports)
+                var sportsList = appDelegate.user?.sports.allObjects as! [UserSports]
+                sportsList.sort({ (sport1, sport2) -> Bool in
+                    return count((sport1 as UserSports).expertLevel) > count((sport2 as UserSports).expertLevel)
+                })
+//                appDelegate.user?.sports.allObjects.sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)])
+                println (appDelegate.user!.sports)
+            }
         }
+        appDelegate.saveContext()
     }
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
@@ -801,9 +794,9 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
                         return
                     }
                     if let id = profileID {
-                        populateProfileContents(profileUser)
+                        populateProfileContents(profileUser!)
                     } else {
-                        populateProfileContents(appDelegate.user)
+                        populateProfileContents(appDelegate.user!)
                     }
                 } else if connection.connectionTag == Connection.logout {
                     if status == ResponseStatus.error {
@@ -823,8 +816,8 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
                     }
                 } else if connection.connectionTag == Connection.unfavourite {
                     if status == ResponseStatus.success {
-                        profileUser.isFavorite = favoriteButton.selected
-                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser])
+                        profileUser!.isFavorite = favoriteButton.selected
+                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser!])
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -838,7 +831,18 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
                 }  else if connection.connectionTag == Connection.notificationRequest {
                     if status == ResponseStatus.success {
                         if let notifications = jsonResult["data"] as? NSArray {
-                            self.notificationListArray = notifications as! Array
+                            Notification.deleteNotificationList()
+                            notificationListArray.removeAll(keepCapacity: true)
+                            for notif in notifications {
+                                var notifBody = ""
+                                if let body = notif["ntfn_body"] as? String {
+                                    notifBody = body
+                                }
+                                Notification.saveNotification(Globals.checkStringNull(notif["user_name"] as? String), userID: Globals.checkIntNull(notif["user_id"] as? Int), requestID: Globals.checkIntNull(notif["request_id"] as? Int), trainerID: Globals.checkIntNull(notif["trainer_id"] as? Int), spID: Globals.checkIntNull(notif["sports_id"] as? Int), spName: Globals.checkStringNull(notif["sports_name"] as? String), type: Globals.checkStringNull(notif["type"] as? String), loc: Globals.checkStringNull(notif["location"] as? String), readStatus: Globals.checkIntNull(notif["read_status"] as? Int), startTime: Globals.checkStringNull(notif["start_time"] as? String), endTime: Globals.checkStringNull(notif["end_time"] as? String), allotedDate: Globals.checkStringNull(notif["alloted_date"] as? String), userImage: Globals.checkStringNull(notif["user_image"] as? String), trainerName: Globals.checkStringNull(notif["trainer_name"] as? String), trainerImage: Globals.checkStringNull(notif["trainer_image"] as? String), body: notifBody)
+                            }
+                            if let listArray = Notification.fetchNotifications() as? Array<Notification> {
+                                notificationListArray = listArray
+                            }
                             notificationTableView.reloadData()
                         }
                     } else if status == ResponseStatus.error {
@@ -865,25 +869,25 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
         if let id = profileID {
-            populateProfileContents(profileUser)
+            populateProfileContents(profileUser!)
         } else {
-            populateProfileContents(appDelegate.user)
+            populateProfileContents(appDelegate.user!)
         }
         showLoadingView(false)
     }
     
     func setExpertiseLevel(level: String) {
-        let sports  = appDelegate.user.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
+        let sports  = appDelegate.user!.sports.allObjects[sportsCarousel.currentItemIndex] as! UserSports
         var type    = ""
-        if count(sports!["expert_level"] as! String) == 0 && count(level) > 0 {
+        if count(sports.expertLevel) == 0 && count(level) > 0 {
             type = SportsLevel.typeAdd
-        } else if count(sports!["expert_level"] as! String) > 0 && count(level) > 0 {
+        } else if count(sports.expertLevel) > 0 && count(level) > 0 {
             type = SportsLevel.typeUpdate
-        } else if count(sports!["expert_level"] as! String) > 0 && count(level) == 0 {
+        } else if count(sports.expertLevel) > 0 && count(level) == 0 {
             type = SportsLevel.typeDelete
         }
-        sports!.setObject(level, forKey: "expert_level")
-        sendRequestForUpdateSportsLevel(sports!, type: type)
+        sports.expertLevel = level
+        sendRequestForUpdateSportsLevel(sports, type: type)
         sportsCarousel.reloadData()
     }
     
@@ -913,7 +917,16 @@ class MyProfileViewController: UIViewController,UIGestureRecognizerDelegate {
 
 extension MyProfileViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
-       return profileID == nil ? appDelegate.user.sportsArray.count : profileUser.sportsArray.count
+        if let profID = profileID {
+            if let profUser = profileUser {
+                return profUser.sports.count
+            }
+        } else {
+            if let user = appDelegate.user {
+                return user.sports.count
+            }
+        }
+        return 0
     }
     
     func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
@@ -966,47 +979,39 @@ extension MyProfileViewController: iCarouselDataSource {
         tapGesturesportscarousel.cancelsTouchesInView = false
         contentView.addGestureRecognizer(tapGesturesportscarousel)
         
-        let source          = profileID == nil ? appDelegate.user.sportsArray : profileUser.sportsArray
-        let sports          = source[index] as! NSDictionary
+        let source          = profileID == nil ? appDelegate.user!.sports : profileUser!.sports
+        let sports          = source.allObjects[index] as! UserSports
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let logo = sports["logo"] as? String {
-            CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
-        } else {
-            CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
-        }
+        CustomURLConnection.downloadAndSetImage(sports.logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
+        
         if index == carousel.currentItemIndex {
-            titleLabel.text = sports["sport_name"]!.uppercaseString as String
+            titleLabel.text = sports.sportsName.uppercaseString as String
             if profileID == nil {
-                if sports["expert_level"] as? String == SportsLevel.beginner {
+                if sports.expertLevel == SportsLevel.beginner {
                     beginnerButton.selected = true
-                } else if sports["expert_level"] as? String == SportsLevel.moderate {
+                } else if sports.expertLevel == SportsLevel.moderate {
                     moderateButton.selected = true
-                } else if sports["expert_level"] as? String == SportsLevel.expert {
+                } else if sports.expertLevel == SportsLevel.expert {
                     expertButton.selected = true
                 }
             } else {
                 expertLevelLabel.superview?.superview?.hidden = false
-                if let level = sports["expert_level"] as? String {
-                    if level ==  "" {
-                        expertLevelLabel.superview?.superview?.hidden = true
-                    } else {
-                        expertLevelLabel.text = level
-                    }
-                } else {
+                if sports.expertLevel ==  "" {
                     expertLevelLabel.superview?.superview?.hidden = true
+                } else {
+                    expertLevelLabel.text = sports.expertLevel
                 }
             }
         } else {
-            titleLabel.text = sports["sport_name"] as? String
+            titleLabel.text = sports.sportsName
         }
         
-        if sports["expert_level"] as? String == "" {
+        if sports.expertLevel == "" {
             tickImageView.hidden = true
         } else {
             tickImageView.hidden = false
         }
-        
         
         return contentView
     }
@@ -1032,47 +1037,36 @@ extension MyProfileViewController: iCarouselDelegate {
     
     func carouselCurrentItemIndexDidChange(carousel: iCarousel) {
         if !notificationBackgroundView.hidden {
-            
-            notificationButton.tag=0
+            notificationButton.tag = 0
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.notificationBackgroundView.hidden  = true
                 }, completion: nil)
 
-        }
-      else if calloutView.frame.size.height != 0 {
+        } else if calloutView.frame.size.height != 0 {
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
                 }, completion: nil)
-        }
-
-        else {
-            
-      
-        beginnerButton.selected = false
-        moderateButton.selected = false
-        expertButton.selected   = false
-        carousel.reloadData()
-            
+        } else {
+            beginnerButton.selected = false
+            moderateButton.selected = false
+            expertButton.selected   = false
+            carousel.reloadData()
         }
     }
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
         
         if !notificationBackgroundView.hidden {
-            
             notificationButton.tag=0
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.notificationBackgroundView.hidden  = true
                 }, completion: nil)
             
-        }
-        else if calloutView.frame.size.height != 0 {
+        } else if calloutView.frame.size.height != 0 {
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
                 }, completion: nil)
         }
-
-        
     }
     
     func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
@@ -1090,59 +1084,70 @@ extension MyProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.isEqual(reviewCollectionView) {
-            return profileID == nil ? appDelegate.user.userReviewsArray.count : profileUser.userReviewsArray.count
+            if let profID = profileID {
+                if let profUser = profileUser {
+                    return profUser.reviews.count
+                }
+            } else {
+                if let user = appDelegate.user {
+                    return user.reviews.count
+                }
+            }
         } else if collectionView.isEqual(badgesCollectionView) {
-            return profileID == nil ? appDelegate.user.badgesArray.count : profileUser.badgesArray.count
+            if let profID = profileID {
+                if let profUser = profileUser {
+                    return profUser.badges.count
+                }
+            } else {
+                if let user = appDelegate.user {
+                    return user.badges.count
+                }
+            }
         }
-        let source = profileID == nil ? appDelegate.user.availableTimeArray : profileUser.availableTimeArray
-        let filteredArray = source.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+        var source = NSMutableSet()
+        if let profID = profileID {
+            if let profUser = profileUser {
+                source = profUser.availableTime
+            }
+        } else {
+            if let user = appDelegate.user {
+                source =  user.availableTime
+            }
+        }
+        let filteredArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
         return filteredArray.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if collectionView.isEqual(reviewCollectionView) {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("reviewCell", forIndexPath: indexPath) as! UserReviewCollectionViewCell
-            let source = profileID == nil ? appDelegate.user.userReviewsArray : profileUser.userReviewsArray
-            let review = source[indexPath.row] as! NSDictionary
-            if let rating = review["user_rating"] as? Float {
-                cell.reviewView.starView.rating = rating
-            } else {
-                cell.reviewView.starView.rating = 0.0
-            }
+            let source = profileID == nil ? appDelegate.user!.reviews : profileUser!.reviews
+            let review = source.allObjects[indexPath.row] as! UserReview
+            cell.reviewView.starView.rating = review.userRating.floatValue
             cell.reviewView.reviewTextView.scrollRangeToVisible(NSMakeRange(0, 0))
-            cell.reviewView.reviewTextView.text = review["user_review"] as! String
-            cell.reviewView.nameLabel.text      = review["profile_name"] as? String
+            cell.reviewView.reviewTextView.text = review.userReview
+            cell.reviewView.nameLabel.text      = review.profileName
             cell.reviewView.userImageView.image = UIImage(named: "default_image")
             cell.reviewView.userImageView.contentMode = UIViewContentMode.ScaleAspectFit
-            if let userImage = review["image_url"] as? String {
-                CustomURLConnection.downloadAndSetImage(userImage, imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
-            } else {
-                CustomURLConnection.downloadAndSetImage("", imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
-            }
+            CustomURLConnection.downloadAndSetImage(review.profilePic, imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
             return cell
         } else if collectionView.isEqual(badgesCollectionView){
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
-            let source = profileID == nil ? appDelegate.user.badgesArray : profileUser.badgesArray
-            let badge = source[indexPath.row] as! NSDictionary
-            cell.titleLabel.hidden = (badge["name"] as? String) == "no badge" ? true : false
-            cell.titleLabel.text = (badge["name"] as? String)!.uppercaseString
+            let cell    = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
+            let source  = profileID == nil ? appDelegate.user!.badges : profileUser!.badges
+            let badge   = source.allObjects[indexPath.row] as! UserBadges
+            cell.titleLabel.hidden  = badge.name == "no badge" ? true : false
+            cell.titleLabel.text    = badge.name.uppercaseString
             cell.badgeImageView.image = UIImage(named: "default_image")
             cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
-            if let badgeImage = badge["image_url"] as? String {
-                CustomURLConnection.downloadAndSetImage(badgeImage, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
-            } else {
-                CustomURLConnection.downloadAndSetImage("", imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
-            }
-            if let count = badge["session_count"] as? Int {
-                cell.countLabel.text = "\(count)"
-            }
+            CustomURLConnection.downloadAndSetImage(badge.imageURL, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
+            cell.countLabel.text = "\(badge.sessionCount)"
             return cell
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-            let source = profileID == nil ? appDelegate.user.availableTimeArray : profileUser.availableTimeArray
-            let filteredArray = source.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
-            let time = filteredArray[indexPath.row] as! NSDictionary
-            cell.timeLabel.text = Globals.convertTimeTo12Hours((time["time_starts"] as? String)!)
+            let source = profileID == nil ? appDelegate.user!.availableTime : profileUser!.availableTime
+            let filteredArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+            let time = filteredArray[indexPath.row] as! UserTime
+            cell.timeLabel.text = Globals.convertTimeTo12Hours(time.timeStarts)
             return cell
         }
     }
@@ -1194,39 +1199,31 @@ extension MyProfileViewController : UITableViewDataSource {
         cell.profilePic.layer.cornerRadius  = 25.0
         cell.profilePic.layer.borderColor   = UIColor.clearColor().CGColor
         cell.profilePic.clipsToBounds       = true
-        let readStatus                      = notificationListArray[indexPath.row].objectForKey("read_status") as! Int
+        let notification                    = notificationListArray[indexPath.row]
+        let readStatus                      = notification.readStatus
         if  readStatus == 0{
             cell.roundLabel.backgroundColor = AppColor.boxBorderColor
         } else {
             cell.roundLabel.backgroundColor = AppColor.notifReadColor
         }
         
-        if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
-            if let image = notificationListArray[indexPath.row].objectForKey("user_image") as? String {
-                imageUrl = image
-            }
-            cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
+        if notification.type == TrainingStatus.requested {
+            imageUrl            = notification.userImage
+            cell.nameLabel.text = notification.userName
             cell.bodyLabel.text = "has requested for Sports"
-        } else if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.accepted {
-            
-            if let image = notificationListArray[indexPath.row].objectForKey("trainer_image") as? String {
-                imageUrl = image
-            }
-            cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("trainer_name") as? String
+        } else if notification.type == TrainingStatus.accepted {
+            imageUrl            = notification.trainerImage
+            cell.nameLabel.text = notification.trainerName
             cell.bodyLabel.text = "has accepted your booking request"
         } else {
-            
-            if let image = notificationListArray[indexPath.row].objectForKey("user_image") as? String {
-                imageUrl = image
-            }
-            cell.nameLabel.text = self.notificationListArray[indexPath.row].objectForKey("user_name") as? String
-            cell.bodyLabel.text = notificationListArray[indexPath.row].objectForKey("ntfn_body") as? String
+            imageUrl            = notification.userImage
+            cell.nameLabel.text = notification.userName
+            cell.bodyLabel.text = notification.message
         }
         
-        cell.profilePic.image = UIImage(named: "default_image")
+        cell.profilePic.image       = UIImage(named: "default_image")
         cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFit
-        
-        let imageurl = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
+        let imageurl                = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
         if imageurl.length != 0 {
             if var imagesArray = Images.fetch(imageUrl as String) {
                 let image      = imagesArray[0] as! Images
@@ -1266,17 +1263,15 @@ extension MyProfileViewController : UITableViewDataSource {
 extension MyProfileViewController : UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if notificationListArray[indexPath.row].objectForKey("read_status") as! Int == 0 {
-            sendRequestForUpdateNotifReadStatus(notificationListArray[indexPath.row].objectForKey("request_id") as! Int)
+        if notificationListArray[indexPath.row].readStatus == 0 {
+            sendRequestForUpdateNotifReadStatus(notificationListArray[indexPath.row].requestID.integerValue)
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NotificationCell
             cell.roundLabel.backgroundColor = AppColor.notifReadColor
-            notificationListArray[indexPath.row].setValue(1, forKey: "read_status")
-            
         }
-        if notificationListArray[indexPath.row].objectForKey("type") as! String == TrainingStatus.requested {
+        if notificationListArray[indexPath.row].type == TrainingStatus.requested {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
             controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-            controller.notificationDictionary = notificationListArray[indexPath.row] as! NSMutableDictionary
+            controller.notification = notificationListArray[indexPath.row]
             presentViewController(controller, animated: true, completion: nil)
             notificationBackgroundView.hidden = true
         } //else {
@@ -1288,3 +1283,4 @@ extension MyProfileViewController : UITableViewDelegate {
         
     }
 }
+

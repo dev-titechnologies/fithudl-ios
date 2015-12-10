@@ -21,7 +21,7 @@ class BookingRequestViewController: UIViewController {
     @IBOutlet weak var rejectButton: UIButton!
     var bookingRequestStatus : NSInteger=0
     
-    var notificationDictionary = NSMutableDictionary()
+    var notification: Notification? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,15 +35,16 @@ class BookingRequestViewController: UIViewController {
         cancelButton.layer.borderColor = AppColor.statusBarColor.CGColor
         cancelButton.layer.borderWidth = 1.0
         
-        var heading : String    = (notificationDictionary.objectForKey("sports_name") as? String)!
-        headingLabel.text       = "Request for " + heading
-        var date : String       = (notificationDictionary.objectForKey("alloted_date") as? String)!
-        var startTime : String  = Globals.convertTimeTo12Hours((notificationDictionary.objectForKey("start_time") as? String)!)
-        var endTime : String    = Globals.convertTimeTo12Hours((notificationDictionary.objectForKey("end_time") as? String)!)
-        timeLabel.text          = date + " at " + startTime + " to " + endTime
-        locationLabel.text      = notificationDictionary.objectForKey("location") as? String
-        nameLabel.text          = notificationDictionary.objectForKey("user_name") as? String
-
+        if let notif = notification {
+            var heading : String    = notif.sportsName
+            headingLabel.text       = "Request for " + heading
+            var date : String       = notif.allotedDate
+            var startTime : String  = Globals.convertTimeTo12Hours(notif.startTime)
+            var endTime : String    = Globals.convertTimeTo12Hours(notif.endTime)
+            timeLabel.text          = date + " at " + startTime + " to " + endTime
+            locationLabel.text      = notif.location
+            nameLabel.text          = notif.userName
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,8 +76,9 @@ class BookingRequestViewController: UIViewController {
         showLoadingView(true)
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(bookingRequestStatus, forKey: "session_status")
-        requestDictionary.setObject(notificationDictionary.objectForKey("request_id") as! Int, forKey: "booking_id")
-
+        if let notif = notification {
+            requestDictionary.setObject(notif.requestID.integerValue, forKey: "booking_id")
+        }
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/updateBookingStatus", requestType: HttpMethod.post),delegate: self,tag: Connection.bookingAcceptRequest)
     }
     
