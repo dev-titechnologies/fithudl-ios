@@ -33,7 +33,7 @@ class CustomPopupViewController: UIViewController {
     @IBOutlet weak var confirmView: UIView!
     
     @IBOutlet weak var updateButton: UIButton!
-    @IBOutlet weak var closeButton: UIButton!
+//    @IBOutlet weak var closeButton: UIButton!
     var delegate:ConfirmBookDelegate?
     var viewTag = 0
     var bioText: String?
@@ -60,13 +60,11 @@ class CustomPopupViewController: UIViewController {
         case ViewTag.bioText:
             bioView.hidden      = false
             if bioText == "" {
-                closeButton.hidden   = true
                 updateButton.hidden  = false
                 updateButton.layer.borderColor = UIColor.whiteColor().CGColor
                 bioTextView.editable = true
                 bioTextView.becomeFirstResponder()
             } else {
-                closeButton.hidden   = false
                 updateButton.hidden  = true
                 bioTextView.editable = false
                 bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)
@@ -221,3 +219,24 @@ class CustomPopupViewController: UIViewController {
     */
 
 }
+
+extension CustomPopupViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(textView: UITextView) {
+        
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        if text == "" {
+            if range.location <= 4 {
+                return false
+            }
+            return true
+        }
+        return count(textView.text) + (count(text) - range.length) <= BIOLIMIT
+    }
+}
+

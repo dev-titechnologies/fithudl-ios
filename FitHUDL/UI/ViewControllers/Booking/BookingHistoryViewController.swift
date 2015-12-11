@@ -53,8 +53,8 @@ class BookingHistoryViewController: UIViewController {
         let yesAction   = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
             let cell        = sender.superview?.superview as! HistoryTableViewCell
             let indexPath   = self.historyTableView.indexPathForCell(cell)
-            let request     = self.bookingSegmentControl.selectedSegmentIndex == 0 ? (self.myBookings[indexPath!.row] as! NSDictionary) : (self.bookings[indexPath!.row] as! NSDictionary)
-            self.sendRequestToCancelSession(request["request_id"] as! Int)
+            let request     = self.bookingSegmentControl.selectedSegmentIndex == 0 ? (self.myBookings[indexPath!.row] as! Bookings) : (self.bookings[indexPath!.row] as! Bookings)
+            self.sendRequestToCancelSession(request.requestID.integerValue)
         }
         alert.addAction(noAction)
         alert.addAction(yesAction)

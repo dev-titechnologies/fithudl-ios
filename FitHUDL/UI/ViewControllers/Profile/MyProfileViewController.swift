@@ -869,9 +869,13 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
         showDismissiveAlertMesssage(error.localizedDescription)
         if let id = profileID {
-            populateProfileContents(profileUser!)
+            if let profUser = profileUser {
+                populateProfileContents(profUser)
+            }
         } else {
-            populateProfileContents(appDelegate.user!)
+            if let currentUser = appDelegate.user {
+                populateProfileContents(currentUser)
+            }
         }
         showLoadingView(false)
     }

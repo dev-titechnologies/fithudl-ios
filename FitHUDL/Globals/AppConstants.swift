@@ -21,6 +21,7 @@ let IS_IPHONE5      = UIScreen.mainScreen().bounds.size.height == 568 ? true : f
 let IS_IPHONE6      = UIScreen.mainScreen().bounds.size.width == 375 ? true : false
 let IS_IPHONE6PLUS  = UIScreen.mainScreen().bounds.size.width == 414 ? true : false
 let BIOTEXT_LENGTH  = 45
+let BIOLIMIT        = 70
 let animateInterval: NSTimeInterval = 0.3
 let secondsValue: Int    = 60
 

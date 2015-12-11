@@ -603,7 +603,7 @@ extension EditProfileViewController: UITextViewDelegate {
             return true
         }
         
-        return count(textView.text) + (count(text) - range.length) <= 60;
+        return count(textView.text) + (count(text) - range.length) <= BIOLIMIT
     }
 }
 
