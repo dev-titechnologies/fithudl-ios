@@ -407,7 +407,7 @@ extension SearchViewController:UISearchBarDelegate {
             let range = text.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
             if range.location != NSNotFound {
                 tableView.hidden=false
-                searchItemsContainerView.hidden=true
+               // searchItemsContainerView.hidden=true
                 filtered.addObject(name)
             }
             
