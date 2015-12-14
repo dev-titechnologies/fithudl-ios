@@ -13,6 +13,7 @@ class LoginOrSignUpViewController: UIViewController {
     var fbUserID: String!
     var fbUserDictionary: NSDictionary!
     var twitterID: String!
+    var twitterName: String!
     let faceBookPermissions = ["public_profile", "email"]
     
     @IBOutlet weak var bgImageView: UIImageView!
@@ -90,32 +91,33 @@ class LoginOrSignUpViewController: UIViewController {
                     let details = properties["properties"] as! NSDictionary
                     println(details)
                     self.twitterID = details["user_id"] as! String
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.sendRequestToCheckNewTwitterUser()
-                    })                    
-//                    let request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: NSURL(string: "https://api.twitter.com/1.1/users/show.json"), parameters: details as [NSObject : AnyObject])
-//                    request.account = twitterAccount
-//                    
-//                    request.performRequestWithHandler({ (responseData: NSData!, urlResponse: NSHTTPURLResponse!, error: NSError!) -> Void in
-//                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                            println(responseData)
-//                            println(urlResponse)
-//                            println(error)
-//                            if urlResponse.statusCode == 429 {
-//                                return
-//                            }
-//                            if let err = error {
-//                                return
-//                            }
-//                            if let response = responseData {
-//                                var error: NSError?
-//                                if let data = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.MutableLeaves, error: &error) as? NSDictionary{
-//                                    println(data)
-//
-//                                }
-//                            }
-//                        })
-//                    })
+                    
+                    let request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: NSURL(string: "https://api.twitter.com/1.1/users/show.json"), parameters: details as [NSObject : AnyObject])
+                    request.account = twitterAccount
+                    
+                    request.performRequestWithHandler({ (responseData: NSData!, urlResponse: NSHTTPURLResponse!, error: NSError!) -> Void in
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            println(responseData)
+                            println(urlResponse)
+                            println(error)
+                            if urlResponse.statusCode == 429 {
+                                return
+                            }
+                            if let err = error {
+                                return
+                            }
+                            if let response = responseData {
+                                var error: NSError?
+                                if let data = NSJSONSerialization.JSONObjectWithData(response, options: NSJSONReadingOptions.MutableLeaves, error: &error) as? NSDictionary{
+                                    println(data)
+                                    self.twitterName = data["name"] as! String
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        self.sendRequestToCheckNewTwitterUser()
+                                    })
+                                }
+                            }
+                        })
+                    })
                     println(twitterAccount?.accountDescription)
                     println(twitterAccount?.username)
                     println(twitterAccount?.credential)
@@ -257,6 +259,7 @@ class LoginOrSignUpViewController: UIViewController {
                                     signupController.networkingID = fbUserID
                                 } else {
                                     signupController.networkingID = twitterID
+                                    signupController.twitterName  = twitterName
                                 }
                                 navigationController?.pushViewController(signupController, animated: true)
                             } else {

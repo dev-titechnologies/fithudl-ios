@@ -136,7 +136,7 @@ class CustomPopupViewController: UIViewController {
     }
     
     @IBAction func updateBioClicked(sender: UIButton) {
-        if count(bioTextView.text) > 4 {
+        if count(bioTextView.text) > 5 {
             sendRequestToEditProfile()
         } else {
             showDismissiveAlertMesssage("Please enter your profile description")

@@ -44,8 +44,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         
         purchaseButton.layer.borderColor = AppColor.statusBarColor.CGColor
         purchaseButton.layer.borderWidth = 1.0
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "finishedLoading", name: "LoadingCompleted", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "requestForSendingTransactionId:", name: "transactionCompleted", object: nil)
+         NSNotificationCenter.defaultCenter().addObserver(self, selector: "requestForSendingTransactionId:", name: "transactionCompleted", object: nil)
         self.reload()
         
         // NSNotificationCenter.defaultCenter().addObserver(self, selector: "productPurchased:", name: IAPHelperProductPurchasedNotification, object: nil)
@@ -55,7 +54,6 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     func reload() {
         
-        showLoadingView(true)
         println("In Reload")
         products = []
         RageProducts.store.requestProductsWithCompletionHandler { success, products in
@@ -71,12 +69,14 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     }
 
     func finishedLoading() {
-        
          showLoadingView(false)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "finishedLoading", name: "LoadingCompleted", object: nil)
+       
+       
         sendRequestToGetPackageList()
         
     }
@@ -96,52 +96,40 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     
     @IBAction func purchseButtonClicked(sender: AnyObject) {
-        
         if self.packageClickFlag {
-            
             showLoadingView(true)
             println("Products \(products)")
             let product = products[self.productIndex]
             RageProducts.store.purchaseProduct(product)
-            
         } else {
-            
             UIAlertView(title: "Please Select A package", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
         }
-        
     }
     
     @IBAction func goldPackageSelectButtonClicked(sender: UIButton) {
-        
-        sender.selected=true
-        silverButton.selected=false
-        bronzeButton.selected=false
-        self.productIndex = 0
+        sender.selected       = true
+        silverButton.selected = false
+        bronzeButton.selected = false
+        self.productIndex     = 0
         self.packageClickFlag = true
-        
     }
     
     @IBAction func silverPackageSelectButtonClicked(sender: UIButton) {
-       
-        sender.selected = true
-        goldButton.selected=false
-        bronzeButton.selected=false
-        self.productIndex = 1
-        self.packageClickFlag = true
-        
-        
+        sender.selected         = true
+        goldButton.selected     = false
+        bronzeButton.selected   = false
+        self.productIndex       = 1
+        self.packageClickFlag   = true
     }
     
     
     @IBAction func bronzeSelectButtonClicked(sender: UIButton) {
-        
-        sender.selected = true
-        goldButton.selected=false
-        silverButton.selected=false
-        self.productIndex = 2
-        self.packageClickFlag = true
-
+        sender.selected         = true
+        goldButton.selected     = false
+        silverButton.selected   = false
+        self.productIndex       = 2
+        self.packageClickFlag   = true
     }
     
     //MARK: PackageList API 
@@ -279,7 +267,8 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                     }
                     
                     showLoadingView(false)
-                }            }
+                }
+            }
         }
         
     }

@@ -115,7 +115,7 @@ extension IAPHelper: SKProductsRequestDelegate {
       println("Found product: \(p.productIdentifier) \(p.localizedTitle) \(p.price.floatValue)")
     }
     
-  NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
+    NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
 
   }
   

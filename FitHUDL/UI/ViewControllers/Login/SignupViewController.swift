@@ -33,6 +33,7 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     
     var networkingID: String = "0"
+    var twitterName: String?
     var fbUserDictionary: NSDictionary?
     var selectedSportsArray = NSMutableArray()
     
@@ -87,6 +88,9 @@ class SignupViewController: UIViewController {
                     femaleButtonClicked(femaleButton)
                 }
             }
+        }
+        if let name = twitterName {
+            nameTextField.text = name
         }
         println("SportslistArray\(appDelegate.sportsArray)")
         // Do any additional setup after loading the view.
@@ -204,13 +208,9 @@ class SignupViewController: UIViewController {
     }
     
     func setExpertiseLevel(level: String) {
-        let sports  = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as? NSMutableDictionary
-        sports!.setObject(level, forKey: "level")
-        if let selected = sports!["isSelected"] as? Bool {
-            sports!.setValue(!selected, forKey: "isSelected")
-        } else {
-            sports!.setValue(true, forKey: "isSelected")
-        }
+        let sports          = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as! SportsList
+        sports.level        = level
+        sports.isSelected   = !sports.isSelected.boolValue
         sportsCarousel.reloadData()
     }
     
@@ -240,7 +240,18 @@ class SignupViewController: UIViewController {
         
         let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
         if filteredArray.count > 0 {
-            requestDictionary.setObject(filteredArray, forKey: "sportsList")
+            let sportsArray = NSMutableArray()
+            for sport in filteredArray {
+                let sportDictionary = NSMutableDictionary()
+                sportDictionary.setObject((sport as! SportsList).sportsId, forKey: "id")
+                sportDictionary.setObject((sport as! SportsList).sportsName, forKey: "title")
+                sportDictionary.setObject((sport as! SportsList).logo, forKey: "logo")
+                sportDictionary.setObject((sport as! SportsList).status, forKey: "status")
+                sportDictionary.setObject((sport as! SportsList).level, forKey: "level")
+                sportDictionary.setObject((sport as! SportsList).isSelected, forKey: "isSelected")
+                sportsArray.addObject(sportDictionary)
+            }
+            requestDictionary.setObject(sportsArray, forKey: "sportsList")
         }
         
         println("Requset Dict is\(requestDictionary)")
@@ -291,8 +302,8 @@ class SignupViewController: UIViewController {
 
     override func viewWillDisappear(animated: Bool) {
         for sport in appDelegate.sportsArray {
-            sport.setObject("", forKey: "level")
-            sport.setObject(false, forKey: "isSelected")
+            (sport as! SportsList).level      = ""
+            (sport as! SportsList).isSelected = false
         }
     }
     
@@ -370,28 +381,24 @@ extension SignupViewController: iCarouselDataSource {
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
         
-        let sports          = appDelegate.sportsArray[index] as! NSDictionary
+        let sports          = appDelegate.sportsArray[index] as! SportsList
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        if let logo = sports["logo"] as? String {
-            CustomURLConnection.downloadAndSetImage(logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
-        } else {
-            CustomURLConnection.downloadAndSetImage("", imageView: sportsImageView, activityIndicatorView: indicatorView)
-        }
+        CustomURLConnection.downloadAndSetImage(sports.logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
         if index == carousel.currentItemIndex {
             tickImageView.hidden = false
-            titleLabel.text = sports["title"]!.uppercaseString as String
-            if sports["level"] as? String == SportsLevel.beginner {
+            titleLabel.text = sports.sportsName.uppercaseString as String
+            if sports.level == SportsLevel.beginner {
                 beginnerButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.moderate {
+            } else if sports.level == SportsLevel.moderate {
                 moderateButton.selected = true
-            } else if sports["level"] as? String == SportsLevel.expert {
+            } else if sports.level == SportsLevel.expert {
                 expertButton.selected = true
             }
         } else {
-            titleLabel.text = sports["title"] as? String
+            titleLabel.text = sports.sportsName
         }
-        if appDelegate.sportsArray[index].objectForKey("isSelected") as? Bool == true{
+        if sports.isSelected == true{
             tickImageView.hidden = false
         } else {
             tickImageView.hidden = true

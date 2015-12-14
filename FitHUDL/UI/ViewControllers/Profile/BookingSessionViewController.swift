@@ -276,7 +276,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             let filteredArray = (user.sports.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "sportsID = %d", argumentArray: [selectedIndexArray[0]]))
             if filteredArray.count > 0 {
                 let level = (filteredArray[0] as! UserSports).expertLevel
-                if appDelegate.user!.walletBalance.toInt() < appDelegate.configDictionary[level] as? Int {
+                if (level != SportsLevel.beginner) && (appDelegate.user!.walletBalance.toInt() < appDelegate.configDictionary[level] as? Int) {
                     showDismissiveAlertMesssage("Insufficient balance to book this session")
                     return
                 }

@@ -119,13 +119,13 @@ struct ErrorMessage {
 
 struct TrainingStatus {
     
-    static let requested = "training_req"
-    static let accepted  = "training_req_accept"
-    static let requestrejected = "training_req_rejected"
-    static let traingFee = "training_fee"
-    static let traingRequestCancelled = "training_req_accept_canceled"
-    static let traingRequestCancelledByUser = "training_req_accept_canceled_by_use"
-    static let accountRecharge = "account_recharge"
+    static let requested                    = "training_req"
+    static let accepted                     = "training_req_accept"
+    static let requestrejected              = "training_req_rejected"
+    static let traingFee                    = "training_fee"
+    static let traingRequestCancelled       = "training_req_accept_canceled"
+    static let traingRequestCancelledByUser = "training_req_accept_canceled_by_user"
+    static let accountRecharge              = "account_recharge"
 }
 
 struct Session {
@@ -136,9 +136,12 @@ struct Session {
 struct PushNotification {
     static let sessionStart = "session_start"
     static let sessionEnd   = "session_end"
-    static let sessionExtend = "session_extension"
+    static let sessionExtend  = "session_extension"
+    static let sessionSuccess = "session_extension_success"
+    static let sessionFail  = "session_extension_failed"
     static let timerNotif   = "TimerNotification"
     static let favNotif     = "FavoriteNotification"
+    static let sessionNotif = "SessionCanExtend"
 }
 
 class AppConstants: NSObject {

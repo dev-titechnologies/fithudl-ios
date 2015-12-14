@@ -21,7 +21,7 @@ class User: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var profileID: NSNumber
     @NSManaged var profileImage: NSData
-    @NSManaged var rating: NSNumber
+    @NSManaged var rating: String
     @NSManaged var totalHours: String
     @NSManaged var usageCount: String
     @NSManaged var userVerified: NSNumber
@@ -31,7 +31,7 @@ class User: NSManagedObject {
     @NSManaged var reviews: NSMutableSet
     @NSManaged var sports: NSMutableSet
 
-    class func saveUser(id: Int, name: String, email: String, bio: String, imageURL: String, hours: String, count:String, rate: Int, userVerify: Int, interest: String, balance: String, emailVerify: Int, favourite: Int, image: NSData) {
+    class func saveUser(id: Int, name: String, email: String, bio: String, imageURL: String, hours: String, count:String, rate: String, userVerify: Int, interest: String, balance: String, emailVerify: Int, favourite: Int, image: NSData) {
         var user:User   = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDelegate.managedObjectContext!) as! User
         user.name       = name
         user.profileID  = id

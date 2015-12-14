@@ -19,8 +19,8 @@ class TimerView: UIView {
         return self
     }
     
-    func resetView() {
-        let duration = NSTimeInterval(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue*secondsValue)
+    func resetView(time: Int) {
+        let duration = NSTimeInterval(time*secondsValue)
         animateCircle(duration-1)
     }
     
