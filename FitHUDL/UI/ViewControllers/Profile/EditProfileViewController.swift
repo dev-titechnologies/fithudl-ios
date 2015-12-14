@@ -482,11 +482,13 @@ class EditProfileViewController: UIViewController {
             showLoadingView(true)
             let timeArray = NSMutableArray()
             for value in availSessionTime.allValues {
-                for time in (value as! [NSMutableDictionary]) {
-                    time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_starts") as! String), forKey: "time_starts")
-                    time.setObject(Globals.convertTimeTo24Hours(time.objectForKey("time_ends") as! String), forKey: "time_ends")
+                for time in (value as! [UserTime]) {
+                    let setTime = NSMutableDictionary()
+                    setTime.setObject(time.date, forKey: "alloted_date")
+                    setTime.setObject(Globals.convertTimeTo24Hours(time.timeStarts), forKey: "time_starts")
+                    setTime.setObject(Globals.convertTimeTo24Hours(time.timeEnds), forKey: "time_ends")
+                    timeArray.addObject(setTime)
                 }
-                timeArray.addObjectsFromArray(value as! [NSDictionary])
             }
             requestDictionary.setObject(timeArray, forKey: "session")
             if let image = photoImageView.image {
@@ -654,9 +656,9 @@ extension EditProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell            = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! NSDictionary
-        let starttime       = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
-        let endtime         = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
+        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! UserTime
+        let starttime       = Globals.convertTimeTo12Hours(time.timeStarts)
+        let endtime         = Globals.convertTimeTo12Hours(time.timeEnds)
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
         cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)
