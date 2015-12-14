@@ -94,7 +94,10 @@ class Globals: NSObject {
     }
     
     private class func clearUserValues() {
-        User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [appDelegate.user!.profileID.integerValue]))
+        if let currentUser = appDelegate.user {
+            User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [currentUser.profileID.integerValue]))
+        }
+
         Bookings.deleteBookings()
         Packages.deletePackages()
         Favorites.deleteFavorites()
@@ -125,6 +128,17 @@ class Globals: NSObject {
         }
         bioLabel.attributedText = bioTitle
     }
+    
+    class func attributedInterestsText(interests: String, lengthExceed: Bool, interestLabel: UILabel, titleColor: UIColor, interestColor: UIColor) {
+        var bioTitle = NSMutableAttributedString(string: "Interests", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 15.0)!, NSForegroundColorAttributeName: titleColor])
+        bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: interestColor]))
+        bioTitle.appendAttributedString(NSAttributedString(string: " \(interests)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 13.0)!, NSForegroundColorAttributeName: interestColor]))
+        if lengthExceed == true {
+            bioTitle.appendAttributedString(NSAttributedString(string: "...", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: interestColor]))
+        }
+        interestLabel.attributedText = bioTitle
+    }
+
     
     class func createShareImage(sportImage: UIImage, shareText: String, parentView: UIView) -> UIImage {
         let contentView             = UIView(frame: CGRect(x: parentView.frame.size.height, y: 0.0, width: 300.0, height: 180.0))
