@@ -69,6 +69,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
     @IBOutlet weak var notificationTableView: UITableView!
     @IBOutlet weak var carouselBackgoundView: UIView!
+    @IBOutlet weak var interestLabel: UILabel!
     
     var searchResultId:String?
     var profileID: String?
@@ -434,6 +435,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             bioLabel.userInteractionEnabled = false
             Globals.attributedBioText((user.bio as NSString).substringToIndex((user.bio as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
         }
+       
+        Globals.attributedInterestsText((user.interests as NSString).substringToIndex((user.interests as NSString).length), lengthExceed: false, interestLabel: interestLabel, titleColor: AppColor.boxBorderColor, interestColor: AppColor.statusBarColor)
         
         if user.sports.count == 0 {
             beginnerButton.superview?.superview?.hidden = true
@@ -702,6 +705,12 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 appDelegate.user!.bio = ""
                 showBioView("")
             }
+            if let otherInterests = responseDictionary["other_interests"] as? String {
+                appDelegate.user!.interests = otherInterests
+                } else {
+                appDelegate.user!.interests = ""
+            }
+
             if let session = responseDictionary["Training_session"] as? NSArray {
                 appDelegate.user!.availableTime.removeAllObjects()
                 for sess in session {

@@ -29,6 +29,7 @@ class EditProfileViewController: UIViewController {
     let imagePicker = UIImagePickerController()
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    @IBOutlet weak var interestTextView: UITextView!
     var bioOnly     = false
     let hourField   = 97
     let minuteField = 98
@@ -45,7 +46,13 @@ class EditProfileViewController: UIViewController {
         
         bioTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
         bioTextView.layer.borderWidth = 1.0
+        
+        interestTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        interestTextView.layer.borderWidth = 1.0
+
+        
         navigationController?.setStatusBarColor()
+        
         if IS_IPHONE6PLUS {
             contentViewHeightConstriant.constant = view.frame.size.height-64.0
             view.layoutIfNeeded()
@@ -56,6 +63,7 @@ class EditProfileViewController: UIViewController {
         
         nameLabel.text   = appDelegate.user!.name
         bioTextView.text = appDelegate.user!.bio
+        interestTextView.text = appDelegate.user!.interests
         CustomURLConnection.downloadAndSetImage(appDelegate.user!.imageURL, imageView: photoImageView, activityIndicatorView: indicatorView)
         
         // Do any additional setup after loading the view.
@@ -256,6 +264,7 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func monthButtonClicked(sender: UIButton) {
         bioTextView.resignFirstResponder()
+        interestTextView.resignFirstResponder()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             if IS_IPHONE4S {
                 self.contentScrollView.contentOffset = CGPoint(x: self.contentScrollView.frame.origin.x, y: self.monthButton.superview!.frame.origin.y-50.0)
@@ -468,6 +477,7 @@ class EditProfileViewController: UIViewController {
         
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(bioTextView.text, forKey: "bio")
+        requestDictionary.setValue(interestTextView.text, forKey: "other_interests")
         if !bioOnly {
             showLoadingView(true)
             let timeArray = NSMutableArray()
@@ -485,6 +495,7 @@ class EditProfileViewController: UIViewController {
                 requestDictionary.setObject(imageString, forKey: "file")
             }
         }
+        println("requestDictionary : \(requestDictionary)")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/editProfile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
     
@@ -602,8 +613,15 @@ extension EditProfileViewController: UITextViewDelegate {
         if text == "" {
             return true
         }
-        
+        if textView == interestTextView {
+            
+            return count(textView.text) + (count(text) - range.length) <= BIOTEXT_LENGTH
+        }
+        else {
         return count(textView.text) + (count(text) - range.length) <= BIOLIMIT
+        }
+        
+        
     }
 }
 
