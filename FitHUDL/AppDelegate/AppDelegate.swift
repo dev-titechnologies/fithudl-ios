@@ -1,5 +1,3 @@
-
-
 //
 //  AppDelegate.swift
 //  FitHUDL

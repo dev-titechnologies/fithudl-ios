@@ -463,7 +463,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         sessionCountLabel.text = "\(user.usageCount)"
         
         rateLabel.text  = "\(user.rating)"
-        starView.rating = user.rating.floatValue
+        starView.rating = (user.rating as NSString).floatValue
         
         let filteredArray = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
         
@@ -642,7 +642,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 profileUser!.usageCount = "\(usageCount)"
             }
             if let rate = responseDictionary["rating"] as? String {
-                profileUser!.rating = rate.toInt()!
+                profileUser!.rating = rate
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
                 profileUser!.badges.removeAllObjects()
@@ -722,7 +722,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 appDelegate.user!.usageCount = "\(usageCount)"
             }
             if let rate = responseDictionary["rating"] as? String {
-                appDelegate.user!.rating = rate.toInt()!
+                appDelegate.user!.rating = rate
             }
             if let badges = responseDictionary["Badges"] as? NSArray {
                 appDelegate.user!.badges.removeAllObjects()

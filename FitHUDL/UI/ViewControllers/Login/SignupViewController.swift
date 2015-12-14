@@ -33,6 +33,7 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var signupButton: UIButton!
     
     var networkingID: String = "0"
+    var twitterName: String?
     var fbUserDictionary: NSDictionary?
     var selectedSportsArray = NSMutableArray()
     
@@ -87,6 +88,9 @@ class SignupViewController: UIViewController {
                     femaleButtonClicked(femaleButton)
                 }
             }
+        }
+        if let name = twitterName {
+            nameTextField.text = name
         }
         println("SportslistArray\(appDelegate.sportsArray)")
         // Do any additional setup after loading the view.

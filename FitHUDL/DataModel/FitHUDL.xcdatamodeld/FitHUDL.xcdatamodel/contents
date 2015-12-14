@@ -80,7 +80,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profileID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="profileImage" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalHours" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="usageCount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userVerified" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>

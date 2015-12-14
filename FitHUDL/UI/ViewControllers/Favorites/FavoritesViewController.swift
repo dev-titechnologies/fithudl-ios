@@ -76,11 +76,11 @@ class FavoritesViewController: UIViewController {
                                 favouriteListArray.append(fav)
                             }
                             appDelegate.saveContext()
-                            favourite_tableview.reloadData()
                             nofavourites_label.hidden = true
                         } else {
                             nofavourites_label.hidden = false
                         }
+                        favourite_tableview.reloadData()
                     }
                     else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
