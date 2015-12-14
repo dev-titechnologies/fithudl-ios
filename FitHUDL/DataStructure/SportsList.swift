@@ -16,6 +16,7 @@ class SportsList: NSManagedObject {
     @NSManaged var sportsName: String
     @NSManaged var status: NSNumber
     @NSManaged var level: String
+    @NSManaged var isSelected: NSNumber
     
     class func saveSportsList(id: Int, spName: String, status: Int, logo: String, level: String) {
         var sportsList:SportsList = NSEntityDescription.insertNewObjectForEntityForName("SportsList", inManagedObjectContext: appDelegate.managedObjectContext!) as! SportsList
@@ -24,6 +25,7 @@ class SportsList: NSManagedObject {
         sportsList.status       = status
         sportsList.logo         = logo
         sportsList.level        = level
+        sportsList.isSelected   = false
         appDelegate.saveContext()
     }
     

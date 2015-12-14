@@ -18,7 +18,6 @@ class SessionTimerViewController: UIViewController {
     @IBOutlet weak var endTimeLabel: UILabel!
     @IBOutlet weak var startTimeLabel: UILabel!
     
-    @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var starView: UIView!
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var rateOkButton: UIButton!
@@ -41,6 +40,7 @@ class SessionTimerViewController: UIViewController {
     var isTrainer = false
     var imagePath = ""
     var notShared = false
+    var time:Int  = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ class SessionTimerViewController: UIViewController {
         timerLabel.timerType = MZTimerLabelTypeTimer
         timerLabel.timeLabel = timerLabel
         timerLabel.delegate  = self
-        timerLabel.setCountDownTime(NSTimeInterval(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue*secondsValue))
+        timerLabel.setCountDownTime(NSTimeInterval(time*secondsValue))
         
         rateOkButton.layer.cornerRadius     = 23.0
         rateOkButton.layer.borderWidth      = 2.0
@@ -83,8 +83,8 @@ class SessionTimerViewController: UIViewController {
         endTimeLabel.text   = "END TIME " + endTime
         
         if !isTrainer {
-            let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "id = %d", argumentArray: [sessionDictionary.objectForKey("sports_id") as! Int])) as NSArray
-            let sportsUrl   = (filteredArray.firstObject as! NSDictionary).objectForKey("logo") as! String
+            let filteredArray = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "sportsId = %d", argumentArray: [sessionDictionary.objectForKey("sports_id") as! Int])) as NSArray
+            let sportsUrl   = (filteredArray.firstObject as! SportsList).logo
             sportsImageView.image = UIImage(named: "default_image")
             sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
             CustomURLConnection.downloadAndSetImage(sportsUrl, imageView: sportsImageView, activityIndicatorView: indicatorView)
@@ -98,27 +98,57 @@ class SessionTimerViewController: UIViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "startSessionExtension:", name: PushNotification.sessionNotif, object: nil)
         startTimer()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
    
     func startTimer() {
         timerLabel.start()
-        timerView.resetView()
+        timerView.resetView(time)
     }
     
     func showUserRateView() {
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.contentView.hidden  = true
             self.rateView.hidden     = false
-            self.closeButton.hidden  = false
         })
+    }
+    
+    func startSessionExtension(notif: NSNotification) {
+        if let userInfo = notif.userInfo {
+            let session = userInfo["session"] as! NSDictionary
+            if let type = session["type"] as? String {
+                if type == PushNotification.sessionFail {
+                    showUserRateView()
+                    return
+                }
+            }
+            if let extend = session["extend"] as? Int {
+                if extend == 1 {
+                    self.rateView.hidden     = true
+                    self.shareView.hidden    = true
+                    self.contentView.hidden  = false
+                    timerView.layer.sublayers.removeLast()
+                    timerView.setNeedsDisplay()
+                    timerLabel.reset()
+                    timerView.resetView(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue*secondsValue)
+                    timerLabel.start()
+                    statusLabel.text = "This session has been started."
+                } else {
+                    dismissViewControllerAnimated(true, completion: nil)
+                }
+            }
+        }
     }
     
     func showFBShareView() {
         sendRequestforShareImageUrl(Globals.createShareImage(sportsImageView.image!, shareText: shareLabel.text!, parentView: self.view))
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.rateView.hidden     = true
-            self.closeButton.hidden  = false
             self.shareView.hidden    = false
         })
     }
@@ -346,22 +376,18 @@ class SessionTimerViewController: UIViewController {
                 } else {
                     if status == ResponseStatus.success {
                         if connection.connectionTag == Connection.sessionExtend {
-                            if let extend = jsonResult["extend"] as? Int {
-                                if extend == 1 {
-                                    timerView.layer.sublayers.removeLast()
-                                    timerView.setNeedsDisplay()
-                                    timerLabel.reset()
-                                    timerView.resetView()
-                                    timerLabel.start()
-                                    statusLabel.text = "This session has been started."
-                                } else {
-                                    if let message = jsonResult["message"] as? String {
-                                        showSessionAlert(message)
-                                    } else {
-                                        showSessionAlert("This session cannot be extended!")
-                                    }
-                                }
-                            }
+                            showDismissiveAlertMesssage("Please wait till your trainer respond to your session extension request!")
+//                            if let extend = jsonResult["extend"] as? Int {
+//                                if extend == 1 {
+//
+//                                } else {
+//                                    if let message = jsonResult["message"] as? String {
+//                                        showSessionAlert(message)
+//                                    } else {
+//                                        showSessionAlert("This session cannot be extended!")
+//                                    }
+//                                }
+//                            }
                         } else if connection.connectionTag == Connection.sessionComplete {
                             if !isTrainer {
                                 showUserRateView()
@@ -419,9 +445,9 @@ extension SessionTimerViewController: MZTimerLabelDelegate {
         statusLabel.text = "This session is complete."
         if !isTrainer {
             showSessionExtensionAlert()
-        } else {
-            showUserRateView()
-        }
+        } //else {
+//            showUserRateView()
+//        }
     }
 }
 

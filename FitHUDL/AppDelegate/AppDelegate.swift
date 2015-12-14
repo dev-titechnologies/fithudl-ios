@@ -119,6 +119,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func sendRequestToExtendTrainerSession(bookDictionary: NSDictionary, accept: Int) {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: SERVER_URL.stringByAppendingString("sessions/sessionExtendAcceptTrainer"))!)
+        request.HTTPMethod = HttpMethod.post
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        var error: NSError? = nil
+        let parameters = NSMutableDictionary()
+        parameters.setObject(accept, forKey: "accept")
+        parameters.setObject(bookDictionary["id"]!, forKey: "booking_id")
+        if let deviceToken = appDelegate.deviceToken {
+            parameters.setObject(deviceToken, forKey:"device_id")
+        } else {
+            parameters.setObject("xyz", forKey: "device_id")
+        }
+        if let apiToken = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
+            parameters.setObject(apiToken, forKey: "token")
+        }
+        println("PARAM\(parameters)")
+        let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
+        request.HTTPBody = jsonData
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            if error == nil {
+                if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
+                    if let status = jsonResult["status"] as? Int {
+                        if status == ResponseStatus.success {
+                            NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : jsonResult])
+
+                        } else {
+                            if let message = jsonResult["message"] as? String {
+                                UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
+                            }
+                        }
+                    }
+                }
+            } else {
+                UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "Ok").show()
+            }
+        }
+
+    }
+    
+    
     //MARK: - General Settings API
     func sendRequestToGetConfig() {
         if !Globals.checkNetworkConnectivity() {
@@ -182,9 +227,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     if let details = userInfo["details"] as? NSDictionary {
                         if let type = details["type"] as? String {
                             if type == PushNotification.sessionStart {
+                                UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
                                 deepLinkNotification()
                             } else if type == PushNotification.sessionExtend {
-                            
+                                showSessionExtensionAlert(message)
+                            } else if type == PushNotification.sessionSuccess || type == PushNotification.sessionFail {
+                                 NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : details])
                             } else {
                                 showNotificationAlert(message)
                             }
@@ -201,19 +249,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func checkTimeReached(timer: NSTimer) {
+        if let userInfo = timer.userInfo as? NSDictionary {
+            if let details = userInfo["session"] as? NSDictionary {
+                if Globals.convertTime(NSDate()) == (details["start_time"] as! String) {
+                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details, "time": appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue])
+                    timer.invalidate()
+                }
+            }
+        }
+    }
+    
     
     func deepLinkNotification() {
         if notificationArray.count > 0 {
             let notificationInfo = notificationArray.lastObject as? NSDictionary
             if let userInfo = notificationInfo {
+                println(userInfo)
                 if let details = userInfo["details"] as? NSDictionary {
                     if let type = details["type"] as? String {
                         if type == PushNotification.sessionStart {
                             if Globals.convertDate(NSDate()) == (details["alloted_date"] as! String) {
-                                if Globals.convertTime(NSDate()) > (details["start_time"] as! String) {
+                                if Globals.convertTime(NSDate()) >= (details["end_time"] as! String) {
                                     return
+                                } else if (Globals.convertTime(NSDate())>=(details["start_time"] as! String)) && (Globals.convertTime(NSDate())<(details["end_time"] as! String)) {
+                                    let formatter        = NSDateFormatter()
+                                    formatter.dateFormat = "hh:mm a"
+                                    let startTime        = formatter.dateFromString(details["start_time"] as! String)
+                                    let endTime          = formatter.dateFromString(details["end_time"] as! String)
+                                    let currentTime      = formatter.dateFromString(Globals.convertTime(NSDate()))
+                                    let timeDiff         = endTime!.timeIntervalSinceDate(currentTime!)/NSTimeInterval(secondsValue)
+                                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details, "time": Int(timeDiff)])
+                                } else if Globals.convertTime(NSDate()) < (details["start_time"] as! String) {
+                                     NSTimer.scheduledTimerWithTimeInterval(0, target: self, selector: "checkTimeReached:", userInfo: ["session" : details], repeats: false)
+                                    NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkTimeReached:", userInfo: ["session" : details], repeats: true)
                                 }
-                                NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details])
+                                println("show timer")
+
                             }
                         }
                     }
@@ -223,28 +295,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func deepLinkExtendNotification(accept: Int) {
+        if notificationArray.count > 0 {
+            let notificationInfo = notificationArray.lastObject as? NSDictionary
+            if let userInfo = notificationInfo {
+                println(userInfo)
+                if let details = userInfo["details"] as? NSDictionary {
+                    if let type = details["type"] as? String {
+                        if type == PushNotification.sessionExtend {
+                            sendRequestToExtendTrainerSession(details, accept: accept)
+                        }
+                    }
+                }
+            }
+            notificationArray.removeLastObject()
+        }
+    }
+    
+    func showSessionExtensionAlert(message: String) {
+        var alertView       = UIAlertView()
+        alertView.delegate  = self
+        alertView.title     = alertTitle
+        alertView.message   = message
+        alertView.tag       = 999
+        alertView.addButtonWithTitle("No")
+        alertView.addButtonWithTitle("Yes")
+        alertView.show()
+    }
+    
+    
     func showNotificationAlert(message: String) {
-        var alertView       =   UIAlertView()
-        alertView.delegate  =   self
-        alertView.title     =   alertTitle
-        alertView.message   =   message
-//        alertView.addButtonWithTitle("Cancel")
+        var alertView       = UIAlertView()
+        alertView.delegate  = self
+        alertView.title     = alertTitle
+        alertView.message   = message
         alertView.addButtonWithTitle("Ok")
         alertView.show()
     }
     
     func alertView(View: UIAlertView!, clickedButtonAtIndex buttonIndex: Int){
         switch buttonIndex{
-        case 1:
-            deepLinkNotification()
         case 0:
-            if notificationArray.count > 0 {
-                let notificationUserInfo = notificationArray.lastObject as? NSDictionary
-                notificationArray.removeLastObject()
+            if View.tag == 999 {
+                deepLinkExtendNotification(0)
+            } else {
+                if notificationArray.count > 0 {
+                    let notificationUserInfo = notificationArray.lastObject as? NSDictionary
+                    notificationArray.removeLastObject()
+                }
             }
+           
+        case 1:
+            if View.tag == 999 {
+                deepLinkExtendNotification(1)
+            } else {
+                if notificationArray.count > 0 {
+                    let notificationUserInfo = notificationArray.lastObject as? NSDictionary
+                    notificationArray.removeLastObject()
+                }
+            }
+
         default:
             break;
-            
         }
     }
     

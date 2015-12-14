@@ -62,6 +62,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="SportsList" representedClassName="FitHudl.SportsList" syncable="YES">
+        <attribute name="isSelected" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="logo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sportsId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -128,7 +129,7 @@
         <element name="Images" positionX="-324" positionY="54" width="128" height="75"/>
         <element name="Notification" positionX="-54" positionY="218" width="128" height="315"/>
         <element name="Packages" positionX="-630" positionY="191" width="128" height="133"/>
-        <element name="SportsList" positionX="-171" positionY="59" width="128" height="120"/>
+        <element name="SportsList" positionX="-171" positionY="59" width="128" height="135"/>
         <element name="User" positionX="268" positionY="9" width="128" height="330"/>
         <element name="UserBadges" positionX="124" positionY="-18" width="128" height="118"/>
         <element name="UserReview" positionX="115" positionY="342" width="128" height="133"/>
