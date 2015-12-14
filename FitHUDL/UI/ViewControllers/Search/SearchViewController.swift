@@ -43,6 +43,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var count:Int           = 0
     var point: MKPointAnnotation! = MKPointAnnotation()
     var mapViewTouchFlag : Bool = false
+    var nameSearchFlag   : Bool = false
     
     
     override func viewDidLoad() {
@@ -239,19 +240,13 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     func setExpertiseLevel(level: String) {
-        if userSelectedArray.valueForKey("sports_id")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int){
-            var indexValue = userSelectedArray.valueForKey("sports_id")?.indexOfObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sports_id") as! Int)
+        if userSelectedArray.valueForKey("sportsId")!.containsObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sportsId") as! Int){
+            var indexValue = userSelectedArray.valueForKey("sportsId")?.indexOfObject(allSportsArray.objectAtIndex(sportsCarousel.currentItemIndex).valueForKey("sportsId") as! Int)
             userSelectedArray.removeObjectAtIndex(indexValue!)
-            var userSport = NSMutableDictionary()
-            userSport  = allSportsArray[sportsCarousel.currentItemIndex] as! NSMutableDictionary
-            userSport.setObject(level, forKey: "level")
-            userSelectedArray.addObject(userSport)
-        } else {
-            var userSport = NSMutableDictionary()
-            userSport  = allSportsArray[sportsCarousel.currentItemIndex] as! NSMutableDictionary
-            userSport.setObject(level, forKey: "level")
-            userSelectedArray.addObject(userSport)
         }
+        let userSport   = allSportsArray[sportsCarousel.currentItemIndex] as! SportsList
+        userSport.level = level
+        userSelectedArray.addObject(userSport)
     }
 
     //MARK: MKMapView Functions
@@ -393,6 +388,8 @@ extension SearchViewController:UISearchBarDelegate {
         
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+        self.nameSearchFlag=true
          searchActive=false
          searchBar.resignFirstResponder()
          tableView.hidden=true
@@ -464,13 +461,33 @@ extension SearchViewController:UISearchBarDelegate {
             requestDictionary.setObject(Gender.female, forKey: "gender")
         }
         
-        if userSelectedArray.count > 0 {
-             requestDictionary.setObject(self.userSelectedArray, forKey: "sportsList")
+        if self.userSelectedArray.count > 0 {
+            
+            
+            let sportsArray = NSMutableArray()
+            for sport in self.userSelectedArray {
+                let sportDictionary = NSMutableDictionary()
+                sportDictionary.setObject((sport as! SportsList).sportsId, forKey: "sports_id")
+                sportDictionary.setObject((sport as! SportsList).sportsName, forKey: "title")
+                sportDictionary.setObject((sport as! SportsList).logo, forKey: "logo")
+                sportDictionary.setObject((sport as! SportsList).status, forKey: "status")
+                sportDictionary.setObject((sport as! SportsList).level, forKey: "level")
+                sportsArray.addObject(sportDictionary)
+            }
+            requestDictionary.setObject(sportsArray, forKey: "sportsList")
         }
         else {
             
-            UIAlertView(title: "Please Select Atleast one sport", message: "", delegate: self, cancelButtonTitle: "OK").show()
-            return
+            if(self.nameSearchFlag) {
+                
+                
+            }
+            else {
+                
+                UIAlertView(title: "Please Select Atleast one sport", message: "", delegate: self, cancelButtonTitle: "OK").show()
+                return
+            }
+          
         }
         if !Globals.isInternetConnected() {
             return
