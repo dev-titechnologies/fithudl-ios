@@ -247,7 +247,10 @@ class LoginOrSignUpViewController: UIViewController {
                             if let sportsArray = SportsList.fetchSportsList() as? [SportsList]{
                                 appDelegate.sportsArray.addObjectsFromArray(sportsArray)
                             }
+                            NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sportsList, object: nil, userInfo: ["success" : true])
                         }
+                    } else {
+                        NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sportsList, object: nil, userInfo: ["success" : false])
                     }
                 } else {
                     if status == ResponseStatus.success {

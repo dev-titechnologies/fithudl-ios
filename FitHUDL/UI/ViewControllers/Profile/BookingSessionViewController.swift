@@ -48,6 +48,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
         
         let dateFormatter        = NSDateFormatter()
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         dateFormatter.dateFormat = "MMM yyyy"
         monthButton.setTitle(dateFormatter.stringFromDate(NSDate()).uppercaseString, forState: .Normal)
         dateFormatter.dateFormat = "YYYY"
@@ -169,6 +170,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         components.year  = monthPicker.selectedYear
         let selectedDate = NSCalendar.currentCalendar().dateFromComponents(components)
         let formatter    = NSDateFormatter()
+        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "MMM yyyy"
         monthButton.setTitle(formatter.stringFromDate(selectedDate!).uppercaseString, forState: .Normal)
         hidePickerView()

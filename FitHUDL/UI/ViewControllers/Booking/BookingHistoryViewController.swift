@@ -98,6 +98,7 @@ class BookingHistoryViewController: UIViewController {
     
     func parseBookingHistory(dataArray: NSArray) {
         let formatter        = NSDateFormatter()
+        formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
         let checkDate        = formatter.stringFromDate(NSDate())
         formatter.dateFormat = "HH:mm"
@@ -172,6 +173,7 @@ class BookingHistoryViewController: UIViewController {
     
     func dateConversion(date: String) -> String {
         let formatter = NSDateFormatter()
+        formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
         let dates = formatter.dateFromString(date)
         formatter.dateFormat = "dd-MM-yyyy"
@@ -208,6 +210,7 @@ extension BookingHistoryViewController: UITableViewDataSource {
         let source  = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings : bookings
         let history = source[indexPath.row] as! Bookings
         let imageURL = bookingSegmentControl.selectedSegmentIndex == 0 ? history.trainerImage : history.userImage
+        cell.closeButton.hidden         = bookingSegmentControl.selectedSegmentIndex == 0 ? false : true
         cell.userImageView.image        = UIImage(named: "default_image")
         cell.userImageView.contentMode  = UIViewContentMode.ScaleAspectFit
         cell.indicatorView.startAnimating()

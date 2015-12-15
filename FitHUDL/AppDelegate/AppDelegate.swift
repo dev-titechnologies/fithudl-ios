@@ -275,6 +275,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                 } else if (Globals.convertTime(NSDate())>=(details["start_time"] as! String)) && (Globals.convertTime(NSDate())<(details["end_time"] as! String)) {
                                     let formatter        = NSDateFormatter()
                                     formatter.dateFormat = "hh:mm a"
+                                    formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
                                     let startTime        = formatter.dateFromString(details["start_time"] as! String)
                                     let endTime          = formatter.dateFromString(details["end_time"] as! String)
                                     let currentTime      = formatter.dateFromString(Globals.convertTime(NSDate()))

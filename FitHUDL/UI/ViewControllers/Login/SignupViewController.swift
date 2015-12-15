@@ -31,6 +31,7 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var moderateButton: UIButton!
     @IBOutlet weak var expertButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
+    @IBOutlet weak var sportsLoadingview: UIView!
     
     var networkingID: String = "0"
     var twitterName: String?
@@ -41,10 +42,16 @@ class SignupViewController: UIViewController {
         super.viewDidLoad()
 
         navigationController?.navigationBarHidden = false
-        sportsCarousel.type             = .Custom
+        sportsCarousel.type = .Custom
                 
         if appDelegate.sportsArray.count == 0 {
             sportsCarousel.superview?.hidden = true
+            sportsLoadingview.hidden         = false
+            signupButton.enabled             = false
+        } else {
+            sportsCarousel.superview?.hidden = false
+            sportsLoadingview.hidden         = true
+            signupButton.enabled             = true
         }
         
         maleYConstraint.constant   = 0
@@ -103,13 +110,10 @@ class SignupViewController: UIViewController {
                 UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
                 return
             })
-            let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: { (okAction) -> Void in
-                return
-            })
             alert.addAction(settingsAction)
-            alert.addAction(okAction)
             self.presentViewController(alert, animated: false, completion: nil)
         }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sportsListReload:", name: PushNotification.sportsList, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -125,6 +129,22 @@ class SignupViewController: UIViewController {
         view.layoutIfNeeded()
     }
     
+    func sportsListReload(notify: NSNotification) {
+        if let userInfo = notify.userInfo {
+            let success = userInfo["success"] as! Bool
+            if success == true {
+                sportsCarousel.superview?.hidden = false
+                sportsLoadingview.hidden         = true
+                signupButton.enabled             = true
+                sportsCarousel.reloadData()
+            } else {
+                sportsCarousel.superview?.hidden = true
+                sportsLoadingview.hidden         = false
+                signupButton.enabled             = false
+                showDismissiveAlertMesssage("Sports List is mandatory for sign up. You cannot proceed further.")
+            }
+        }
+    }
     
     @IBAction func genderButtonClicked(sender: UIButton) {
         genderButton.selected = !genderButton.selected
@@ -321,6 +341,7 @@ class SignupViewController: UIViewController {
             (sport as! SportsList).level      = ""
             (sport as! SportsList).isSelected = false
         }
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {

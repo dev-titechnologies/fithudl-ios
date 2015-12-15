@@ -55,6 +55,7 @@ class Globals: NSObject {
     class func convertTimeTo24Hours(time: String) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "h.mm a"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         if let date = dateFormatter.dateFromString(time) {
             dateFormatter.dateFormat = "HH:mm"
             return dateFormatter.stringFromDate(date)
@@ -65,6 +66,7 @@ class Globals: NSObject {
     class func convertTimeTo12Hours(time: String) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         if let date = dateFormatter.dateFromString(time) {
             dateFormatter.dateFormat = "h.mm a"
             return dateFormatter.stringFromDate(date)
@@ -75,12 +77,14 @@ class Globals: NSObject {
     class func convertDate(date: NSDate) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         return dateFormatter.stringFromDate(date)
     }
     
     class func convertTime(time: NSDate) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         return dateFormatter.stringFromDate(time)
     }
     
@@ -91,6 +95,7 @@ class Globals: NSObject {
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "deviceToken")
         Images.deleteImages()
         Globals.clearUserValues()
+        appDelegate.user = nil
     }
     
     private class func clearUserValues() {

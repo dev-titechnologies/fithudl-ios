@@ -51,7 +51,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var completedTitleLabel: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var bookView: UIView!
-    @IBOutlet weak var calloutView: UIView!
+    @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var notificationButton: UIButton!
     @IBOutlet weak var expertLevelLabel: UILabel!
@@ -62,7 +62,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var availBalanceLabel: UILabel!
    
-    @IBOutlet weak var changeButton: UIButton!
     @IBOutlet weak var notifIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var packagesButton: UIButton!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
@@ -79,6 +78,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        menuView.hidden = true
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
         reviewCollectionView.registerNib(nib, forCellWithReuseIdentifier: "reviewCell")
         
@@ -100,7 +100,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         
         userImageView.layer.borderColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0).CGColor
         userImageView.layer.borderWidth = 1.0
-        changeButton.titleLabel?.numberOfLines = 2
         
 //        if let id = searchResultId {
 //        scrollViewBottomConstraint.constant = -65
@@ -153,10 +152,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
      func viewTap(getstureRecognizer : UITapGestureRecognizer){
         
-        if calloutView.frame.size.height != 0 {
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
-                }, completion: nil)
+        if menuView.frame.origin.x == 0 {
+            hideMenuView()
         }
         notificationButton.tag = 0
         UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -179,18 +176,14 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         badgePrevButton.hidden      = true
         buttonView.hidden           = true
         
-        calloutView.removeFromSuperview()
-        calloutView.setTranslatesAutoresizingMaskIntoConstraints(true)
-        calloutView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: calloutView.frame.size.width, height: 0)
-        appDelegate.window?.addSubview(calloutView)
-
-        notificationButton.tag=0
+        menuView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        notificationButton.tag      = 0
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
         notificationBackgroundView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(notificationBackgroundView)
         notificationBackgroundView.backgroundColor = UIColor.clearColor()
-        notificationBackgroundView.hidden=true
+        notificationBackgroundView.hidden       = true
         notificationTableView.layer.borderWidth = 0.5
         notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
         sendRequestForProfile()
@@ -207,9 +200,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        calloutView.removeFromSuperview()
-        calloutView.frame = CGRect(x: 0.0, y: -17.0, width: calloutView.frame.size.width, height: 0)
-        self.view.addSubview(calloutView)
        
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.frame = CGRect(x: 0.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
@@ -264,10 +254,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func editButtonClicked(sender: UIButton) {
         
-        if calloutView.frame.size.height != 0 {
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
-                }, completion: nil)
+        if menuView.frame.origin.x == 0 {
+            hideMenuView()
         }
 
         performSegueWithIdentifier("segueToEditProfile", sender: self)
@@ -289,8 +277,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func logoutButtonClicked(sender: UIButton) {
-        UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-            self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+        UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+            self.menuView.frame = CGRect(x: -self.menuView.frame.size.width, y: 0.0, width: self.menuView.frame.size.width, height: self.menuView.frame.size.height)
             }, completion: nil)
         let alertController = UIAlertController(title: "", message: "Do you wish to logout?", preferredStyle: UIAlertControllerStyle.Alert)
         let noAction        = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil)
@@ -304,15 +292,18 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     @IBAction func packagesButtonClicked(sender: AnyObject) {
+        hideMenuView()
         performSegueWithIdentifier("segueToPackages", sender: self)
     }
     
     @IBAction func changePasswordClicked(sender: UIButton) {
+        hideMenuView()
         let feedNavigationController = storyboard?.instantiateViewControllerWithIdentifier("ChangeNavigationController") as! UINavigationController
         presentViewController(feedNavigationController, animated: true, completion: nil)
     }
     
     @IBAction func feedbackButtonClicked(sender: UIButton) {
+        hideMenuView()
         let feedNavigationController = storyboard?.instantiateViewControllerWithIdentifier("FeedbackNavigationController") as! UINavigationController
         presentViewController(feedNavigationController, animated: true, completion: nil)
     }
@@ -340,30 +331,28 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             navigationController?.popViewControllerAnimated(true)
             return
         }
-        if calloutView.frame.size.height == 0 {
-            calloutView.hidden = false
+        if menuView.frame.origin.x != 0 {
+            menuView.hidden = false
             if notificationBackgroundView.hidden == false {
                 notificationButton.tag = 0
                 UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                     self.notificationBackgroundView.hidden  = true
                     }, completion: nil)
             }
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 300.0)
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+                self.menuView.frame = CGRect(x: 0.0, y: 0.0, width: self.menuView.frame.size.width, height: self.menuView.frame.size.height)
                 }, completion: nil)
         } else {
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
+            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+                self.menuView.frame = CGRect(x: -self.menuView.frame.size.width, y: 0.0, width: self.menuView.frame.size.width, height: self.menuView.frame.size.height)
                 }, completion: nil)
         }
     }
     
     @IBAction func notificationsButtonClicked(sender: UIButton) {
         if sender.tag == 0 {
-            if calloutView.frame.size.height != 0 {
-                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                    self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
-                    }, completion: nil)
+            if menuView.frame.origin.x == 0 {
+                hideMenuView()
             }
             sender.tag = 1
             notificationBackgroundView.hidden   = false
@@ -514,6 +503,14 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         presentViewController(custompopController, animated: true, completion: nil)
     }
     
+    func hideMenuView() {
+        UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+            self.menuView.frame = CGRect(x: -self.menuView.frame.size.width, y: 0.0, width: self.menuView.frame.size.width, height: self.menuView.frame.size.height)
+            }){ (finished) -> Void in
+                self.menuView.hidden = true
+        }
+    }
+    
     func showEmailVerifyAlert() {
         let alert = UIAlertController(title: alertTitle, message: "You have not verified your email. Please verify inorder to proceed further.\n Do you want to resend the mail?", preferredStyle: UIAlertControllerStyle.Alert)
         let resendAction = UIAlertAction(title: "Resend Email", style: UIAlertActionStyle.Default) { (resendAction) -> Void in
@@ -524,6 +521,19 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         alert.addAction(cancelAction)
         presentViewController(alert, animated: true, completion: nil)
     }
+    
+    func updateBio() {
+        let user = appDelegate.user!
+        if count(user.bio) > BIOTEXT_LENGTH {
+            bioLabel.userInteractionEnabled = true
+            Globals.attributedBioText((user.bio as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
+        } else {
+            bioLabel.userInteractionEnabled = false
+            Globals.attributedBioText((user.bio as NSString).substringToIndex((user.bio as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
+        }
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "bioUpdation", object: nil)
+    }
+    
     
     func sendRequestEmailResent() {
         if !Globals.isInternetConnected() {
@@ -695,19 +705,21 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             } else {
                 appDelegate.user!.imageURL = ""
             }
-            availBalanceLabel.text = "Available balance: $\(appDelegate.user!.walletBalance)"
+            availBalanceLabel.text =  appDelegate.user!.walletBalance == "" ? "$0" : "$\(appDelegate.user!.walletBalance)"
             if let bio = responseDictionary["profile_desc"] as? String {
                 appDelegate.user!.bio = bio
                 if bio == "" {
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBio", name: "bioUpdation", object: nil)
                     showBioView(bio)
                 }
             } else {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBio", name: "bioUpdation", object: nil)
                 appDelegate.user!.bio = ""
                 showBioView("")
             }
             if let otherInterests = responseDictionary["other_interests"] as? String {
                 appDelegate.user!.interests = otherInterests
-                } else {
+            } else {
                 appDelegate.user!.interests = ""
             }
 
@@ -1055,10 +1067,8 @@ extension MyProfileViewController: iCarouselDelegate {
                 self.notificationBackgroundView.hidden  = true
                 }, completion: nil)
 
-        } else if calloutView.frame.size.height != 0 {
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
-                }, completion: nil)
+        } else if menuView.frame.origin.x == 0 {
+            hideMenuView()
         } else {
             beginnerButton.selected = false
             moderateButton.selected = false
@@ -1075,10 +1085,8 @@ extension MyProfileViewController: iCarouselDelegate {
                 self.notificationBackgroundView.hidden  = true
                 }, completion: nil)
             
-        } else if calloutView.frame.size.height != 0 {
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 0)
-                }, completion: nil)
+        } else if menuView.frame.origin.x == 0 {
+            hideMenuView()
         }
     }
     

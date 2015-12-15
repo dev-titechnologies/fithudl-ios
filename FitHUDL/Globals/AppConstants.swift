@@ -134,6 +134,7 @@ struct Session {
 }
 
 struct PushNotification {
+    static let sportsList   = "signupSportsList"
     static let sessionStart = "session_start"
     static let sessionEnd   = "session_end"
     static let sessionExtend  = "session_extension"

@@ -77,6 +77,7 @@ class EditProfileViewController: UIViewController {
         timePicker.minimumDate   = NSDate()
         
         let dateFormatter        = NSDateFormatter()
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         dateFormatter.dateFormat = "MMM yyyy"
         monthButton.setTitle(dateFormatter.stringFromDate(NSDate()).uppercaseString, forState: .Normal)
         dateFormatter.dateFormat = "YYYY"
@@ -106,6 +107,7 @@ class EditProfileViewController: UIViewController {
         let dateString       = Globals.convertDate(datePicker.selectedDate)
         let currentDate      = Globals.convertDate(NSDate())
         let formatter        = NSDateFormatter()
+        formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "hh:mm a"
 
         if dateString == currentDate {
@@ -124,6 +126,7 @@ class EditProfileViewController: UIViewController {
         let dateString       = Globals.convertDate(datePicker.selectedDate)
         let currentDate      = Globals.convertDate(NSDate())
         let formatter        = NSDateFormatter()
+        formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "hh:mm a"
         if dateString == currentDate {
             if let start = initialStart {
@@ -179,6 +182,7 @@ class EditProfileViewController: UIViewController {
     
     func splitTimeToIntervals(startTime: String, endTime: String) {
         let timeFormat = NSDateFormatter()
+        timeFormat.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         timeFormat.dateFormat = "hh:mm a"
         var timeArray: NSMutableArray!
         if let array = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as? NSMutableArray {
@@ -195,10 +199,7 @@ class EditProfileViewController: UIViewController {
         var timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
 
         while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
-            let time = NSMutableDictionary()
-            time.setObject(timeFormat.stringFromDate(fromTime!), forKey: "time_starts")
-            time.setObject(timeFormat.stringFromDate(timeAfterInterval!), forKey: "time_ends")
-            time.setObject(Globals.convertDate(datePicker.selectedDate), forKey: "date")
+            let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: timeFormat.stringFromDate(fromTime!), endTime: timeFormat.stringFromDate(timeAfterInterval!), user: appDelegate.user!)
             if !timeArray.containsObject(time) {
                 timeArray.addObject(time)
             }
@@ -283,6 +284,7 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func timerDoneButtonClicked(sender: UIButton) {
         var formatter        = NSDateFormatter()
+        formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "hh:mm a"
         var timeString       = formatter.stringFromDate(timePicker.date)
         if tappedView == starttimeView {
@@ -312,6 +314,7 @@ class EditProfileViewController: UIViewController {
         components.year  = monthPick.selectedYear
         let selectedDate = NSCalendar.currentCalendar().dateFromComponents(components)
         let formatter    = NSDateFormatter()
+        formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "MMM yyyy"
         monthButton.setTitle(formatter.stringFromDate(selectedDate!).uppercaseString, forState: .Normal)
         hidePickerView()

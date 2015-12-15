@@ -196,6 +196,7 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
     NSDateComponents *components = [[NSDateComponents alloc] init];
     
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.locale           = [[NSLocale alloc] initWithLocaleIdentifier: @"en_US_POSIX"];
     [formatter setDateFormat:@"MMM"];
     NSDate *aDate = [formatter dateFromString:month];
     NSDateComponents *component = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:aDate];

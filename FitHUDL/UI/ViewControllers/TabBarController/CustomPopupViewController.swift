@@ -68,7 +68,7 @@ class CustomPopupViewController: UIViewController {
                 updateButton.hidden  = true
                 bioTextView.editable = false
                 bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)
-                bioTextView.frame    = CGRect(origin: CGPointZero, size: CGSize(width: bioView.frame.size.width, height: bioView.frame.size.height))
+                bioTextView.frame    = CGRect(origin: bioTextView.frame.origin, size: CGSize(width: bioTextView.frame.size.width, height: bioView.frame.size.height-bioTextView.frame.origin.y))
             }
             
             attributedBioText()
@@ -186,6 +186,7 @@ class CustomPopupViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
                     appDelegate.user!.bio = (bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4))
+                    NSNotificationCenter.defaultCenter().postNotificationName("bioUpdation", object: nil, userInfo: nil)
                     dismissViewControllerAnimated(true, completion: nil)
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {
@@ -226,14 +227,14 @@ extension CustomPopupViewController: UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if range.location <= 4 {
+            return false
+        }
         if text == "\n" {
             textView.resignFirstResponder()
             return false
         }
         if text == "" {
-            if range.location <= 4 {
-                return false
-            }
             return true
         }
         return count(textView.text) + (count(text) - range.length) <= BIOLIMIT
