@@ -96,6 +96,22 @@ class SignupViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(animated: Bool) {
+        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
+            let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
+            let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                return
+            })
+            let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: { (okAction) -> Void in
+                return
+            })
+            alert.addAction(settingsAction)
+            alert.addAction(okAction)
+            self.presentViewController(alert, animated: false, completion: nil)
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         if IS_IPHONE4S || IS_IPHONE5 {
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 550.0)

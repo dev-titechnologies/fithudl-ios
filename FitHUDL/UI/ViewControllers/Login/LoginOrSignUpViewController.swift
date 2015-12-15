@@ -123,7 +123,7 @@ class LoginOrSignUpViewController: UIViewController {
                     println(twitterAccount?.credential)
                 } else {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let alert = UIAlertController(title: alertTitle, message: "No twitter accounts configured! Go to settings to configure your account.", preferredStyle: UIAlertControllerStyle.Alert)
+                        let alert = UIAlertController(title: alertTitle, message: "No twitter accounts configured! Go to Settings > Twitter to configure your account.", preferredStyle: UIAlertControllerStyle.Alert)
                         let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
                             UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
                             return
@@ -131,8 +131,8 @@ class LoginOrSignUpViewController: UIViewController {
                         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: { (okAction) -> Void in
                             return
                         })
-                        alert.addAction(okAction)
                         alert.addAction(settingsAction)
+                        alert.addAction(okAction)
                         self.presentViewController(alert, animated: false, completion: nil)
                     })
                 }
