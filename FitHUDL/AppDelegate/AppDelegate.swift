@@ -368,7 +368,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let location =   manager.location {
+            if let currentLocation = appDelegate.currentLocation {
+                if (currentLocation.coordinate.latitude == location.coordinate.latitude) && (currentLocation.coordinate.longitude == currentLocation.coordinate.longitude) {
+                    return
+                }
+            }
             currentLocation =   location
+            NSNotificationCenter.defaultCenter().postNotificationName("showLocation", object: nil, userInfo: nil)
         }
     }
     

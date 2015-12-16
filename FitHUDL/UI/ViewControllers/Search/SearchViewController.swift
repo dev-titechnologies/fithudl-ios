@@ -8,7 +8,7 @@
 
 import UIKit
 import MapKit
-import CoreLocation
+
 class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate{
     
     @IBOutlet weak var maleButton: UIButton!
@@ -37,7 +37,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var allSportsArray      = NSMutableArray()
     var searchResultArray   = Array<NSDictionary>()
     var sliderValue:Int     = 10
-    var locationManager     = CLLocationManager()
     var expertFlag:Bool     = false
     var userSelectedArray   = NSMutableArray()
     var count:Int           = 0
@@ -66,7 +65,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         moderateButton.superview?.hidden = true
     }
     
-    func mapViewToch(gestureRecognizer: UITapGestureRecognizer){
+    func mapViewTouch(gestureRecognizer: UITapGestureRecognizer){
         self.mapViewTouchFlag = true
         let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
         mapView.removeAnnotations(annotationsToRemove)
@@ -93,32 +92,16 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         })
     }
     
+    override func viewWillAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "currentLocationInMap", name: "showLocation", object: nil)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         
         super.viewDidAppear(true)
         println("View DidAppear SEARCH")
-        let annotationsToRemove = mapView.annotations.filter { $0 !== self.mapView.userLocation }
-        mapView.removeAnnotations(annotationsToRemove)
-        mapView.showsUserLocation       = true
-        
-        self.locationManager     = CLLocationManager()
-        self.locationManager.delegate   = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.startUpdatingLocation()
-        
-//        if CLLocationManager.locationServicesEnabled() {
-//            println("location enabled")
-//            if self.locationManager.respondsToSelector("requestWhenInUseAuthorization") {
-//               self.locationManager.requestWhenInUseAuthorization()
-//            } else {
-//                 self.locationManager.startUpdatingLocation()
-//            }
-//        } else {
-//            println("locaton not")
-//        }
-        
-        var tapGesture = UITapGestureRecognizer(target: self, action: "mapViewToch:")
+        currentLocationInMap()
+        var tapGesture      = UITapGestureRecognizer(target: self, action: "mapViewTouch:")
         self.mapView.addGestureRecognizer(tapGesture)
         self.fetchUserListFromDb()
         filtered            = NSMutableArray()
@@ -128,13 +111,42 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchButton.layer.borderWidth  = 1.0
         searchButton.backgroundColor    = UIColor.clearColor()
         count = 0
-        
-//        self.sendRequestToGetUsersSports()
+    }
+    
+    func currentLocationInMap() {
+        let annotationsToRemove   = mapView.annotations.filter { $0 !== self.mapView.userLocation }
+        mapView.removeAnnotations(annotationsToRemove)
+        mapView.showsUserLocation = true
+        if let currentLocation = appDelegate.currentLocation {
+            let center = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            self.mapView.setRegion(region, animated: true)
+            
+            CLGeocoder().reverseGeocodeLocation(appDelegate.locationManager.location, completionHandler: { (placemarks, error) -> Void in
+                if (error != nil) {
+                    println("Error:" + error.localizedDescription)
+                    return
+                }
+                if placemarks.count > 0 {
+                    if !self.mapViewTouchFlag {
+                        println("setting map pin image")
+                        let pm                  = placemarks[0] as! CLPlacemark
+                        self.point              = MKPointAnnotation()
+                        self.point.coordinate   = appDelegate.currentLocation!.coordinate
+                        self.point.title        = pm.locality
+                        self.locationName.text  = pm.locality
+                        self.point.subtitle     = pm.administrativeArea
+                        self.mapView.addAnnotation(self.point)
+                    }
+                } else {
+                    println("Error with data")
+                }
+            })
+        }
     }
     
     
     override func viewWillDisappear(animated: Bool) {
-        
         allSportsArray.removeAllObjects()
         allSportsArray.addObjectsFromArray(appDelegate.sportsArray as [AnyObject])
         for userSports in allSportsArray {
@@ -147,8 +159,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchBar.text   = ""
         tableView.hidden = true
         self.mapViewTouchFlag = false
-        self.locationManager.delegate   =  nil
-        self.locationManager.stopUpdatingLocation()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "showLocation", object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -270,51 +281,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         return anView
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        
-        println("Did update location")
-        
-        let location = locations.last as! CLLocation
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        self.mapView.setRegion(region, animated: true)
-        
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: { (placemarks, error) -> Void in
-            if (error != nil) {
-                println("Error:" + error.localizedDescription)
-                return
-            }
-            if placemarks.count > 0 {
-                if !self.mapViewTouchFlag {
-                    println("setting map pin image")
-                    let pm                  = placemarks[0] as! CLPlacemark
-                    self.point              = MKPointAnnotation()
-                    self.point.coordinate   = location.coordinate
-                    self.point.title        = pm.locality
-                    self.locationName.text  = pm.locality
-                    self.point.subtitle     = pm.administrativeArea
-                    self.mapView.addAnnotation(self.point)
-                    self.locationManager.stopUpdatingLocation()
-                }
-            } else {
-                println("Error with data")
-            }
-        })
-    }
-    
-    func displayLocationInfo(placemark: CLPlacemark) {
-        self.locationManager.stopUpdatingLocation()
-        println(placemark.locality)
-        println(placemark.postalCode)
-        println(placemark.administrativeArea)
-        println(placemark.country)
-    }
-    
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        println("Error: " + error.localizedDescription)
-        
-    }
-
     @IBAction func viewAllCloseButtonClicked(sender: UIButton) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.allSportsView.alpha = 0.0
