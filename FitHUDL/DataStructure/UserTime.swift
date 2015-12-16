@@ -14,7 +14,6 @@ class UserTime: NSManagedObject {
     @NSManaged var date: String
     @NSManaged var timeEnds: String
     @NSManaged var timeStarts: String
-    @NSManaged var location: String
     @NSManaged var user: User
 
     class func saveUserTimeList(date: String, startTime: String, endTime: String, user: User) -> UserTime {
@@ -22,7 +21,6 @@ class UserTime: NSManagedObject {
         userTime.date           = date
         userTime.timeStarts     = startTime
         userTime.timeEnds       = endTime
-        userTime.location       = ""
         userTime.user           = user
         return userTime
     }

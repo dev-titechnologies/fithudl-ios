@@ -778,7 +778,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 sportsList.sort({ (sport1, sport2) -> Bool in
                     return count((sport1 as UserSports).expertLevel) > count((sport2 as UserSports).expertLevel)
                 })
-//                appDelegate.user?.sports.allObjects.sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)])
                 println (appDelegate.user!.sports)
             }
         }
@@ -961,8 +960,6 @@ extension MyProfileViewController: iCarouselDataSource {
         var indicatorView: UIActivityIndicatorView
         var tickImageView: UIImageView
         
-        
-        
         if view == nil {
             contentView                         = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: 78.0, height: carousel.frame.size.height)))
             sportsImageView                     = UIImageView(frame: CGRect(origin: CGPoint(x: 10.0, y: 0.0), size: CGSize(width: carousel.frame.size.height-20.0, height: carousel.frame.size.height-20.0)))
@@ -1004,8 +1001,9 @@ extension MyProfileViewController: iCarouselDataSource {
         tapGesturesportscarousel.cancelsTouchesInView = false
         contentView.addGestureRecognizer(tapGesturesportscarousel)
         
-        let source          = profileID == nil ? appDelegate.user!.sports : profileUser!.sports
-        let sports          = source.allObjects[index] as! UserSports
+        var source          = profileID == nil ? appDelegate.user!.sports.allObjects : profileUser!.sports.allObjects
+        source              = (source as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)])
+        let sports          = source[index] as! UserSports
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
         CustomURLConnection.downloadAndSetImage(sports.logo, imageView: sportsImageView, activityIndicatorView: indicatorView)
@@ -1165,8 +1163,15 @@ extension MyProfileViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-            let source = profileID == nil ? appDelegate.user!.availableTime : profileUser!.availableTime
-            let filteredArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+            let source = profileID == nil ? appDelegate.user!.availableTime.allObjects : profileUser!.availableTime.allObjects
+            var filteredArray = (source as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+            filteredArray   = (filteredArray as NSArray).sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "HH:mm"
+                let date1 = dateFormatter.dateFromString((obj1 as! UserTime).timeStarts as String)
+                let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
+                return date1!.compare(date2!)
+            })
             let time = filteredArray[indexPath.row] as! UserTime
             cell.timeLabel.text = Globals.convertTimeTo12Hours(time.timeStarts)
             return cell

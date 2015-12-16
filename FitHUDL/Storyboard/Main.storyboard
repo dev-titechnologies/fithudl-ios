@@ -4855,11 +4855,15 @@
                                             <outlet property="delegate" destination="jJI-fI-5la" id="dCS-dr-Xfj"/>
                                         </connections>
                                     </collectionView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xm-Fl-aUa">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xm-Fl-aUa">
                                         <rect key="frame" x="265" y="0.0" width="55" height="54"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="54" id="fEW-Fy-mTk"/>
+                                            <constraint firstAttribute="width" constant="55" id="gf6-2w-q3F"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="18"/>
-                                        <inset key="titleEdgeInsets" minX="20" minY="-20" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="X">
+                                        <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="10"/>
+                                        <state key="normal" image="pop_close_button">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -4869,8 +4873,10 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.51000000000000001" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="5xm-Fl-aUa" firstAttribute="top" secondItem="RQh-vh-jwc" secondAttribute="top" id="0rn-6H-gqh"/>
                                     <constraint firstAttribute="bottom" secondItem="Vl6-Dr-xXD" secondAttribute="bottom" constant="1" id="HJT-A7-e1v"/>
                                     <constraint firstItem="Vl6-Dr-xXD" firstAttribute="top" secondItem="RQh-vh-jwc" secondAttribute="top" constant="1" id="YhA-ak-XHN"/>
+                                    <constraint firstAttribute="trailing" secondItem="5xm-Fl-aUa" secondAttribute="trailing" id="ey1-iZ-wmo"/>
                                     <constraint firstAttribute="trailing" secondItem="Vl6-Dr-xXD" secondAttribute="trailing" constant="10" id="jk7-8n-9eh"/>
                                     <constraint firstItem="Vl6-Dr-xXD" firstAttribute="leading" secondItem="RQh-vh-jwc" secondAttribute="leading" constant="10" id="ydb-No-nqy"/>
                                 </constraints>
@@ -5402,7 +5408,7 @@
                                                 </constraints>
                                             </view>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="c6y-Af-Ay5" userLabel="Availabletime collectionview">
-                                                <rect key="frame" x="0.0" y="395" width="320" height="80"/>
+                                                <rect key="frame" x="0.0" y="385" width="320" height="90"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="vEV-MK-vdv">
                                                     <size key="itemSize" width="98" height="40"/>
@@ -5768,7 +5774,7 @@
                                             <constraint firstAttribute="bottom" secondItem="B5C-bE-FZ9" secondAttribute="bottom" constant="10" id="DJg-iN-eJf"/>
                                             <constraint firstItem="wYD-LA-Czp" firstAttribute="top" secondItem="B5C-bE-FZ9" secondAttribute="bottom" constant="10" id="DsW-F6-xrm"/>
                                             <constraint firstItem="wYD-LA-Czp" firstAttribute="leading" secondItem="NMp-cS-1yz" secondAttribute="leading" id="M8K-dW-sD5"/>
-                                            <constraint firstItem="c6y-Af-Ay5" firstAttribute="top" secondItem="Dee-VW-XOg" secondAttribute="bottom" constant="15" id="Mku-qA-Oet"/>
+                                            <constraint firstItem="c6y-Af-Ay5" firstAttribute="top" secondItem="Dee-VW-XOg" secondAttribute="bottom" constant="5" id="Mku-qA-Oet"/>
                                             <constraint firstItem="c6y-Af-Ay5" firstAttribute="leading" secondItem="NMp-cS-1yz" secondAttribute="leading" id="RJh-py-HPG"/>
                                             <constraint firstItem="HCk-yt-DGZ" firstAttribute="top" secondItem="NMp-cS-1yz" secondAttribute="top" constant="20" id="Rrf-OK-9u8"/>
                                             <constraint firstAttribute="trailing" secondItem="c6y-Af-Ay5" secondAttribute="trailing" id="YS2-GC-Ypt"/>

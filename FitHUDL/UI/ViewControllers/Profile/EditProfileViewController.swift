@@ -31,6 +31,7 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     @IBOutlet weak var interestTextView: UITextView!
     var bioOnly     = false
+    var photoSelected = false
     let hourField   = 97
     let minuteField = 98
     let timeField   = 99
@@ -199,7 +200,7 @@ class EditProfileViewController: UIViewController {
         var timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
 
         while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
-            let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: timeFormat.stringFromDate(fromTime!), endTime: timeFormat.stringFromDate(timeAfterInterval!), user: appDelegate.user!)
+            let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(fromTime!)), endTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(timeAfterInterval!)), user: appDelegate.user!)
             if !timeArray.containsObject(time) {
                 timeArray.addObject(time)
             }
@@ -480,24 +481,26 @@ class EditProfileViewController: UIViewController {
         
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(bioTextView.text, forKey: "bio")
-        requestDictionary.setValue(interestTextView.text, forKey: "other_interests")
         if !bioOnly {
             showLoadingView(true)
+            requestDictionary.setValue(interestTextView.text, forKey: "other_interests")
             let timeArray = NSMutableArray()
             for value in availSessionTime.allValues {
                 for time in (value as! [UserTime]) {
                     let setTime = NSMutableDictionary()
-                    setTime.setObject(time.date, forKey: "alloted_date")
+                    setTime.setObject(time.date, forKey: "date")
                     setTime.setObject(Globals.convertTimeTo24Hours(time.timeStarts), forKey: "time_starts")
                     setTime.setObject(Globals.convertTimeTo24Hours(time.timeEnds), forKey: "time_ends")
                     timeArray.addObject(setTime)
                 }
             }
             requestDictionary.setObject(timeArray, forKey: "session")
-            if let image = photoImageView.image {
-                let imageData = UIImageJPEGRepresentation(image, 0.5)
-                let imageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
-                requestDictionary.setObject(imageString, forKey: "file")
+            if photoSelected == true {
+                if let image = photoImageView.image {
+                    let imageData = UIImageJPEGRepresentation(image, 0.5)
+                    let imageString = imageData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
+                    requestDictionary.setObject(imageString, forKey: "file")
+                }
             }
         }
         println("requestDictionary : \(requestDictionary)")
@@ -520,8 +523,9 @@ class EditProfileViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
                     if !bioOnly {
-                        if photoImageView.image != nil {
+                        if photoSelected == true && photoImageView.image != nil {
                             appDelegate.user!.profileImage = UIImagePNGRepresentation(photoImageView.image)
+                            photoSelected = false
                         }
                         dismissViewControllerAnimated(true, completion: nil)
                     } else {
@@ -569,7 +573,8 @@ class EditProfileViewController: UIViewController {
 
 extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        let selectedImage = info["UIImagePickerControllerOriginalImage"] as! UIImage
+        let selectedImage   = info["UIImagePickerControllerOriginalImage"] as! UIImage
+        photoSelected       = true
         photoImageView.image = selectedImage
         photoButton.hidden = true
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -659,7 +664,16 @@ extension EditProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell            = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-        let time            = (availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray).objectAtIndex(indexPath.item) as! UserTime
+        var filteredArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        filteredArray       = filteredArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            let date1 = dateFormatter.dateFromString((obj1 as! UserTime).timeStarts as String)
+            let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
+            return date1!.compare(date2!)
+        })
+
+        let time            = filteredArray.objectAtIndex(indexPath.item) as! UserTime
         let starttime       = Globals.convertTimeTo12Hours(time.timeStarts)
         let endtime         = Globals.convertTimeTo12Hours(time.timeEnds)
         cell.timeLabel.text = "\(starttime) to \(endtime)"

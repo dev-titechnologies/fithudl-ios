@@ -118,7 +118,6 @@
     </entity>
     <entity name="UserTime" representedClassName="FitHudl.UserTime" syncable="YES">
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeEnds" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeStarts" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="availableTime" inverseEntity="User" syncable="YES"/>
@@ -136,6 +135,6 @@
         <element name="UserReview" positionX="115" positionY="342" width="128" height="133"/>
         <element name="UsersList" positionX="-252" positionY="204" width="128" height="73"/>
         <element name="UserSports" positionX="70" positionY="135" width="128" height="120"/>
-        <element name="UserTime" positionX="243" positionY="486" width="128" height="120"/>
+        <element name="UserTime" positionX="243" positionY="486" width="128" height="105"/>
     </elements>
 </model>
