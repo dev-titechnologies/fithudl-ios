@@ -425,7 +425,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             Globals.attributedBioText((user.bio as NSString).substringToIndex((user.bio as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.boxBorderColor, bioColor: AppColor.statusBarColor)
         }
        
-        Globals.attributedInterestsText((user.interests as NSString).substringToIndex((user.interests as NSString).length), lengthExceed: false, interestLabel: interestLabel, titleColor: AppColor.boxBorderColor, interestColor: AppColor.statusBarColor)
+        Globals.attributedInterestsText(user.interests, lengthExceed: false, interestLabel: interestLabel, titleColor: AppColor.boxBorderColor, interestColor: AppColor.statusBarColor)
         
         if user.sports.count == 0 {
             beginnerButton.superview?.superview?.hidden = true

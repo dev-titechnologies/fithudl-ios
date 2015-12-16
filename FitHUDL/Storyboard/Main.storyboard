@@ -164,6 +164,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -1447,7 +1448,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i8A-ok-JBm">
-                                <rect key="frame" x="45" y="40" width="230" height="280"/>
+                                <rect key="frame" x="45" y="40" width="230" height="0.0"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZTv-uq-rfv">
                                         <rect key="frame" x="58" y="56" width="115" height="40"/>
@@ -1693,7 +1694,7 @@
                                 <rect key="frame" x="20" y="40" width="280" height="210"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-3Z-Qor">
-                                        <rect key="frame" x="0.0" y="30" width="280" height="110"/>
+                                        <rect key="frame" x="40" y="20" width="239" height="120"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
@@ -1738,19 +1739,31 @@
                                             <action selector="closeButtonClicked:" destination="qti-DH-rxN" eventType="touchUpInside" id="82D-Yh-nuV"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BIO:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Lc-Zp-BpX">
+                                        <rect key="frame" x="7" y="27" width="33" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="i70-mo-gwC"/>
+                                            <constraint firstAttribute="width" constant="33" id="iPY-NJ-cDO"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                        <color key="textColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47058823529999999" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="BSh-3Z-Qor" secondAttribute="trailing" id="46m-xW-4a4"/>
+                                    <constraint firstItem="3Lc-Zp-BpX" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" constant="27" id="55Z-mc-z5s"/>
                                     <constraint firstAttribute="width" constant="280" id="Idh-Sf-Hpq"/>
                                     <constraint firstAttribute="trailing" secondItem="yUM-3i-lqX" secondAttribute="trailing" id="LuB-4K-4Nq"/>
                                     <constraint firstItem="yUM-3i-lqX" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" id="M2d-YT-wst"/>
-                                    <constraint firstItem="yOH-S0-WMc" firstAttribute="centerX" secondItem="BSh-3Z-Qor" secondAttribute="centerX" id="abd-rf-OOP"/>
-                                    <constraint firstItem="BSh-3Z-Qor" firstAttribute="leading" secondItem="Lua-Tp-Chf" secondAttribute="leading" id="jwg-qU-6Wo"/>
+                                    <constraint firstItem="yOH-S0-WMc" firstAttribute="centerX" secondItem="BSh-3Z-Qor" secondAttribute="centerX" constant="-19.5" id="biK-l8-49Y"/>
+                                    <constraint firstItem="BSh-3Z-Qor" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" constant="20" id="hAu-bE-iD6"/>
+                                    <constraint firstItem="BSh-3Z-Qor" firstAttribute="leading" secondItem="3Lc-Zp-BpX" secondAttribute="trailing" id="hN0-DZ-lOy"/>
                                     <constraint firstAttribute="height" constant="210" id="luM-G7-nQw"/>
-                                    <constraint firstItem="yOH-S0-WMc" firstAttribute="top" secondItem="BSh-3Z-Qor" secondAttribute="bottom" constant="15" id="nFf-3D-tvn"/>
-                                    <constraint firstItem="BSh-3Z-Qor" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" constant="30" id="nO8-oU-qZF"/>
                                     <constraint firstAttribute="bottom" secondItem="yOH-S0-WMc" secondAttribute="bottom" constant="20" id="nhJ-M1-an1"/>
+                                    <constraint firstItem="3Lc-Zp-BpX" firstAttribute="leading" secondItem="Lua-Tp-Chf" secondAttribute="leading" constant="7" id="rKy-qp-Qfw"/>
+                                    <constraint firstAttribute="trailing" secondItem="BSh-3Z-Qor" secondAttribute="trailing" constant="1" id="t74-ib-fF0"/>
+                                    <constraint firstItem="yOH-S0-WMc" firstAttribute="top" secondItem="BSh-3Z-Qor" secondAttribute="bottom" constant="15" id="uOH-ZG-UiL"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1765,6 +1778,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="bioTextView" destination="BSh-3Z-Qor" id="gbt-ZD-Hfg"/>
+                        <outlet property="bioTitleLabel" destination="3Lc-Zp-BpX" id="9B1-cN-JKY"/>
                         <outlet property="bioView" destination="Lua-Tp-Chf" id="mgq-FM-Dnx"/>
                         <outlet property="bookButton" destination="JRL-tf-pQP" id="sk8-MP-j8i"/>
                         <outlet property="confirmView" destination="wXV-jy-VJ6" id="h1Y-oZ-3Iu"/>
@@ -4289,8 +4303,8 @@
                                     <constraint firstItem="VK4-9P-E9c" firstAttribute="top" secondItem="u2b-ph-iO9" secondAttribute="bottom" constant="3" id="zBO-1v-X92"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8SN-yw-6MI">
-                                <rect key="frame" x="0.0" y="-8" width="315" height="0.0"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8SN-yw-6MI">
+                                <rect key="frame" x="0.0" y="-8" width="315" height="462"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="23" y="10" width="290" height="400"/>

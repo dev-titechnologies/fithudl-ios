@@ -32,6 +32,7 @@ class CustomPopupViewController: UIViewController {
     @IBOutlet weak var bookButton: UIButton!
     @IBOutlet weak var confirmView: UIView!
     
+    @IBOutlet weak var bioTitleLabel: UILabel!
     @IBOutlet weak var updateButton: UIButton!
 //    @IBOutlet weak var closeButton: UIButton!
     var delegate:ConfirmBookDelegate?
@@ -70,8 +71,10 @@ class CustomPopupViewController: UIViewController {
                 bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)
                 bioTextView.frame    = CGRect(origin: bioTextView.frame.origin, size: CGSize(width: bioTextView.frame.size.width, height: bioView.frame.size.height-bioTextView.frame.origin.y))
             }
-            
-            attributedBioText()
+            var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 16.0)!, NSForegroundColorAttributeName: AppColor.boxBorderColor])
+            bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
+            bioTitleLabel.attributedText = bioTitle
+            bioTextView.text             = bioText
         case ViewTag.timeView:
             timeView.hidden = false
             setValueForTimeView()
@@ -104,7 +107,7 @@ class CustomPopupViewController: UIViewController {
         }
         showLoadingView(true)
         let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject((bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4)), forKey: "bio")
+        requestDictionary.setObject(bioTextView.text, forKey: "bio")
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/editProfile", requestType: HttpMethod.post), delegate: self, tag: Connection.userProfile)
     }
 
@@ -185,7 +188,7 @@ class CustomPopupViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    appDelegate.user!.bio = (bioTextView.text as NSString).substringWithRange(NSMakeRange(4, count(bioTextView.text)-4))
+                    appDelegate.user!.bio = bioTextView.text
                     NSNotificationCenter.defaultCenter().postNotificationName("bioUpdation", object: nil, userInfo: nil)
                     dismissViewControllerAnimated(true, completion: nil)
                 } else if status == ResponseStatus.error {
@@ -227,9 +230,6 @@ extension CustomPopupViewController: UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if range.location <= 4 {
-            return false
-        }
         if text == "\n" {
             textView.resignFirstResponder()
             return false
