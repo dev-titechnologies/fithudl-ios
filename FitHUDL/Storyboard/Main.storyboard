@@ -21,6 +21,7 @@
             <string>OpenSans-Bold</string>
             <string>OpenSans-Bold</string>
             <string>OpenSans-Bold</string>
+            <string>OpenSans-Bold</string>
         </mutableArray>
         <mutableArray key="OpenSans-Light.ttf">
             <string>OpenSans-Light</string>
@@ -983,12 +984,12 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UqH-cS-TGg">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DURATION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UqH-cS-TGg">
                                         <rect key="frame" x="0.0" y="5" width="320" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="PR2-RX-0cy"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="17"/>
                                         <color key="textColor" red="0.95686274510000002" green="0.54117647059999996" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1045,6 +1046,15 @@
                                         <color key="textColor" red="0.71764705880000002" green="0.71764705880000002" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LY3-xC-CbF">
+                                        <rect key="frame" x="8" y="285" width="304" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="t6c-1Z-q25"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
+                                        <color key="textColor" red="0.95686274510000002" green="0.54117647059999996" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1054,6 +1064,7 @@
                                     <constraint firstItem="HYW-er-44X" firstAttribute="centerX" secondItem="99b-J7-PWK" secondAttribute="centerX" id="ADq-ht-x1Y"/>
                                     <constraint firstAttribute="trailing" secondItem="UqH-cS-TGg" secondAttribute="trailing" id="Dgi-kC-CvQ"/>
                                     <constraint firstItem="HYW-er-44X" firstAttribute="centerY" secondItem="Jit-hk-YHu" secondAttribute="centerY" id="FY3-09-jVX"/>
+                                    <constraint firstItem="Tpp-Ey-nUX" firstAttribute="top" secondItem="LY3-xC-CbF" secondAttribute="bottom" constant="10" id="Fso-0h-IpH"/>
                                     <constraint firstAttribute="bottom" secondItem="Tpp-Ey-nUX" secondAttribute="bottom" id="Ikv-4a-KbN"/>
                                     <constraint firstItem="gIL-kC-n7U" firstAttribute="leading" secondItem="f5g-8r-qC5" secondAttribute="leading" id="Ke7-rm-YMg"/>
                                     <constraint firstItem="gIL-kC-n7U" firstAttribute="top" secondItem="UqH-cS-TGg" secondAttribute="bottom" constant="5" id="L5T-bz-gvF"/>
@@ -1067,7 +1078,9 @@
                                     <constraint firstAttribute="trailing" secondItem="gIL-kC-n7U" secondAttribute="trailing" id="dO2-Ar-5pk"/>
                                     <constraint firstItem="UqH-cS-TGg" firstAttribute="leading" secondItem="f5g-8r-qC5" secondAttribute="leading" id="dsG-Ej-rrp"/>
                                     <constraint firstItem="z9O-e1-CkE" firstAttribute="top" secondItem="gIL-kC-n7U" secondAttribute="bottom" constant="36" id="jRN-bf-P4o"/>
+                                    <constraint firstItem="LY3-xC-CbF" firstAttribute="leading" secondItem="f5g-8r-qC5" secondAttribute="leading" constant="8" id="pYR-kW-9tj"/>
                                     <constraint firstAttribute="trailing" secondItem="Tpp-Ey-nUX" secondAttribute="trailing" id="q9Y-MK-dP7"/>
+                                    <constraint firstAttribute="trailing" secondItem="LY3-xC-CbF" secondAttribute="trailing" constant="8" id="rBT-ov-Mio"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZP-hc-vcm">
@@ -1415,7 +1428,7 @@
                         <outlet property="contentView" destination="f5g-8r-qC5" id="Ie6-bD-xzr"/>
                         <outlet property="endTimeLabel" destination="z9O-e1-CkE" id="NbF-zA-Gsc"/>
                         <outlet property="indicatorView" destination="jvo-V4-YHz" id="lW4-WE-M8T"/>
-                        <outlet property="nameLabel" destination="UqH-cS-TGg" id="OG1-ed-Rpz"/>
+                        <outlet property="nameLabel" destination="LY3-xC-CbF" id="0m2-Qw-6jq"/>
                         <outlet property="placeholderLabel" destination="ozg-0x-T6D" id="Bva-Q7-I26"/>
                         <outlet property="rateOkButton" destination="G3d-2o-Kfs" id="EFV-Rz-0CH"/>
                         <outlet property="rateView" destination="aZP-hc-vcm" id="Pt8-bh-hR3"/>
@@ -6164,7 +6177,7 @@
         <image name="signin_bg" width="352" height="138"/>
         <image name="signup_button" width="124" height="45"/>
         <image name="silver" width="76" height="75"/>
-        <image name="tabselection" width="72" height="48"/>
+        <image name="tabselection" width="77" height="48"/>
         <image name="time_close" width="44" height="44"/>
         <image name="top-arrow" width="10" height="7"/>
         <image name="twitter_button" width="40" height="40"/>

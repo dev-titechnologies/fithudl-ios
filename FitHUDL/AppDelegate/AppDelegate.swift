@@ -228,7 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         if let type = details["type"] as? String {
                             if type == PushNotification.sessionStart {
                                 UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
-                                deepLinkNotification()
+                                deepLinkNotification(details)
                             } else if type == PushNotification.sessionExtend {
                                 showSessionExtensionAlert(message)
                             } else if type == PushNotification.sessionSuccess || type == PushNotification.sessionFail {
@@ -245,7 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             }
         } else {
-            deepLinkNotification()
+            notifInactive()
         }
     }
     
@@ -260,37 +260,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    func deepLinkNotification(details: NSDictionary) {
+        if Globals.convertDate(NSDate()) == (details["alloted_date"] as! String) {
+            if Globals.convertTime(NSDate()) >= (details["end_time"] as! String) {
+                return
+            } else if (Globals.convertTime(NSDate())>=(details["start_time"] as! String)) && (Globals.convertTime(NSDate())<(details["end_time"] as! String)) {
+                let formatter        = NSDateFormatter()
+                formatter.dateFormat = "HH:mm"
+                formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                let startTime        = formatter.dateFromString(details["start_time"] as! String)
+                let endTime          = formatter.dateFromString(details["end_time"] as! String)
+                let currentTime      = formatter.dateFromString(Globals.convertTime(NSDate()))
+                let timeDiff         = endTime!.timeIntervalSinceDate(currentTime!)/NSTimeInterval(secondsValue)
+                NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details, "time": Int(timeDiff)])
+            } else if Globals.convertTime(NSDate()) < (details["start_time"] as! String) {
+                NSTimer.scheduledTimerWithTimeInterval(0, target: self, selector: "checkTimeReached:", userInfo: ["session" : details], repeats: false)
+                NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkTimeReached:", userInfo: ["session" : details], repeats: true)
+            }
+            println("show timer")
+            
+        }
+    }
     
-    func deepLinkNotification() {
+    
+    func notifInactive() {
         if notificationArray.count > 0 {
             let notificationInfo = notificationArray.lastObject as? NSDictionary
             if let userInfo = notificationInfo {
                 println(userInfo)
-                if let details = userInfo["details"] as? NSDictionary {
-                    if let type = details["type"] as? String {
-                        if type == PushNotification.sessionStart {
-                            if Globals.convertDate(NSDate()) == (details["alloted_date"] as! String) {
-                                if Globals.convertTime(NSDate()) >= (details["end_time"] as! String) {
-                                    return
-                                } else if (Globals.convertTime(NSDate())>=(details["start_time"] as! String)) && (Globals.convertTime(NSDate())<(details["end_time"] as! String)) {
-                                    let formatter        = NSDateFormatter()
-                                    formatter.dateFormat = "hh:mm a"
-                                    formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
-                                    let startTime        = formatter.dateFromString(details["start_time"] as! String)
-                                    let endTime          = formatter.dateFromString(details["end_time"] as! String)
-                                    let currentTime      = formatter.dateFromString(Globals.convertTime(NSDate()))
-                                    let timeDiff         = endTime!.timeIntervalSinceDate(currentTime!)/NSTimeInterval(secondsValue)
-                                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details, "time": Int(timeDiff)])
-                                } else if Globals.convertTime(NSDate()) < (details["start_time"] as! String) {
-                                     NSTimer.scheduledTimerWithTimeInterval(0, target: self, selector: "checkTimeReached:", userInfo: ["session" : details], repeats: false)
-                                    NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "checkTimeReached:", userInfo: ["session" : details], repeats: true)
+                if let aps = userInfo["aps"] as? NSDictionary {
+                    if let message = aps["alert"] as? String {
+                        if let details = userInfo["details"] as? NSDictionary {
+                            if let type = details["type"] as? String {
+                                if type == PushNotification.sessionStart {
+                                    UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
+                                    deepLinkNotification(details)
+                                } else if type == PushNotification.sessionExtend {
+                                    showSessionExtensionAlert(message)
+                                } else if type == PushNotification.sessionSuccess || type == PushNotification.sessionFail {
+                                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : details])
                                 }
-                                println("show timer")
-
                             }
                         }
                     }
                 }
+                
             }
             notificationArray.removeLastObject()
         }

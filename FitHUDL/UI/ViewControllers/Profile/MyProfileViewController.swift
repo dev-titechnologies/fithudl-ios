@@ -1293,6 +1293,8 @@ extension MyProfileViewController : UITableViewDelegate {
             sendRequestForUpdateNotifReadStatus(notificationListArray[indexPath.row].requestID.integerValue)
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! NotificationCell
             cell.roundLabel.backgroundColor = AppColor.notifReadColor
+            notificationListArray[indexPath.row].readStatus = 1
+            notificationTableView.reloadData()
         }
         if notificationListArray[indexPath.row].type == TrainingStatus.requested {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController

@@ -490,6 +490,7 @@ extension BookingSessionViewController: UITableViewDataSource {
             cell.locationTextField.text = ""
         }
         cell.disabledView.hidden = time["status"]!.boolValue
+        cell.locationTextField.userInteractionEnabled  = cell.disabledView.hidden
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.font = UIFont(name: "OpenSans", size: 12.0)
         cell.locationTextField.delegate = self

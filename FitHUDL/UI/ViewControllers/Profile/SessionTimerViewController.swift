@@ -69,12 +69,16 @@ class SessionTimerViewController: UIViewController {
         starFour    = starView.viewWithTag(93) as! UIButton
         starFive    = starView.viewWithTag(94) as! UIButton
         
+        let sportsName = sessionDictionary["sports_name"] as? String
+        
         if sessionDictionary["user_id"] as! Int == appDelegate.user!.profileID {
             isTrainer = false
-            nameLabel.text = sessionDictionary["trainer_name"] as? String
+            let name  = sessionDictionary["trainer_name"] as? String
+            nameLabel.text = "\(sportsName!) session with \(name!)"
         } else if sessionDictionary["trainer_id"] as! Int == appDelegate.user!.profileID {
             isTrainer = true
-            nameLabel.text = sessionDictionary["user_name"] as? String
+            let name  = sessionDictionary["user_name"] as? String
+            nameLabel.text = "\(sportsName!) session with \(name!)"
         }
         let startTime = Globals.convertTimeTo12Hours((sessionDictionary["start_time"] as? String)!)
         let endTime = Globals.convertTimeTo12Hours((sessionDictionary["end_time"] as? String)!)
@@ -132,9 +136,9 @@ class SessionTimerViewController: UIViewController {
                     self.rateView.hidden     = true
                     self.shareView.hidden    = true
                     self.contentView.hidden  = false
+                    timerLabel.reset()
                     timerView.layer.sublayers.removeLast()
                     timerView.setNeedsDisplay()
-                    timerLabel.reset()
                     timerView.resetView(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue*secondsValue)
                     timerLabel.start()
                     statusLabel.text = "This session has been started."

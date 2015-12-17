@@ -31,6 +31,7 @@ class TimerView: UIView {
         animation.duration  = duration
         animation.delegate  = self
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.removedOnCompletion = false
         pathLayer.strokeEnd     = 1.0
         pathLayer.addAnimation(animation, forKey: "animateCircle")
     }
