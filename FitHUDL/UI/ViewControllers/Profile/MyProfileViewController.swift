@@ -497,7 +497,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func showBioView(bioText: String) {
         let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
-        custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        custompopController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
         custompopController.viewTag = ViewTag.bioText
         custompopController.bioText = bioText
         presentViewController(custompopController, animated: true, completion: nil)
@@ -1298,7 +1298,7 @@ extension MyProfileViewController : UITableViewDelegate {
         }
         if notificationListArray[indexPath.row].type == TrainingStatus.requested {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
-            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
             controller.notification = notificationListArray[indexPath.row]
             presentViewController(controller, animated: true, completion: nil)
             notificationBackgroundView.hidden = true

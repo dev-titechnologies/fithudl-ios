@@ -169,7 +169,7 @@ class EditProfileViewController: UIViewController {
         let minutes: NSInteger = time.minute
         var newDate:NSDate = NSDate()
         
-        if minutes > 0 && minutes <= 30 {
+        if minutes >= 0 && minutes <= 30 {
             value = 30-minutes
             let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval((60 * value) + minutes)
             newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
