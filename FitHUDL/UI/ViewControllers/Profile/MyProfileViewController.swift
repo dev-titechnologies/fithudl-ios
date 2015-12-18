@@ -497,7 +497,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func showBioView(bioText: String) {
         let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
-        custompopController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+        self.definesPresentationContext = true
+        custompopController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         custompopController.viewTag = ViewTag.bioText
         custompopController.bioText = bioText
         presentViewController(custompopController, animated: true, completion: nil)
@@ -707,10 +708,12 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             availBalanceLabel.text =  appDelegate.user!.walletBalance == "" ? "$0" : "$\(appDelegate.user!.walletBalance)"
             if let bio = responseDictionary["profile_desc"] as? String {
-                appDelegate.user!.bio = bio
-                if bio == "" {
+                if bio == "" || bio == "null"{
+                    appDelegate.user!.bio = ""
                     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBio", name: "bioUpdation", object: nil)
                     showBioView(bio)
+                } else {
+                    appDelegate.user!.bio = bio
                 }
             } else {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateBio", name: "bioUpdation", object: nil)
@@ -1298,7 +1301,8 @@ extension MyProfileViewController : UITableViewDelegate {
         }
         if notificationListArray[indexPath.row].type == TrainingStatus.requested {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("BookingRequestViewController") as! BookingRequestViewController
-            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+            self.definesPresentationContext   = true
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             controller.notification = notificationListArray[indexPath.row]
             presentViewController(controller, animated: true, completion: nil)
             notificationBackgroundView.hidden = true

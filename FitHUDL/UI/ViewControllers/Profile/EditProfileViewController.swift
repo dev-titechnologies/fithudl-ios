@@ -113,9 +113,9 @@ class EditProfileViewController: UIViewController {
 
         if dateString == currentDate {
             if tappedView == starttimeView {
-                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(NSTimeInterval(duration))
+                timePicker.minimumDate = changeTimeValue(NSDate())
             } else {
-                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(NSTimeInterval(duration)+NSTimeInterval(interval))
+                timePicker.minimumDate = changeTimeValue(NSDate()).dateByAddingTimeInterval(NSTimeInterval(duration))
             }
         } else {
             formatter.dateFormat    = "hh:mm a"
@@ -134,14 +134,14 @@ class EditProfileViewController: UIViewController {
                 
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)))
+                var timeString = formatter.stringFromDate(changedTime)
                 initialStart   = formatter.dateFromString(timeString)
             }
             if let end = initialEnd {
             
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)+NSTimeInterval(interval)))
+                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)))
                 initialEnd      = formatter.dateFromString(timeString)
             }
             var components = formatter.stringFromDate(initialStart!).componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
@@ -164,21 +164,37 @@ class EditProfileViewController: UIViewController {
     }
     
     func changeTimeValue(date: NSDate) -> NSDate {
-        let time = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute, fromDate: date)
-        var value: Int = 0
-        let minutes: NSInteger = time.minute
-        var newDate:NSDate = NSDate()
+//        let time = NSCalendar.currentCalendar().components(NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute, fromDate: date)
+//        var value: Int = 0
+//        let minutes: NSInteger = time.minute
+//        var newDate:NSDate = NSDate()
+//        
+//        if minutes >= 0 && minutes <= 30 {
+//            value = 30-minutes
+//            let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval((60 * value) + minutes)
+//            newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+//        } else if minutes > 30 && minutes <= 60 {
+//            value = 60 - minutes
+//            let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval(60 * value)
+//            newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
+//        }
+//        return newDate
         
-        if minutes >= 0 && minutes <= 30 {
-            value = 30-minutes
-            let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval((60 * value) + minutes)
-            newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
-        } else if minutes > 30 && minutes <= 60 {
-            value = 60 - minutes
-            let timeInterval = date.timeIntervalSinceReferenceDate + NSTimeInterval(60 * value)
-            newDate = NSDate(timeIntervalSinceReferenceDate: timeInterval)
-        }
-        return newDate
+        let calendar = NSCalendar.currentCalendar()
+//        let comps    = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour, fromDate: date)
+//        println(comps)
+//        comps.hour   = comps.hour+1
+//        println(comps)
+//        println(calendar.dateFromComponents(comps)!)
+//        return calendar.dateFromComponents(comps)!
+        var minuteComponent = calendar.components(NSCalendarUnit.CalendarUnitMinute, fromDate: date)
+        println(minuteComponent)
+        let components      = NSDateComponents()
+        components.minute   = 60-minuteComponent.minute
+        println(components)
+        println(calendar.dateByAddingComponents(components, toDate: date, options: nil)!)
+        return calendar.dateByAddingComponents(components, toDate: date, options: nil)!
+        
     }
     
     func splitTimeToIntervals(startTime: String, endTime: String) {

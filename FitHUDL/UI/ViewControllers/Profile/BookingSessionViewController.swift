@@ -319,9 +319,10 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         bookingDictionary = requestDictionary
         
         let popController               = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
+        self.definesPresentationContext = true
         popController.sessionDictionary = bookingDictionary
         popController.delegate          = self
-        popController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+        popController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
         popController.viewTag           = ViewTag.bookView
         presentViewController(popController, animated: true, completion: nil)
     }

@@ -93,6 +93,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     override func viewWillAppear(animated: Bool) {
+        userSelectedArray.removeAllObjects()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "currentLocationInMap", name: "showLocation", object: nil)
     }
     

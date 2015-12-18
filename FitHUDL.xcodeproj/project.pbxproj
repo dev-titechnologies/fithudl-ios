@@ -927,7 +927,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "c573e0bd-7d13-4912-b9b1-79ec671eebf8";
+				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -948,7 +948,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FitHudl;
-				PROVISIONING_PROFILE = "c573e0bd-7d13-4912-b9b1-79ec671eebf8";
+				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;
@@ -971,7 +971,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c573e0bd-7d13-4912-b9b1-79ec671eebf8";
+				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Debug;
@@ -981,7 +981,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -990,7 +990,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c573e0bd-7d13-4912-b9b1-79ec671eebf8";
+				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Release;

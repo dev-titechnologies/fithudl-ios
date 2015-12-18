@@ -258,18 +258,20 @@ NSString * const kDIDatepickerCellIndentifier = @"kDIDatepickerCellIndentifier";
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ![indexPath isEqual:selectedIndexPath];
+    return ![indexPath isEqual:selectedIndexPath] ? YES : NO;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    _prevDate = _selectedDate;
-    [self.datesCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-    _selectedDate = [self.dates objectAtIndex:indexPath.item];
-
-    [collectionView deselectItemAtIndexPath:selectedIndexPath animated:YES];
-    selectedIndexPath = indexPath;
-    [self sendActionsForControlEvents:UIControlEventValueChanged];
+    if (![indexPath isEqual:selectedIndexPath]) {
+        _prevDate = _selectedDate;
+        [self.datesCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        _selectedDate = [self.dates objectAtIndex:indexPath.item];
+        
+        [collectionView deselectItemAtIndexPath:selectedIndexPath animated:YES];
+        selectedIndexPath = indexPath;
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
+    }
 }
 
 
