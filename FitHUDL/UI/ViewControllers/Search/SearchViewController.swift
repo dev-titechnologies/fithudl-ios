@@ -175,24 +175,21 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             
           usersListArray = NSMutableArray()
             
-            var i:Int=0
-            for i=0;i<usersArray.count;i++ {
-                
+            var i:Int = 0
+            for i=0; i<usersArray.count; i++ {
                 let User      = usersArray[i] as! UsersList
-                
                 let searchUserId:Int? = User.userID.toInt()
-                
-                if appDelegate.user!.profileID as Int != searchUserId {
-                    let userDictionary = NSMutableDictionary()
-                    userDictionary.setObject(User.userName, forKey: "userName")
-                    userDictionary.setObject(User.userID, forKey: "userID")
-                    usersListArray.addObject(userDictionary)
+                if let currentUser = appDelegate.user {
+                    if currentUser.profileID as Int != searchUserId {
+                        let userDictionary = NSMutableDictionary()
+                        userDictionary.setObject(User.userName, forKey: "userName")
+                        userDictionary.setObject(User.userID, forKey: "userID")
+                        usersListArray.addObject(userDictionary)
+                    }
                 }
             }
             tableView.reloadData()
-            
         }
-        
     }
     
     @IBAction func maleButtonClicked(sender: UIButton) {
@@ -343,32 +340,32 @@ extension SearchViewController:UISearchBarDelegate {
         searchBar.showsCancelButton=true
         searchActive=true
     }
+    
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
         searchActive=false
     }
+    
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchActive=false
         searchBar.resignFirstResponder()
         searchBar.showsCancelButton=false
         searchBar.text=""
         tableView.hidden=true
-        
     }
+    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        
-        self.nameSearchFlag=true
-         searchActive=false
-         searchBar.resignFirstResponder()
-         tableView.hidden=true
-         searchBar.showsCancelButton=false
-        searchBar.text=""
+        self.nameSearchFlag = true
+        searchActive       = false
+        searchBar.resignFirstResponder()
+        tableView.hidden   = true
+        searchBar.showsCancelButton = false
+        searchBar.text      = ""
         self.sendRequestToGetSearchUsers()
-        
     }
+    
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        searchString=searchText
-        filtered = NSMutableArray()
+        searchString = searchText
+        filtered     = NSMutableArray()
         for name in usersListArray {
             let text  = name["userName"] as! NSString
             let range = text.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
@@ -377,9 +374,7 @@ extension SearchViewController:UISearchBarDelegate {
                // searchItemsContainerView.hidden=true
                 filtered.addObject(name)
             }
-            
         }
-        
         if(filtered.count == 0){
             tableView.hidden=true
             searchActive = false;
@@ -456,6 +451,8 @@ extension SearchViewController:UISearchBarDelegate {
             }
           
         }
+        println(requestDictionary)
+        searchString = ""
         if !Globals.isInternetConnected() {
             return
         }

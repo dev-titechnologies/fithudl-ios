@@ -88,6 +88,7 @@
 		F3D99C2B1C180EC5007A20F9 /* Bookings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C2A1C180EC5007A20F9 /* Bookings.swift */; };
 		F3D99C2D1C180EC5007A20F9 /* Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C2C1C180EC5007A20F9 /* Configurations.swift */; };
 		F3D99C2F1C180EC5007A20F9 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D99C2E1C180EC5007A20F9 /* Notification.swift */; };
+		F3DA1CF11C2524410046EDE0 /* CircularTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = F3DA1CF01C2524410046EDE0 /* CircularTimer.m */; };
 		F3E266651BECCB2E00717724 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E266631BECCB2E00717724 /* NotificationCell.swift */; };
 		F3E266661BECCB2E00717724 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E266641BECCB2E00717724 /* NotificationCell.xib */; };
 		F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */; };
@@ -197,6 +198,8 @@
 		F3D99C2A1C180EC5007A20F9 /* Bookings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bookings.swift; sourceTree = "<group>"; };
 		F3D99C2C1C180EC5007A20F9 /* Configurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configurations.swift; sourceTree = "<group>"; };
 		F3D99C2E1C180EC5007A20F9 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		F3DA1CEF1C2524410046EDE0 /* CircularTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularTimer.h; sourceTree = "<group>"; };
+		F3DA1CF01C2524410046EDE0 /* CircularTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularTimer.m; sourceTree = "<group>"; };
 		F3E266631BECCB2E00717724 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		F3E266641BECCB2E00717724 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopupViewController.swift; sourceTree = "<group>"; };
@@ -522,6 +525,8 @@
 		F39F4AD01BF9EE3E00056A0B /* Timer */ = {
 			isa = PBXGroup;
 			children = (
+				F3DA1CEF1C2524410046EDE0 /* CircularTimer.h */,
+				F3DA1CF01C2524410046EDE0 /* CircularTimer.m */,
 				F39F4AD11BF9EE5600056A0B /* MZTimerLabel.h */,
 				F39F4AD21BF9EE5600056A0B /* MZTimerLabel.m */,
 			);
@@ -763,6 +768,7 @@
 				F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */,
 				F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */,
 				F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */,
+				F3DA1CF11C2524410046EDE0 /* CircularTimer.m in Sources */,
 				F3438A7E1BB27E62001BA5E6 /* LoginViewController.swift in Sources */,
 				F3D99C2D1C180EC5007A20F9 /* Configurations.swift in Sources */,
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,

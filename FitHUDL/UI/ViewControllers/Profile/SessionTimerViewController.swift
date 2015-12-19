@@ -9,8 +9,8 @@
 import UIKit
 
 class SessionTimerViewController: UIViewController {
-    @IBOutlet weak var circleView: UIView!
-    @IBOutlet weak var timerView: TimerView!
+//    @IBOutlet weak var circleView: UIView!
+//    @IBOutlet weak var timerView: TimerView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var timerLabel: MZTimerLabel!
     @IBOutlet weak var statusLabel: UILabel!
@@ -41,14 +41,11 @@ class SessionTimerViewController: UIViewController {
     var imagePath = ""
     var notShared = false
     var time:Int  = 0
+    var circleTimer: CircularTimer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        appDelegate.configDictionary.setObject(1, forKey: TimeOut.sessionDuration)
-        let radius        = max(circleView.frame.size.width,circleView.frame.size.height)
-        circleView.layer.cornerRadius = CGFloat(radius)/2.0
-        circleView.layer.borderWidth  = 2.0
-        circleView.layer.borderColor  = AppColor.timerColor.CGColor
+
         timerLabel.timerType = MZTimerLabelTypeTimer
         timerLabel.timeLabel = timerLabel
         timerLabel.delegate  = self
@@ -71,15 +68,18 @@ class SessionTimerViewController: UIViewController {
         
         let sportsName = sessionDictionary["sports_name"] as? String
         
-        if sessionDictionary["user_id"] as! Int == appDelegate.user!.profileID {
-            isTrainer = false
-            let name  = sessionDictionary["trainer_name"] as? String
-            nameLabel.text = "\(sportsName!) session with \(name!)"
-        } else if sessionDictionary["trainer_id"] as! Int == appDelegate.user!.profileID {
-            isTrainer = true
-            let name  = sessionDictionary["user_name"] as? String
-            nameLabel.text = "\(sportsName!) session with \(name!)"
+        if let currentUser = appDelegate.user {
+            if sessionDictionary["user_id"] as! Int == currentUser.profileID {
+                isTrainer = false
+                let name  = sessionDictionary["trainer_name"] as? String
+                nameLabel.text = "\(sportsName!) session with \(name!)"
+            } else if sessionDictionary["trainer_id"] as! Int == currentUser.profileID {
+                isTrainer = true
+                let name  = sessionDictionary["user_name"] as? String
+                nameLabel.text = "\(sportsName!) session with \(name!)"
+            }
         }
+
         let startTime = Globals.convertTimeTo12Hours((sessionDictionary["start_time"] as? String)!)
         let endTime = Globals.convertTimeTo12Hours((sessionDictionary["end_time"] as? String)!)
         
@@ -100,19 +100,34 @@ class SessionTimerViewController: UIViewController {
         }
         // Do any additional setup after loading the view.
     }
-
+    
+    func getDate(stringDate: String) -> NSDate {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.dateFromString(stringDate)!
+    }
+    
+    func createTimer() {
+        circleTimer = CircularTimer(position: CGPoint(x: (contentView.frame.size.width-160)/2, y: 125), radius: 80, internalRadius: 78, circleStrokeColor: AppColor.timerColor, activeCircleStrokeColor: AppColor.boxBorderColor, initialDate: getDate((sessionDictionary["start_time"] as? String)!), finalDate: getDate((sessionDictionary["end_time"] as? String)!), startCallback: { () -> Void in
+        }, endCallback: { () -> Void in
+        })
+        view.addSubview(circleTimer)
+        timerLabel.start()
+    }
+    
+    func removeTimer() {
+        circleTimer = nil
+        circleTimer.removeFromSuperview()
+    }
+    
     override func viewWillAppear(animated: Bool) {
+        createTimer()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "startSessionExtension:", name: PushNotification.sessionNotif, object: nil)
-        startTimer()
     }
     
     override func viewWillDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-   
-    func startTimer() {
-        timerLabel.start()
-        timerView.resetView(time)
+        removeTimer()
     }
     
     func showUserRateView() {
@@ -137,11 +152,8 @@ class SessionTimerViewController: UIViewController {
                     self.shareView.hidden    = true
                     self.contentView.hidden  = false
                     timerLabel.reset()
-                    timerView.layer.sublayers.removeLast()
-                    timerView.setNeedsDisplay()
-                    timerView.resetView(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue*secondsValue)
-                    timerLabel.start()
-                    statusLabel.text = "This session has been started."
+                    removeTimer()
+                    createTimer()
                 } else {
                     dismissViewControllerAnimated(true, completion: nil)
                 }
@@ -184,7 +196,6 @@ class SessionTimerViewController: UIViewController {
     
     @IBAction func userRate(sender: UIButton) {
         let selectedState = sender.selected
-        
         if sender == starOne {
             if !selectedState {
                 userRate = 1
@@ -380,18 +391,17 @@ class SessionTimerViewController: UIViewController {
                 } else {
                     if status == ResponseStatus.success {
                         if connection.connectionTag == Connection.sessionExtend {
-                            showDismissiveAlertMesssage("Please wait till your trainer respond to your session extension request!")
-//                            if let extend = jsonResult["extend"] as? Int {
-//                                if extend == 1 {
-//
-//                                } else {
-//                                    if let message = jsonResult["message"] as? String {
-//                                        showSessionAlert(message)
-//                                    } else {
-//                                        showSessionAlert("This session cannot be extended!")
-//                                    }
-//                                }
-//                            }
+                            if let extend = jsonResult["extend"] as? Int {
+                                if extend == 1 {
+                                    showDismissiveAlertMesssage("Please wait till your trainer respond to your session extension request!")
+                                } else {
+                                    if let message = jsonResult["message"] as? String {
+                                        showSessionAlert(message)
+                                    } else {
+                                        showSessionAlert("This session cannot be extended!")
+                                    }
+                                }
+                            }
                         } else if connection.connectionTag == Connection.sessionComplete {
                             if !isTrainer {
                                 showUserRateView()
