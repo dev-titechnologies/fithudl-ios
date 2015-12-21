@@ -14,7 +14,7 @@ let SHARE_URL  = "http://www.fithudl.com/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
-let alertTitle  = "FitHUDL"
+let alertTitle  = "FitHudl"
 
 let IS_IPHONE4S     = UIScreen.mainScreen().bounds.size.height == 480 ? true : false
 let IS_IPHONE5      = UIScreen.mainScreen().bounds.size.height == 568 ? true : false
@@ -37,7 +37,7 @@ struct AppColor {
 }
 
 struct Message {
-    static let Offline  = "The Internet connection appears to be offline."
+    static let Offline  = "Not connected to the internet!"
     static let Error    = "Internal Error"
 }
 

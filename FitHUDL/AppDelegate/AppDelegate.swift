@@ -194,7 +194,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     if let status = jsonResult["status"] as? Int {
                         if status == ResponseStatus.success {
                             NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : jsonResult])
-
                         } else {
                             if let message = jsonResult["message"] as? String {
                                 UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "OK").show()

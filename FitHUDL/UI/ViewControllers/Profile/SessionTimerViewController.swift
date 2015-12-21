@@ -112,6 +112,7 @@ class SessionTimerViewController: UIViewController {
         }, endCallback: { () -> Void in
         })
         view.addSubview(circleTimer)
+        statusLabel.text = "The session has been started."
         timerLabel.start()
     }
     
@@ -159,6 +160,13 @@ class SessionTimerViewController: UIViewController {
                     self.contentView.hidden  = false
                     timerLabel.reset()
                     removeTimer()
+                    sessionDictionary.setValue(sessionDictionary["end_time"], forKey: "start_time")
+                    let formatter = NSDateFormatter()
+                    formatter.dateFormat = "HH:mm"
+                    let time    = formatter.dateFromString((sessionDictionary["end_time"] as? String)!)
+                    time?.dateByAddingTimeInterval(NSTimeInterval(appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue * secondsValue))
+                    let endTime = formatter.stringFromDate(time!)
+                    sessionDictionary.setValue(endTime, forKey: "end_time")
                     createTimer()
                 } else {
                     dismissViewControllerAnimated(true, completion: nil)
