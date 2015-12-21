@@ -69,7 +69,7 @@ class SignupViewController: UIViewController {
 //        view.layoutIfNeeded()
        
         
-        let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText]
+        let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText.colorWithAlphaComponent(0.5)]
         var placeHolderString   = NSAttributedString(string: emailTextField.placeholder!, attributes: colorAttributes)
         emailTextField.attributedPlaceholder = placeHolderString
         

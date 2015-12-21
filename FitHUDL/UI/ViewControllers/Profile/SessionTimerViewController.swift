@@ -102,7 +102,7 @@ class SessionTimerViewController: UIViewController {
     }
     
     func getDate(stringDate: String) -> NSDate {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter        = NSDateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.dateFromString(stringDate)!
     }
@@ -116,8 +116,9 @@ class SessionTimerViewController: UIViewController {
     }
     
     func removeTimer() {
-        circleTimer = nil
-        circleTimer.removeFromSuperview()
+        if let timer = circleTimer {
+            circleTimer.removeFromSuperview()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -131,6 +132,7 @@ class SessionTimerViewController: UIViewController {
     }
     
     func showUserRateView() {
+        removeTimer()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.contentView.hidden  = true
             self.rateView.hidden     = false
@@ -142,7 +144,11 @@ class SessionTimerViewController: UIViewController {
             let session = userInfo["session"] as! NSDictionary
             if let type = session["type"] as? String {
                 if type == PushNotification.sessionFail {
-                    showUserRateView()
+                    if !isTrainer {
+                        showUserRateView()
+                    } else {
+                        dismissViewControllerAnimated(true, completion: nil)
+                    }
                     return
                 }
             }

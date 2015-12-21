@@ -34,7 +34,7 @@ class CustomPopupViewController: UIViewController {
     
     @IBOutlet weak var bioTitleLabel: UILabel!
     @IBOutlet weak var updateButton: UIButton!
-//    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     var delegate:ConfirmBookDelegate?
     var viewTag = 0
     var bioText: String?
@@ -61,11 +61,13 @@ class CustomPopupViewController: UIViewController {
         case ViewTag.bioText:
             bioView.hidden      = false
             if bioText == "" {
+                closeButton.hidden   = true
                 updateButton.hidden  = false
                 updateButton.layer.borderColor = UIColor.whiteColor().CGColor
                 bioTextView.editable = true
                 bioTextView.becomeFirstResponder()
             } else {
+                closeButton.hidden   = false
                 updateButton.hidden  = true
                 bioTextView.editable = false
                 bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)

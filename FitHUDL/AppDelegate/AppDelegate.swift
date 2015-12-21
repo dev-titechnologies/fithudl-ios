@@ -46,9 +46,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         application.registerForRemoteNotifications()
         sendRequestToGetAllUserNames()
         
+        if let options = launchOptions { //If Launching through  Remote Notification
+            if let userInfo = options["UIApplicationLaunchOptionsRemoteNotificationKey"] as? NSDictionary { //Remote
+                pushNotification = userInfo
+                if let aps = pushNotification["aps"] as? NSDictionary {
+                    if let message = aps["alert"] as? String {
+                        if let details = pushNotification["details"] as? NSDictionary {
+                            if let type = details["type"] as? String {
+                                if type == PushNotification.sessionStart {
+                                    UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "OK").show()
+                                    deepLinkNotification(details)
+                                } else if type == PushNotification.sessionExtend {
+                                    showSessionExtensionAlert(message)
+                                } else if type == PushNotification.sessionSuccess || type == PushNotification.sessionFail {
+                                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : details])
+                                } else {
+                                    showNotificationAlert(message)
+                                }
+                            } else {
+                                showNotificationAlert(message)
+                            }
+                        } else {
+                            showNotificationAlert(message)
+                        }
+                    }
+                }
+
+            }
+        }
+        
         NewRelicAgent.enableFeatures(NRMAFeatureFlags.NRFeatureFlag_SwiftInteractionTracing);
         NewRelic.startWithApplicationToken("AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899")
        
+//        NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "createSampleNotifDictionary", userInfo: nil, repeats: false)
+        
         return true
     }
 
@@ -76,6 +107,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Saves changes in the application's managed object context before the application terminates.
         Globals.clearSession()
         self.saveContext()
+    }
+    
+    
+    func createSampleNotifDictionary() {
+        let sample = NSMutableDictionary()
+        sample.setObject("12:24", forKey: "start_time")
+        sample.setObject("12:27", forKey: "end_time")
+        sample.setObject("Jemy Thomas", forKey: "user_name")
+        sample.setObject("Bindiya Prakash", forKey: "trainer_name")
+        sample.setObject(2, forKey: "user_id")
+        sample.setObject(1, forKey: "trainer_id")
+        sample.setObject(4, forKey: "sports_id")
+        sample.setObject("Tennis", forKey: "sports_name")
+        sample.setObject("2015-12-21", forKey: "alloted_date")
+        deepLinkNotification(sample)
     }
     
     
@@ -151,13 +197,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
                         } else {
                             if let message = jsonResult["message"] as? String {
-                                UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
+                                UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "OK").show()
                             }
                         }
                     }
                 }
             } else {
-                UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "Ok").show()
+                UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
             }
         }
 
@@ -227,7 +273,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     if let details = userInfo["details"] as? NSDictionary {
                         if let type = details["type"] as? String {
                             if type == PushNotification.sessionStart {
-                                UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
+                                UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "OK").show()
                                 deepLinkNotification(details)
                             } else if type == PushNotification.sessionExtend {
                                 showSessionExtensionAlert(message)
@@ -253,7 +299,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if let userInfo = timer.userInfo as? NSDictionary {
             if let details = userInfo["session"] as? NSDictionary {
                 if Globals.convertTime(NSDate()) == (details["start_time"] as! String) {
-                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details, "time": appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue])
+                    let formatter        = NSDateFormatter()
+                    formatter.dateFormat = "HH:mm"
+                    formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    let startTime        = formatter.dateFromString(details["start_time"] as! String)
+                    let endTime          = formatter.dateFromString(details["end_time"] as! String)
+                    let currentTime      = formatter.dateFromString(Globals.convertTime(NSDate()))
+                    let timeDiff         = endTime!.timeIntervalSinceDate(currentTime!)/NSTimeInterval(secondsValue)
+                    NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.timerNotif, object: nil, userInfo: ["session" : details, "time": Int(timeDiff)])
                     timer.invalidate()
                 }
             }
@@ -293,7 +346,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         if let details = userInfo["details"] as? NSDictionary {
                             if let type = details["type"] as? String {
                                 if type == PushNotification.sessionStart {
-                                    UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "Ok").show()
+                                    UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "OK").show()
                                     deepLinkNotification(details)
                                 } else if type == PushNotification.sessionExtend {
                                     showSessionExtensionAlert(message)
@@ -304,7 +357,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         }
                     }
                 }
-                
             }
             notificationArray.removeLastObject()
         }
@@ -344,7 +396,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         alertView.delegate  = self
         alertView.title     = alertTitle
         alertView.message   = message
-        alertView.addButtonWithTitle("Ok")
+        alertView.addButtonWithTitle("OK")
         alertView.show()
     }
     

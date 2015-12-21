@@ -75,7 +75,7 @@ class ChangePasswordViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    UIAlertView(title: alertTitle, message: "Password updated successfully", delegate: nil, cancelButtonTitle: "Ok").show()
+                    UIAlertView(title: alertTitle, message: "Password updated successfully", delegate: nil, cancelButtonTitle: "OK").show()
                     dismissViewControllerAnimated(true, completion: nil)
                     
                 } else if status == ResponseStatus.error {

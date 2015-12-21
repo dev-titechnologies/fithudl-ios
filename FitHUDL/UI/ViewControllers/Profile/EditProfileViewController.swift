@@ -217,7 +217,7 @@ class EditProfileViewController: UIViewController {
 
         while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(fromTime!)), endTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(timeAfterInterval!)), user: appDelegate.user!)
-            if !timeArray.containsObject(time) {
+            if !timeArray.valueForKey("timeStarts")!.containsObject(time.timeStarts) {
                 timeArray.addObject(time)
             }
             fromTime          = timeAfterInterval?.dateByAddingTimeInterval(NSTimeInterval(duration))
@@ -236,6 +236,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func dismissTimeView(sender: UIButton) {
+        doneButton.enabled = true
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = 0.0
             self.view.layoutIfNeeded()
@@ -261,6 +262,7 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func addTimeButtonClicked(sender: UIButton) {
         if let date = datePicker.selectedDate {
+            doneButton.enabled = false
             setTimePickerValues()
             setTimeValues()
             timesetView.hidden = false
@@ -375,6 +377,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func setButtonClicked(sender: UIButton) {
+        doneButton.enabled = true
         if validateTimeRange() {
             let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text):\((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
             let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text):\((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"

@@ -128,7 +128,7 @@ class LoginOrSignUpViewController: UIViewController {
                             UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
                             return
                         })
-                        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: { (okAction) -> Void in
+                        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: { (okAction) -> Void in
                             return
                         })
                         alert.addAction(settingsAction)
