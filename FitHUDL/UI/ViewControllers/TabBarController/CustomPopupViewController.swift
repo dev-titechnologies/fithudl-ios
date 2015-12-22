@@ -32,10 +32,12 @@ class CustomPopupViewController: UIViewController {
     @IBOutlet weak var bookButton: UIButton!
     @IBOutlet weak var confirmView: UIView!
     
+    @IBOutlet weak var textViewHeight: NSLayoutConstraint!
     @IBOutlet weak var bioTitleLabel: UILabel!
     @IBOutlet weak var updateButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     var delegate:ConfirmBookDelegate?
+    @IBOutlet weak var separatorView: UIView!
     var viewTag = 0
     var bioText: String?
     var timeDictionary: NSDictionary?
@@ -65,13 +67,15 @@ class CustomPopupViewController: UIViewController {
                 updateButton.hidden  = false
                 updateButton.layer.borderColor = UIColor.whiteColor().CGColor
                 bioTextView.editable = true
+                separatorView.hidden = false
                 bioTextView.becomeFirstResponder()
             } else {
                 closeButton.hidden   = false
                 updateButton.hidden  = true
                 bioTextView.editable = false
-                bioTextView.setTranslatesAutoresizingMaskIntoConstraints(true)
-                bioTextView.frame    = CGRect(origin: bioTextView.frame.origin, size: CGSize(width: bioTextView.frame.size.width, height: bioView.frame.size.height-bioTextView.frame.origin.y))
+                separatorView.hidden = true
+                textViewHeight.constant = 120.0
+                view.layoutIfNeeded()
             }
             var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 16.0)!, NSForegroundColorAttributeName: AppColor.boxBorderColor])
             bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()]))
@@ -227,6 +231,13 @@ class CustomPopupViewController: UIViewController {
 }
 
 extension CustomPopupViewController: UITextViewDelegate {
+    
+    func textViewDidChange(textView: UITextView) {
+        let newSize = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: 120.0))
+        textViewHeight.constant = newSize.height
+        view.layoutIfNeeded()
+    }
+    
     func textViewDidBeginEditing(textView: UITextView) {
         
     }

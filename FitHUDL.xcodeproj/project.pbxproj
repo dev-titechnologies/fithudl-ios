@@ -180,7 +180,7 @@
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		F3CC9DDD1C0DC64D006DAF6A /* RageProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RageProducts.swift; sourceTree = "<group>"; };
-		F3CDCB2A1BB27D490070EDAF /* FitHudl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitHudl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3CDCB2A1BB27D490070EDAF /* Pillar Fitness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pillar Fitness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CDCB2E1BB27D490070EDAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3CDCB341BB27D4A0070EDAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F3CDCB391BB27D4A0070EDAF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -557,7 +557,7 @@
 		F3CDCB2B1BB27D490070EDAF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F3CDCB2A1BB27D490070EDAF /* FitHudl.app */,
+				F3CDCB2A1BB27D490070EDAF /* Pillar Fitness.app */,
 				F3CDCB421BB27D4A0070EDAF /* FitHUDLTests.xctest */,
 			);
 			name = Products;
@@ -627,7 +627,7 @@
 			);
 			name = FitHUDL;
 			productName = FitHUDL;
-			productReference = F3CDCB2A1BB27D490070EDAF /* FitHudl.app */;
+			productReference = F3CDCB2A1BB27D490070EDAF /* Pillar Fitness.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F3CDCB411BB27D4A0070EDAF /* FitHUDLTests */ = {
@@ -932,7 +932,7 @@
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FitHudl;
+				PRODUCT_NAME = "Pillar Fitness";
 				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
@@ -953,7 +953,7 @@
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FitHudl;
+				PRODUCT_NAME = "Pillar Fitness";
 				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};

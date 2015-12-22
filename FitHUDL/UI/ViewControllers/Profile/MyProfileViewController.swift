@@ -1254,7 +1254,7 @@ extension MyProfileViewController : UITableViewDataSource {
         cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFit
         let imageurl                = SERVER_URL.stringByAppendingString(imageUrl as String) as NSString
         if imageurl.length != 0 {
-            if var imagesArray = Images.fetch(imageUrl as String) {
+            if var imagesArray = Images.fetch(imageurl as String) {
                 let image      = imagesArray[0] as! Images
                 let coverImage = UIImage(data: image.imageData)!
                 cell.profilePic.contentMode = UIViewContentMode.ScaleAspectFill

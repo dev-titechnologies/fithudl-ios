@@ -231,6 +231,24 @@ class EditProfileViewController: UIViewController {
         timeCollectionView.reloadData()
     }
 
+    func highlightTappedView() {
+        let view1 = tappedView?.viewWithTag(10)
+        let view2 = tappedView?.viewWithTag(11)
+        let view3 = tappedView?.viewWithTag(12)
+        view1?.backgroundColor = AppColor.statusBarColor
+        view2?.backgroundColor = AppColor.statusBarColor
+        view3?.backgroundColor = AppColor.statusBarColor
+    }
+    
+    func unhighlightTappedView(tappedView: UIView) {
+        let view1 = tappedView.viewWithTag(10)
+        let view2 = tappedView.viewWithTag(11)
+        let view3 = tappedView.viewWithTag(12)
+        view1?.backgroundColor = AppColor.boxBorderColor
+        view2?.backgroundColor = AppColor.boxBorderColor
+        view3?.backgroundColor = AppColor.boxBorderColor
+    }
+    
     @IBAction func backButtonClicked(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -356,6 +374,8 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func starttimeTapped(sender: UITapGestureRecognizer) {
         tappedView = sender.view
+        unhighlightTappedView(endtimeView)
+        highlightTappedView()
         setTimePickerValues()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = -350.0
@@ -366,6 +386,8 @@ class EditProfileViewController: UIViewController {
     @IBAction func endtimeTapped(sender: UITapGestureRecognizer) {
         tappedView = sender.view
         setTimePickerValues()
+        unhighlightTappedView(starttimeView)
+        highlightTappedView()
         UIView.animateWithDuration(animateInterval, animations: { () -> Void in
             self.timesetViewTopConstraint.constant = -350.0
             self.view.layoutIfNeeded()
@@ -378,6 +400,7 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func setButtonClicked(sender: UIButton) {
         doneButton.enabled = true
+        unhighlightTappedView(tappedView!)
         if validateTimeRange() {
             let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text):\((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
             let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text):\((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"
