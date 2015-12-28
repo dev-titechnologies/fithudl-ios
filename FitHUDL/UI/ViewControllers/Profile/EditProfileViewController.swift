@@ -30,6 +30,7 @@ class EditProfileViewController: UIViewController {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     @IBOutlet weak var interestTextView: UITextView!
+    @IBOutlet weak var moreTimeButton: UIButton!
     var bioOnly     = false
     var photoSelected = false
     let hourField   = 97
@@ -39,6 +40,10 @@ class EditProfileViewController: UIViewController {
     var initialStart: NSDate?   = nil
     var initialEnd: NSDate?     = nil
     let availSessionTime = NSMutableDictionary()
+    
+    @IBOutlet weak var contentViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var timeViewHeightConstraint: NSLayoutConstraint!
+    
     let duration = appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue * secondsValue
     let interval = appDelegate.configDictionary[TimeOut.sessionInterval]!.integerValue * secondsValue
     
@@ -50,7 +55,8 @@ class EditProfileViewController: UIViewController {
         
         interestTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
         interestTextView.layer.borderWidth = 1.0
-
+        
+        moreTimeButton.hidden = true
         
         navigationController?.setStatusBarColor()
         
@@ -228,6 +234,27 @@ class EditProfileViewController: UIViewController {
     }
     
     func dateValueChanged(collectionView: UICollectionView) {
+        if let datePicker = datePicker.selectedDate {
+            if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
+                if timeArray.count > 6 {
+                    moreTimeButton.hidden = false
+                } else {
+                    moreTimeButton.hidden = true
+                }
+            } else {
+                moreTimeButton.hidden = true
+            }
+            timeViewHeightConstraint.constant    = 90.0
+            if IS_IPHONE4S || IS_IPHONE5 {
+                contentViewHeightConstriant.constant = 603.0
+            } else {
+                contentViewHeightConstriant.constant = contentScrollView.frame.size.height
+            }
+            view.layoutIfNeeded()
+            contentScrollView.contentSize   = CGSize(width: contentScrollView.frame.size.width, height: contentViewHeightConstriant.constant)
+        } else {
+            moreTimeButton.hidden = true
+        }
         timeCollectionView.reloadData()
     }
 
@@ -276,6 +303,18 @@ class EditProfileViewController: UIViewController {
         actionSheet.addAction(photoLibraryButton)
         actionSheet.addAction(cancelButton)
         presentViewController(actionSheet, animated: true, completion: nil)
+    }
+    
+    @IBAction func moreTimeButtonClicked(sender: UIButton) {
+        timeViewHeightConstraint.constant    = timeCollectionView.contentSize.height
+        contentViewHeightConstriant.constant += (timeViewHeightConstraint.constant-90.0)
+        view.layoutIfNeeded()
+        println(timeViewHeightConstraint.constant)
+        println(contentViewHeightConstriant.constant)
+        contentScrollView.contentSize        = CGSize(width: contentScrollView.frame.size.width, height: contentViewHeightConstriant.constant)
+        println(contentScrollView.contentSize)
+        moreTimeButton.hidden = true
+        println(timeCollectionView.contentSize)
     }
     
     @IBAction func addTimeButtonClicked(sender: UIButton) {
@@ -412,6 +451,19 @@ class EditProfileViewController: UIViewController {
             self.view.layoutIfNeeded()
         }) { (completed) -> Void in
             self.timesetView.hidden = true
+        }
+        if let datePicker = datePicker.selectedDate {
+            if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
+                if timeArray.count > 6 {
+                    moreTimeButton.hidden = false
+                } else {
+                    moreTimeButton.hidden = true
+                }
+            } else {
+                moreTimeButton.hidden = true
+            }
+        } else {
+            moreTimeButton.hidden = true
         }
     }
     

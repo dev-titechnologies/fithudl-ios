@@ -75,6 +75,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     let calloutViewYAxis:CGFloat = 52.0
     var profileUser: User?
     var notificationListArray =  Array<Notification>()
+    var profileImage: NSData? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -693,14 +694,22 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             if responseDictionary["email_verify"] as! Int == 0 {
                 showEmailVerifyAlert()
             }
+            if let user = appDelegate.user {
+                if user.profileImage.length != 0 {
+                    profileImage = user.profileImage
+                }
+            }
             User.deleteUser(NSPredicate(format: "currentUser = %d", argumentArray: [1]))
-            appDelegate.user            = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDelegate.managedObjectContext!) as? User
-            appDelegate.user!.currentUser = 1
-            appDelegate.user!.profileID  = Globals.checkIntNull(responseDictionary["profile_id"] as? Int)
-            appDelegate.user!.name       = Globals.checkStringNull(responseDictionary["profile_name"] as? String)
-            appDelegate.user!.email      = Globals.checkStringNull(responseDictionary["email"] as? String)
-            appDelegate.user!.userVerified = Globals.checkIntNull(responseDictionary["user_verified"] as? Int)
+            appDelegate.user                = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDelegate.managedObjectContext!) as? User
+            appDelegate.user!.currentUser   = 1
+            appDelegate.user!.profileID     = Globals.checkIntNull(responseDictionary["profile_id"] as? Int)
+            appDelegate.user!.name          = Globals.checkStringNull(responseDictionary["profile_name"] as? String)
+            appDelegate.user!.email         = Globals.checkStringNull(responseDictionary["email"] as? String)
+            appDelegate.user!.userVerified  = Globals.checkIntNull(responseDictionary["user_verified"] as? Int)
             appDelegate.user!.walletBalance = Globals.checkStringNull(responseDictionary["wallet_balance"] as? String)
+            if let image = profileImage {
+                appDelegate.user!.profileImage = image
+            }
             if let imageUrl = responseDictionary["profile_image"] as? String {
                 appDelegate.user!.imageURL = imageUrl
             } else {

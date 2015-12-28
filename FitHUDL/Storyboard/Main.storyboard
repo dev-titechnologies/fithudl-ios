@@ -169,6 +169,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -186,6 +187,10 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="juV-g1-TJP">
                                 <rect key="frame" x="83" y="7" width="154" height="93"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="154" id="GYk-8Y-WMw"/>
+                                    <constraint firstAttribute="height" constant="93" id="bFT-7Y-64O"/>
+                                </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgImage" translatesAutoresizingMaskIntoConstraints="NO" id="1D3-3l-zLb">
                                 <rect key="frame" x="19" y="109" width="285" height="277"/>
@@ -5418,6 +5423,9 @@
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="c6y-Af-Ay5" userLabel="Availabletime collectionview">
                                                 <rect key="frame" x="0.0" y="385" width="320" height="90"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="90" id="eGj-1d-uQI"/>
+                                                </constraints>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="vEV-MK-vdv">
                                                     <size key="itemSize" width="98" height="40"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -5773,14 +5781,31 @@
                                                     <action selector="doneButtonClicked:" destination="yoO-1H-K1M" eventType="touchUpInside" id="64V-8y-hEN"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xw7-x0-6aC">
+                                                <rect key="frame" x="266" y="469" width="46" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="46" id="kbM-ff-6PF"/>
+                                                    <constraint firstAttribute="height" constant="30" id="rFO-4E-wh7"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                                <state key="normal" title="More">
+                                                    <color key="titleColor" red="0.95686274510000002" green="0.54117647059999996" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="moreTimeButtonClicked:" destination="yoO-1H-K1M" eventType="touchUpInside" id="KkX-7M-PFA"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="Dee-VW-XOg" firstAttribute="top" secondItem="Zbg-pN-Esw" secondAttribute="bottom" id="2BD-pd-CMQ"/>
+                                            <constraint firstItem="xw7-x0-6aC" firstAttribute="top" secondItem="c6y-Af-Ay5" secondAttribute="bottom" constant="-6" id="56C-6k-z0m"/>
                                             <constraint firstItem="2yf-6l-ESr" firstAttribute="centerY" secondItem="nl8-aH-vit" secondAttribute="centerY" constant="2" id="7ih-2o-hK7"/>
                                             <constraint firstAttribute="trailing" secondItem="UZ8-FQ-GMI" secondAttribute="trailing" constant="10" id="7ta-b6-MHH"/>
                                             <constraint firstAttribute="trailing" secondItem="B5C-bE-FZ9" secondAttribute="trailing" constant="10" id="BlH-Cw-wsC"/>
                                             <constraint firstItem="Zbg-pN-Esw" firstAttribute="top" secondItem="UZ8-FQ-GMI" secondAttribute="bottom" constant="4" id="Blx-df-f2M"/>
+                                            <constraint firstAttribute="trailing" secondItem="xw7-x0-6aC" secondAttribute="trailing" constant="8" id="Cle-nu-gLa"/>
                                             <constraint firstItem="2yf-6l-ESr" firstAttribute="centerX" secondItem="nl8-aH-vit" secondAttribute="centerX" id="Co8-n5-dnY"/>
                                             <constraint firstAttribute="bottom" secondItem="B5C-bE-FZ9" secondAttribute="bottom" constant="10" id="DJg-iN-eJf"/>
                                             <constraint firstItem="wYD-LA-Czp" firstAttribute="top" secondItem="B5C-bE-FZ9" secondAttribute="bottom" constant="10" id="DsW-F6-xrm"/>
@@ -5819,7 +5844,7 @@
                                 <rect key="frame" x="0.0" y="504" width="320" height="180"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wfy-7z-yGE" customClass="SRMonthPicker">
-                                        <rect key="frame" x="0.0" y="27" width="320" height="162"/>
+                                        <rect key="frame" x="0.0" y="26" width="320" height="162"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="145" id="Dg4-WL-6KV"/>
                                         </constraints>
@@ -5918,6 +5943,7 @@
                         <outlet property="interestTextView" destination="R7E-oI-5ru" id="yiK-1V-1g0"/>
                         <outlet property="monthButton" destination="tdI-RK-6ON" id="DpZ-iL-P10"/>
                         <outlet property="monthPick" destination="Wfy-7z-yGE" id="4qG-WY-oXD"/>
+                        <outlet property="moreTimeButton" destination="xw7-x0-6aC" id="KF1-qC-VaF"/>
                         <outlet property="nameLabel" destination="UZ8-FQ-GMI" id="Z9l-UN-ga2"/>
                         <outlet property="photoButton" destination="HCk-yt-DGZ" id="isJ-Bl-h9m"/>
                         <outlet property="photoImageView" destination="nl8-aH-vit" id="e7u-e3-5ce"/>
@@ -5925,6 +5951,7 @@
                         <outlet property="starttimeView" destination="fjj-yH-6YA" id="ruG-li-4gY"/>
                         <outlet property="timeCollectionView" destination="c6y-Af-Ay5" id="77a-gj-ZZL"/>
                         <outlet property="timePicker" destination="74m-Lp-6jZ" id="IXV-pT-OJG"/>
+                        <outlet property="timeViewHeightConstraint" destination="eGj-1d-uQI" id="Jq0-B3-H0g"/>
                         <outlet property="timesetView" destination="wYD-LA-Czp" id="xYN-gd-aVj"/>
                         <outlet property="timesetViewTopConstraint" destination="DsW-F6-xrm" id="HkV-yh-CuE"/>
                     </connections>
