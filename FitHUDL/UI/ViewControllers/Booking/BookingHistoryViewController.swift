@@ -53,8 +53,14 @@ class BookingHistoryViewController: UIViewController {
         let yesAction   = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
             let cell        = sender.superview?.superview as! HistoryTableViewCell
             let indexPath   = self.historyTableView.indexPathForCell(cell)
-            let request     = self.bookingSegmentControl.selectedSegmentIndex == 0 ? (self.myBookings[indexPath!.row] as! Bookings) : (self.bookings[indexPath!.row] as! Bookings)
-            self.sendRequestToCancelSession(request.requestID.integerValue)
+            if self.bookingSegmentControl.selectedSegmentIndex == 0 {
+                let request = self.myBookings[indexPath!.row] as! Bookings
+                self.sendRequestToCancelSession(request.requestID.integerValue, methodName:"sessionCancel")
+            } else {
+                let request = self.bookings[indexPath!.row] as! Bookings
+                self.sendRequestToCancelSession(request.requestID.integerValue, methodName:"sessionCancelByTrainer")
+            }
+
         }
         alert.addAction(noAction)
         alert.addAction(yesAction)
@@ -73,7 +79,7 @@ class BookingHistoryViewController: UIViewController {
     }
     
     
-    func sendRequestToCancelSession(requestID: Int) {
+    func sendRequestToCancelSession(requestID: Int, methodName: String) {
         if !Globals.isInternetConnected() {
             return
         }
@@ -81,7 +87,7 @@ class BookingHistoryViewController: UIViewController {
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(requestID, forKey: "request_id")
         cancelDictionary = requestDictionary
-        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/sessionCancel", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionCancel)
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/\(methodName)", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionCancel)
     }
 
     func sendRequestToGetSessions() {
@@ -132,6 +138,7 @@ class BookingHistoryViewController: UIViewController {
                         if filteredArray.count>0 {
                             source.removeObjectAtIndex(source.indexOfObject(filteredArray[0]))
                         }
+                        noAvailLabel.hidden = source.count == 0 ? false : true
                         historyTableView.reloadData()
                     } else {
                         Bookings.deleteBookings()
@@ -210,7 +217,7 @@ extension BookingHistoryViewController: UITableViewDataSource {
         let source  = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings : bookings
         let history = source[indexPath.row] as! Bookings
         let imageURL = bookingSegmentControl.selectedSegmentIndex == 0 ? history.trainerImage : history.userImage
-        cell.closeButton.hidden         = bookingSegmentControl.selectedSegmentIndex == 0 ? false : true
+//        cell.closeButton.hidden         = bookingSegmentControl.selectedSegmentIndex == 0 ? false : true
         cell.userImageView.image        = UIImage(named: "default_image")
         cell.userImageView.contentMode  = UIViewContentMode.ScaleAspectFit
         cell.indicatorView.startAnimating()

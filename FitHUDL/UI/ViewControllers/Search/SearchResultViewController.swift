@@ -134,7 +134,7 @@ extension SearchResultViewController : UITableViewDataSource {
         if let url = self.searchResultArray[indexPath.row].objectForKey("profile_pic") as? String {
             let imageurl = SERVER_URL.stringByAppendingString(url as String) as NSString
             if imageurl.length != 0 {
-                if var imagesArray = Images.fetch(url as String) {
+                if var imagesArray = Images.fetch(imageurl as String) {
                     let image      = imagesArray[0] as! Images
                     let coverImage = UIImage(data: image.imageData)!
                     cell.prof_pic.contentMode = UIViewContentMode.ScaleAspectFill
