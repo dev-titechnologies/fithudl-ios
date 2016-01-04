@@ -14,7 +14,7 @@ let SHARE_URL  = "http://www.fithudl.com/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
-let alertTitle  = "Pillar Fitness"
+let alertTitle  = "Pillar"
 
 let IS_IPHONE4S     = UIScreen.mainScreen().bounds.size.height == 480 ? true : false
 let IS_IPHONE5      = UIScreen.mainScreen().bounds.size.height == 568 ? true : false

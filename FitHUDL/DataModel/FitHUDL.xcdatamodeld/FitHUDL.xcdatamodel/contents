@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Bookings" representedClassName="Pillar_Fitness.Bookings" syncable="YES">
+    <entity name="Bookings" representedClassName="Pillar.Bookings" syncable="YES">
         <attribute name="allotedDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bookingID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="endTime" optional="YES" attributeType="String" syncable="YES"/>
@@ -17,23 +17,23 @@
         <attribute name="userImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Configurations" representedClassName="Pillar_Fitness.Configurations" syncable="YES">
+    <entity name="Configurations" representedClassName="Pillar.Configurations" syncable="YES">
         <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Favorites" representedClassName="Pillar_Fitness.Favorites" syncable="YES">
+    <entity name="Favorites" representedClassName="Pillar.Favorites" syncable="YES">
         <attribute name="favID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profilePic" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rateCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="session" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="Images" representedClassName="Pillar_Fitness.Images" syncable="YES">
+    <entity name="Images" representedClassName="Pillar.Images" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Notification" representedClassName="Pillar_Fitness.Notification" syncable="YES">
+    <entity name="Notification" representedClassName="Pillar.Notification" syncable="YES">
         <attribute name="allotedDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bookingID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="endTime" optional="YES" attributeType="String" syncable="YES"/>
@@ -53,7 +53,7 @@
         <attribute name="userImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Packages" representedClassName="Pillar_Fitness.Packages" syncable="YES">
+    <entity name="Packages" representedClassName="Pillar.Packages" syncable="YES">
         <attribute name="cost" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currencyFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="discount" optional="YES" attributeType="String" syncable="YES"/>
@@ -61,7 +61,7 @@
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="SportsList" representedClassName="Pillar_Fitness.SportsList" syncable="YES">
+    <entity name="SportsList" representedClassName="Pillar.SportsList" syncable="YES">
         <attribute name="isSelected" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="logo" optional="YES" attributeType="String" syncable="YES"/>
@@ -69,7 +69,7 @@
         <attribute name="sportsName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="User" representedClassName="Pillar_Fitness.User" syncable="YES">
+    <entity name="User" representedClassName="Pillar.User" syncable="YES">
         <attribute name="bio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
@@ -90,14 +90,14 @@
         <relationship name="reviews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserReview" inverseName="user" inverseEntity="UserReview" syncable="YES"/>
         <relationship name="sports" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserSports" inverseName="user" inverseEntity="UserSports" syncable="YES"/>
     </entity>
-    <entity name="UserBadges" representedClassName="Pillar_Fitness.UserBadges" syncable="YES">
+    <entity name="UserBadges" representedClassName="Pillar.UserBadges" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sessionCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="badges" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="UserReview" representedClassName="Pillar_Fitness.UserReview" syncable="YES">
+    <entity name="UserReview" representedClassName="Pillar.UserReview" syncable="YES">
         <attribute name="profileID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="profileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profilePic" optional="YES" attributeType="String" syncable="YES"/>
@@ -105,18 +105,18 @@
         <attribute name="userReview" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="reviews" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="UsersList" representedClassName="Pillar_Fitness.UsersList" syncable="YES">
+    <entity name="UsersList" representedClassName="Pillar.UsersList" syncable="YES">
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="UserSports" representedClassName="Pillar_Fitness.UserSports" syncable="YES">
+    <entity name="UserSports" representedClassName="Pillar.UserSports" syncable="YES">
         <attribute name="expertLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="logo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sportsID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sportsName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sports" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="UserTime" representedClassName="Pillar_Fitness.UserTime" syncable="YES">
+    <entity name="UserTime" representedClassName="Pillar.UserTime" syncable="YES">
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeEnds" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeStarts" optional="YES" attributeType="String" syncable="YES"/>

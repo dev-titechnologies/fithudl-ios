@@ -40,6 +40,7 @@ class EditProfileViewController: UIViewController {
     var initialStart: NSDate?   = nil
     var initialEnd: NSDate?     = nil
     let availSessionTime = NSMutableDictionary()
+    var deletedTimeArray = NSMutableArray()
     
     @IBOutlet weak var contentViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var timeViewHeightConstraint: NSLayoutConstraint!
@@ -97,8 +98,7 @@ class EditProfileViewController: UIViewController {
         var datesArray  = appDelegate.user?.availableTime.valueForKey("date") as! NSSet
         for date in datesArray {
             var filteredArray = NSMutableArray(array: appDelegate.user!.availableTime.allObjects).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date]))
-            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String
-            )
+            availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
         }
     }
     
@@ -244,18 +244,22 @@ class EditProfileViewController: UIViewController {
             } else {
                 moreTimeButton.hidden = true
             }
-            timeViewHeightConstraint.constant    = 90.0
-            if IS_IPHONE4S || IS_IPHONE5 {
-                contentViewHeightConstriant.constant = 603.0
-            } else {
-                contentViewHeightConstriant.constant = contentScrollView.frame.size.height
-            }
-            view.layoutIfNeeded()
-            contentScrollView.contentSize   = CGSize(width: contentScrollView.frame.size.width, height: contentViewHeightConstriant.constant)
+            resetTimeCollectionView()
         } else {
             moreTimeButton.hidden = true
         }
         timeCollectionView.reloadData()
+    }
+    
+    func resetTimeCollectionView() {
+        timeViewHeightConstraint.constant    = 90.0
+        if IS_IPHONE4S || IS_IPHONE5 {
+            contentViewHeightConstriant.constant = 603.0
+        } else {
+            contentViewHeightConstriant.constant = contentScrollView.frame.size.height
+        }
+        view.layoutIfNeeded()
+        contentScrollView.contentSize   = CGSize(width: contentScrollView.frame.size.width, height: contentViewHeightConstriant.constant)
     }
 
     func highlightTappedView() {
@@ -401,10 +405,14 @@ class EditProfileViewController: UIViewController {
             setTimePickerValues()
             setTimeValues()
             timesetView.hidden = false
+            resetTimeCollectionView()
             UIView.animateWithDuration(animateInterval, animations: { () -> Void in
                 self.timesetViewTopConstraint.constant = -180.0
                 self.view.layoutIfNeeded()
             })
+            if IS_IPHONE4S || IS_IPHONE5 {
+                contentScrollView.contentOffset = CGPoint(x: contentScrollView.contentOffset.x, y: 100.0)
+            }
         } else {
             showDismissiveAlertMesssage("Please select a date")
         }
@@ -585,10 +593,20 @@ class EditProfileViewController: UIViewController {
             let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
             return date1!.compare(date2!)
         })
+        let time    = timeArray.objectAtIndex(indexPath!.item) as! UserTime
+        let setTime = NSMutableDictionary()
+        setTime.setObject(time.date, forKey: "date")
+        setTime.setObject(Globals.convertTimeTo24Hours(time.timeStarts), forKey: "time_starts")
+        setTime.setObject(Globals.convertTimeTo24Hours(time.timeEnds), forKey: "time_ends")
+        setTime.setObject("del", forKey: "type")
+        deletedTimeArray.addObject(setTime)
         let mutableArray = NSMutableArray(array: timeArray)
         mutableArray.removeObjectAtIndex(indexPath!.item)
         timeArray = mutableArray
         availSessionTime.setObject(timeArray, forKey: Globals.convertDate(datePicker.selectedDate))
+        if moreTimeButton.hidden == false && timeArray.count <= 6 {
+            moreTimeButton.hidden = true
+        }
         timeCollectionView.reloadData()
     }
     
@@ -678,6 +696,7 @@ class EditProfileViewController: UIViewController {
                     timeArray.addObject(setTime)
                 }
             }
+            timeArray.addObjectsFromArray(deletedTimeArray as [AnyObject])
             requestDictionary.setObject(timeArray, forKey: "session")
             if photoSelected == true {
                 if let image = photoImageView.image {

@@ -259,7 +259,7 @@ class SignupViewController: UIViewController {
     func setExpertiseLevel(level: String) {
         let sports          = appDelegate.sportsArray[sportsCarousel.currentItemIndex] as! SportsList
         sports.level        = level
-        sports.isSelected   = !sports.isSelected.boolValue
+        sports.isSelected   = level == "" ? false : true
         sportsCarousel.reloadData()
     }
     
