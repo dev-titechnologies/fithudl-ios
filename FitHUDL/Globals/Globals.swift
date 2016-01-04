@@ -103,7 +103,7 @@ class Globals: NSObject {
             User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [currentUser.profileID.integerValue]))
         }
 
-        Bookings.deleteBookings()
+        Bookings.deleteBookings(nil)
         Packages.deletePackages()
         Favorites.deleteFavorites()
         Notification.deleteNotificationList()

@@ -55,9 +55,12 @@ class Bookings: NSManagedObject {
         return result.count == 0 ? nil : result
     }
     
-    class func deleteBookings() {
+    class func deleteBookings(predicate: NSPredicate?) {
         var error: NSError? = nil
         var fetchRequest    = NSFetchRequest(entityName: "Bookings")
+        if let filter = predicate {
+            fetchRequest.predicate = filter
+        }
         var result:NSArray  = appDelegate.managedObjectContext!.executeFetchRequest(fetchRequest, error: &error)!
         var i:Int = 0
         for i=0; i<result.count; i++ {

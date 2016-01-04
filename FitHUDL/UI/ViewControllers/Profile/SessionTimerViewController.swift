@@ -42,6 +42,8 @@ class SessionTimerViewController: UIViewController {
     var notShared = false
     var time:Int  = 0
     var circleTimer: CircularTimer!
+    var sessionTimer: NSTimer!
+    var alertInteracted = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -282,17 +284,29 @@ class SessionTimerViewController: UIViewController {
         }
     }
     
+    func autoCompleteSession() {
+        presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
+        sendRequestToExtendSession(Session.complete)
+    }
+    
     func showSessionExtensionAlert() {
         let alert = UIAlertController(title: "", message: "The session is complete. Do you wish to extend the session?", preferredStyle: UIAlertControllerStyle.Alert)
         let yesAction = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
+            self.sessionTimer.invalidate()
+            self.alertInteracted = true
             self.sendRequestToExtendSession(Session.extend)
         }
         let noAction = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel) { (noAction) -> Void in
+            self.sessionTimer.invalidate()
+            self.alertInteracted = true
             self.sendRequestToExtendSession(Session.complete)
         }
         alert.addAction(yesAction)
         alert.addAction(noAction)
-        presentViewController(alert, animated: true, completion: nil)
+        presentViewController(alert, animated: true) { () -> Void in
+            self.sessionTimer = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(4*secondsValue), target: self, selector: "autoCompleteSession", userInfo: nil, repeats: false)
+            return
+        }
     }
     
     func showSessionAlert(message: String) {
@@ -321,6 +335,7 @@ class SessionTimerViewController: UIViewController {
         if extends == Session.extend {
             connectTag = Connection.sessionExtend
         }
+        alertInteracted = false
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/sessionExtension", requestType: HttpMethod.post),delegate: self,tag: connectTag)
     }
     

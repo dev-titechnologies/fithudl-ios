@@ -285,6 +285,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         let noAction        = UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil)
         alertController.addAction(noAction)
         let yesAction       = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default) { (yesAction) -> Void in
+            self.showLoadingView(true)
             CustomURLConnection(request: CustomURLConnection.createRequest(NSMutableDictionary(), methodName: "user/logout", requestType: HttpMethod.post), delegate: self, tag: Connection.logout)
         }
         alertController.addAction(yesAction)
@@ -862,9 +863,12 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                     }
                 }  else if connection.connectionTag == Connection.notificationRequest {
                     if status == ResponseStatus.success {
-                        if let notifications = jsonResult["data"] as? NSArray {
+                        if var notifications = jsonResult["data"] as? NSMutableArray {
                             Notification.deleteNotificationList()
                             notificationListArray.removeAll(keepCapacity: true)
+                            let predicate = NSPredicate(format: "status == %@ || status == %@", argumentArray: [TrainingStatus.pendingCanceled, TrainingStatus.acceptCanceled])
+                            let filteredArray = notifications.filteredArrayUsingPredicate(predicate)
+                            notifications.removeObjectsInArray(filteredArray)
                             for notif in notifications {
                                 var notifBody = ""
                                 if let body = notif["ntfn_body"] as? String {

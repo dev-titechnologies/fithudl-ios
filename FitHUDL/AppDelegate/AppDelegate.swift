@@ -31,9 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         FBSDKLoginManager.renewSystemCredentials { (result: ACAccountCredentialRenewResult, error: NSError!) -> Void in
         }
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-        
+
         var types: UIUserNotificationType = UIUserNotificationType.Badge |
             UIUserNotificationType.Alert |
             UIUserNotificationType.Sound
@@ -112,15 +110,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func createSampleNotifDictionary() {
         let sample = NSMutableDictionary()
-        sample.setObject("12:24", forKey: "start_time")
-        sample.setObject("12:27", forKey: "end_time")
+        sample.setObject("12:20", forKey: "start_time")
+        sample.setObject("12:30", forKey: "end_time")
         sample.setObject("Jemy Thomas", forKey: "user_name")
         sample.setObject("Bindiya Prakash", forKey: "trainer_name")
         sample.setObject(2, forKey: "user_id")
         sample.setObject(1, forKey: "trainer_id")
         sample.setObject(4, forKey: "sports_id")
         sample.setObject("Tennis", forKey: "sports_name")
-        sample.setObject("2015-12-21", forKey: "alloted_date")
+        sample.setObject("2015-12-29", forKey: "alloted_date")
+        sample.setObject(8, forKey: "booking_id")
         deepLinkNotification(sample)
     }
     
@@ -140,21 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     println("searchUsers",jsonResult)
                     if let status = jsonResult["status"] as? Int {
                         if status == ResponseStatus.success {
-                            
                             UsersList.deleteUserList()
-                            
                             if let usersList = jsonResult["data"] as? NSArray {
-                                
                                 var i:Int=0
                                 for i=0;i<usersList.count;i++ {
-                                    
                                     let userName = usersList[i].objectForKey("name") as! String
                                     let userId   = usersList[i].objectForKey("id") as! Int
                                     UsersList.saveUserList(userName, usersID: "\(userId)")
-                                    
-                                    }
+                                }
                                 UsersList.fetchUsersList()
-                                
                             }
                         }
                     }

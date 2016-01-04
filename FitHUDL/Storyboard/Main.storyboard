@@ -4322,7 +4322,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="23" y="10" width="290" height="400"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
                                                 <rect key="frame" x="102" y="11" width="87" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="TAc-CO-NF3"/>
@@ -5250,22 +5250,6 @@
                                                     <action selector="photoButtonClicked:" destination="yoO-1H-K1M" eventType="touchUpInside" id="dPW-wm-g3K"/>
                                                 </connections>
                                             </button>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nl8-aH-vit">
-                                                <rect key="frame" x="115" y="20" width="90" height="90"/>
-                                                <gestureRecognizers/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="90" id="LuM-R8-6EI"/>
-                                                    <constraint firstAttribute="height" constant="90" id="ZhA-V8-iuO"/>
-                                                </constraints>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="45"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outletCollection property="gestureRecognizers" destination="JFh-Al-bAo" appends="YES" id="50I-EQ-uPU"/>
-                                                </connections>
-                                            </imageView>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2yf-6l-ESr">
                                                 <rect key="frame" x="150" y="57" width="20" height="20"/>
                                             </activityIndicatorView>
@@ -5500,6 +5484,21 @@
                                                     <outlet property="delegate" destination="yoO-1H-K1M" id="9r5-NK-3Qp"/>
                                                 </connections>
                                             </collectionView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xw7-x0-6aC">
+                                                <rect key="frame" x="266" y="469" width="46" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="46" id="kbM-ff-6PF"/>
+                                                    <constraint firstAttribute="height" constant="30" id="rFO-4E-wh7"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                                <state key="normal" title="More">
+                                                    <color key="titleColor" red="0.95686274510000002" green="0.54117647059999996" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="moreTimeButtonClicked:" destination="yoO-1H-K1M" eventType="touchUpInside" id="KkX-7M-PFA"/>
+                                                </connections>
+                                            </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wYD-LA-Czp" userLabel="Time Set View">
                                                 <rect key="frame" x="0.0" y="603" width="320" height="340"/>
                                                 <subviews>
@@ -5781,21 +5780,22 @@
                                                     <action selector="doneButtonClicked:" destination="yoO-1H-K1M" eventType="touchUpInside" id="64V-8y-hEN"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xw7-x0-6aC">
-                                                <rect key="frame" x="266" y="469" width="46" height="30"/>
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nl8-aH-vit">
+                                                <rect key="frame" x="115" y="20" width="90" height="90"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="46" id="kbM-ff-6PF"/>
-                                                    <constraint firstAttribute="height" constant="30" id="rFO-4E-wh7"/>
+                                                    <constraint firstAttribute="width" constant="90" id="LuM-R8-6EI"/>
+                                                    <constraint firstAttribute="height" constant="90" id="ZhA-V8-iuO"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
-                                                <state key="normal" title="More">
-                                                    <color key="titleColor" red="0.95686274510000002" green="0.54117647059999996" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="45"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="moreTimeButtonClicked:" destination="yoO-1H-K1M" eventType="touchUpInside" id="KkX-7M-PFA"/>
+                                                    <outletCollection property="gestureRecognizers" destination="JFh-Al-bAo" appends="YES" id="50I-EQ-uPU"/>
                                                 </connections>
-                                            </button>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>

@@ -930,6 +930,7 @@
 					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDL/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "Pillar Fitness";
@@ -951,6 +952,7 @@
 					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDL/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "Pillar Fitness";

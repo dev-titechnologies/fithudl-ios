@@ -137,11 +137,12 @@ class BookingHistoryViewController: UIViewController {
                         let filteredArray = source.filteredArrayUsingPredicate(predicate)
                         if filteredArray.count>0 {
                             source.removeObjectAtIndex(source.indexOfObject(filteredArray[0]))
+                            Bookings.deleteBookings(predicate)
                         }
                         noAvailLabel.hidden = source.count == 0 ? false : true
                         historyTableView.reloadData()
                     } else {
-                        Bookings.deleteBookings()
+                        Bookings.deleteBookings(nil)
                         myBookings.removeAllObjects()
                         bookings.removeAllObjects()
                         let bookingsArray = NSMutableArray()

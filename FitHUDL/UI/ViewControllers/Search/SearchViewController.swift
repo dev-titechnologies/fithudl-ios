@@ -47,6 +47,20 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
+            appDelegate.locationManager.requestWhenInUseAuthorization()
+            appDelegate.locationManager.startUpdatingLocation()
+        } else if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
+            let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
+            let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                return
+            })
+            alert.addAction(settingsAction)
+            self.presentViewController(alert, animated: false, completion: nil)
+        }
+        
         navigationController?.setStatusBarColor()
         selectedIndexArray              = NSMutableArray()
         allSportsArray.addObjectsFromArray(appDelegate.sportsArray as [AnyObject])

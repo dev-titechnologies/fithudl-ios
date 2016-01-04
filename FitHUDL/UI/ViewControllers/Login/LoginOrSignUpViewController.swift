@@ -141,18 +141,23 @@ class LoginOrSignUpViewController: UIViewController {
     }
     
     @IBAction func connectWithFBClicked(sender: UIButton) {
+        showLoadingView(true)
         if FBSDKAccessToken.currentAccessToken() != nil {
             fbAccessToken   = FBSDKAccessToken.currentAccessToken().tokenString
             fbUserID        = FBSDKAccessToken.currentAccessToken().userID
+            showLoadingView(false)
             getUserData()
             return
         }
         let fbLoginManager = FBSDKLoginManager()
         fbLoginManager.loginBehavior = FBSDKLoginBehavior.SystemAccount
         fbLoginManager.logInWithReadPermissions(faceBookPermissions, handler: { (result: FBSDKLoginManagerLoginResult!, error: NSError!) -> Void in
+            self.showLoadingView(false)
             if error != nil {
+                UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
                 fbLoginManager.logOut()
             } else if result.isCancelled {
+                UIAlertView(title: alertTitle, message: "Login was cancelled by the user", delegate: nil, cancelButtonTitle: "OK").show()
                 fbLoginManager.logOut()
             } else {
                 var allPermsGranted = true

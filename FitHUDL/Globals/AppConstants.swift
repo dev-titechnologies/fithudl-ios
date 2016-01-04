@@ -118,7 +118,6 @@ struct ErrorMessage {
 }
 
 struct TrainingStatus {
-    
     static let requested                    = "training_req"
     static let accepted                     = "training_req_accept"
     static let requestrejected              = "training_req_rejected"
@@ -126,6 +125,9 @@ struct TrainingStatus {
     static let traingRequestCancelled       = "training_req_accept_canceled"
     static let traingRequestCancelledByUser = "training_req_accept_canceled_by_user"
     static let accountRecharge              = "account_recharge"
+    static let pendingCanceled              = "pending_cancel"
+    static let acceptCanceled               = "accept_cancel"
+    
 }
 
 struct Session {

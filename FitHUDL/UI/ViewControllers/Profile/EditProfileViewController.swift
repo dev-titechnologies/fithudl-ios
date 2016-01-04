@@ -276,6 +276,84 @@ class EditProfileViewController: UIViewController {
         view3?.backgroundColor = AppColor.boxBorderColor
     }
     
+    func scaleAndRotateImage(originalImage: UIImage) -> UIImage {
+        let maxResolution: CGFloat  = 270
+        let imageRef: CGImageRef    = originalImage.CGImage
+        let width: CGFloat          = CGFloat(CGImageGetWidth(imageRef))
+        let height: CGFloat         = CGFloat(CGImageGetHeight(imageRef))
+        var transform               = CGAffineTransformIdentity
+        var bounds                  = CGRect(origin: CGPointZero, size: CGSize(width: width, height: height))
+        if (width > maxResolution) || (height > maxResolution) {
+            let ratio = width/height
+            if ratio > 1 {
+                bounds.size.width  = maxResolution
+                bounds.size.height = bounds.size.width/ratio
+            } else {
+                bounds.size.height = maxResolution
+                bounds.size.width  = bounds.size.height*ratio
+            }
+        }
+        let scaleRatio              = bounds.size.width/width
+        let imageSize               = CGSize(width: CGFloat(CGImageGetWidth(imageRef)), height: CGFloat(CGImageGetHeight(imageRef)))
+        var boundHeight: CGFloat    = 0
+        let orient: UIImageOrientation = originalImage.imageOrientation
+        switch orient {
+        case UIImageOrientation.Up:
+            transform = CGAffineTransformIdentity
+        case UIImageOrientation.UpMirrored:
+            transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0)
+            transform = CGAffineTransformScale(transform, -1.0, 1.0)
+        case UIImageOrientation.Down:
+            transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height)
+            transform = CGAffineTransformScale(transform, 1.0, -1.0)
+        case UIImageOrientation.DownMirrored:
+            transform = CGAffineTransformMakeTranslation(0.0, imageSize.height)
+            transform = CGAffineTransformScale(transform, 1.0, -1.0)
+        case UIImageOrientation.Left:
+            boundHeight         = bounds.size.height
+            bounds.size.height  = bounds.size.width
+            bounds.size.width   = boundHeight
+            transform           = CGAffineTransformMakeTranslation(0.0, imageSize.width)
+            transform           = CGAffineTransformRotate(transform, CGFloat(3.0 * M_PI / 2.0))
+        case UIImageOrientation.LeftMirrored:
+            boundHeight = bounds.size.height
+            bounds.size.height = bounds.size.width
+            bounds.size.width = boundHeight
+            transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width)
+            transform = CGAffineTransformScale(transform, -1.0, 1.0);
+            transform = CGAffineTransformRotate(transform, CGFloat(3.0 * M_PI / 2.0))
+        case UIImageOrientation.Right:
+            boundHeight         = bounds.size.height
+            bounds.size.height  = bounds.size.width
+            bounds.size.width   = boundHeight
+            transform           = CGAffineTransformMakeTranslation(imageSize.height, 0.0)
+            transform           = CGAffineTransformRotate(transform,CGFloat(M_PI / 2.0))
+        case UIImageOrientation.RightMirrored:
+            boundHeight = bounds.size.height
+            bounds.size.height = bounds.size.width
+            bounds.size.width = boundHeight
+            transform = CGAffineTransformMakeScale(-1.0, 1.0)
+            transform = CGAffineTransformRotate(transform,CGFloat(M_PI / 2.0))
+        default:
+            break
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.mainScreen().scale)
+        let context = UIGraphicsGetCurrentContext()
+        if orient == UIImageOrientation.Right || orient == UIImageOrientation.Left {
+            CGContextScaleCTM(context, -scaleRatio, scaleRatio)
+            CGContextTranslateCTM(context, -height, 0)
+        } else {
+            CGContextScaleCTM(context, scaleRatio, -scaleRatio)
+            CGContextTranslateCTM(context, 0, -height)
+        }
+        CGContextConcatCTM(context, transform)
+        CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRect(origin: CGPointZero, size: CGSize(width: width, height: height)), imageRef)
+        let imageCopy: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return imageCopy
+    }
+    
     @IBAction func backButtonClicked(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -439,7 +517,9 @@ class EditProfileViewController: UIViewController {
     
     @IBAction func setButtonClicked(sender: UIButton) {
         doneButton.enabled = true
-        unhighlightTappedView(tappedView!)
+        if let view = tappedView {
+            unhighlightTappedView(view)
+        }
         if validateTimeRange() {
             let startTime = "\((starttimeView.viewWithTag(hourField) as! UITextField).text):\((starttimeView.viewWithTag(minuteField) as! UITextField).text) \((starttimeView.viewWithTag(timeField) as! UITextField).text)"
             let endTime = "\((endtimeView.viewWithTag(hourField) as! UITextField).text):\((endtimeView.viewWithTag(minuteField) as! UITextField).text) \((endtimeView.viewWithTag(timeField) as! UITextField).text)"
@@ -495,10 +575,20 @@ class EditProfileViewController: UIViewController {
     }
     
     func timeDeleteButtonClicked(deleteButton : UIButton) {
-        let cell = deleteButton.superview?.superview as! AvailableTimeCollectionViewCell
-        let indexPath = timeCollectionView.indexPathForCell(cell)
-        let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSMutableArray
-        timeArray.removeObjectAtIndex(indexPath!.item)
+        let cell        = deleteButton.superview?.superview as! AvailableTimeCollectionViewCell
+        let indexPath   = timeCollectionView.indexPathForCell(cell)
+        var timeArray   = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as! NSArray
+        timeArray       = timeArray.sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+            let dateFormatter        = NSDateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            let date1 = dateFormatter.dateFromString((obj1 as! UserTime).timeStarts as String)
+            let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
+            return date1!.compare(date2!)
+        })
+        let mutableArray = NSMutableArray(array: timeArray)
+        mutableArray.removeObjectAtIndex(indexPath!.item)
+        timeArray = mutableArray
+        availSessionTime.setObject(timeArray, forKey: Globals.convertDate(datePicker.selectedDate))
         timeCollectionView.reloadData()
     }
     
@@ -667,10 +757,10 @@ class EditProfileViewController: UIViewController {
 
 extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        let selectedImage   = info["UIImagePickerControllerOriginalImage"] as! UIImage
-        photoSelected       = true
-        photoImageView.image = selectedImage
-        photoButton.hidden = true
+        let selectedImage    = info["UIImagePickerControllerOriginalImage"] as! UIImage
+        photoSelected        = true
+        photoImageView.image = scaleAndRotateImage(selectedImage)
+        photoButton.hidden   = true
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
