@@ -28,7 +28,11 @@
             <string>OpenSans-Light</string>
             <string>OpenSans-Light</string>
         </mutableArray>
+        <mutableArray key="OpenSans-LightItalic.ttf">
+            <string>OpenSansLight-Italic</string>
+        </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
@@ -1692,6 +1696,16 @@
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lua-Tp-Chf">
                                 <rect key="frame" x="20" y="40" width="280" height="210"/>
                                 <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something about yourself" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-kg-3d3">
+                                        <rect key="frame" x="48" y="24" width="200" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="BxY-21-uHF"/>
+                                            <constraint firstAttribute="height" constant="21" id="SNw-DQ-tbD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSansLight-Italic" family="Open Sans" pointSize="16"/>
+                                        <color key="textColor" white="1" alpha="0.70000000000000007" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BSh-3Z-Qor">
                                         <rect key="frame" x="40" y="20" width="235" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1758,6 +1772,16 @@
                                             <constraint firstAttribute="height" constant="1" id="5fQ-64-HYL"/>
                                         </constraints>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/70" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pL8-xZ-M7S">
+                                        <rect key="frame" x="230" y="56" width="42" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="23" id="cIt-V9-zp9"/>
+                                            <constraint firstAttribute="width" constant="42" id="i2a-RL-yvv"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47058823529999999" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1766,13 +1790,17 @@
                                     <constraint firstAttribute="bottom" secondItem="yOH-S0-WMc" secondAttribute="bottom" constant="20" id="8N2-pq-AUY"/>
                                     <constraint firstAttribute="trailing" secondItem="BSh-3Z-Qor" secondAttribute="trailing" constant="5" id="A1a-Yh-I3v"/>
                                     <constraint firstItem="BSh-3Z-Qor" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" constant="20" id="Fb2-NB-whT"/>
+                                    <constraint firstItem="pL8-xZ-M7S" firstAttribute="top" secondItem="eVC-mY-UPK" secondAttribute="bottom" constant="5" id="I2L-01-uFV"/>
                                     <constraint firstAttribute="width" constant="280" id="Idh-Sf-Hpq"/>
                                     <constraint firstAttribute="trailing" secondItem="yUM-3i-lqX" secondAttribute="trailing" id="LuB-4K-4Nq"/>
                                     <constraint firstItem="yUM-3i-lqX" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" id="M2d-YT-wst"/>
+                                    <constraint firstItem="Rk6-kg-3d3" firstAttribute="leading" secondItem="3Lc-Zp-BpX" secondAttribute="trailing" constant="8" id="UgY-uo-oA5"/>
                                     <constraint firstItem="BSh-3Z-Qor" firstAttribute="centerX" secondItem="yOH-S0-WMc" secondAttribute="centerX" constant="17.5" id="aWV-Hv-1Sb"/>
                                     <constraint firstItem="eVC-mY-UPK" firstAttribute="leading" secondItem="Lua-Tp-Chf" secondAttribute="leading" constant="40" id="eCG-Et-uub"/>
+                                    <constraint firstItem="eVC-mY-UPK" firstAttribute="top" secondItem="Rk6-kg-3d3" secondAttribute="bottom" constant="5" id="gUY-Xo-jIr"/>
                                     <constraint firstAttribute="height" constant="210" id="luM-G7-nQw"/>
                                     <constraint firstAttribute="trailing" secondItem="eVC-mY-UPK" secondAttribute="trailing" constant="5" id="oIx-XX-VNA"/>
+                                    <constraint firstAttribute="trailing" secondItem="pL8-xZ-M7S" secondAttribute="trailing" constant="8" id="qWv-bd-GNg"/>
                                     <constraint firstItem="3Lc-Zp-BpX" firstAttribute="leading" secondItem="Lua-Tp-Chf" secondAttribute="leading" constant="7" id="rKy-qp-Qfw"/>
                                     <constraint firstItem="eVC-mY-UPK" firstAttribute="top" secondItem="BSh-3Z-Qor" secondAttribute="bottom" id="ujz-mE-UDw"/>
                                 </constraints>
@@ -1797,9 +1825,11 @@
                         <outlet property="indicatorView" destination="n0H-Le-M8S" id="Sii-Yv-PlB"/>
                         <outlet property="nameLabel" destination="Idp-J2-Haf" id="mgA-3x-3as"/>
                         <outlet property="placeLabel" destination="9xI-RA-giB" id="ldw-CA-yDb"/>
+                        <outlet property="placeholderLabel" destination="Rk6-kg-3d3" id="3GY-PV-mTM"/>
                         <outlet property="separatorView" destination="eVC-mY-UPK" id="fK3-jg-bdB"/>
                         <outlet property="sportsImageView" destination="chM-jI-p3A" id="d48-OW-iZE"/>
                         <outlet property="sportsLabel" destination="gNw-ti-rJf" id="odv-CD-88f"/>
+                        <outlet property="textLimitLabel" destination="pL8-xZ-M7S" id="uRF-nF-dX4"/>
                         <outlet property="textViewHeight" destination="hpu-FA-Fzp" id="Eyw-rF-PpL"/>
                         <outlet property="timeLabel" destination="Sf5-4A-xZV" id="Jb6-qh-JIq"/>
                         <outlet property="timeMsgLabel" destination="YxK-43-kk1" id="QPV-rF-EEC"/>

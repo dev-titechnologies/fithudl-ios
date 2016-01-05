@@ -14,6 +14,8 @@ protocol ConfirmBookDelegate {
 
 class CustomPopupViewController: UIViewController {
 
+    @IBOutlet weak var textLimitLabel: UILabel!
+    @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var bioView: UIView!
     @IBOutlet weak var timeView: UIView!
@@ -236,6 +238,11 @@ extension CustomPopupViewController: UITextViewDelegate {
         let newSize = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: 120.0))
         textViewHeight.constant = newSize.height
         view.layoutIfNeeded()
+        if count(textView.text) == 0 {
+            placeholderLabel.hidden = false
+        } else {
+            placeholderLabel.hidden = true
+        }
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
@@ -243,6 +250,11 @@ extension CustomPopupViewController: UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if count(textView.text) == 0 {
+            placeholderLabel.hidden = false
+        }
+        let textCount       = count(textView.text) + (count(text) - range.length)
+        textLimitLabel.text = textCount <= BIOLIMIT ? "\(textCount)" : "\(BIOLIMIT)"
         if text == "\n" {
             textView.resignFirstResponder()
             return false
@@ -250,7 +262,7 @@ extension CustomPopupViewController: UITextViewDelegate {
         if text == "" {
             return true
         }
-        return count(textView.text) + (count(text) - range.length) <= BIOLIMIT
+        return textCount <= BIOLIMIT
     }
 }
 
