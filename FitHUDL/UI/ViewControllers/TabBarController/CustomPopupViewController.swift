@@ -147,10 +147,10 @@ class CustomPopupViewController: UIViewController {
     }
     
     @IBAction func updateBioClicked(sender: UIButton) {
-        if count(bioTextView.text) > 5 {
-            sendRequestToEditProfile()
-        } else {
+        if bioTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
             showDismissiveAlertMesssage("Please enter your profile description")
+        } else {
+            sendRequestToEditProfile()
         }
     }
     
@@ -250,15 +250,17 @@ extension CustomPopupViewController: UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if count(textView.text) == 0 {
-            placeholderLabel.hidden = false
-        }
-        let textCount       = count(textView.text) + (count(text) - range.length)
-        textLimitLabel.text = textCount <= BIOLIMIT ? "\(textCount)" : "\(BIOLIMIT)"
         if text == "\n" {
             textView.resignFirstResponder()
             return false
         }
+        if count(textView.text) == 0 {
+            placeholderLabel.hidden = false
+        }
+        var textCount       = count(textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())) + (count(text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())) - range.length)
+        textCount           = textCount < 0 ? 0 : textCount
+        textLimitLabel.text = textCount <= BIOLIMIT ? "\(textCount)/70" : "\(BIOLIMIT)/70"
+
         if text == "" {
             return true
         }

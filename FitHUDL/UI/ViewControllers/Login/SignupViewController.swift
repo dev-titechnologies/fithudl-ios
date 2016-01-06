@@ -40,8 +40,10 @@ class SignupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        appDelegate.locationManager.requestWhenInUseAuthorization()
-        appDelegate.locationManager.startUpdatingLocation()
+        if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
+            appDelegate.locationManager.requestWhenInUseAuthorization()
+            appDelegate.locationManager.startUpdatingLocation()
+        }
         
         navigationController?.navigationBarHidden = false
         sportsCarousel.type = .Custom
@@ -106,15 +108,6 @@ class SignupViewController: UIViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
-//        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
-//            let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
-//            let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
-//                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-//                return
-//            })
-//            alert.addAction(settingsAction)
-//            self.presentViewController(alert, animated: false, completion: nil)
-//        }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sportsListReload:", name: PushNotification.sportsList, object: nil)
     }
     
@@ -264,6 +257,15 @@ class SignupViewController: UIViewController {
     }
     
     func sendSignupRequest() {
+        if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
+            let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
+            let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                return
+            })
+            alert.addAction(settingsAction)
+            self.presentViewController(alert, animated: false, completion: nil)
+        }
         if !Globals.isInternetConnected() {
             return
         }
