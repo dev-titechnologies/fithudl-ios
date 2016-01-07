@@ -618,7 +618,7 @@ class EditProfileViewController: UIViewController {
             } else {
                 imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
             }
-            imagePicker.allowsEditing = false
+            imagePicker.allowsEditing = true
             self.presentViewController(imagePicker, animated: true, completion: nil)
         }
     }
@@ -776,7 +776,7 @@ class EditProfileViewController: UIViewController {
 
 extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        let selectedImage    = info["UIImagePickerControllerOriginalImage"] as! UIImage
+        let selectedImage    = info["UIImagePickerControllerEditedImage"] as! UIImage
         photoSelected        = true
         photoImageView.image = scaleAndRotateImage(selectedImage)
         photoButton.hidden   = true
