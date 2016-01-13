@@ -934,7 +934,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Pillar;
-				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
+				PROVISIONING_PROFILE = "892004a3-ac86-40ec-bdc0-9a5f27fb0f8b";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Debug;
@@ -979,7 +979,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "38189426-1159-4bd3-a828-1172cf1db81d";
+				PROVISIONING_PROFILE = "892004a3-ac86-40ec-bdc0-9a5f27fb0f8b";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Debug;

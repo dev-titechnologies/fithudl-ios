@@ -113,7 +113,8 @@ class BookingHistoryViewController: UIViewController {
         myBookings.addObjectsFromArray(filteredArray as [AnyObject])
         filteredArray        = dataArray.filteredArrayUsingPredicate(NSPredicate(format: "trainerID = %@", argumentArray: [appDelegate.user!.profileID]))
         bookings.addObjectsFromArray(filteredArray as [AnyObject])
-        noAvailLabel.hidden = myBookings.count > 0 ? true : false
+        let source           = bookingSegmentControl.selectedSegmentIndex == 0 ? myBookings : bookings
+        noAvailLabel.hidden  = source.count > 0 ? true : false
     }
 
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {

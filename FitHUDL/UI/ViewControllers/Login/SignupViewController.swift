@@ -42,9 +42,8 @@ class SignupViewController: UIViewController {
         super.viewDidLoad()
         if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
             appDelegate.locationManager.requestWhenInUseAuthorization()
-            appDelegate.locationManager.startUpdatingLocation()
         }
-        
+        appDelegate.locationManager.startUpdatingLocation()
         navigationController?.navigationBarHidden = false
         sportsCarousel.type = .Custom
                 

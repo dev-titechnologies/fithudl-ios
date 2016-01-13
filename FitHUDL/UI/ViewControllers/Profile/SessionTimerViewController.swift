@@ -160,10 +160,23 @@ class SessionTimerViewController: UIViewController {
                     self.rateView.hidden     = true
                     self.shareView.hidden    = true
                     self.contentView.hidden  = false
-                    timerLabel.reset()
-                    removeTimer()
                     sessionDictionary        = session
+                    timerLabel.reset()
+                    let formatter        = NSDateFormatter()
+                    formatter.dateFormat = "HH:mm"
+                    formatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    let endTimer         = formatter.dateFromString(session["end_time"] as! String)
+                    let currentTime      = formatter.dateFromString(Globals.convertTime(NSDate()))
+                    let timeDiff         = endTimer!.timeIntervalSinceDate(currentTime!)/NSTimeInterval(secondsValue)
+                    timerLabel.setCountDownTime(NSTimeInterval(Int(timeDiff)*secondsValue))
+                    removeTimer()
+                    
+                    let startTime = Globals.convertTimeTo12Hours((sessionDictionary["start_time"] as? String)!)
+                    let endTime = Globals.convertTimeTo12Hours((sessionDictionary["end_time"] as? String)!)
+                    startTimeLabel.text = "START TIME " + startTime
+                    endTimeLabel.text   = "END TIME " + endTime
                     createTimer()
+                    
                 } else {
                     dismissViewControllerAnimated(true, completion: nil)
                 }
@@ -184,7 +197,7 @@ class SessionTimerViewController: UIViewController {
         shareContent.contentTitle   = alertTitle
         shareContent.imageURL       = NSURL(string: SERVER_URL.stringByAppendingString(shareImageURL))
         shareContent.contentURL     = NSURL(string: SHARE_URL)
-        shareContent.contentDescription = "Join FitHUDL!"
+        shareContent.contentDescription = "Join \(alertTitle)!"
         
         let shareDialog             = FBSDKShareDialog()
         shareDialog.shareContent    = shareContent
