@@ -16,6 +16,7 @@
 		F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F5281BB966B4006BEFA2 /* FavoritesViewController.swift */; };
 		F305F52B1BB966C5006BEFA2 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */; };
 		F305F52D1BB966D5006BEFA2 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */; };
+		F30616821C47C45700DD06A1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30616811C47C45700DD06A1 /* WebViewController.swift */; };
 		F321BDBF1C0EF76A0060FECD /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F321BDBE1C0EF76A0060FECD /* ChangePasswordViewController.swift */; };
 		F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34262761BD8E86400A1EF69 /* UsersList.swift */; };
 		F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */; };
@@ -118,6 +119,7 @@
 		F305F5281BB966B4006BEFA2 /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		F305F52A1BB966C5006BEFA2 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		F305F52C1BB966D5006BEFA2 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		F30616811C47C45700DD06A1 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		F321BDBE1C0EF76A0060FECD /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		F34262761BD8E86400A1EF69 /* UsersList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersList.swift; sourceTree = "<group>"; };
 		F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpViewController.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */,
 				F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */,
 				F321BDBE1C0EF76A0060FECD /* ChangePasswordViewController.swift */,
+				F30616811C47C45700DD06A1 /* WebViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -802,6 +805,7 @@
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */,
 				F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */,
+				F30616821C47C45700DD06A1 /* WebViewController.swift in Sources */,
 				F3D99C211C180EC4007A20F9 /* UserSports.swift in Sources */,
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
 				F39F4AD31BF9EE5600056A0B /* MZTimerLabel.m in Sources */,
@@ -956,7 +960,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Pillar;
-				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
+				PROVISIONING_PROFILE = "c83d0796-fa79-4a10-a03f-3833615a92fb";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;

@@ -23,6 +23,8 @@ class LoginOrSignUpViewController: UIViewController {
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var termsButton: UIButton!
+    @IBOutlet weak var privacyButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +74,14 @@ class LoginOrSignUpViewController: UIViewController {
                 })
             }
         }
+    }
+    
+    @IBAction func termsButtonClicked(sender: UIButton) {
+        performSegueWithIdentifier("modalSegueToWebView", sender: sender)
+    }
+    
+    @IBAction func privacyButtonClicked(sender: UIButton) {
+        performSegueWithIdentifier("modalSegueToWebView", sender: sender)
     }
     
     @IBAction func connectWithTwitterClicked(sender: UIButton) {
@@ -306,14 +316,20 @@ class LoginOrSignUpViewController: UIViewController {
     }
     
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        if segue.identifier == "modalSegueToWebView" {
+            let navController = segue.destinationViewController as! UINavigationController
+            let webController = navController.topViewController as! WebViewController
+            if sender as! UIButton == termsButton {
+                webController.viewTag = ViewTag.termsView
+            } else {
+                webController.viewTag = ViewTag.privacyView
+            }
+        }
 
+    }
 }

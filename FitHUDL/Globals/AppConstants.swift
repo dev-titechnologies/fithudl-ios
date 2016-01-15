@@ -104,6 +104,8 @@ struct ViewTag {
     static let timeView = 2
     static let rateView = 3
     static let bookView = 4
+    static let termsView = 5
+    static let privacyView = 6
 }
 
 struct ResponseStatus {
