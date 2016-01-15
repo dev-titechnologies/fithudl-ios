@@ -24,6 +24,7 @@ class BadgesCollectionViewCell: UICollectionViewCell {
 
 
 class AllSportsCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var tickImageView: UIImageView!
     @IBOutlet weak var sportImageView: UIImageView!
     @IBOutlet weak var sportNameLabel: UILabel!
 }

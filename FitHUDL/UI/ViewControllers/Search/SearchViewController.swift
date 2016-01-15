@@ -48,18 +48,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
-            appDelegate.locationManager.requestWhenInUseAuthorization()
-            appDelegate.locationManager.startUpdatingLocation()
-        } else if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
-            let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
-            let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
-                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-                return
-            })
-            alert.addAction(settingsAction)
-            self.presentViewController(alert, animated: false, completion: nil)
-        }
+
         
         navigationController?.setStatusBarColor()
         selectedIndexArray              = NSMutableArray()
@@ -107,6 +96,18 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     override func viewWillAppear(animated: Bool) {
+        if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
+            appDelegate.locationManager.requestWhenInUseAuthorization()
+            appDelegate.locationManager.startUpdatingLocation()
+        } else if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
+            let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
+            let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                return
+            })
+            alert.addAction(settingsAction)
+            self.presentViewController(alert, animated: false, completion: nil)
+        }
         userSelectedArray.removeAllObjects()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "currentLocationInMap", name: "showLocation", object: nil)
     }
@@ -242,6 +243,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
     
     @IBAction func viewAllButtonClicked(sender: UIButton) {
+        allSportsCollectionView.reloadData()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.allSportsView.alpha = 1.0
         })
@@ -297,6 +299,14 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.allSportsView.alpha = 0.0
         })
+        if userSelectedArray.count > 0 {
+            moderateButton.superview?.hidden = false
+            searchButton.enabled             = true
+        } else {
+            moderateButton.superview?.hidden = true
+            searchButton.enabled             = false
+        }
+        sportsCarousel.reloadData()
     }
     
     // MARK: - Navigation
@@ -582,12 +592,12 @@ extension SearchViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return appDelegate.sportsArray.count
+        return allSportsArray.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("sportCell", forIndexPath: indexPath) as! AllSportsCollectionViewCell
-        let sport = appDelegate.sportsArray[indexPath.row] as! SportsList
+        let sport = allSportsArray[indexPath.row] as! SportsList
         cell.sportNameLabel.text = sport.sportsName
         cell.sportImageView.image = UIImage(named: "default_image")
         let url = sport.logo
@@ -614,10 +624,31 @@ extension SearchViewController: UICollectionViewDataSource {
                 }
             }
         }
+        cell.tickImageView.hidden = sport.level == "NO" ? true : false
         return cell
     }
     
 }
+
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if userSelectedArray.valueForKey("sportsId")!.containsObject((allSportsArray.objectAtIndex(indexPath.item) as! SportsList).sportsId.integerValue) {
+            var indexValue  = userSelectedArray.valueForKey("sportsId")?.indexOfObject((allSportsArray.objectAtIndex(indexPath.item) as! SportsList).sportsId.integerValue)
+            userSelectedArray.removeObjectAtIndex(indexValue!)
+            let allSports   = allSportsArray[indexPath.item] as! SportsList
+            allSports.level = "NO"
+            allSportsArray.replaceObjectAtIndex(indexPath.item, withObject: allSports)
+        } else{
+            let userSport   = allSportsArray[indexPath.item] as! SportsList
+            userSport.level = ""
+            userSelectedArray.addObject(userSport)
+            allSportsArray.replaceObjectAtIndex(indexPath.item, withObject: userSport)
+        }
+        collectionView.reloadData()
+        
+    }
+}
+
 
 
 extension SearchViewController: iCarouselDataSource {
@@ -732,8 +763,7 @@ extension SearchViewController: iCarouselDelegate {
     
     func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
         if userSelectedArray.valueForKey("sportsId")!.containsObject((allSportsArray.objectAtIndex(index) as! SportsList).sportsId.integerValue) {
-            
-             var indexValue = userSelectedArray.valueForKey("sportsId")?.indexOfObject((allSportsArray.objectAtIndex(index) as! SportsList).sportsId.integerValue)
+            var indexValue  = userSelectedArray.valueForKey("sportsId")?.indexOfObject((allSportsArray.objectAtIndex(index) as! SportsList).sportsId.integerValue)
             userSelectedArray.removeObjectAtIndex(indexValue!)
             let allSports   = allSportsArray[index] as! SportsList
             allSports.level = "NO"
@@ -744,8 +774,13 @@ extension SearchViewController: iCarouselDelegate {
             userSelectedArray.addObject(userSport)
             allSportsArray.replaceObjectAtIndex(index, withObject: userSport)
         }
-        moderateButton.superview?.hidden = false
-        searchButton.enabled             = true
+        if userSelectedArray.count > 0 {
+            moderateButton.superview?.hidden = false
+            searchButton.enabled             = true
+        } else {
+            moderateButton.superview?.hidden = true
+            searchButton.enabled             = false
+        }
         carousel.reloadData()
     }
     

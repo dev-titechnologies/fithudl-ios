@@ -4424,7 +4424,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yoJ-0a-XC4">
                                         <rect key="frame" x="23" y="10" width="290" height="400"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="00B-fC-4zb">
                                                 <rect key="frame" x="102" y="11" width="87" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="TAc-CO-NF3"/>
@@ -4946,6 +4946,13 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tick" translatesAutoresizingMaskIntoConstraints="NO" id="kdG-fP-whv">
+                                                            <rect key="frame" x="29" y="13" width="17" height="17"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="17" id="FJq-82-O9C"/>
+                                                                <constraint firstAttribute="width" constant="17" id="c4c-mD-fW6"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
@@ -4954,6 +4961,8 @@
                                                     <constraint firstItem="idR-uG-GZy" firstAttribute="leading" secondItem="4sV-zY-gzW" secondAttribute="leading" constant="8" id="DNK-4s-gcB"/>
                                                     <constraint firstAttribute="trailing" secondItem="qiL-JH-jxP" secondAttribute="trailing" constant="8" id="Ipx-s0-WrW"/>
                                                     <constraint firstAttribute="bottom" secondItem="idR-uG-GZy" secondAttribute="bottom" constant="3" id="WhQ-gZ-Rmc"/>
+                                                    <constraint firstItem="kdG-fP-whv" firstAttribute="leading" secondItem="4sV-zY-gzW" secondAttribute="leading" constant="29" id="coG-ib-D6v"/>
+                                                    <constraint firstItem="kdG-fP-whv" firstAttribute="top" secondItem="4sV-zY-gzW" secondAttribute="top" constant="13" id="dMt-tv-wgc"/>
                                                     <constraint firstItem="qiL-JH-jxP" firstAttribute="leading" secondItem="4sV-zY-gzW" secondAttribute="leading" constant="7" id="e1k-eD-kQt"/>
                                                     <constraint firstItem="idR-uG-GZy" firstAttribute="top" secondItem="qiL-JH-jxP" secondAttribute="bottom" constant="7" id="mm0-Yl-Hp6"/>
                                                     <constraint firstAttribute="trailing" secondItem="idR-uG-GZy" secondAttribute="trailing" constant="8" id="uzg-Pc-Jow"/>
@@ -4962,6 +4971,7 @@
                                                 <connections>
                                                     <outlet property="sportImageView" destination="qiL-JH-jxP" id="ROE-aF-1HX"/>
                                                     <outlet property="sportNameLabel" destination="idR-uG-GZy" id="mpS-LU-Ksc"/>
+                                                    <outlet property="tickImageView" destination="kdG-fP-whv" id="c9J-z3-hlq"/>
                                                 </connections>
                                             </collectionViewCell>
                                         </cells>
@@ -6324,6 +6334,7 @@
         <image name="signup_button" width="124" height="45"/>
         <image name="silver" width="76" height="75"/>
         <image name="tabselection" width="77" height="48"/>
+        <image name="tick" width="17" height="17"/>
         <image name="time_close" width="44" height="44"/>
         <image name="top-arrow" width="10" height="7"/>
         <image name="twitter_button" width="40" height="40"/>
