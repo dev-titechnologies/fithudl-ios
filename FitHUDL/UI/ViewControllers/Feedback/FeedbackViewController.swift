@@ -129,12 +129,10 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
                                 
                             }
                             rateCollectionView.reloadData()
-                        }
-                        else {
-                        }
+                        } else {
                         
-                    }
-                    else
+                        }
+                    } else {
                         if status == ResponseStatus.error {
                             if let message = jsonResult["message"] as? String {
                                 showDismissiveAlertMesssage(message)
@@ -147,11 +145,12 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
                             } else {
                                 showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                             }
+                        }
                     }
-                }
-                else {
+                } else {
                     
                     if status == ResponseStatus.success {
+                        showDismissiveAlertMesssage("Your feedback has been successfully submitted.")
                         suggestions_textfield.resignFirstResponder()
                         suggestions_textfield.text=""
                         
@@ -169,14 +168,10 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
                         }
                     }
-                    
                 }
-                
             }
         }
-        
         showLoadingView(false)
-        
     }
     
     func connection(connection: CustomURLConnection, didFailWithError error: NSError) {

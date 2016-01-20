@@ -26,6 +26,15 @@ class LoginOrSignUpViewController: UIViewController {
     @IBOutlet weak var termsButton: UIButton!
     @IBOutlet weak var privacyButton: UIButton!
     
+    @IBOutlet weak var privacyBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var termsBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var logoTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var labelBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fbTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var signupTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bgTopConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
@@ -37,6 +46,18 @@ class LoginOrSignUpViewController: UIViewController {
             bgImageView.setTranslatesAutoresizingMaskIntoConstraints(true)
             bgImageView.frame    = CGRect(x: (view.frame.size.width-250)/2.0, y: 65.0, width: 250, height: 250)
         }
+        if IS_IPHONE6PLUS {
+            logoTopConstraint.constant          = 15
+            bgTopConstraint.constant            = 25
+            signupTopConstraint.constant        = 20
+            fbTopConstraint.constant            = 15
+            bottomViewHeightConstraint.constant = 70
+            labelBottomConstraint.constant      = 15
+            termsBottomConstraint.constant      = 0
+            privacyBottomConstraint.constant    = 0
+            view.layoutIfNeeded()
+        }
+        
         if let token = appDelegate.deviceToken {
             
         } else {

@@ -41,9 +41,10 @@ class EditProfileViewController: UIViewController {
     var initialEnd: NSDate?     = nil
     let availSessionTime = NSMutableDictionary()
     var deletedTimeArray = NSMutableArray()
-    
+    var tableViewHeight:CGFloat = 0.0
+    var timeCountLimit          = 6
     @IBOutlet weak var contentViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var timeViewHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var timeViewHeightConstraint: NSLayoutConstraint!
     
     let duration = appDelegate.configDictionary[TimeOut.sessionDuration]!.integerValue * secondsValue
     let interval = appDelegate.configDictionary[TimeOut.sessionInterval]!.integerValue * secondsValue
@@ -62,6 +63,7 @@ class EditProfileViewController: UIViewController {
         navigationController?.setStatusBarColor()
         
         if IS_IPHONE6PLUS {
+            timeCountLimit = 9
             contentViewHeightConstriant.constant = view.frame.size.height-64.0
             view.layoutIfNeeded()
         }
@@ -73,11 +75,12 @@ class EditProfileViewController: UIViewController {
         bioTextView.text = appDelegate.user!.bio
         interestTextView.text = appDelegate.user!.interests
         CustomURLConnection.downloadAndSetImage(appDelegate.user!.imageURL, imageView: photoImageView, activityIndicatorView: indicatorView)
-        
+        timeCollectionView.setTranslatesAutoresizingMaskIntoConstraints(true)
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
+        tableViewHeight = timeCollectionView.frame.size.height
         datePicker.addTarget(self, action: "dateValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         datePicker.fillDatesFromDate(NSDate(), toDate: Globals.endOfMonth())
         datePicker.selectedDateBottomLineColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0)
@@ -236,7 +239,7 @@ class EditProfileViewController: UIViewController {
     func dateValueChanged(collectionView: UICollectionView) {
         if let datePicker = datePicker.selectedDate {
             if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
-                if timeArray.count > 6 {
+                if timeArray.count > timeCountLimit {
                     moreTimeButton.hidden = false
                 } else {
                     moreTimeButton.hidden = true
@@ -252,7 +255,7 @@ class EditProfileViewController: UIViewController {
     }
     
     func resetTimeCollectionView() {
-        timeViewHeightConstraint.constant    = 90.0
+        timeCollectionView.frame = CGRect(origin: timeCollectionView.frame.origin, size: CGSize(width: timeCollectionView.frame.size.width, height: tableViewHeight))
         if IS_IPHONE4S || IS_IPHONE5 {
             contentViewHeightConstriant.constant = 603.0
         } else {
@@ -322,7 +325,7 @@ class EditProfileViewController: UIViewController {
         case UIImageOrientation.LeftMirrored:
             boundHeight = bounds.size.height
             bounds.size.height = bounds.size.width
-            bounds.size.width = boundHeight
+            bounds.size.width  = boundHeight
             transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width)
             transform = CGAffineTransformScale(transform, -1.0, 1.0);
             transform = CGAffineTransformRotate(transform, CGFloat(3.0 * M_PI / 2.0))
@@ -388,10 +391,9 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction func moreTimeButtonClicked(sender: UIButton) {
-        timeViewHeightConstraint.constant    = timeCollectionView.contentSize.height
-        contentViewHeightConstriant.constant += (timeViewHeightConstraint.constant-90.0)
+        timeCollectionView.frame = CGRect(origin: timeCollectionView.frame.origin, size: CGSize(width: timeCollectionView.frame.size.width, height: timeCollectionView.contentSize.height))
+        contentViewHeightConstriant.constant += (timeCollectionView.contentSize.height-tableViewHeight)
         view.layoutIfNeeded()
-        println(timeViewHeightConstraint.constant)
         println(contentViewHeightConstriant.constant)
         contentScrollView.contentSize        = CGSize(width: contentScrollView.frame.size.width, height: contentViewHeightConstriant.constant)
         println(contentScrollView.contentSize)
@@ -542,7 +544,7 @@ class EditProfileViewController: UIViewController {
         }
         if let datePicker = datePicker.selectedDate {
             if let timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
-                if timeArray.count > 6 {
+                if timeArray.count > timeCountLimit {
                     moreTimeButton.hidden = false
                 } else {
                     moreTimeButton.hidden = true
@@ -892,8 +894,11 @@ extension EditProfileViewController: UICollectionViewDelegate {
 
 extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if IS_IPHONE6 || IS_IPHONE6PLUS {
+        if IS_IPHONE6PLUS {
             return CGSize(width: (collectionView.frame.size.width-30)/3, height: 40.0)
+        }
+        if IS_IPHONE6 {
+            return CGSize(width: 110.0, height: 40.0)
         }
         return CGSize(width: 98.0, height: 40.0)
     }

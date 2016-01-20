@@ -176,6 +176,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         tableView.hidden = true
         self.mapViewTouchFlag = false
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "showLocation", object: nil)
+        if let loadView = view.viewWithTag(999) {
+            showLoadingView(false)
+        }
     }
     
     override func didReceiveMemoryWarning() {

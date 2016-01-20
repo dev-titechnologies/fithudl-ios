@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="OpenSans-Regular.ttf">
@@ -11,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeedbacKCell" id="4Lh-cb-tAc" customClass="RateFeedbackCell" customModule="FitHUDL" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeedbacKCell" id="4Lh-cb-tAc" customClass="RateFeedbackCell" customModule="Pillar" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="106" height="91"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -54,12 +55,11 @@
                             <constraint firstAttribute="height" constant="8" id="MpY-U5-vi5"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y14-tv-yEb" customClass="RateView" customModule="FitHUDL" customModuleProvider="target">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y14-tv-yEb" customClass="RateView" customModule="Pillar" customModuleProvider="target">
                         <rect key="frame" x="6" y="50" width="94" height="20"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="FOU-HD-4zV"/>
-                            <constraint firstAttribute="width" constant="94" id="Uu6-QB-mWV"/>
+                            <constraint firstAttribute="width" secondItem="Y14-tv-yEb" secondAttribute="height" multiplier="47:10" id="RaJ-Mz-lgf"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -76,6 +76,7 @@
                 <constraint firstItem="pRK-iz-AVr" firstAttribute="top" secondItem="V9d-f1-dnY" secondAttribute="bottom" constant="14" id="RyH-uh-Cck"/>
                 <constraint firstAttribute="trailing" secondItem="V9d-f1-dnY" secondAttribute="trailing" constant="-1" id="c0I-se-5Cu"/>
                 <constraint firstAttribute="bottom" secondItem="ys5-eD-90q" secondAttribute="bottom" id="cs9-Ab-Kpi"/>
+                <constraint firstItem="Y14-tv-yEb" firstAttribute="leading" secondItem="4Lh-cb-tAc" secondAttribute="leading" constant="6" id="eLC-nl-2Zo"/>
                 <constraint firstItem="V9d-f1-dnY" firstAttribute="leading" secondItem="4Lh-cb-tAc" secondAttribute="leading" id="iDE-Yd-IBt"/>
                 <constraint firstItem="ys5-eD-90q" firstAttribute="top" secondItem="4Lh-cb-tAc" secondAttribute="top" id="nVu-Ev-a5i"/>
                 <constraint firstItem="pRK-iz-AVr" firstAttribute="leading" secondItem="4Lh-cb-tAc" secondAttribute="leading" id="qUw-g7-4Aq"/>

@@ -60,11 +60,13 @@ class CustomPopupViewController: UIViewController {
         
         bookButton.layer.borderColor    = AppColor.statusBarColor.CGColor
         bookButton.layer.borderWidth    = 1.0
-        
+
         switch (viewTag) {
         case ViewTag.bioText:
-            bioView.hidden      = false
+            bioView.hidden  = false
             if bioText == "" {
+                textLimitLabel.hidden   = false
+                placeholderLabel.hidden = false
                 closeButton.hidden   = true
                 updateButton.hidden  = false
                 updateButton.layer.borderColor = UIColor.whiteColor().CGColor
@@ -72,6 +74,8 @@ class CustomPopupViewController: UIViewController {
                 separatorView.hidden = false
                 bioTextView.becomeFirstResponder()
             } else {
+                textLimitLabel.hidden   = true
+                placeholderLabel.hidden = true
                 closeButton.hidden   = false
                 updateButton.hidden  = true
                 bioTextView.editable = false

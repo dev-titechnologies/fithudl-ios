@@ -181,7 +181,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         notificationButton.tag      = 0
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
-        notificationBackgroundView.frame = CGRect(x: 0.0, y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
+        notificationBackgroundView.frame = CGRect(x: (view.frame.size.width-notificationBackgroundView.frame.size.width), y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
         appDelegate.window?.addSubview(notificationBackgroundView)
         notificationBackgroundView.backgroundColor = UIColor.clearColor()
         notificationBackgroundView.hidden       = true
@@ -201,7 +201,9 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillDisappear(animated: Bool) {
-       
+        if let loadView = view.viewWithTag(999) {
+            showLoadingView(false)
+        }
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.frame = CGRect(x: 0.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
         self.view.addSubview(notificationBackgroundView)
@@ -359,7 +361,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             sender.tag = 1
             notificationBackgroundView.hidden   = false
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.notificationBackgroundView.frame = CGRect(x: 0.0, y: 53, width: self.notificationBackgroundView.frame.size.width, height: 700)
+                self.notificationBackgroundView.frame = CGRect(x: (self.view.frame.size.width-self.notificationBackgroundView.frame.size.width), y: self.calloutViewYAxis, width: self.notificationBackgroundView.frame.size.width, height: 700)
                 self.notificationTableView.reloadData()
             }, completion: nil)
             self.sendRequestForNotificationList()
@@ -370,15 +372,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             }, completion: nil)
         }
         
-        if IS_IPHONE4S || IS_IPHONE5 {
-            notificationArrowTrailingConstraint.constant = 16.0
-            notificationBgtrailingConstraint.constant    = 2.0
-            view.layoutIfNeeded()
-        } else {
-            notificationArrowTrailingConstraint.constant = -38.0
-            notificationBgtrailingConstraint.constant    = -50.0
-            view.layoutIfNeeded()
-        }
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
@@ -393,7 +386,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         if profileUser!.availableTime.count > 0 {
             performSegueWithIdentifier("pushToBookingSession", sender: self)
         } else {
-            showDismissiveAlertMesssage("\(profileUser!.name) have no available time")
+            showDismissiveAlertMesssage("\(profileUser!.name) has no available time.")
         }
     }
     
@@ -431,6 +424,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         
         if user.sports.count == 0 {
             beginnerButton.superview?.superview?.hidden = true
+        } else {
+            beginnerButton.superview?.superview?.hidden = false
         }
         sportsCarousel.currentItemIndex = 0
         sportsCarousel.reloadData()

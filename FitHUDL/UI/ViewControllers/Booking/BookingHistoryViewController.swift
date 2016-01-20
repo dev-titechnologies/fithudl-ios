@@ -36,6 +36,12 @@ class BookingHistoryViewController: UIViewController {
         sendRequestToGetSessions()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        if let loadView = view.viewWithTag(999) {
+            showLoadingView(false)
+        }
+    }
+    
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
         if bookingSegmentControl.selectedSegmentIndex == 0 {
             noAvailLabel.hidden = myBookings.count > 0 ? true : false

@@ -33,6 +33,11 @@ class FavoritesViewController: UIViewController {
         sendRequestToGetFavouriteList()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        if let loadView = view.viewWithTag(999) {
+            showLoadingView(false)
+        }
+    }
     
     //MARK: - FavouriteList API
     
