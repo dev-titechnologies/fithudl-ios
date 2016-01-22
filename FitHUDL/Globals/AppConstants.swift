@@ -10,6 +10,7 @@ import UIKit
 
 let SERVER_URL = "http://fithudl.titechnologies.in/"
 let SHARE_URL  = "http://www.fithudl.com/"
+let ITUNES_LINK = "https://itunes.apple.com/us/app/fithudl/id1062264534?ls=1&mt=8"
 //let Server_URL = "http://192.168.1.151:1337/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -34,6 +35,8 @@ struct AppColor {
     static let badgeSilverColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1.0)
     static let timerColor       = UIColor(red: 183/255, green: 183/255, blue: 183/255, alpha: 1.0)
     static let notifReadColor   = UIColor(red: 140/255, green: 138/255, blue: 143/255, alpha: 1.0)
+    static let promoGreenColor  = UIColor(red: 0, green: 142/255, blue: 129/255, alpha: 1.0)
+    static let promoGrayColor   = UIColor(red: 129/255, green: 134/255, blue: 134/255, alpha: 1.0)
 }
 
 struct Message {
@@ -82,6 +85,7 @@ struct Connection {
     static let sessionCancel        = 33
     static let notifReadStatus      = 34
     static let transactionRequest   = 35
+    static let promoCodeRequest     = 36
 }
 
 struct SportsLevel {
@@ -100,12 +104,14 @@ struct Gender {
 }
 
 struct ViewTag {
-    static let bioText  = 1
-    static let timeView = 2
-    static let rateView = 3
-    static let bookView = 4
-    static let termsView = 5
-    static let privacyView = 6
+    static let bioText          = 1
+    static let timeView         = 2
+    static let rateView         = 3
+    static let bookView         = 4
+    static let termsView        = 5
+    static let privacyView      = 6
+    static let promoDisplayView = 7
+    static let promoEntryView   = 8
 }
 
 struct ResponseStatus {

@@ -44,6 +44,7 @@
 		F3717C9E1BBBE2A10038795A /* BadgesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3717C9C1BBBE2A10038795A /* BadgesCollectionViewCell.xib */; };
 		F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F37968F01BCE812E0074B57D /* SRMonthPicker.m */; };
 		F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37968F31BCE81500074B57D /* EditProfileViewController.swift */; };
+		F37F80F01C50E07600A10CD5 /* PromoCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37F80EF1C50E07600A10CD5 /* PromoCodeViewController.swift */; };
 		F38159C61C0EAB2300DDD514 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38159C51C0EAB2200DDD514 /* StoreKit.framework */; };
 		F38235611C08173E00B14F8E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235601C08173E00B14F8E /* CoreTelephony.framework */; };
 		F38235631C08174D00B14F8E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235621C08174D00B14F8E /* SystemConfiguration.framework */; };
@@ -150,6 +151,7 @@
 		F37968F01BCE812E0074B57D /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
 		F37968F11BCE812E0074B57D /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
 		F37968F31BCE81500074B57D /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		F37F80EF1C50E07600A10CD5 /* PromoCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromoCodeViewController.swift; sourceTree = "<group>"; };
 		F38159C51C0EAB2200DDD514 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F38235601C08173E00B14F8E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		F38235621C08174D00B14F8E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -258,6 +260,7 @@
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
 				F38576A91BDDD9460072486B /* BookingSessionViewController.swift */,
 				F39F4ACA1BF9BA3600056A0B /* SessionTimerViewController.swift */,
+				F37F80EF1C50E07600A10CD5 /* PromoCodeViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -812,6 +815,7 @@
 				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
 				F3D99C2F1C180EC5007A20F9 /* Notification.swift in Sources */,
 				F39F4ACB1BF9BA3600056A0B /* SessionTimerViewController.swift in Sources */,
+				F37F80F01C50E07600A10CD5 /* PromoCodeViewController.swift in Sources */,
 				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
 				F39E61C41C02D878001D8576 /* HistoryTableViewCell.swift in Sources */,
 			);
@@ -1002,7 +1006,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ff7ee5dd-4d29-4d01-9eff-71f24f33af25";
+				PROVISIONING_PROFILE = "286c52a4-f77d-4cb1-8df9-dae23415a902";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
 			};
 			name = Release;

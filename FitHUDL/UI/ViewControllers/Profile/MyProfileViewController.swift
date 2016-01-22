@@ -300,6 +300,14 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         performSegueWithIdentifier("segueToPackages", sender: self)
     }
     
+    @IBAction func promotionsButtonClicked(sender: UIButton) {
+        hideMenuView()
+        let promoViewController                    = storyboard?.instantiateViewControllerWithIdentifier("PromoCodeViewController") as! PromoCodeViewController
+        promoViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+        promoViewController.viewTag                = ViewTag.promoDisplayView
+        presentViewController(promoViewController, animated: true, completion: nil)
+    }
+    
     @IBAction func changePasswordClicked(sender: UIButton) {
         hideMenuView()
         let feedNavigationController = storyboard?.instantiateViewControllerWithIdentifier("ChangeNavigationController") as! UINavigationController

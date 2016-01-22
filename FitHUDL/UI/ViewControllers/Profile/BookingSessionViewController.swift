@@ -59,10 +59,10 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         monthPicker.monthPickerDelegate = self
         
         nameLabel.text = user.name
-        if let id = searchResultId {
-            tableViewTopConstraint.constant = -65
-            view.layoutIfNeeded()
-        }
+//        if let id = searchResultId {
+//            tableViewTopConstraint.constant = -65
+//            view.layoutIfNeeded()
+//        }
         if count(user.bio) > BIOTEXT_LENGTH {
             bioLabel.userInteractionEnabled = true
             Globals.attributedBioText((user.bio as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())

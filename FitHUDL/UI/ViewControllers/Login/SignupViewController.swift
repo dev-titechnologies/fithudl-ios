@@ -21,10 +21,10 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var femaleButton: UIButton!
     @IBOutlet weak var femaleYConstraint: NSLayoutConstraint!
     @IBOutlet weak var maleYConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var nameViewYConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var sportsViewYConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var imageViewYConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var genderViewYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nameViewYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sportsViewYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageViewYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var genderViewYConstraint: NSLayoutConstraint!
     @IBOutlet weak var contentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var sportsCarousel: iCarousel!
     @IBOutlet weak var beginnerButton: UIButton!
@@ -60,16 +60,14 @@ class SignupViewController: UIViewController {
         maleYConstraint.constant   = 0
         femaleYConstraint.constant = 0
         
-//        if IS_IPHONE4S {
-//            imageViewYConstraint.constant  = 5
-//            nameViewYConstraint.constant   = 1
-//            sportsViewYConstraint.constant = 1
-//            genderViewYConstraint.constant = 3
-//            signupButtonHeight.constant    = 40
-//        } else if IS_IPHONE6 || IS_IPHONE6PLUS {
-//            genderViewYConstraint.constant = 40
-//        }
-//        view.layoutIfNeeded()
+        if IS_IPHONE6PLUS {
+            imageViewYConstraint.constant  = 25
+            nameViewYConstraint.constant   = 25
+            sportsViewYConstraint.constant = 40
+            genderViewYConstraint.constant = 35
+            view.layoutIfNeeded()
+        }
+        
        
         
         let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText.colorWithAlphaComponent(0.5)]
@@ -206,11 +204,15 @@ class SignupViewController: UIViewController {
                 self.presentViewController(alert, animated: false, completion: nil)
                 return
             }
-
-            sendSignupRequest()
+            let promoCodeController                     = storyboard?.instantiateViewControllerWithIdentifier("PromoCodeViewController") as! PromoCodeViewController
+            promoCodeController.viewTag                 = ViewTag.promoEntryView
+            promoCodeController.modalPresentationStyle  = UIModalPresentationStyle.OverFullScreen
+            promoCodeController.signupDelegate          = self
+            presentViewController(promoCodeController, animated: true, completion: nil)
         }
-//        performSegueWithIdentifier("modalSeguetoTab", sender: self)
     }
+    
+    
     
     func validateFields() -> Bool {
         println(nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")))
@@ -255,7 +257,7 @@ class SignupViewController: UIViewController {
         sportsCarousel.reloadData()
     }
     
-    func sendSignupRequest() {
+    func sendSignupRequest(promoCode: String?) {
         if CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedAlways && CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse {
             let alert = UIAlertController(title: alertTitle, message: "Location services are not enabled in this device. Go to Settings > Privacy > Location Services > FitHudl to enable it.", preferredStyle: UIAlertControllerStyle.Alert)
             let settingsAction = UIAlertAction(title: "Settings", style: UIAlertActionStyle.Default, handler: { (settingsAction) -> Void in
@@ -279,6 +281,9 @@ class SignupViewController: UIViewController {
         } else {
 //            requestDictionary.setObject(37.785834, forKey: "latitude")
 //            requestDictionary.setObject(-122.406417, forKey: "longitude")
+        }
+        if let code = promoCode {
+            requestDictionary.setObject(code, forKey: "promo_code")
         }
 
         if maleButton.selected {
@@ -495,3 +500,8 @@ extension SignupViewController: iCarouselDelegate {
     }
 }
     
+extension SignupViewController: PromoSignupDelegate {
+    func signupWithPromo(promoCode: String?) {
+        sendSignupRequest(promoCode)
+    }
+}

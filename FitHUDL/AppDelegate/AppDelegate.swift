@@ -106,20 +106,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         Globals.clearSession()
         self.saveContext()
     }
-    
+//    parent_id 0
+//    user_id	6
+//    trainer_id	17
+//    sports_id	2
+//    start_time	15:00
+//    end_time	15:30
+//    alloted_date 2016-01-22
+//    type training_req_accept
+//    booking_id 39
+//    status accept
+//    location kochi
+//    read 0
+//    req_amount NULL
     
     func createSampleNotifDictionary() {
         let sample = NSMutableDictionary()
-        sample.setObject("12:20", forKey: "start_time")
-        sample.setObject("12:30", forKey: "end_time")
+        sample.setObject("14:30", forKey: "start_time")
+        sample.setObject("14:40", forKey: "end_time")
         sample.setObject("Jemy Thomas", forKey: "user_name")
         sample.setObject("Bindiya Prakash", forKey: "trainer_name")
-        sample.setObject(2, forKey: "user_id")
-        sample.setObject(1, forKey: "trainer_id")
-        sample.setObject(4, forKey: "sports_id")
+        sample.setObject(6, forKey: "user_id")
+        sample.setObject(17, forKey: "trainer_id")
+        sample.setObject(2, forKey: "sports_id")
         sample.setObject("Tennis", forKey: "sports_name")
-        sample.setObject("2015-12-29", forKey: "alloted_date")
-        sample.setObject(8, forKey: "booking_id")
+        sample.setObject("2016-01-22", forKey: "alloted_date")
+        sample.setObject(39, forKey: "booking_id")
         deepLinkNotification(sample)
     }
     
