@@ -152,8 +152,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
         break
       case .Failed:
         println("failed trnsaction")
-       // NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
-      // failedTransaction(transaction)
+       failedTransaction(transaction)
         break
       case .Restored:
         restoreTransaction(transaction)
@@ -188,6 +187,7 @@ extension IAPHelper: SKPaymentTransactionObserver {
     let productIdentifier = transaction.originalTransaction.payment.productIdentifier
     println("restoreTransaction... \(productIdentifier)")
     provideContentForProductIdentifier(productIdentifier)
+    NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
     SKPaymentQueue.defaultQueue().finishTransaction(transaction)
     
   }
@@ -208,12 +208,11 @@ extension IAPHelper: SKPaymentTransactionObserver {
     println("failedTransaction... ghgh")
     if transaction.error.code != SKErrorPaymentCancelled {
         println("transaction cancelled")
-      println("Transaction error: \(transaction.error.localizedDescription)")
-    }
-    else {
-        
+       println("Transaction error: \(transaction.error.localizedDescription)")
+    } else {
         println("transaction not cancelled")
     }
+    NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
     SKPaymentQueue.defaultQueue().finishTransaction(transaction)
   }
 }
