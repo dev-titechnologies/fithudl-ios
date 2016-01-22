@@ -113,6 +113,7 @@ class SessionTimerViewController: UIViewController {
         circleTimer = CircularTimer(position: CGPoint(x: (contentView.frame.size.width-160)/2, y: 125), radius: 80, internalRadius: 78, circleStrokeColor: AppColor.timerColor, activeCircleStrokeColor: AppColor.boxBorderColor, initialDate: getDate((sessionDictionary["start_time"] as? String)!), finalDate: getDate((sessionDictionary["end_time"] as? String)!), startCallback: { () -> Void in
         }, endCallback: { () -> Void in
         })
+        circleTimer.center = CGPoint(x: timerLabel.center.x, y: circleTimer.center.y)
         view.addSubview(circleTimer)
         statusLabel.text = "The session has been started."
         timerLabel.start()
