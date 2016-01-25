@@ -98,9 +98,9 @@ class EditProfileViewController: UIViewController {
         monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPick.monthPickerDelegate = self
         
-        var datesArray  = appDelegate.user?.availableTime.valueForKey("date") as! NSSet
+        let datesArray  = appDelegate.user?.availableTime.valueForKey("date") as! NSSet
         for date in datesArray {
-            var filteredArray = NSMutableArray(array: appDelegate.user!.availableTime.allObjects).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date]))
+            let filteredArray = NSMutableArray(array: appDelegate.user!.availableTime.allObjects).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date]))
             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
         }
     }
@@ -143,14 +143,14 @@ class EditProfileViewController: UIViewController {
                 
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString = formatter.stringFromDate(changedTime)
+                let timeString = formatter.stringFromDate(changedTime)
                 initialStart   = formatter.dateFromString(timeString)
             }
             if let end = initialEnd {
             
             } else {
                 let changedTime = changeTimeValue(NSDate())
-                var timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)))
+                let timeString  = formatter.stringFromDate(changedTime.dateByAddingTimeInterval(NSTimeInterval(duration)))
                 initialEnd      = formatter.dateFromString(timeString)
             }
             var components = formatter.stringFromDate(initialStart!).componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " :"))
@@ -898,7 +898,7 @@ extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: (collectionView.frame.size.width-30)/3, height: 40.0)
         }
         if IS_IPHONE6 {
-            return CGSize(width: 110.0, height: 40.0)
+            return CGSize(width: 100.0, height: 40.0)
         }
         return CGSize(width: 98.0, height: 40.0)
     }

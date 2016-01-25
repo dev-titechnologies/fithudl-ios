@@ -106,11 +106,15 @@ class LoginOrSignUpViewController: UIViewController {
     }
     
     @IBAction func connectWithTwitterClicked(sender: UIButton) {
+        showLoadingView(true)
         let account = ACAccountStore()
         let type    = account.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         account.requestAccessToAccountsWithType(type, options: nil) { (granted, error) -> Void in
             if error != nil {
-                println(error)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.showLoadingView(false)
+                    self.showDismissiveAlertMesssage(error.localizedDescription)
+                })
                 return
             }
             if granted {
@@ -128,6 +132,7 @@ class LoginOrSignUpViewController: UIViewController {
                     
                     request.performRequestWithHandler({ (responseData: NSData!, urlResponse: NSHTTPURLResponse!, error: NSError!) -> Void in
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.showLoadingView(false)
                             println(responseData)
                             println(urlResponse)
                             println(error)

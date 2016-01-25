@@ -221,10 +221,10 @@ class SignupViewController: UIViewController {
             return false
         }
         if emailTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
-            showDismissiveAlertMesssage("Please enter your email ID")
+            showDismissiveAlertMesssage("Please enter your email eddress")
             return false
         } else if !Globals.isValidEmail(emailTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())) {
-            showDismissiveAlertMesssage("Please enter a valid email ID")
+            showDismissiveAlertMesssage("Enter a valid email address")
             return false
         }
         if passwordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
@@ -238,13 +238,13 @@ class SignupViewController: UIViewController {
             showDismissiveAlertMesssage("Password mismatch. Make sure the passwords are identical.")
             return false
         }
-        if !maleButton.selected && !femaleButton.selected {
-            showDismissiveAlertMesssage("Please choose your gender")
-            return false
-        }
         let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
         if filteredArray.count == 0 {
             showDismissiveAlertMesssage("Please select sports and your expertise level")
+            return false
+        }
+        if !maleButton.selected && !femaleButton.selected {
+            showDismissiveAlertMesssage("Please choose your gender")
             return false
         }
         return true
