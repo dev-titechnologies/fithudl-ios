@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 class SignupViewController: UIViewController {
-
+    @IBOutlet weak var dobLabel: UILabel!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -32,11 +32,14 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var expertButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var sportsLoadingview: UIView!
+    @IBOutlet weak var dobPicker: UIDatePicker!
+    @IBOutlet weak var datePickerView: UIView!
     
     var networkingID: String = "0"
     var twitterName: String?
     var fbUserDictionary: NSDictionary?
     var selectedSportsArray = NSMutableArray()
+    var selectedTextField:UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,19 +63,32 @@ class SignupViewController: UIViewController {
         maleYConstraint.constant   = 0
         femaleYConstraint.constant = 0
         
-        if IS_IPHONE6PLUS {
-            imageViewYConstraint.constant  = 25
-            nameViewYConstraint.constant   = 25
-            sportsViewYConstraint.constant = 40
-            genderViewYConstraint.constant = 35
-            view.layoutIfNeeded()
-        }
+//        if IS_IPHONE6PLUS {
+//            imageViewYConstraint.constant  = 25
+//            nameViewYConstraint.constant   = 25
+//            sportsViewYConstraint.constant = 40
+//            genderViewYConstraint.constant = 35
+//            view.layoutIfNeeded()
+//        }
         
-       
+        datePickerView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        let subView = contentScrollView.subviews[0] as! UIView
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.datePickerView.frame = CGRect(x: 0.0, y: subView.frame.size.height, width: self.view.frame.size.width, height: self.datePickerView.frame.size.height)
+        })
+        
+        let unitFlags   = NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay
+        let now         = NSDate()
+        let gregorian   = NSCalendar.currentCalendar()
+        let comps       = gregorian.components(unitFlags, fromDate: now)
+        comps.year      = comps.year-18
+        let dateAgo     = gregorian.dateFromComponents(comps)
+        dobPicker.maximumDate = dateAgo
         
         let colorAttributes     = [NSForegroundColorAttributeName: AppColor.placeholderText.colorWithAlphaComponent(0.5)]
         var placeHolderString   = NSAttributedString(string: emailTextField.placeholder!, attributes: colorAttributes)
         emailTextField.attributedPlaceholder = placeHolderString
+        dobLabel.textColor      = AppColor.placeholderText.colorWithAlphaComponent(0.5)
         
         placeHolderString   = NSAttributedString(string: nameTextField.placeholder!, attributes: colorAttributes)
         nameTextField.attributedPlaceholder = placeHolderString
@@ -80,7 +96,7 @@ class SignupViewController: UIViewController {
         placeHolderString   = NSAttributedString(string: passwordTextField.placeholder!, attributes: colorAttributes)
         passwordTextField.attributedPlaceholder = placeHolderString
         
-        placeHolderString = NSAttributedString(string: confirmPasswordTextField.placeholder!, attributes: colorAttributes)
+        placeHolderString   = NSAttributedString(string: confirmPasswordTextField.placeholder!, attributes: colorAttributes)
         confirmPasswordTextField.attributedPlaceholder = placeHolderString
         
         genderButton.layer.borderColor = AppColor.statusBarColor.CGColor
@@ -109,15 +125,15 @@ class SignupViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        if IS_IPHONE4S || IS_IPHONE5 {
-            contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 550.0)
-            contentViewHeight.constant = 550.0
-        } else {
-            contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
-            contentViewHeight.constant = view.frame.size.height
-            signupButton.setTranslatesAutoresizingMaskIntoConstraints(true)
-            signupButton.frame = CGRect(origin: CGPoint(x: 10.0, y: view.frame.size.height - 50.0), size: CGSize(width: view.frame.size.width - 20.0, height: signupButton.frame.size.height))
-        }
+//        if IS_IPHONE4S || IS_IPHONE5 {
+        contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 680.0)
+        contentViewHeight.constant = 680.0
+//        } else {
+//            contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
+//            contentViewHeight.constant = view.frame.size.height
+//            signupButton.setTranslatesAutoresizingMaskIntoConstraints(true)
+//            signupButton.frame = CGRect(origin: CGPoint(x: 10.0, y: view.frame.size.height - 50.0), size: CGSize(width: view.frame.size.width - 20.0, height: signupButton.frame.size.height))
+//        }
         view.layoutIfNeeded()
     }
     
@@ -136,6 +152,19 @@ class SignupViewController: UIViewController {
                 showDismissiveAlertMesssage("Sports List is mandatory for sign up. You cannot proceed further.")
             }
         }
+    }
+    
+    @IBAction func dobTapped(sender: UITapGestureRecognizer) {
+        if let textField = selectedTextField {
+           textField.resignFirstResponder()
+        }
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.datePickerView.frame = CGRect(x: 0.0, y: self.view.frame.size.height-self.datePickerView.frame.size.height, width: self.datePickerView.frame.size.width, height: self.datePickerView.frame.size.height)
+        })
+    }
+    
+    @IBAction func dateValueChanged(sender: UIDatePicker) {
+        
     }
     
     @IBAction func genderButtonClicked(sender: UIButton) {
@@ -162,6 +191,21 @@ class SignupViewController: UIViewController {
 //                    self.femaleButton.hidden = true
             })
         }
+    }
+    
+    @IBAction func pickerCancelClicked(sender: UIButton) {
+        let subView = contentScrollView.subviews[0] as! UIView
+        UIView.animateWithDuration(animateInterval, animations: { () -> Void in
+            self.datePickerView.frame = CGRect(x: 0.0, y: subView.frame.size.height, width: self.datePickerView.frame.size.width, height: self.datePickerView.frame.size.height)
+        })
+    }
+    
+    @IBAction func pickerDoneClicked(sender: UIButton) {
+        let dateFormatter        = NSDateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dobLabel.textColor       = AppColor.placeholderText
+        dobLabel.text            = dateFormatter.stringFromDate(dobPicker.date)
+        pickerCancelClicked(sender)
     }
     
     @IBAction func backButtonClicked(sender: UIButton) {
@@ -212,12 +256,28 @@ class SignupViewController: UIViewController {
         }
     }
     
+    @IBAction func mobilePrivacyClicked(sender: UIButton) {
+        let navController = storyboard?.instantiateViewControllerWithIdentifier("WebNavigationController") as! UINavigationController
+        let webController = navController.topViewController as! WebViewController
+        webController.viewTag = ViewTag.mobilePrivacy
+        presentViewController(navController, animated: true, completion: nil)
+    }
     
+    @IBAction func agreementClicked(sender: UIButton) {
+        let navController = storyboard?.instantiateViewControllerWithIdentifier("WebNavigationController") as! UINavigationController
+        let webController = navController.topViewController as! WebViewController
+        webController.viewTag = ViewTag.agreement
+        presentViewController(navController, animated: true, completion: nil)
+    }
     
     func validateFields() -> Bool {
         println(nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")))
         if nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" || nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")).count <= 1 {
             showDismissiveAlertMesssage("Please enter your full name")
+            return false
+        }
+        if dobLabel.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "DOB" {
+            showDismissiveAlertMesssage("Please enter your date of birth")
             return false
         }
         if emailTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" {
@@ -356,6 +416,9 @@ class SignupViewController: UIViewController {
     }
 
     override func viewWillDisappear(animated: Bool) {
+        if let textField = selectedTextField {
+            textField.resignFirstResponder()
+        }
         for sport in appDelegate.sportsArray {
             (sport as! SportsList).level      = ""
             (sport as! SportsList).isSelected = false
@@ -382,6 +445,11 @@ class SignupViewController: UIViewController {
 }
 
 extension SignupViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(textField: UITextField) {
+        selectedTextField = textField
+        pickerCancelClicked(UIButton())
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

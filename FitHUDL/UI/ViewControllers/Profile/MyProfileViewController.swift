@@ -362,6 +362,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func notificationsButtonClicked(sender: UIButton) {
+        self.notificationTableView.contentOffset = CGPointZero
         if sender.tag == 0 {
             if menuView.frame.origin.x == 0 {
                 hideMenuView()
@@ -376,11 +377,9 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         } else {
             sender.tag = 0
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.notificationTableView.reloadData()
-                self.notificationBackgroundView.hidden  = true
+                self.notificationBackgroundView.hidden   = true
             }, completion: nil)
         }
-        
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {

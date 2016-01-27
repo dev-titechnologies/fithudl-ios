@@ -204,14 +204,16 @@ extension IAPHelper: SKPaymentTransactionObserver {
   }
   
   private func failedTransaction(transaction: SKPaymentTransaction) {
-    
     println("failedTransaction... ghgh")
-    if transaction.error.code != SKErrorPaymentCancelled {
-        println("transaction cancelled")
-       println("Transaction error: \(transaction.error.localizedDescription)")
-    } else {
-        println("transaction not cancelled")
+    if let error = transaction.error {
+        if error.code != SKErrorPaymentCancelled {
+            println("transaction cancelled")
+            println("Transaction error: \(transaction.error.localizedDescription)")
+        } else {
+            println("transaction not cancelled")
+        }
     }
+
     NSNotificationCenter.defaultCenter().postNotificationName("LoadingCompleted", object: nil)
     SKPaymentQueue.defaultQueue().finishTransaction(transaction)
   }

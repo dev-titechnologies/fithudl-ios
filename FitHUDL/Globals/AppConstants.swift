@@ -112,6 +112,8 @@ struct ViewTag {
     static let privacyView      = 6
     static let promoDisplayView = 7
     static let promoEntryView   = 8
+    static let mobilePrivacy    = 9
+    static let agreement        = 10
 }
 
 struct ResponseStatus {
