@@ -964,7 +964,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Pillar;
-				PROVISIONING_PROFILE = "286c52a4-f77d-4cb1-8df9-dae23415a902";
+				PROVISIONING_PROFILE = "ae49d5ad-20ba-4fc0-8d5d-c1e321fdad15";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;

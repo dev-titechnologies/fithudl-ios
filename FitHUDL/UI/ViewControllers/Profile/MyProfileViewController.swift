@@ -62,10 +62,11 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var availBalanceLabel: UILabel!
    
+    @IBOutlet weak var scrollContentHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var notifIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var packagesButton: UIButton!
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var carouselBackgroundView: NSLayoutConstraint!
+    @IBOutlet weak var carouselBackgroundHeight: NSLayoutConstraint!
     @IBOutlet weak var notificationTableView: UITableView!
     @IBOutlet weak var carouselBackgoundView: UIView!
     @IBOutlet weak var interestLabel: UILabel!
@@ -241,6 +242,9 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 560.0)
         } else {
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: contentScrollView.frame.size.height)
+            scrollContentHeightConstraint.constant = view.frame.size.height
+            carouselBackgroundHeight.constant      = carouselBackgroundHeight.constant+40.0
+            view.layoutIfNeeded()
         }
     }
     
