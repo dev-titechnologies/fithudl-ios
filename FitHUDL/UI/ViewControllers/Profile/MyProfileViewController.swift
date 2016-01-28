@@ -164,32 +164,58 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(animated: Bool) {
-        availableTimeCollectionView.reloadData()
-        morebgView.hidden   = false
-        moreButton.hidden   = false
-        notimeLabel.hidden  = true
-        availableTimeCollectionView.hidden = false
-        noBadgeLabel.hidden         = true
-        badgesCollectionView.hidden = false
-        noreviewLabel.hidden        = true
-        reviewCollectionView.hidden = false
-        badgeNextButton.hidden      = true
-        badgePrevButton.hidden      = true
-        buttonView.hidden           = true
-        
-        menuView.setTranslatesAutoresizingMaskIntoConstraints(true)
-        notificationButton.tag      = 0
-        notificationBackgroundView.removeFromSuperview()
-        notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
-        notificationBackgroundView.frame = CGRect(x: (view.frame.size.width-notificationBackgroundView.frame.size.width), y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
-        appDelegate.window?.addSubview(notificationBackgroundView)
-        notificationBackgroundView.backgroundColor = UIColor.clearColor()
-        notificationBackgroundView.hidden       = true
-        notificationTableView.layer.borderWidth = 0.5
-        notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        sendRequestForProfile()
-        appDelegate.sendRequestToGetConfig()
+        println(self.presentedViewController)
+        println(self.presentingViewController)
+        if let presentedController = self.presentedViewController {
+        } else {
+            appDelegate.sendRequestToGetConfig()
+            availableTimeCollectionView.reloadData()
+            morebgView.hidden   = false
+            moreButton.hidden   = false
+            notimeLabel.hidden  = true
+            availableTimeCollectionView.hidden = false
+            noBadgeLabel.hidden         = true
+            badgesCollectionView.hidden = false
+            noreviewLabel.hidden        = true
+            reviewCollectionView.hidden = false
+            badgeNextButton.hidden      = true
+            badgePrevButton.hidden      = true
+            buttonView.hidden           = true
+            
+            menuView.setTranslatesAutoresizingMaskIntoConstraints(true)
+            notificationButton.tag      = 0
+            notificationBackgroundView.removeFromSuperview()
+            notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
+            notificationBackgroundView.frame = CGRect(x: (view.frame.size.width-notificationBackgroundView.frame.size.width), y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
+            appDelegate.window?.addSubview(notificationBackgroundView)
+            notificationBackgroundView.backgroundColor = UIColor.clearColor()
+            notificationBackgroundView.hidden       = true
+            notificationTableView.layer.borderWidth = 0.5
+            notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
+            sendRequestForProfile()
+            if let id = profileID {
+                if let currentUser = appDelegate.user {
+                    if currentUser.sports.count > 0 {
+                        var sportsList      = currentUser.sports.allObjects as! [UserSports]
+                        currentUser.sports  = NSMutableSet(array: (sportsList as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)]))
+                    }
+                }
+            }
+        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "termsChanged", name: "TermsChange", object: nil)
     }
+    
+    func termsChanged() {
+        if let currentUser = appDelegate.user {
+            let terms = currentUser.termsStatus.integerValue
+            if let change = appDelegate.configDictionary["GENERAL_CMS_AMENDMENT"] as? String {
+                if terms == 0 && change.toInt()! == 1 {
+                    showContentChangeView()
+                }
+            }
+        }
+    }
+    
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         println("touch view is \(touch.view)")
@@ -207,6 +233,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.frame = CGRect(x: 0.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
         self.view.addSubview(notificationBackgroundView)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "TermsChange", object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -500,6 +527,14 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    func showContentChangeView() {
+        let promoViewController                    = storyboard?.instantiateViewControllerWithIdentifier("PromoCodeViewController") as! PromoCodeViewController
+        self.definesPresentationContext            = true
+        promoViewController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        promoViewController.viewTag                = ViewTag.contentChange
+        presentViewController(promoViewController, animated: true, completion: nil)
+    }
+    
     func showBioView(bioText: String) {
         let custompopController = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
         self.definesPresentationContext = true
@@ -631,6 +666,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         
         println("Response Dictionary\(responseDictionary)")
         if let id = profileID {
+            //Other user
             User.deleteUser(NSPredicate(format: "profileID = %d", argumentArray: [id.toInt()!]))
             profileUser            = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDelegate.managedObjectContext!) as? User
             profileUser!.currentUser = 0
@@ -695,6 +731,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             profileUser!.isFavorite = responseDictionary["favourite"] as! Bool
         } else {
+            //logged in User
             if responseDictionary["email_verify"] as! Int == 0 {
                 showEmailVerifyAlert()
             }
@@ -720,6 +757,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 appDelegate.user!.imageURL = ""
             }
             availBalanceLabel.text =  appDelegate.user!.walletBalance == "" ? "$0" : "$\(appDelegate.user!.walletBalance)"
+           
             if let bio = responseDictionary["profile_desc"] as? String {
                 if bio == "" || bio == "null"{
                     appDelegate.user!.bio = ""
@@ -737,6 +775,17 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 appDelegate.user!.interests = otherInterests
             } else {
                 appDelegate.user!.interests = ""
+            }
+            
+            println(appDelegate.configDictionary)
+            //Mobile Privacy, Contract Content Change
+            if let terms = responseDictionary["terms_agree_status"] as? Int {
+                appDelegate.user!.termsStatus = terms
+                if let change = appDelegate.configDictionary["GENERAL_CMS_AMENDMENT"] as? String {
+                    if terms == 0 && change.toInt()! == 1 {
+                        showContentChangeView()
+                    }
+                }
             }
 
             if let session = responseDictionary["Training_session"] as? NSArray {
@@ -791,9 +840,10 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 println (appDelegate.user!.sports)
                 var sportsList = appDelegate.user?.sports.allObjects as! [UserSports]
-                sportsList.sort({ (sport1, sport2) -> Bool in
-                    return count((sport1 as UserSports).expertLevel) > count((sport2 as UserSports).expertLevel)
-                })
+                appDelegate.user?.sports = NSMutableSet(array: (sportsList as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)]))
+//                sportsList.sort({ (sport1, sport2) -> Bool in
+//                    return count((sport1 as UserSports).expertLevel) > count((sport2 as UserSports).expertLevel)
+//                })
                 println (appDelegate.user!.sports)
             }
         }
@@ -920,7 +970,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setExpertiseLevel(level: String) {
-        let sports  = appDelegate.user!.sports.allObjects[sportsCarousel.currentItemIndex] as! UserSports
+        let sports  = ((appDelegate.user!.sports.allObjects as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)]))[sportsCarousel.currentItemIndex] as! UserSports
         var type    = ""
         if count(sports.expertLevel) == 0 && count(level) > 0 {
             type = SportsLevel.typeAdd
@@ -931,7 +981,9 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         sports.expertLevel = level
         sendRequestForUpdateSportsLevel(sports, type: type)
-        sportsCarousel.reloadData()
+        let currentView = sportsCarousel.itemViewAtIndex(sportsCarousel.currentItemIndex)
+        let tickImageView = currentView?.viewWithTag(4) as! UIImageView
+        tickImageView.hidden = level == "" ? true : false
     }
     
     override func didReceiveMemoryWarning() {
@@ -1021,6 +1073,7 @@ extension MyProfileViewController: iCarouselDataSource {
         contentView.addGestureRecognizer(tapGesturesportscarousel)
         
         var source          = profileID == nil ? appDelegate.user!.sports.allObjects : profileUser!.sports.allObjects
+//        println(source)
         source              = (source as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)])
         let sports          = source[index] as! UserSports
         sportsImageView.image = UIImage(named: "default_image")

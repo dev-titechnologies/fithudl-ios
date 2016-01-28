@@ -34,6 +34,7 @@ class SignupViewController: UIViewController {
     @IBOutlet weak var sportsLoadingview: UIView!
     @IBOutlet weak var dobPicker: UIDatePicker!
     @IBOutlet weak var datePickerView: UIView!
+    @IBOutlet weak var agreeButton: UIButton!
     
     var networkingID: String = "0"
     var twitterName: String?
@@ -270,6 +271,10 @@ class SignupViewController: UIViewController {
         presentViewController(navController, animated: true, completion: nil)
     }
     
+    @IBAction func agreeButtonClicked(sender: UIButton) {
+        sender.selected = !sender.selected
+    }
+    
     func validateFields() -> Bool {
         println(nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")))
         if nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "" || nameTextField.text.componentsSeparatedByCharactersInSet(NSCharacterSet(charactersInString: " .")).count <= 1 {
@@ -344,6 +349,8 @@ class SignupViewController: UIViewController {
         }
         if let code = promoCode {
             requestDictionary.setObject(code, forKey: "promo_code")
+        } else {
+            requestDictionary.setObject("", forKey: "promo_code")
         }
 
         if maleButton.selected {
@@ -373,6 +380,16 @@ class SignupViewController: UIViewController {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/signup", requestType: HttpMethod.post), delegate: self, tag: Connection.signup)
     }
     
+    func sendContractAgreementRequest() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(agreeButton.selected == true ? 1 : 0, forKey: "checked")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/checkContentChange", requestType: HttpMethod.post), delegate: self, tag: Connection.contentChangeRequest)
+    }
+    
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
     }
@@ -388,10 +405,16 @@ class SignupViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    if let token = jsonResult["token"] as? String {
-                        NSUserDefaults.standardUserDefaults().setObject(token, forKey: "API_TOKEN")
+                    if connection.connectionTag == Connection.signup {
+                        if let token = jsonResult["token"] as? String {
+                            NSUserDefaults.standardUserDefaults().setObject(token, forKey: "API_TOKEN")
+                            sendContractAgreementRequest()
+                            return
+                        }
+                    } else {
                         performSegueWithIdentifier("modalSeguetoTab", sender: self)
                     }
+
                 } else if status == ResponseStatus.error {
                     if let message = jsonResult["message"] as? String {
                         showDismissiveAlertMesssage(message)

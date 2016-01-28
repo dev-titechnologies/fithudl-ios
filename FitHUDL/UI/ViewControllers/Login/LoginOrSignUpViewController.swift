@@ -125,8 +125,10 @@ class LoginOrSignUpViewController: UIViewController {
                     println(properties)
                     let details = properties["properties"] as! NSDictionary
                     println(details)
-                    self.twitterID = details["user_id"] as! String
-                    
+                    self.twitterID   = details["user_id"] as! String
+                    if let account = twitterAccount {
+                        self.twitterName = account.userFullName
+                    }
                     let request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: NSURL(string: "https://api.twitter.com/1.1/users/show.json"), parameters: details as [NSObject : AnyObject])
                     request.account = twitterAccount
                     
@@ -136,10 +138,13 @@ class LoginOrSignUpViewController: UIViewController {
                             println(responseData)
                             println(urlResponse)
                             println(error)
-                            if urlResponse.statusCode == 429 {
+                            if let err = error {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    self.sendRequestToCheckNewTwitterUser()
+                                })
                                 return
                             }
-                            if let err = error {
+                            if urlResponse.statusCode == 429 {
                                 return
                             }
                             if let response = responseData {

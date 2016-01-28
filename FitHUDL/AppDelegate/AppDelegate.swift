@@ -239,6 +239,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                     self.configDictionary.setObject(value!, forKey: config["code"] as! String)
                                     Configurations.saveConfig(config["id"] as! Int, code: config["code"] as! String , value: "\(value)")
                                 }
+                                NSNotificationCenter.defaultCenter().postNotificationName("TermsChange", object: nil)
                             }
                         }
                     }

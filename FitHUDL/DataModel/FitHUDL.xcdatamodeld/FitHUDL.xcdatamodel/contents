@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Bookings" representedClassName="Pillar.Bookings" syncable="YES">
         <attribute name="allotedDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bookingID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -81,6 +81,7 @@
         <attribute name="profileID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="profileImage" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="rating" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="termsStatus" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="totalHours" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="usageCount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userVerified" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
@@ -130,7 +131,7 @@
         <element name="Notification" positionX="-54" positionY="218" width="128" height="315"/>
         <element name="Packages" positionX="-630" positionY="191" width="128" height="135"/>
         <element name="SportsList" positionX="-171" positionY="59" width="128" height="135"/>
-        <element name="User" positionX="268" positionY="9" width="128" height="330"/>
+        <element name="User" positionX="268" positionY="9" width="128" height="345"/>
         <element name="UserBadges" positionX="124" positionY="-18" width="128" height="120"/>
         <element name="UserReview" positionX="115" positionY="342" width="128" height="135"/>
         <element name="UsersList" positionX="-252" positionY="204" width="128" height="75"/>

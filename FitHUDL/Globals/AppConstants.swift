@@ -86,6 +86,7 @@ struct Connection {
     static let notifReadStatus      = 34
     static let transactionRequest   = 35
     static let promoCodeRequest     = 36
+    static let contentChangeRequest = 37
 }
 
 struct SportsLevel {
@@ -114,6 +115,7 @@ struct ViewTag {
     static let promoEntryView   = 8
     static let mobilePrivacy    = 9
     static let agreement        = 10
+    static let contentChange    = 11
 }
 
 struct ResponseStatus {

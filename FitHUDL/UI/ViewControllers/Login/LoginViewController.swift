@@ -72,6 +72,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func forgotPasswordButtonClicked(sender: UIButton) {
+        resetEmailTextField.text = ""
         if calloutView.frame.size.height == 0 {
             UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.calloutView.frame = CGRect(x: 0.0, y: self.calloutViewYAxis, width: self.calloutView.frame.size.width, height: 95.0)

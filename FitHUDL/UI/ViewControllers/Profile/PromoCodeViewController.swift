@@ -27,7 +27,10 @@ class PromoCodeViewController: UIViewController {
     @IBOutlet weak var promoNoButton: UIButton!
     @IBOutlet weak var promoYesButton: UIButton!
     @IBOutlet weak var promoTextField: UITextField!
+    @IBOutlet weak var okButton: UIButton!
     
+    @IBOutlet weak var agreeButton: UIButton!
+    @IBOutlet weak var contentChangeView: UIView!
     var signupDelegate:PromoSignupDelegate?
     var viewTag: Int = 0
     var shareSubject = ""
@@ -49,6 +52,10 @@ class PromoCodeViewController: UIViewController {
             setButtonBorder(cancelButton)
             promoTextField.superview?.layer.borderWidth = 1
             promoTextField.superview?.layer.borderColor = AppColor.promoGreenColor.CGColor
+        } else if viewTag == ViewTag.contentChange {
+            contentChangeView.hidden = false
+            agreeButton.selected = true
+            setButtonBorder(okButton)
         }
         // Do any additional setup after loading the view.
     }
@@ -100,12 +107,44 @@ class PromoCodeViewController: UIViewController {
         codeEntryView.hidden = true
     }
     
+    @IBAction func mobilePrivacyClicked(sender: UIButton) {
+        let navController = storyboard?.instantiateViewControllerWithIdentifier("WebNavigationController") as! UINavigationController
+        let webController = navController.topViewController as! WebViewController
+        webController.viewTag = ViewTag.mobilePrivacy
+        presentViewController(navController, animated: true, completion: nil)
+    }
+    
+    @IBAction func agreeButtonClicked(sender: UIButton) {
+        agreeButton.selected = !agreeButton.selected
+    }
+    
+    @IBAction func agreementClicked(sender: UIButton) {
+        let navController = storyboard?.instantiateViewControllerWithIdentifier("WebNavigationController") as! UINavigationController
+        let webController = navController.topViewController as! WebViewController
+        webController.viewTag = ViewTag.agreement
+        presentViewController(navController, animated: true, completion: nil)
+    }
+    
+    @IBAction func okButtonClicked(sender: UIButton) {
+        sendContractAgreementRequest()
+    }
+    
     func sendRequestToGetPromoCode() {
         if !Globals.isInternetConnected() {
             return
         }
         showLoadingView(true)
         CustomURLConnection(request: CustomURLConnection.createRequest(NSMutableDictionary(), methodName: "user/getPromoCode", requestType: HttpMethod.post), delegate: self, tag: Connection.promoCodeRequest)
+    }
+    
+    func sendContractAgreementRequest() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(agreeButton.selected == true ? 1 : 0, forKey: "checked")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/checkContentChange", requestType: HttpMethod.post), delegate: self, tag: Connection.contentChangeRequest)
     }
     
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
@@ -124,11 +163,22 @@ class PromoCodeViewController: UIViewController {
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
-                    if let data = jsonResult["data"] as? NSDictionary {
-                        let code = data["code"] as! String
-                        setAttributedPromoCode(code)
-                        shareSubject = data["SUBJECT"] as! String
-                        shareContent = "<html> <p>Hi,</p><p>\(appDelegate.user!.name) has invited you to join Pillar. You can sign up to <a href:\(ITUNES_LINK)>\(ITUNES_LINK)</a> using the invite code given below<br><br>Invite Code : \(code)</br></br></p><p>Now start enjoying free sessions!!</p><p>Thanks<br>Team Pillar</br></p></html>"
+                    if connection.connectionTag == Connection.promoCodeRequest {
+                        if let data = jsonResult["data"] as? NSDictionary {
+                            let code = data["code"] as! String
+                            setAttributedPromoCode(code)
+                            shareSubject = data["SUBJECT"] as! String
+                            shareContent = "<html> <p>Hi,</p><p>\(appDelegate.user!.name) has invited you to join Pillar. You can sign up to <a href:\(ITUNES_LINK)>\(ITUNES_LINK)</a> using the invite code given below<br><br>Invite Code : \(code)</br></br></p><p>Now start enjoying free sessions!!</p><p>Thanks<br>Team Pillar</br></p></html>"
+                        }
+                    } else {
+                        appDelegate.user?.termsStatus = agreeButton.selected == true ? 1 : 0
+                        dismissViewControllerAnimated(true, completion: nil)
+                    }
+                } else if status == ResponseStatus.error {
+                    if let message = jsonResult["message"] as? String {
+                        showDismissiveAlertMesssage(message)
+                    } else {
+                        showDismissiveAlertMesssage(ErrorMessage.invalid)
                     }
                 }
             }
@@ -168,7 +218,7 @@ extension PromoCodeViewController: MFMailComposeViewControllerDelegate {
         } else {
             controller.dismissViewControllerAnimated(true, completion: nil)
             if result.value == MFMailComposeResultSent.value {
-                UIAlertView(title: alertTitle, message: "Promo code successfully sent", delegate: nil, cancelButtonTitle: "OK").show()
+                UIAlertView(title: alertTitle, message: "Invite code shared successfully", delegate: nil, cancelButtonTitle: "OK").show()
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else if result.value == MFMailComposeResultFailed.value {
                 UIAlertView(title: alertTitle, message: "Failed to send the message", delegate: nil, cancelButtonTitle: "OK").show()

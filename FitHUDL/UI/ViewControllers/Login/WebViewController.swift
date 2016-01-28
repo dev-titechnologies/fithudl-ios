@@ -19,8 +19,14 @@ class WebViewController: UIViewController {
         if viewTag == ViewTag.termsView {
             titleLabel.text = "Terms Of Service"
             loadWebContent("")
-        } else {
+        } else if viewTag == ViewTag.privacyView {
             titleLabel.text = "Privacy Policy"
+            loadWebContent("")
+        } else if viewTag == ViewTag.agreement {
+            titleLabel.text = "Contractor Agreement"
+            loadWebContent("")
+        } else if viewTag == ViewTag.mobilePrivacy {
+            titleLabel.text = "Mobile Privacy"
             loadWebContent("")
         }
         
