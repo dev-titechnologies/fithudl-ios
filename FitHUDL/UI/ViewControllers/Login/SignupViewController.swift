@@ -281,7 +281,7 @@ class SignupViewController: UIViewController {
             showDismissiveAlertMesssage("Please enter your full name")
             return false
         }
-        if dobLabel.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "DOB" {
+        if dobLabel.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) == "Date of Birth" {
             showDismissiveAlertMesssage("Please enter your date of birth")
             return false
         }
@@ -310,6 +310,10 @@ class SignupViewController: UIViewController {
         }
         if !maleButton.selected && !femaleButton.selected {
             showDismissiveAlertMesssage("Please choose your gender")
+            return false
+        }
+        if agreeButton.selected == false {
+            showDismissiveAlertMesssage("Please agree to the terms & agreement")
             return false
         }
         return true

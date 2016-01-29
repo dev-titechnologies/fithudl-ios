@@ -122,15 +122,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func createSampleNotifDictionary() {
         let sample = NSMutableDictionary()
-        sample.setObject("14:30", forKey: "start_time")
-        sample.setObject("14:40", forKey: "end_time")
+        sample.setObject("14:40", forKey: "start_time")
+        sample.setObject("14:43", forKey: "end_time")
         sample.setObject("Jemy Thomas", forKey: "user_name")
         sample.setObject("Bindiya Prakash", forKey: "trainer_name")
         sample.setObject(6, forKey: "user_id")
         sample.setObject(17, forKey: "trainer_id")
         sample.setObject(2, forKey: "sports_id")
         sample.setObject("Tennis", forKey: "sports_name")
-        sample.setObject("2016-01-22", forKey: "alloted_date")
+        sample.setObject("2016-01-29", forKey: "alloted_date")
         sample.setObject(39, forKey: "booking_id")
         deepLinkNotification(sample)
     }

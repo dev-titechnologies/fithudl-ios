@@ -168,38 +168,41 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         println(self.presentedViewController)
         println(self.presentingViewController)
         if let presentedController = self.presentedViewController {
-        } else {
-            appDelegate.sendRequestToGetConfig()
-            availableTimeCollectionView.reloadData()
-            morebgView.hidden   = false
-            moreButton.hidden   = false
-            notimeLabel.hidden  = true
-            availableTimeCollectionView.hidden = false
-            noBadgeLabel.hidden         = true
-            badgesCollectionView.hidden = false
-            noreviewLabel.hidden        = true
-            reviewCollectionView.hidden = false
-            badgeNextButton.hidden      = true
-            badgePrevButton.hidden      = true
-            buttonView.hidden           = true
-            
-            menuView.setTranslatesAutoresizingMaskIntoConstraints(true)
-            notificationButton.tag      = 0
-            notificationBackgroundView.removeFromSuperview()
-            notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
-            notificationBackgroundView.frame = CGRect(x: (view.frame.size.width-notificationBackgroundView.frame.size.width), y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
-            appDelegate.window?.addSubview(notificationBackgroundView)
-            notificationBackgroundView.backgroundColor = UIColor.clearColor()
-            notificationBackgroundView.hidden       = true
-            notificationTableView.layer.borderWidth = 0.5
-            notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
-            sendRequestForProfile()
-            if let id = profileID {
-                if let currentUser = appDelegate.user {
-                    if currentUser.sports.count > 0 {
-                        var sportsList      = currentUser.sports.allObjects as! [UserSports]
-                        currentUser.sports  = NSMutableSet(array: (sportsList as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)]))
-                    }
+            if presentedController.isKindOfClass(PromoCodeViewController) {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "termsChanged", name: "TermsChange", object: nil)
+                return
+            }
+        }
+        appDelegate.sendRequestToGetConfig()
+        availableTimeCollectionView.reloadData()
+        morebgView.hidden   = false
+        moreButton.hidden   = false
+        notimeLabel.hidden  = true
+        availableTimeCollectionView.hidden = false
+        noBadgeLabel.hidden         = true
+        badgesCollectionView.hidden = false
+        noreviewLabel.hidden        = true
+        reviewCollectionView.hidden = false
+        badgeNextButton.hidden      = true
+        badgePrevButton.hidden      = true
+        buttonView.hidden           = true
+        
+        menuView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        notificationButton.tag      = 0
+        notificationBackgroundView.removeFromSuperview()
+        notificationBackgroundView.setTranslatesAutoresizingMaskIntoConstraints(true)
+        notificationBackgroundView.frame = CGRect(x: (view.frame.size.width-notificationBackgroundView.frame.size.width), y: calloutViewYAxis, width: notificationBackgroundView.frame.size.width, height: 0)
+        appDelegate.window?.addSubview(notificationBackgroundView)
+        notificationBackgroundView.backgroundColor = UIColor.clearColor()
+        notificationBackgroundView.hidden       = true
+        notificationTableView.layer.borderWidth = 0.5
+        notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        sendRequestForProfile()
+        if let id = profileID {
+            if let currentUser = appDelegate.user {
+                if currentUser.sports.count > 0 {
+                    var sportsList      = currentUser.sports.allObjects as! [UserSports]
+                    currentUser.sports  = NSMutableSet(array: (sportsList as NSArray).sortedArrayUsingDescriptors([NSSortDescriptor(key: "expertLevel.length", ascending: false)]))
                 }
             }
         }
@@ -1312,7 +1315,7 @@ extension MyProfileViewController : UITableViewDataSource {
         if notification.type == TrainingStatus.requested {
             imageUrl            = notification.userImage
             cell.nameLabel.text = notification.userName
-            cell.bodyLabel.text = "has requested for Sports"
+            cell.bodyLabel.text = "has requested for \(notification.sportsName)"
         } else if notification.type == TrainingStatus.accepted {
             imageUrl            = notification.trainerImage
             cell.nameLabel.text = notification.trainerName

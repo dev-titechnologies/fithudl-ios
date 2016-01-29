@@ -168,7 +168,7 @@ class PromoCodeViewController: UIViewController {
                             let code = data["code"] as! String
                             setAttributedPromoCode(code)
                             shareSubject = data["SUBJECT"] as! String
-                            shareContent = "<html> <p>Hi,</p><p>\(appDelegate.user!.name) has invited you to join Pillar. You can sign up to <a href:\(ITUNES_LINK)>\(ITUNES_LINK)</a> using the invite code given below<br><br>Invite Code : \(code)</br></br></p><p>Now start enjoying free sessions!!</p><p>Thanks<br>Team Pillar</br></p></html>"
+                            shareContent = "<html> <p>Hi,</p><p>\(appDelegate.user!.name) has invited you to join Pillar. You can sign up to <br><a href:\(ITUNES_LINK)>\(ITUNES_LINK)</a></br>using the invite code given below<br><br>Invite Code : \(code)</br></br><p>Thanks<br>Team Pillar</br></p></html>"
                         }
                     } else {
                         appDelegate.user?.termsStatus = agreeButton.selected == true ? 1 : 0

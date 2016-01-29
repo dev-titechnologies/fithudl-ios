@@ -426,7 +426,7 @@
                                                             <constraint firstAttribute="height" constant="1" id="RqJ-MC-03b"/>
                                                         </constraints>
                                                     </view>
-                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DOB" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Te4-yv-q6e">
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date of Birth" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Te4-yv-q6e">
                                                         <rect key="frame" x="8" y="34" width="248" height="30"/>
                                                         <gestureRecognizers/>
                                                         <constraints>
