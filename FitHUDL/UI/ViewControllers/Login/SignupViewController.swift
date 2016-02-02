@@ -335,53 +335,54 @@ class SignupViewController: UIViewController {
             })
             alert.addAction(settingsAction)
             self.presentViewController(alert, animated: false, completion: nil)
-        }
-        if !Globals.isInternetConnected() {
-            return
-        }
-        showLoadingView(true)
-        let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "name")
-        requestDictionary.setObject(emailTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "email")
-        requestDictionary.setObject(passwordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "password")
-        if let location = appDelegate.currentLocation {
-            requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
-            requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
         } else {
+            if !Globals.isInternetConnected() {
+                return
+            }
+            showLoadingView(true)
+            let requestDictionary = NSMutableDictionary()
+            requestDictionary.setObject(nameTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "name")
+            requestDictionary.setObject(emailTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "email")
+            requestDictionary.setObject(passwordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "password")
+            if let location = appDelegate.currentLocation {
+                requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
+                requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
+            } else {
 //            requestDictionary.setObject(37.785834, forKey: "latitude")
 //            requestDictionary.setObject(-122.406417, forKey: "longitude")
-        }
-        if let code = promoCode {
-            requestDictionary.setObject(code, forKey: "promo_code")
-        } else {
-            requestDictionary.setObject("", forKey: "promo_code")
-        }
-
-        if maleButton.selected {
-            requestDictionary.setObject(Gender.male, forKey: "gender")
-        } else {
-            requestDictionary.setObject(Gender.female, forKey: "gender")
-        }
-        requestDictionary.setObject(networkingID, forKey: "social_networking_id")
-        
-        let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
-        if filteredArray.count > 0 {
-            let sportsArray = NSMutableArray()
-            for sport in filteredArray {
-                let sportDictionary = NSMutableDictionary()
-                sportDictionary.setObject((sport as! SportsList).sportsId, forKey: "id")
-                sportDictionary.setObject((sport as! SportsList).sportsName, forKey: "title")
-                sportDictionary.setObject((sport as! SportsList).logo, forKey: "logo")
-                sportDictionary.setObject((sport as! SportsList).status, forKey: "status")
-                sportDictionary.setObject((sport as! SportsList).level, forKey: "level")
-                sportDictionary.setObject((sport as! SportsList).isSelected, forKey: "isSelected")
-                sportsArray.addObject(sportDictionary)
             }
-            requestDictionary.setObject(sportsArray, forKey: "sportsList")
+            if let code = promoCode {
+                requestDictionary.setObject(code, forKey: "promo_code")
+            } else {
+                requestDictionary.setObject("", forKey: "promo_code")
+            }
+            
+            if maleButton.selected {
+                requestDictionary.setObject(Gender.male, forKey: "gender")
+            } else {
+                requestDictionary.setObject(Gender.female, forKey: "gender")
+            }
+            requestDictionary.setObject(networkingID, forKey: "social_networking_id")
+            
+            let filteredArray     = appDelegate.sportsArray.filteredArrayUsingPredicate(NSPredicate(format: "level.length > 0"))
+            if filteredArray.count > 0 {
+                let sportsArray = NSMutableArray()
+                for sport in filteredArray {
+                    let sportDictionary = NSMutableDictionary()
+                    sportDictionary.setObject((sport as! SportsList).sportsId, forKey: "id")
+                    sportDictionary.setObject((sport as! SportsList).sportsName, forKey: "title")
+                    sportDictionary.setObject((sport as! SportsList).logo, forKey: "logo")
+                    sportDictionary.setObject((sport as! SportsList).status, forKey: "status")
+                    sportDictionary.setObject((sport as! SportsList).level, forKey: "level")
+                    sportDictionary.setObject((sport as! SportsList).isSelected, forKey: "isSelected")
+                    sportsArray.addObject(sportDictionary)
+                }
+                requestDictionary.setObject(sportsArray, forKey: "sportsList")
+            }
+            
+            println("Requset Dict is\(requestDictionary)")
+            CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/signup", requestType: HttpMethod.post), delegate: self, tag: Connection.signup)
         }
-        
-        println("Requset Dict is\(requestDictionary)")
-        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/signup", requestType: HttpMethod.post), delegate: self, tag: Connection.signup)
     }
     
     func sendContractAgreementRequest() {
