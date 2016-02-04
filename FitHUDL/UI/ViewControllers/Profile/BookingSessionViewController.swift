@@ -58,6 +58,9 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         monthPicker.fontColor    = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         monthPicker.monthPickerDelegate = self
         
+        profileImageView.layer.borderColor = UIColor(red: 0, green: 150/255, blue: 136/255, alpha: 1.0).CGColor
+        profileImageView.layer.borderWidth = 1.0
+        
         nameLabel.text = user.name
 //        if let id = searchResultId {
 //            tableViewTopConstraint.constant = -65
@@ -492,6 +495,7 @@ extension BookingSessionViewController: UITableViewDataSource {
         }
         cell.disabledView.hidden = time["status"]!.boolValue
         cell.locationTextField.userInteractionEnabled  = cell.disabledView.hidden
+        cell.bookButton.enabled  = cell.disabledView.hidden
         cell.timeLabel.text = "\(starttime) to \(endtime)"
         cell.timeLabel.font = UIFont(name: "OpenSans", size: 12.0)
         cell.locationTextField.delegate = self

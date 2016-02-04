@@ -477,9 +477,9 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         let hour = components[0].toInt()!
         if hour < 2 {
             hoursLabel.textColor = AppColor.boxBorderColor
-        } else if (hour>=2 && hour<5) {
+        } else if (hour>=2 && hour<4) {
             hoursLabel.textColor = AppColor.yellowTextColor
-        } else if (hour>=5 && hour<10) {
+        } else if (hour>=4 && hour<6) {
             hoursLabel.textColor = AppColor.statusBarColor
         } else {
             hoursLabel.font = UIFont(name: "OpenSans-Bold", size: 16.0)

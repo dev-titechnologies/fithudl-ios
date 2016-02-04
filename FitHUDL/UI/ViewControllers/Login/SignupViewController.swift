@@ -211,6 +211,10 @@ class SignupViewController: UIViewController {
     
     @IBAction func backButtonClicked(sender: UIButton) {
         sportsCarousel.hidden = true
+        for sport in appDelegate.sportsArray {
+            (sport as! SportsList).level      = ""
+            (sport as! SportsList).isSelected = false
+        }
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -447,10 +451,6 @@ class SignupViewController: UIViewController {
         if let textField = selectedTextField {
             textField.resignFirstResponder()
         }
-        for sport in appDelegate.sportsArray {
-            (sport as! SportsList).level      = ""
-            (sport as! SportsList).isSelected = false
-        }
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -459,23 +459,35 @@ class SignupViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "modalSegueToTab" {
+            for sport in appDelegate.sportsArray {
+                (sport as! SportsList).level      = ""
+                (sport as! SportsList).isSelected = false
+            }
+        }
     }
-    */
-
 }
 
 extension SignupViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         selectedTextField = textField
         pickerCancelClicked(UIButton())
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if textField == nameTextField {
+            let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").invertedSet
+            let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
+            let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
+            return stringIsValid
+        }
+        return true;
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

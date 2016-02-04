@@ -174,7 +174,8 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         searchBar.showsCancelButton = false
         searchBar.text   = ""
         tableView.hidden = true
-        self.mapViewTouchFlag = false
+        nameSearchFlag   = false
+        mapViewTouchFlag = false
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "showLocation", object: nil)
         if let loadView = view.viewWithTag(999) {
             showLoadingView(false)
@@ -381,10 +382,10 @@ extension SearchViewController:UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.nameSearchFlag = true
-        searchActive       = false
+        nameSearchFlag      = true
+        searchActive        = false
         searchBar.resignFirstResponder()
-        tableView.hidden   = true
+        tableView.hidden    = true
         searchBar.showsCancelButton = false
         searchBar.text      = ""
         self.sendRequestToGetSearchUsers()
@@ -451,8 +452,6 @@ extension SearchViewController:UISearchBarDelegate {
         }
         
         if self.userSelectedArray.count > 0 {
-            
-            
             let sportsArray = NSMutableArray()
             for sport in self.userSelectedArray {
                 let sportDictionary = NSMutableDictionary()
@@ -464,14 +463,12 @@ extension SearchViewController:UISearchBarDelegate {
                 sportsArray.addObject(sportDictionary)
             }
             requestDictionary.setObject(sportsArray, forKey: "sportsList")
-        }
-        else {
+        } else {
             
-            if(self.nameSearchFlag) {
+            if nameSearchFlag {
                 
                 
-            }
-            else {
+            } else {
                 
                 UIAlertView(title: "Please Select Atleast one sport", message: "", delegate: self, cancelButtonTitle: "OK").show()
                 return
