@@ -482,7 +482,7 @@ extension SignupViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == nameTextField {
-            let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").invertedSet
+            let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
             let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
             let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
             return stringIsValid
