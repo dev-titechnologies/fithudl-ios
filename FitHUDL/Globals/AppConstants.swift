@@ -37,6 +37,9 @@ struct AppColor {
     static let notifReadColor   = UIColor(red: 140/255, green: 138/255, blue: 143/255, alpha: 1.0)
     static let promoGreenColor  = UIColor(red: 0, green: 142/255, blue: 129/255, alpha: 1.0)
     static let promoGrayColor   = UIColor(red: 129/255, green: 134/255, blue: 134/255, alpha: 1.0)
+    static let redCompletedThisWeek   = UIColor(red: 176/255, green: 32/255, blue: 2/255, alpha: 1.0)
+    static let goldCompletedThisWeek   = UIColor(red: 240/255, green: 196/255, blue: 21/255, alpha: 1.0)
+    
 }
 
 struct Message {

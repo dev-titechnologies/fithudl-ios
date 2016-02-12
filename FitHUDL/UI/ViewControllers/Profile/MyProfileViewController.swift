@@ -474,16 +474,16 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let hours = user.totalHours
         let components = hours.componentsSeparatedByString(":")
-        let hour = components[0].toInt()!
+        let hour = components[0].toInt()
         if hour < 2 {
-            hoursLabel.textColor = AppColor.boxBorderColor
+            hoursLabel.textColor = AppColor.redCompletedThisWeek
         } else if (hour>=2 && hour<4) {
-            hoursLabel.textColor = AppColor.yellowTextColor
+            hoursLabel.textColor = UIColor.yellowColor()
         } else if (hour>=4 && hour<6) {
             hoursLabel.textColor = AppColor.statusBarColor
         } else {
             hoursLabel.font = UIFont(name: "OpenSans-Bold", size: 16.0)
-            hoursLabel.textColor = AppColor.badgeSilverColor
+            hoursLabel.textColor = AppColor.goldCompletedThisWeek
         }
         completedTitleLabel.textColor = hoursLabel.textColor
         hoursLabel.text = "\(hours) hours"

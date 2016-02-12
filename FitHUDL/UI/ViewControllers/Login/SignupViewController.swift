@@ -349,6 +349,7 @@ class SignupViewController: UIViewController {
             requestDictionary.setObject(emailTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "email")
             requestDictionary.setObject(passwordTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()), forKey: "password")
             if let location = appDelegate.currentLocation {
+                println("current location", location)
                 requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
                 requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
             } else {
@@ -482,7 +483,7 @@ extension SignupViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == nameTextField {
-            let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+            let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ")
             let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
             let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
             return stringIsValid
