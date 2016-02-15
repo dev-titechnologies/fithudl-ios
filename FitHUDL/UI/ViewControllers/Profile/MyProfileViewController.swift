@@ -149,8 +149,40 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         tapGesturesportscarousel.cancelsTouchesInView = false
         self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
         
+      
+        //self.showShareDialogBox("imagePath")
+        
         // Do any additional setup after loading the view.
     }
+    
+    
+    func showShareDialogBox(shareImageURL: String) {
+        
+        println("Show share dialogs fb")
+        let shareContent            = FBSDKShareLinkContent()
+        shareContent.contentTitle   = alertTitle
+        shareContent.imageURL       = NSURL(string: SERVER_URL.stringByAppendingString(shareImageURL))
+        shareContent.contentURL     = NSURL(string: SHARE_URL)
+        shareContent.contentDescription = "Join \(alertTitle)!"
+        
+        let shareDialog             = FBSDKShareDialog()
+        shareDialog.shareContent    = shareContent
+        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "fb://")!) {
+            shareDialog.mode        = FBSDKShareDialogMode.Native
+        } else {
+            shareDialog.mode        = FBSDKShareDialogMode.FeedWeb
+        }
+        shareDialog.fromViewController = self
+        shareDialog.delegate        = self
+        shareDialog.show()
+        
+        var error: NSError?
+        if (!shareDialog.validateWithError(&error)){
+            println(error)
+        }
+        
+    }
+
     
      func viewTap(getstureRecognizer : UITapGestureRecognizer){
         
@@ -1391,4 +1423,20 @@ extension MyProfileViewController : UITableViewDelegate {
         
     }
 }
+extension MyProfileViewController: FBSDKSharingDelegate {
+    func sharer(sharer: FBSDKSharing!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+        println(results)
+        println(sharer)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func sharerDidCancel(sharer: FBSDKSharing!) {
+        
+    }
+    
+    func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+        
+    }
+}
+
 

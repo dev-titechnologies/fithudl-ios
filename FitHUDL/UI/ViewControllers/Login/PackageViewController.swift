@@ -108,6 +108,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     }
     
     @IBAction func goldPackageSelectButtonClicked(sender: UIButton) {
+        
         sender.selected       = true
         silverButton.selected = false
         bronzeButton.selected = false
@@ -116,6 +117,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     }
     
     @IBAction func silverPackageSelectButtonClicked(sender: UIButton) {
+        
         sender.selected         = true
         goldButton.selected     = false
         bronzeButton.selected   = false

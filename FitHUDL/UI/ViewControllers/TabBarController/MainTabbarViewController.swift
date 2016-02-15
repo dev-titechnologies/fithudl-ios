@@ -16,10 +16,20 @@ class MainTabbarViewController: UITabBarController {
         tabBar.tintColor = UIColor.whiteColor()
         
         for tabItem in tabBar.items! {
-            (tabItem as! UITabBarItem).setTitleTextAttributes([NSFontAttributeName: UIFont(name: "OpenSans", size: 12.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
+            (tabItem as! UITabBarItem).setTitleTextAttributes([NSFontAttributeName: UIFont(name: "OpenSans", size: 11.0)!, NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
             (tabItem as! UITabBarItem).image = (tabItem as! UITabBarItem).image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
         }
-        tabBar.selectionIndicatorImage = UIImage(named: "tabselection")
+        
+        if IS_IPHONE6 || IS_IPHONE6PLUS {
+            
+             tabBar.selectionIndicatorImage = UIImage(named: "tabselectionLarge")
+            
+        } else {
+           
+             tabBar.selectionIndicatorImage = UIImage(named: "tabselection")
+        }
+        
+       
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "timerStartNotification:", name: PushNotification.timerNotif, object: nil)
         
         let toLeftSwipe = UISwipeGestureRecognizer(target: self, action: "swipeRightToLeft")
