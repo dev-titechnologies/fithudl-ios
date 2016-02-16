@@ -23,12 +23,14 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     @IBOutlet weak var bronzeDollarLabel: UILabel!
     @IBOutlet weak var bronzeDiscountLabel: UILabel!
     
+    @IBOutlet weak var enterAmountBgView: UIView!
     var packageListArray = Array<Packages>()
     
     @IBOutlet weak var goldButton: UIButton!
     
     @IBOutlet weak var purchaseButton: UIButton!
     
+    @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var silverButton: UIButton!
     
     @IBOutlet weak var bronzeButton: UIButton!
@@ -37,6 +39,8 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     var packageClickFlag : Bool = false
     
+    var activeField : UITextField!
+    
     var products = [SKProduct]()
     
     override func viewDidLoad() {
@@ -44,13 +48,67 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         
         purchaseButton.layer.borderColor = AppColor.statusBarColor.CGColor
         purchaseButton.layer.borderWidth = 1.0
-         NSNotificationCenter.defaultCenter().addObserver(self, selector: "requestForSendingTransactionId:", name: "transactionCompleted", object: nil)
-        self.reload()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "requestForSendingTransactionId:", name: "transactionCompleted", object: nil)
+        enterAmountBgView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        enterAmountBgView.layer.borderWidth = 1.0
+        enterAmountBgView.layer.cornerRadius = 2.0
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
         
         // NSNotificationCenter.defaultCenter().addObserver(self, selector: "productPurchased:", name: IAPHelperProductPurchasedNotification, object: nil)
     }
     
+    
+    //MARK: TextField operations
+    
+    
+    func keyboardWasShown(notification: NSNotification)
+    {
+        //Need to calculate keyboard exact size due to Apple suggestions
+        let info : NSDictionary = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
+        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+        
+        self.view.frame.origin.y -= keyboardSize!.height
+        
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification)
+    {
+        //Once keyboard disappears, restore original positions
+        let info : NSDictionary = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
+        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+        self.view.frame.origin.y += keyboardSize!.height
+        
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField!)
+    {
+        if self.packageClickFlag {
+            self.packageClickFlag = false
+            goldButton.selected    = false
+            bronzeButton.selected  = false
+            silverButton.selected  = false
+        }
+        activeField = textField
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField!)
+    {
+        activeField = nil
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
     //MARK: InAppPurchase Product Request
+  
+    @IBAction func helpButtonAction(sender: AnyObject) {
+        
+    }
     
     func reload() {
         
@@ -75,7 +133,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "finishedLoading", name: "LoadingCompleted", object: nil)
-       
+       self.reload()
        
         sendRequestToGetPackageList()
         
@@ -97,11 +155,20 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     @IBAction func purchseButtonClicked(sender: AnyObject) {
         if self.packageClickFlag {
+            
             showLoadingView(true)
             println("Products \(products)")
             let product = products[self.productIndex]
             RageProducts.store.purchaseProduct(product)
-        } else {
+            
+        } else if !amountTextField.text.isEmpty {
+            
+            amountTextField.resignFirstResponder()
+            self.performSegueWithIdentifier("cardDetails", sender: self)
+            
+            
+        }else {
+            
             UIAlertView(title: "Please Select A package", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
         }

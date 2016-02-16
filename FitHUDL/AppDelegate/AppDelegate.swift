@@ -76,6 +76,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         NewRelicAgent.enableFeatures(NRMAFeatureFlags.NRFeatureFlag_SwiftInteractionTracing);
         NewRelic.startWithApplicationToken("AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899")
        
+        let stripePublishableKey = "pk_test_AslBY7XegFn06RfxNur20rbc"
+        Stripe.setDefaultPublishableKey(stripePublishableKey)
+
+        
+        
+        
 //        NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "createSampleNotifDictionary", userInfo: nil, repeats: false)
         
         return true

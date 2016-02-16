@@ -23,3 +23,4 @@
 #import "CircularTimer.h"
 #import "NewRelicAgent/NewRelic.h"
 #import <Social/Social.h>
+#import "Stripe.h"
