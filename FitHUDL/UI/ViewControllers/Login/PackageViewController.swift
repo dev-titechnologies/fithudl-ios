@@ -52,7 +52,6 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         enterAmountBgView.layer.borderColor = UIColor.lightGrayColor().CGColor
         enterAmountBgView.layer.borderWidth = 1.0
         enterAmountBgView.layer.cornerRadius = 2.0
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
         

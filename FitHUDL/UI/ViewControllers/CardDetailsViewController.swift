@@ -21,7 +21,7 @@ class CardDetailsViewController: UIViewController {
     var activeField : UITextField!
     @IBOutlet weak var monthPick: SRMonthPicker!
     var selectedDate : NSDate = NSDate()
-    
+    var stripToken : String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,7 @@ class CardDetailsViewController: UIViewController {
         monthPick.font           = UIFont(name: "Open-Sans", size: 17.0)
         monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         
+       
  
         
     }
@@ -99,6 +100,9 @@ class CardDetailsViewController: UIViewController {
                     var defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
                     alert.addAction(defaultAction)
                     self.presentViewController(alert, animated: true, completion: nil)
+                   // self.stripToken = token.tokenId
+                    // self.sendRequestToGetStripe()
+                    
                 }
             })
         }else{
@@ -213,6 +217,66 @@ class CardDetailsViewController: UIViewController {
         
         navigationController?.popViewControllerAnimated(true)
     }
+
+//    
+//    func sendRequestToGetStripe() {
+//        let requestDictionary = NSMutableDictionary()
+//        if !Globals.checkNetworkConnectivity() {
+//            return
+//        }
+//        requestDictionary.setObject(self.stripToken, forKey: "stripeToken")
+//        requestDictionary.setObject(20, forKey: "amount")
+//        requestDictionary.setObject("usd", forKey: "currency")
+//        requestDictionary.setObject("hiiiii Stripe", forKey: "description")
+//        showLoadingView(true)
+//        CustomURLConnection(request: CustomURLConnection.createRequestForStripe(requestDictionary, methodName: "payment.php", requestType: HttpMethod.post),delegate: self,tag: Connection.striperequest)
+//    }
+//    
+//    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
+//        connection.receiveData.length = 0
+//    }
+//    
+//    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
+//        connection.receiveData.appendData(data)
+//    }
+//    
+//    func connectionDidFinishLoading(connection: CustomURLConnection) {
+//        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+//        println(response)
+//        var error : NSError?
+//        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+//            
+//            println("STRIPE \(jsonResult)")
+//            
+//            if let status = jsonResult["status"] as? Int {
+//                if connection.connectionTag == Connection.striperequest {
+//                    if status == ResponseStatus.success {
+//                        
+//                        
+//                      
+//                    } else if status == ResponseStatus.error {
+//                        if let message = jsonResult["message"] as? String {
+//                            showDismissiveAlertMesssage(message)
+//                        } else {
+//                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+//                        }
+//                    } else {
+//                        if let message = jsonResult["message"] as? String {
+//                            showDismissiveAlertMesssage(message)
+//                        } else {
+//                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        
+//    }
+//    
+//    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
+//        showDismissiveAlertMesssage(error.localizedDescription)
+//        showLoadingView(false)
+//    }
 
     /*
     // MARK: - Navigation

@@ -70,7 +70,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var notificationTableView: UITableView!
     @IBOutlet weak var carouselBackgoundView: UIView!
     @IBOutlet weak var interestLabel: UILabel!
-    
+    var filterTimeArray = NSArray()
     var searchResultId:String?
     var profileID: String?
     let calloutViewYAxis:CGFloat = 52.0
@@ -80,6 +80,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         menuView.hidden = true
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
         reviewCollectionView.registerNib(nib, forCellWithReuseIdentifier: "reviewCell")
@@ -525,9 +526,34 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         rateLabel.text  = "\(user.rating)"
         starView.rating = (user.rating as NSString).floatValue
         
-        let filteredArray = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
         
-        if filteredArray.count <= 3 {
+        let date = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        let dateString = dateFormatter.stringFromDate(date) as String
+        println("current date \(dateString)")
+        var dateFromString : NSDate
+        dateFromString = dateFormatter.dateFromString(dateString)!
+        println("current datell \(dateFromString)")
+        
+        var filteredArrayTime = NSArray()
+        
+        filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateString))
+        
+        if filteredArrayTime.count == 0 {
+            
+            println("NO VALUEEE")
+            filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date > %@", dateString))
+            
+            println("NO VALUEEE \(filteredArrayTime)")
+        }
+        
+
+        
+      //  println("ARDRA \(profileUser!.availableTime)")
+        
+        if filteredArrayTime.count <= 3 {
             morebgView.hidden = true
             moreButton.hidden = true
         }
@@ -544,7 +570,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             buttonView.hidden = false
         }
         
-        if filteredArray.count == 0 {
+        if filteredArrayTime.count == 0 {
             notimeLabel.hidden = false
             availableTimeCollectionView.hidden = true
         } else {
@@ -1244,8 +1270,27 @@ extension MyProfileViewController: UICollectionViewDataSource {
                 source =  user.availableTime
             }
         }
-        let filteredArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
-        return filteredArray.count
+        
+        let date = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        let dateString = dateFormatter.stringFromDate(date) as String
+        println("current date \(dateString)")
+        var dateFromString : NSDate
+        dateFromString = dateFormatter.dateFromString(dateString)!
+        println("current datell \(dateFromString)")
+        
+        filterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateString))
+        
+        if filterTimeArray.count == 0 {
+          
+            filterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date > %@", dateString))
+        }
+        
+        println("COUNTlll")
+        println("COUNT \(filterTimeArray)")
+        return filterTimeArray.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -1274,17 +1319,22 @@ extension MyProfileViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
-            let source = profileID == nil ? appDelegate.user!.availableTime.allObjects : profileUser!.availableTime.allObjects
-            var filteredArray = (source as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
-            filteredArray   = (filteredArray as NSArray).sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "HH:mm"
-                let date1 = dateFormatter.dateFromString((obj1 as! UserTime).timeStarts as String)
-                let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
-                return date1!.compare(date2!)
-            })
-            let time = filteredArray[indexPath.row] as! UserTime
-            cell.timeLabel.text = Globals.convertTimeTo12Hours(time.timeStarts)
+//            let source = profileID == nil ? appDelegate.user!.availableTime.allObjects : profileUser!.availableTime.allObjects
+//            println("ARDRA \(profileUser!.availableTime.allObjects)")
+//            var filteredArray = (source as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [Globals.convertDate(NSDate())]))
+//            filteredArray   = (filteredArray as NSArray).sortedArrayUsingComparator({ (obj1, obj2) -> NSComparisonResult in
+//                println("filter \(filteredArray)")
+//                let dateFormatter = NSDateFormatter()
+//                dateFormatter.dateFormat = "HH:mm"
+//                let date1 = dateFormatter.dateFromString((obj1 as! UserTime).timeStarts as String)
+//                let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
+//                return date1!.compare(date2!)
+//            })
+            let time = filterTimeArray[indexPath.row] as! UserTime
+            let tt = time.date + " " + Globals.convertTimeTo12Hours(time.timeStarts) as String
+            println("TIII \(tt)")
+            cell.timeLabel.text = time.date + " " + Globals.convertTimeTo12Hours(time.timeStarts)
+            println("TIIIrrr \(cell.timeLabel.text)")
             return cell
         }
     }
@@ -1310,7 +1360,7 @@ extension MyProfileViewController: UICollectionViewDelegateFlowLayout {
         if collectionView.isEqual(reviewCollectionView) {
             return collectionView.frame.size
         } else if collectionView.isEqual(availableTimeCollectionView) {
-            return CGSize(width: 60.0, height: 22.0)
+            return CGSize(width: 110.0, height: 22.0)
         }
         return CGSize(width: 65.0, height: 75.0)
     }

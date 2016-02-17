@@ -161,6 +161,7 @@ class PromoCodeViewController: UIViewController {
         var error: NSError?
         
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+            println("HTML \(jsonResult)")
             if let status = jsonResult["status"] as? Int {
                 if status == ResponseStatus.success {
                     if connection.connectionTag == Connection.promoCodeRequest {
@@ -168,10 +169,10 @@ class PromoCodeViewController: UIViewController {
                             let code = data["code"] as! String
                             setAttributedPromoCode(code)
                             shareSubject = data["SUBJECT"] as! String
-                            //shareContent = "<html> <p>Hi,</p><p>\(appDelegate.user!.name) has invited you to join Pillar. You can sign up to <br><a href:\(ITUNES_LINK)>\(ITUNES_LINK)</a></br>using the invite code given below<br><br>Invite Code : \(code)</br></br><p>Thanks<br>Team Pillar</br></p></html>"
+                            shareContent = data["CONTENT"] as! String
                             
-                            shareContent = "<html> <p><table width=\"600\" height=\"106\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\"><tr><td><a href=\"\"><img src=\"http://design.titechnologies.in/fithudlemail/images/head.jpg\" width=\"320\" height=\"106\" border=\"0\"/></a></td></tr></table><p>Hi displayname,</p><p>Welcome to Pillar..</p><a href:\(ITUNES_LINK)>\(ITUNES_LINK)</a></html>"
-                            shareContent = shareContent.stringByReplacingOccurrencesOfString("displayname", withString: appDelegate.user!.name)
+                            shareContent = shareContent.stringByReplacingOccurrencesOfString("Display Name", withString: appDelegate.user!.name)
+                             shareContent = shareContent.stringByReplacingOccurrencesOfString("invite code", withString: code)
                             
                             
                         }

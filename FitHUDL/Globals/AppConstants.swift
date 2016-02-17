@@ -7,7 +7,7 @@
 //
 ///// changes by ardra
 import UIKit
-
+let STRIPE_URL = "192.168.1.65/fithudl/donate/"
 let SERVER_URL = "http://fithudl.titechnologies.in/"
 let SHARE_URL  = "http://www.fithudl.com/"
 let ITUNES_LINK = "https://itunes.apple.com/us/app/fithudl/id1062264534?ls=1&mt=8"
@@ -90,6 +90,7 @@ struct Connection {
     static let transactionRequest   = 35
     static let promoCodeRequest     = 36
     static let contentChangeRequest = 37
+    static let striperequest = 38
 }
 
 struct SportsLevel {
