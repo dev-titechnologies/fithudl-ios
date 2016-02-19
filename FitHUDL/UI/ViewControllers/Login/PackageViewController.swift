@@ -35,6 +35,8 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     @IBOutlet weak var bronzeButton: UIButton!
     
+    var amount : NSInteger = 0
+    
     var productIndex : NSInteger = 0;
     
     var packageClickFlag : Bool = false
@@ -42,6 +44,8 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     var activeField : UITextField!
     
     var products = [SKProduct]()
+    
+    var isKeyBoard : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +60,19 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
         
         // NSNotificationCenter.defaultCenter().addObserver(self, selector: "productPurchased:", name: IAPHelperProductPurchasedNotification, object: nil)
+        
+        var touch = UITapGestureRecognizer(target:self, action:"scrollviewTouchAction")
+        self.view.addGestureRecognizer(touch)
     }
+    
+    func scrollviewTouchAction() {
+        
+        if isKeyBoard {
+          amountTextField.resignFirstResponder()
+        }
+        
+    }
+
     
     
     //MARK: TextField operations
@@ -64,6 +80,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     func keyboardWasShown(notification: NSNotification)
     {
+        isKeyBoard = true
         //Need to calculate keyboard exact size due to Apple suggestions
         let info : NSDictionary = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
@@ -75,6 +92,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     func keyboardWillBeHidden(notification: NSNotification)
     {
+        isKeyBoard = false
         //Once keyboard disappears, restore original positions
         let info : NSDictionary = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
@@ -93,7 +111,23 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         }
         activeField = textField
     }
-    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+       
+        if self.packageClickFlag {
+            self.packageClickFlag = false
+            goldButton.selected    = false
+            bronzeButton.selected  = false
+            silverButton.selected  = false
+        }
+        if textField == amountTextField {
+            let validCharSet    = NSCharacterSet(charactersInString: "1234567890")
+            let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
+            let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
+            return stringIsValid
+        }
+        return true;
+
+    }
     func textFieldDidEndEditing(textField: UITextField!)
     {
         activeField = nil
@@ -162,14 +196,48 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
             
         } else if !amountTextField.text.isEmpty {
             
-            amountTextField.resignFirstResponder()
-            self.performSegueWithIdentifier("cardDetails", sender: self)
+            
+            var num = amountTextField.text.toInt()
+            if num != nil {
+                
+                println("Valid String")
+                
+                if amountTextField.text.toInt() <= 10 {
+                    amountTextField.text = ""
+                    UIAlertView(title: alertTitle, message: "Amount Should be Greater than 10", delegate: self, cancelButtonTitle: "OK").show()
+                    return
+                } else {
+                   
+                    if isKeyBoard {
+                        amountTextField.resignFirstResponder()
+                    }
+                    amount = num!
+                    self.performSegueWithIdentifier("cardDetails", sender: self)
+
+                   
+                }
+                
+            } else{
+                amountTextField.text = ""
+                UIAlertView(title: alertTitle, message: "Enter A Valid Amount", delegate: self, cancelButtonTitle: "OK").show()
+                return
+            }
+            
             
             
         }else {
             
-            UIAlertView(title: "Please Select A package", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            UIAlertView(title: "Either Select A package OR Enter A Recharge Amount", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "cardDetails" {
+            let cardDetailController = segue.destinationViewController as! CardDetailsViewController
+            cardDetailController.rechargeAmount = amount
         }
     }
     
@@ -180,6 +248,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         bronzeButton.selected = false
         self.productIndex     = 0
         self.packageClickFlag = true
+        amountTextField.text = ""
     }
     
     @IBAction func silverPackageSelectButtonClicked(sender: UIButton) {
@@ -189,6 +258,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         bronzeButton.selected   = false
         self.productIndex       = 1
         self.packageClickFlag   = true
+        amountTextField.text = ""
     }
     
     
@@ -198,6 +268,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         silverButton.selected   = false
         self.productIndex       = 2
         self.packageClickFlag   = true
+        amountTextField.text = ""
     }
     
     //MARK: PackageList API 
@@ -250,6 +321,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
             requestDictionary.setObject(pack2.name, forKey: "package_name")
         } else if bronzeButton.selected {
             println("bronze button clicked")
+            
             requestDictionary.setObject(pack3.displayPrice, forKey: "amount")
             requestDictionary.setObject(pack3.discount, forKey: "discount")
             requestDictionary.setObject(pack3.id, forKey: "package_id")
@@ -319,7 +391,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                     }
                 } else if connection.connectionTag == Connection.transactionRequest {
                     if status == ResponseStatus.success {
-                       UIAlertView(title: alertTitle, message: "Package purchased successful", delegate: nil, cancelButtonTitle: "OK").show()
+                       UIAlertView(title: alertTitle, message: "Package purchase successful", delegate: nil, cancelButtonTitle: "OK").show()
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)

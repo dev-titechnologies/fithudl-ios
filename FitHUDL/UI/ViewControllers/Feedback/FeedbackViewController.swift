@@ -39,6 +39,10 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
         var touch = UITapGestureRecognizer(target:self, action:"scrollviewTouchAction")
         contentScrollView.addGestureRecognizer(touch)
     }
+    func scrollviewTouchAction() {
+        suggestions_textfield.resignFirstResponder()
+    }
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -60,9 +64,7 @@ class FeedbackViewController: UIViewController,FeedbackRateDelegate,UITextViewDe
     
     // MARK: - keyboardWillHide
     
-    func scrollviewTouchAction() {
-        suggestions_textfield.resignFirstResponder()
-    }
+   
     
     func keyboardWillShow(notification: NSNotification) {
         if let userInfo = notification.userInfo {

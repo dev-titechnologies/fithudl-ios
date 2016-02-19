@@ -8,7 +8,7 @@
 ///// changes by ardra
 import UIKit
 let STRIPE_URL = "192.168.1.65/fithudl/donate/"
-let SERVER_URL = "http://fithudl.titechnologies.in/"
+let SERVER_URL = "http://api.pillar.fit/"
 let SHARE_URL  = "http://www.fithudl.com/"
 let ITUNES_LINK = "https://itunes.apple.com/us/app/fithudl/id1062264534?ls=1&mt=8"
 //let Server_URL = "http://192.168.1.151:1337/"
@@ -27,6 +27,7 @@ let animateInterval: NSTimeInterval = 0.3
 let secondsValue: Int    = 60
 
 struct AppColor {
+    
     static let statusBarColor   = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
     static let placeholderText  = UIColor(red: 216/255, green: 1, blue: 251/255, alpha: 1.0)
     static let yellowTextColor  = UIColor(red: 1, green: 204/255, blue: 59/255, alpha: 1.0)
@@ -143,6 +144,7 @@ struct TrainingStatus {
     static let accountRecharge              = "account_recharge"
     static let pendingCanceled              = "pending_cancel"
     static let acceptCanceled               = "accept_cancel"
+    static let eightHoursCompleted              = "user_weekly_time"
     
 }
 

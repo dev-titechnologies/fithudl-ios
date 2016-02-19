@@ -151,39 +151,13 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
         
       
-        //self.showShareDialogBox("imagePath")
+                //self.showShareDialogBox("imagePath")
         
         // Do any additional setup after loading the view.
     }
     
     
-    func showShareDialogBox(shareImageURL: String) {
-        
-        println("Show share dialogs fb")
-        let shareContent            = FBSDKShareLinkContent()
-        shareContent.contentTitle   = alertTitle
-        shareContent.imageURL       = NSURL(string: SERVER_URL.stringByAppendingString(shareImageURL))
-        shareContent.contentURL     = NSURL(string: SHARE_URL)
-        shareContent.contentDescription = "Join \(alertTitle)!"
-        
-        let shareDialog             = FBSDKShareDialog()
-        shareDialog.shareContent    = shareContent
-        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "fb://")!) {
-            shareDialog.mode        = FBSDKShareDialogMode.Native
-        } else {
-            shareDialog.mode        = FBSDKShareDialogMode.FeedWeb
-        }
-        shareDialog.fromViewController = self
-        shareDialog.delegate        = self
-        shareDialog.show()
-        
-        var error: NSError?
-        if (!shareDialog.validateWithError(&error)){
-            println(error)
-        }
-        
-    }
-
+   
     
      func viewTap(getstureRecognizer : UITapGestureRecognizer){
         
@@ -1464,12 +1438,15 @@ extension MyProfileViewController : UITableViewDelegate {
             controller.notification = notificationListArray[indexPath.row]
             presentViewController(controller, animated: true, completion: nil)
             notificationBackgroundView.hidden = true
-        } //else {
-//            let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
-//            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-//            controller.sessionDictionary      = notificationListArray[indexPath.row] as NSDictionary
-//            presentViewController(controller, animated: true, completion: nil)
-//        }
+        } else if notificationListArray[indexPath.row].type == TrainingStatus.eightHoursCompleted {
+            
+            let controller  = storyboard?.instantiateViewControllerWithIdentifier("FaceBookShareViewController") as! FaceBookShareViewController
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+            self.presentViewController(controller, animated: true, completion: nil)
+            
+
+        }
+        
         
     }
 }

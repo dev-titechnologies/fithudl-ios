@@ -22,7 +22,7 @@ class CardDetailsViewController: UIViewController {
     @IBOutlet weak var monthPick: SRMonthPicker!
     var selectedDate : NSDate = NSDate()
     var stripToken : String = ""
-    
+    var rechargeAmount : NSInteger = 0
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,9 +45,8 @@ class CardDetailsViewController: UIViewController {
         monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         
        
- 
-        
     }
+    
     
     @IBAction func stripeDoneAction(sender: AnyObject) {
         
@@ -61,6 +60,8 @@ class CardDetailsViewController: UIViewController {
             self.alertMessage("Please Enter Security Code")
         }
         else {
+            
+        showLoadingView(true)
         let creditCard = STPCard()
         creditCard.number = cardNumberField.text
         creditCard.cvc = ccvField.text
@@ -89,6 +90,8 @@ class CardDetailsViewController: UIViewController {
             Stripe.createTokenWithCard(creditCard, completion: { (token, stripeError) -> Void in
                 if (stripeError != nil){
                     println("there is error");
+                     self.alertMessage("Some Error Occured")
+                     self.showLoadingView(false)
                 }
                 else{
                     self.cardNumberField.text = ""
@@ -96,17 +99,17 @@ class CardDetailsViewController: UIViewController {
                     self.ccvField.text = ""
                     self.nameTextField.text = ""
                     
-                    var alert = UIAlertController(title: "Your stripe token is: " + token.tokenId, message: "", preferredStyle: UIAlertControllerStyle.Alert)
-                    var defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-                    alert.addAction(defaultAction)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                   // self.stripToken = token.tokenId
-                    // self.sendRequestToGetStripe()
+//                    var alert = UIAlertController(title: "Your stripe token is: " + token.tokenId, message: "", preferredStyle: UIAlertControllerStyle.Alert)
+//                    var defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+//                    alert.addAction(defaultAction)
+//                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.stripToken = token.tokenId
+                    self.postStripeToken(token)
                     
                 }
             })
         }else{
-            
+             showLoadingView(false)
             var alert = UIAlertController(title: "Please enter valid credit card details", message: "", preferredStyle: UIAlertControllerStyle.Alert)
             var defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
             alert.addAction(defaultAction)
@@ -201,9 +204,25 @@ class CardDetailsViewController: UIViewController {
     {
         activeField = nil
     }
+   
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if textField == nameTextField {
+            let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ")
+            let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
+            let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
+            return stringIsValid
+        } else if textField == cardNumberField {
+            let validCharSet    = NSCharacterSet(charactersInString: "1234567890")
+            let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
+            let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
+            return stringIsValid
+        }
+        return true;
     }
 
 
@@ -218,67 +237,100 @@ class CardDetailsViewController: UIViewController {
         navigationController?.popViewControllerAnimated(true)
     }
 
-//    
-//    func sendRequestToGetStripe() {
-//        let requestDictionary = NSMutableDictionary()
-//        if !Globals.checkNetworkConnectivity() {
-//            return
-//        }
-//        requestDictionary.setObject(self.stripToken, forKey: "stripeToken")
-//        requestDictionary.setObject(20, forKey: "amount")
-//        requestDictionary.setObject("usd", forKey: "currency")
-//        requestDictionary.setObject("hiiiii Stripe", forKey: "description")
-//        showLoadingView(true)
-//        CustomURLConnection(request: CustomURLConnection.createRequestForStripe(requestDictionary, methodName: "payment.php", requestType: HttpMethod.post),delegate: self,tag: Connection.striperequest)
-//    }
-//    
-//    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
-//        connection.receiveData.length = 0
-//    }
-//    
-//    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
-//        connection.receiveData.appendData(data)
-//    }
-//    
-//    func connectionDidFinishLoading(connection: CustomURLConnection) {
-//        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-//        println(response)
-//        var error : NSError?
-//        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
-//            
-//            println("STRIPE \(jsonResult)")
-//            
-//            if let status = jsonResult["status"] as? Int {
-//                if connection.connectionTag == Connection.striperequest {
-//                    if status == ResponseStatus.success {
-//                        
-//                        
-//                      
-//                    } else if status == ResponseStatus.error {
-//                        if let message = jsonResult["message"] as? String {
-//                            showDismissiveAlertMesssage(message)
-//                        } else {
-//                            showDismissiveAlertMesssage(ErrorMessage.invalid)
-//                        }
-//                    } else {
-//                        if let message = jsonResult["message"] as? String {
-//                            showDismissiveAlertMesssage(message)
-//                        } else {
-//                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        
-//    }
-//    
-//    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
-//        showDismissiveAlertMesssage(error.localizedDescription)
-//        showLoadingView(false)
-//    }
 
-    /*
+    func postStripeToken(token: STPToken) {
+        println("STRIPE Token")
+        let URL = "http://192.168.1.65/fithudl/donate/payment.php"
+        let params = ["stripeToken":token.tokenId,"amount":rechargeAmount,"currency":"usd","description":"HELLOOO"]
+        println("PARAM \(params)")
+        
+        let manager = AFHTTPRequestOperationManager()
+        manager.requestSerializer = AFHTTPRequestSerializer()
+        manager.POST(URL, parameters: params, success: { (operation, responseObject) -> Void in
+            
+            if let response = responseObject as? [String: String] {
+                println("STRIPE \(response)")
+                
+//                UIAlertView(title: response["status"],
+//                    message: response["message"],
+//                    delegate: nil,
+//                    cancelButtonTitle: "OK").show()
+                    //self.showLoadingView(false)
+                
+                self.requestForSendingTransactionId()
+            }
+            
+            }) { (operation, error) -> Void in
+               println("STRIPE ERROR \(error)")
+                self.alertMessage("Some Error Occured")
+                  self.showLoadingView(false)
+        }
+    }
+    
+    
+    
+    func requestForSendingTransactionId() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(rechargeAmount, forKey: "amount")
+        requestDictionary.setObject(0, forKey: "discount")
+        requestDictionary.setObject(0, forKey: "package_id")
+        requestDictionary.setObject("", forKey: "package_name")
+        requestDictionary.setObject("Stripe", forKey: "transaction_method")
+        
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/transaction", requestType: HttpMethod.post),delegate: self,tag: Connection.transactionRequest)
+        
+    }
+    
+  
+    func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
+        connection.receiveData.length = 0
+    }
+    
+    func connection(connection: CustomURLConnection, didReceiveData data: NSData) {
+        connection.receiveData.appendData(data)
+    }
+    
+    func connectionDidFinishLoading(connection: CustomURLConnection) {
+        let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
+        println(response)
+        var error : NSError?
+        if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
+            if let status = jsonResult["status"] as? Int {
+                if connection.connectionTag == Connection.transactionRequest {
+                    if status == ResponseStatus.success {
+                        UIAlertView(title: alertTitle, message: "Package purchase successful", delegate: nil, cancelButtonTitle: "OK").show()
+                        showLoadingView(false)
+                    } else if status == ResponseStatus.error {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.invalid)
+                        }
+                    } else {
+                        if let message = jsonResult["message"] as? String {
+                            showDismissiveAlertMesssage(message)
+                        } else {
+                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                        }
+                    }
+                    
+                    showLoadingView(false)
+                }
+            }
+        }
+        
+    }
+    
+    func connection(connection: CustomURLConnection, didFailWithError error: NSError) {
+        showDismissiveAlertMesssage(error.localizedDescription)
+        showLoadingView(false)
+    }
+    
+    
+        /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46A1F7C1BDA81E7033B6BC06 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B28BB44A5EE5CAE2E44C3F /* libPods.a */; };
 		F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3003EA01BBA8105001354E3 /* UserReviewView.swift */; };
 		F3003EA31BBA8117001354E3 /* UserReviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3003EA21BBA8117001354E3 /* UserReviewView.xib */; };
 		F3003EA51BBA88F8001354E3 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3003EA41BBA887C001354E3 /* OpenSans-LightItalic.ttf */; };
@@ -27,14 +28,12 @@
 		F3438A841BB27ED2001BA5E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3438A821BB27ED2001BA5E6 /* Main.storyboard */; };
 		F3438A891BB27F50001BA5E6 /* FitHUDL.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F3438A871BB27F50001BA5E6 /* FitHUDL.xcdatamodeld */; };
 		F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438A8B1BB27F74001BA5E6 /* CustomURLConnection.swift */; };
-		F3438A9A1BB2845D001BA5E6 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F3438A971BB2845D001BA5E6 /* FacebookSDKStrings.bundle */; };
-		F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3438A981BB2845D001BA5E6 /* FBSDKCoreKit.framework */; };
-		F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3438A991BB2845D001BA5E6 /* FBSDKLoginKit.framework */; };
 		F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F3438A9E1BB28A03001BA5E6 /* Reachability.m */; };
 		F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA21BB290B6001BA5E6 /* AppConstants.swift */; };
 		F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA31BB290B6001BA5E6 /* Globals.swift */; };
 		F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */; };
 		F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */; };
+		F3587C4A1C7569D40043FC25 /* FaceBookShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3587C491C7569D40043FC25 /* FaceBookShareViewController.swift */; };
 		F35FAE591BFB3A3E00FDB777 /* BookingRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */; };
 		F36691631BCD072A00B74CFE /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36691621BCD072A00B74CFE /* Images.swift */; };
 		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
@@ -52,6 +51,31 @@
 		F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576A91BDDD9460072486B /* BookingSessionViewController.swift */; };
 		F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */; };
 		F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */; };
+		F385F1E11C7198B900BF3A28 /* Stripe+ApplePay.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1CF1C7198B800BF3A28 /* Stripe+ApplePay.m */; };
+		F385F1E21C7198B900BF3A28 /* STPAPIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D11C7198B800BF3A28 /* STPAPIConnection.m */; };
+		F385F1E31C7198B900BF3A28 /* STPBankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D31C7198B800BF3A28 /* STPBankAccount.m */; };
+		F385F1E41C7198B900BF3A28 /* STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D51C7198B800BF3A28 /* STPCard.m */; };
+		F385F1E51C7198B900BF3A28 /* STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D81C7198B800BF3A28 /* STPToken.m */; };
+		F385F1E61C7198B900BF3A28 /* STPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1DA1C7198B800BF3A28 /* STPUtils.m */; };
+		F385F1E71C7198B900BF3A28 /* Stripe.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1DC1C7198B900BF3A28 /* Stripe.m */; };
+		F385F1E81C7198B900BF3A28 /* StripeError.m in Sources */ = {isa = PBXBuildFile; fileRef = F385F1DE1C7198B900BF3A28 /* StripeError.m */; };
+		F385F1EA1C7198FB00BF3A28 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F385F1E91C7198FB00BF3A28 /* Foundation.framework */; };
+		F385F1EC1C71990400BF3A28 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F385F1EB1C71990400BF3A28 /* PassKit.framework */; };
+		F385F1EE1C71990E00BF3A28 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F385F1ED1C71990E00BF3A28 /* Security.framework */; };
+		F385F1F01C719F8300BF3A28 /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385F1EF1C719F8300BF3A28 /* CardDetailsViewController.swift */; };
+		F385F1F11C71A53000BF3A28 /* STPAPIConnection.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D01C7198B800BF3A28 /* STPAPIConnection.h */; };
+		F385F1F21C71A54700BF3A28 /* Stripe+ApplePay.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1CE1C7198B800BF3A28 /* Stripe+ApplePay.h */; };
+		F385F1F31C71A54700BF3A28 /* STPBankAccount.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D21C7198B800BF3A28 /* STPBankAccount.h */; };
+		F385F1F41C71A54700BF3A28 /* STPCard.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D41C7198B800BF3A28 /* STPCard.h */; };
+		F385F1F51C71A54700BF3A28 /* STPFormEncodeProtocol.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D61C7198B800BF3A28 /* STPFormEncodeProtocol.h */; };
+		F385F1F61C71A54700BF3A28 /* STPToken.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D71C7198B800BF3A28 /* STPToken.h */; };
+		F385F1F71C71A54700BF3A28 /* STPUtils.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1D91C7198B800BF3A28 /* STPUtils.h */; };
+		F385F1F81C71A54700BF3A28 /* Stripe.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1DB1C7198B800BF3A28 /* Stripe.h */; };
+		F385F1F91C71A54700BF3A28 /* StripeError.h in Sources */ = {isa = PBXBuildFile; fileRef = F385F1DD1C7198B900BF3A28 /* StripeError.h */; };
+		F385F1FF1C71A6E400BF3A28 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F385F1FB1C71A6E400BF3A28 /* FacebookSDKStrings.bundle */; };
+		F385F2001C71A6E400BF3A28 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F385F1FC1C71A6E400BF3A28 /* FBSDKCoreKit.framework */; };
+		F385F2011C71A6E500BF3A28 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F385F1FD1C71A6E400BF3A28 /* FBSDKLoginKit.framework */; };
+		F385F2021C71A6E500BF3A28 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F385F1FE1C71A6E400BF3A28 /* FBSDKShareKit.framework */; };
 		F3884C671BF35DB300A62547 /* PackageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3884C661BF35DB300A62547 /* PackageViewController.swift */; };
 		F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */; };
 		F388D6A11BEC6BC500E41540 /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */; };
@@ -60,6 +84,8 @@
 		F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235621C08174D00B14F8E /* SystemConfiguration.framework */; };
 		F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235601C08173E00B14F8E /* CoreTelephony.framework */; };
 		F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F38235641C08175F00B14F8E /* libz.dylib */; };
+		F397B37E1C74543F00FDCC88 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC0C1C19B1720051D997 /* NewRelicAgent.framework */; };
+		F397B3B21C745D5400FDCC88 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F397B3B11C745D5400FDCC88 /* MobileCoreServices.framework */; };
 		F39E61C11C02D524001D8576 /* BookingHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39E61C01C02D524001D8576 /* BookingHistoryViewController.swift */; };
 		F39E61C41C02D878001D8576 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39E61C21C02D878001D8576 /* HistoryTableViewCell.swift */; };
 		F39E61C51C02D878001D8576 /* HistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F39E61C31C02D878001D8576 /* HistoryTableViewCell.xib */; };
@@ -70,7 +96,6 @@
 		F3A2AD251BD4A73800DA6F7B /* RateFeedbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD231BD4A73800DA6F7B /* RateFeedbackCell.xib */; };
 		F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2AD261BD4A77000DA6F7B /* RateView.swift */; };
 		F3A2AD291BD4A78600DA6F7B /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD281BD4A78600DA6F7B /* RateView.xib */; };
-		F3ABEC0D1C19B1720051D997 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC0C1C19B1720051D997 /* NewRelicAgent.framework */; };
 		F3ABEC0F1C19B2F50051D997 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC0E1C19B2F50051D997 /* libc++.dylib */; };
 		F3ABEC111C19B2FE0051D997 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
@@ -96,7 +121,6 @@
 		F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */; };
 		F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */; };
 		F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */; };
-		F3E8C5F41BFEE726003D5790 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3E8C5F31BFEE726003D5790 /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +134,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		51B28BB44A5EE5CAE2E44C3F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A4C8CCD3B472741D76A1421 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		ECE3885506396475413EC99F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F3003EA01BBA8105001354E3 /* UserReviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReviewView.swift; sourceTree = "<group>"; };
 		F3003EA21BBA8117001354E3 /* UserReviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserReviewView.xib; sourceTree = "<group>"; };
 		F3003EA41BBA887C001354E3 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -132,15 +159,13 @@
 		F3438A881BB27F50001BA5E6 /* FitHUDL.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FitHUDL.xcdatamodel; sourceTree = "<group>"; };
 		F3438A8A1BB27F74001BA5E6 /* FitHUDL-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FitHUDL-Bridging-Header.h"; sourceTree = "<group>"; };
 		F3438A8B1BB27F74001BA5E6 /* CustomURLConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomURLConnection.swift; sourceTree = "<group>"; };
-		F3438A971BB2845D001BA5E6 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
-		F3438A981BB2845D001BA5E6 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		F3438A991BB2845D001BA5E6 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		F3438A9E1BB28A03001BA5E6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F3438A9F1BB28A03001BA5E6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F3438AA21BB290B6001BA5E6 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		F3438AA31BB290B6001BA5E6 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesListCell.swift; sourceTree = "<group>"; };
 		F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		F3587C491C7569D40043FC25 /* FaceBookShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceBookShareViewController.swift; sourceTree = "<group>"; };
 		F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingRequestViewController.swift; sourceTree = "<group>"; };
 		F36691621BCD072A00B74CFE /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
@@ -159,6 +184,32 @@
 		F38576A91BDDD9460072486B /* BookingSessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingSessionViewController.swift; sourceTree = "<group>"; };
 		F38576AB1BDDDF980072486B /* BookingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingTableViewCell.swift; sourceTree = "<group>"; };
 		F38576AC1BDDDF980072486B /* BookingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookingTableViewCell.xib; sourceTree = "<group>"; };
+		F385F1CE1C7198B800BF3A28 /* Stripe+ApplePay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Stripe+ApplePay.h"; sourceTree = "<group>"; };
+		F385F1CF1C7198B800BF3A28 /* Stripe+ApplePay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Stripe+ApplePay.m"; sourceTree = "<group>"; };
+		F385F1D01C7198B800BF3A28 /* STPAPIConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPAPIConnection.h; sourceTree = "<group>"; };
+		F385F1D11C7198B800BF3A28 /* STPAPIConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPAPIConnection.m; sourceTree = "<group>"; };
+		F385F1D21C7198B800BF3A28 /* STPBankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPBankAccount.h; sourceTree = "<group>"; };
+		F385F1D31C7198B800BF3A28 /* STPBankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPBankAccount.m; sourceTree = "<group>"; };
+		F385F1D41C7198B800BF3A28 /* STPCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPCard.h; sourceTree = "<group>"; };
+		F385F1D51C7198B800BF3A28 /* STPCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPCard.m; sourceTree = "<group>"; };
+		F385F1D61C7198B800BF3A28 /* STPFormEncodeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPFormEncodeProtocol.h; sourceTree = "<group>"; };
+		F385F1D71C7198B800BF3A28 /* STPToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPToken.h; sourceTree = "<group>"; };
+		F385F1D81C7198B800BF3A28 /* STPToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPToken.m; sourceTree = "<group>"; };
+		F385F1D91C7198B800BF3A28 /* STPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPUtils.h; sourceTree = "<group>"; };
+		F385F1DA1C7198B800BF3A28 /* STPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPUtils.m; sourceTree = "<group>"; };
+		F385F1DB1C7198B800BF3A28 /* Stripe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stripe.h; sourceTree = "<group>"; };
+		F385F1DC1C7198B900BF3A28 /* Stripe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stripe.m; sourceTree = "<group>"; };
+		F385F1DD1C7198B900BF3A28 /* StripeError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StripeError.h; sourceTree = "<group>"; };
+		F385F1DE1C7198B900BF3A28 /* StripeError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StripeError.m; sourceTree = "<group>"; };
+		F385F1E01C7198B900BF3A28 /* Stripe-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Stripe-Prefix.pch"; sourceTree = "<group>"; };
+		F385F1E91C7198FB00BF3A28 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F385F1EB1C71990400BF3A28 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		F385F1ED1C71990E00BF3A28 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F385F1EF1C719F8300BF3A28 /* CardDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardDetailsViewController.swift; path = ../CardDetailsViewController.swift; sourceTree = "<group>"; };
+		F385F1FB1C71A6E400BF3A28 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
+		F385F1FC1C71A6E400BF3A28 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		F385F1FD1C71A6E400BF3A28 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		F385F1FE1C71A6E400BF3A28 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		F3884C661BF35DB300A62547 /* PackageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PackageViewController.swift; sourceTree = "<group>"; };
 		F388D69E1BEC6BC400E41540 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		F388D69F1BEC6BC500E41540 /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
@@ -166,6 +217,7 @@
 		F38950061BCF94FD00ED0C77 /* DIDatepicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepicker.m; sourceTree = "<group>"; };
 		F38950071BCF94FD00ED0C77 /* DIDatepickerDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIDatepickerDateView.h; sourceTree = "<group>"; };
 		F38950081BCF94FD00ED0C77 /* DIDatepickerDateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIDatepickerDateView.m; sourceTree = "<group>"; };
+		F397B3B11C745D5400FDCC88 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		F39E61C01C02D524001D8576 /* BookingHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingHistoryViewController.swift; sourceTree = "<group>"; };
 		F39E61C21C02D878001D8576 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		F39E61C31C02D878001D8576 /* HistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTableViewCell.xib; sourceTree = "<group>"; };
@@ -209,7 +261,6 @@
 		F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopupViewController.swift; sourceTree = "<group>"; };
 		F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReviewCollectionViewCell.swift; sourceTree = "<group>"; };
 		F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserReviewCollectionViewCell.xib; sourceTree = "<group>"; };
-		F3E8C5F31BFEE726003D5790 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,16 +268,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F397B3B21C745D5400FDCC88 /* MobileCoreServices.framework in Frameworks */,
+				F385F1EE1C71990E00BF3A28 /* Security.framework in Frameworks */,
+				F385F1EC1C71990400BF3A28 /* PassKit.framework in Frameworks */,
+				F385F2011C71A6E500BF3A28 /* FBSDKLoginKit.framework in Frameworks */,
+				F385F1EA1C7198FB00BF3A28 /* Foundation.framework in Frameworks */,
+				F385F2021C71A6E500BF3A28 /* FBSDKShareKit.framework in Frameworks */,
+				F385F2001C71A6E400BF3A28 /* FBSDKCoreKit.framework in Frameworks */,
 				F3ABEC111C19B2FE0051D997 /* CoreGraphics.framework in Frameworks */,
 				F3ABEC0F1C19B2F50051D997 /* libc++.dylib in Frameworks */,
 				F395D97B1C0C3BC100BF26AC /* libz.dylib in Frameworks */,
 				F395D97A1C0C3BB700BF26AC /* CoreTelephony.framework in Frameworks */,
 				F395D9791C0C3B9E00BF26AC /* SystemConfiguration.framework in Frameworks */,
-				F3ABEC0D1C19B1720051D997 /* NewRelicAgent.framework in Frameworks */,
+				F397B37E1C74543F00FDCC88 /* NewRelicAgent.framework in Frameworks */,
 				F38159C61C0EAB2300DDD514 /* StoreKit.framework in Frameworks */,
-				F3438A9C1BB2845D001BA5E6 /* FBSDKLoginKit.framework in Frameworks */,
-				F3438A9B1BB2845D001BA5E6 /* FBSDKCoreKit.framework in Frameworks */,
-				F3E8C5F41BFEE726003D5790 /* FBSDKShareKit.framework in Frameworks */,
+				46A1F7C1BDA81E7033B6BC06 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +299,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1BFA28315FFC5B2609A80215 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ECE3885506396475413EC99F /* Pods.debug.xcconfig */,
+				9A4C8CCD3B472741D76A1421 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7463547A5AC7FA13DBF617A8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				51B28BB44A5EE5CAE2E44C3F /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F305F51E1BB9069A006BEFA2 /* iCarousel */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +334,7 @@
 				F38576A91BDDD9460072486B /* BookingSessionViewController.swift */,
 				F39F4ACA1BF9BA3600056A0B /* SessionTimerViewController.swift */,
 				F37F80EF1C50E07600A10CD5 /* PromoCodeViewController.swift */,
+				F3587C491C7569D40043FC25 /* FaceBookShareViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -424,24 +498,13 @@
 		F3438A8D1BB27F8A001BA5E6 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				F385F1FA1C71A6E400BF3A28 /* Facebook */,
 				F38235641C08175F00B14F8E /* libz.dylib */,
 				F38235601C08173E00B14F8E /* CoreTelephony.framework */,
 				F305F51E1BB9069A006BEFA2 /* iCarousel */,
 				F38235621C08174D00B14F8E /* SystemConfiguration.framework */,
-				F3438A8E1BB27FB2001BA5E6 /* Facebook */,
 			);
 			path = Libs;
-			sourceTree = "<group>";
-		};
-		F3438A8E1BB27FB2001BA5E6 /* Facebook */ = {
-			isa = PBXGroup;
-			children = (
-				F3E8C5F31BFEE726003D5790 /* FBSDKShareKit.framework */,
-				F3438A971BB2845D001BA5E6 /* FacebookSDKStrings.bundle */,
-				F3438A981BB2845D001BA5E6 /* FBSDKCoreKit.framework */,
-				F3438A991BB2845D001BA5E6 /* FBSDKLoginKit.framework */,
-			);
-			path = Facebook;
 			sourceTree = "<group>";
 		};
 		F3438A9D1BB28915001BA5E6 /* Utils */ = {
@@ -490,9 +553,62 @@
 			path = MonthPicker;
 			sourceTree = "<group>";
 		};
+		F385F1CC1C7198B800BF3A28 /* Stripe */ = {
+			isa = PBXGroup;
+			children = (
+				F385F1CD1C7198B800BF3A28 /* ApplePay */,
+				F385F1D01C7198B800BF3A28 /* STPAPIConnection.h */,
+				F385F1D11C7198B800BF3A28 /* STPAPIConnection.m */,
+				F385F1D21C7198B800BF3A28 /* STPBankAccount.h */,
+				F385F1D31C7198B800BF3A28 /* STPBankAccount.m */,
+				F385F1D41C7198B800BF3A28 /* STPCard.h */,
+				F385F1D51C7198B800BF3A28 /* STPCard.m */,
+				F385F1D61C7198B800BF3A28 /* STPFormEncodeProtocol.h */,
+				F385F1D71C7198B800BF3A28 /* STPToken.h */,
+				F385F1D81C7198B800BF3A28 /* STPToken.m */,
+				F385F1D91C7198B800BF3A28 /* STPUtils.h */,
+				F385F1DA1C7198B800BF3A28 /* STPUtils.m */,
+				F385F1DB1C7198B800BF3A28 /* Stripe.h */,
+				F385F1DC1C7198B900BF3A28 /* Stripe.m */,
+				F385F1DD1C7198B900BF3A28 /* StripeError.h */,
+				F385F1DE1C7198B900BF3A28 /* StripeError.m */,
+				F385F1DF1C7198B900BF3A28 /* Supporting Files */,
+			);
+			path = Stripe;
+			sourceTree = "<group>";
+		};
+		F385F1CD1C7198B800BF3A28 /* ApplePay */ = {
+			isa = PBXGroup;
+			children = (
+				F385F1CE1C7198B800BF3A28 /* Stripe+ApplePay.h */,
+				F385F1CF1C7198B800BF3A28 /* Stripe+ApplePay.m */,
+			);
+			path = ApplePay;
+			sourceTree = "<group>";
+		};
+		F385F1DF1C7198B900BF3A28 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F385F1E01C7198B900BF3A28 /* Stripe-Prefix.pch */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F385F1FA1C71A6E400BF3A28 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				F385F1FB1C71A6E400BF3A28 /* FacebookSDKStrings.bundle */,
+				F385F1FC1C71A6E400BF3A28 /* FBSDKCoreKit.framework */,
+				F385F1FD1C71A6E400BF3A28 /* FBSDKLoginKit.framework */,
+				F385F1FE1C71A6E400BF3A28 /* FBSDKShareKit.framework */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
 		F3884C651BF35D9100A62547 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				F385F1EF1C719F8300BF3A28 /* CardDetailsViewController.swift */,
 				F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */,
 				F3884C661BF35DB300A62547 /* PackageViewController.swift */,
 				F3CC9DDD1C0DC64D006DAF6A /* RageProducts.swift */,
@@ -551,12 +667,19 @@
 		F3CDCB211BB27D490070EDAF = {
 			isa = PBXGroup;
 			children = (
+				F397B3B11C745D5400FDCC88 /* MobileCoreServices.framework */,
+				F385F1ED1C71990E00BF3A28 /* Security.framework */,
+				F385F1EB1C71990400BF3A28 /* PassKit.framework */,
+				F385F1E91C7198FB00BF3A28 /* Foundation.framework */,
+				F385F1CC1C7198B800BF3A28 /* Stripe */,
 				F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */,
 				F3ABEC0E1C19B2F50051D997 /* libc++.dylib */,
 				F38159C51C0EAB2200DDD514 /* StoreKit.framework */,
 				F3CDCB2C1BB27D490070EDAF /* FitHUDL */,
 				F3CDCB451BB27D4A0070EDAF /* FitHUDLTests */,
 				F3CDCB2B1BB27D490070EDAF /* Products */,
+				1BFA28315FFC5B2609A80215 /* Pods */,
+				7463547A5AC7FA13DBF617A8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -622,10 +745,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F3CDCB4C1BB27D4A0070EDAF /* Build configuration list for PBXNativeTarget "FitHUDL" */;
 			buildPhases = (
+				73FAF890425DFA764B15DD7A /* Check Pods Manifest.lock */,
 				F3CDCB261BB27D490070EDAF /* Sources */,
 				F3CDCB271BB27D490070EDAF /* Frameworks */,
 				F3CDCB281BB27D490070EDAF /* Resources */,
 				F37968E31BCE280B0074B57D /* ShellScript */,
+				A4C37F6E2A3EDA38299480D7 /* Embed Pods Frameworks */,
+				37B26E0169489EE6A1112CAC /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -715,6 +841,7 @@
 				F3A2AD251BD4A73800DA6F7B /* RateFeedbackCell.xib in Resources */,
 				F39E61C51C02D878001D8576 /* HistoryTableViewCell.xib in Resources */,
 				F3003EA51BBA88F8001354E3 /* OpenSans-LightItalic.ttf in Resources */,
+				F385F1FF1C71A6E400BF3A28 /* FacebookSDKStrings.bundle in Resources */,
 				F3438A841BB27ED2001BA5E6 /* Main.storyboard in Resources */,
 				F38576AE1BDDDF980072486B /* BookingTableViewCell.xib in Resources */,
 				F3438A831BB27ED2001BA5E6 /* LaunchScreen.xib in Resources */,
@@ -725,7 +852,6 @@
 				F3E266661BECCB2E00717724 /* NotificationCell.xib in Resources */,
 				F3A2AD291BD4A78600DA6F7B /* RateView.xib in Resources */,
 				F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */,
-				F3438A9A1BB2845D001BA5E6 /* FacebookSDKStrings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,6 +865,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		37B26E0169489EE6A1112CAC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		73FAF890425DFA764B15DD7A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A4C37F6E2A3EDA38299480D7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F37968E31BCE280B0074B57D /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -759,7 +930,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F385F1F21C71A54700BF3A28 /* Stripe+ApplePay.h in Sources */,
+				F385F1F31C71A54700BF3A28 /* STPBankAccount.h in Sources */,
+				F385F1F41C71A54700BF3A28 /* STPCard.h in Sources */,
+				F385F1F51C71A54700BF3A28 /* STPFormEncodeProtocol.h in Sources */,
+				F385F1F61C71A54700BF3A28 /* STPToken.h in Sources */,
+				F385F1F71C71A54700BF3A28 /* STPUtils.h in Sources */,
+				F385F1F81C71A54700BF3A28 /* Stripe.h in Sources */,
+				F385F1F91C71A54700BF3A28 /* StripeError.h in Sources */,
+				F3587C4A1C7569D40043FC25 /* FaceBookShareViewController.swift in Sources */,
+				F385F1F11C71A53000BF3A28 /* STPAPIConnection.h in Sources */,
 				F3CC9DDC1C0DC2F2006DAF6A /* IAPHelper.swift in Sources */,
+				F385F1F01C719F8300BF3A28 /* CardDetailsViewController.swift in Sources */,
 				F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */,
 				F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */,
 				F321BDBF1C0EF76A0060FECD /* ChangePasswordViewController.swift in Sources */,
@@ -770,6 +952,7 @@
 				F35FAE591BFB3A3E00FDB777 /* BookingRequestViewController.swift in Sources */,
 				F305F5291BB966B4006BEFA2 /* FavoritesViewController.swift in Sources */,
 				F3438A801BB27EBF001BA5E6 /* AppDelegate.swift in Sources */,
+				F385F1E21C7198B900BF3A28 /* STPAPIConnection.m in Sources */,
 				F3717C9D1BBBE2A10038795A /* BadgesCollectionViewCell.swift in Sources */,
 				F37968F21BCE812E0074B57D /* SRMonthPicker.m in Sources */,
 				F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */,
@@ -780,20 +963,25 @@
 				F3003EA11BBA8105001354E3 /* UserReviewView.swift in Sources */,
 				F3D99C1F1C180EC4007A20F9 /* UserTime.swift in Sources */,
 				F3D99C1D1C180EC4007A20F9 /* UserBadges.swift in Sources */,
+				F385F1E61C7198B900BF3A28 /* STPUtils.m in Sources */,
 				F38576AA1BDDD9460072486B /* BookingSessionViewController.swift in Sources */,
 				F388D6A01BEC6BC500E41540 /* NotificationViewController.swift in Sources */,
 				F38576AD1BDDDF980072486B /* BookingTableViewCell.swift in Sources */,
 				F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */,
 				F3D99C251C180EC4007A20F9 /* UserReview.swift in Sources */,
+				F385F1E31C7198B900BF3A28 /* STPBankAccount.m in Sources */,
 				F3D99C1B1C180EC3007A20F9 /* SportsList.swift in Sources */,
+				F385F1E51C7198B900BF3A28 /* STPToken.m in Sources */,
 				F34262771BD8E86400A1EF69 /* UsersList.swift in Sources */,
 				F39E61C11C02D524001D8576 /* BookingHistoryViewController.swift in Sources */,
 				F305F5211BB906AA006BEFA2 /* iCarousel.m in Sources */,
 				F389500A1BCF94FD00ED0C77 /* DIDatepickerDateView.m in Sources */,
+				F385F1E41C7198B900BF3A28 /* STPCard.m in Sources */,
 				F3D99C271C180EC4007A20F9 /* Packages.swift in Sources */,
 				F3884C671BF35DB300A62547 /* PackageViewController.swift in Sources */,
 				F3D99C2B1C180EC5007A20F9 /* Bookings.swift in Sources */,
 				F3D99C231C180EC4007A20F9 /* User.swift in Sources */,
+				F385F1E71C7198B900BF3A28 /* Stripe.m in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
 				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
 				F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */,
@@ -813,7 +1001,9 @@
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
 				F39F4AD31BF9EE5600056A0B /* MZTimerLabel.m in Sources */,
 				F3438A7D1BB27E62001BA5E6 /* SignupViewController.swift in Sources */,
+				F385F1E11C7198B900BF3A28 /* Stripe+ApplePay.m in Sources */,
 				F3D99C2F1C180EC5007A20F9 /* Notification.swift in Sources */,
+				F385F1E81C7198B900BF3A28 /* StripeError.m in Sources */,
 				F39F4ACB1BF9BA3600056A0B /* SessionTimerViewController.swift in Sources */,
 				F37F80F01C50E07600A10CD5 /* PromoCodeViewController.swift in Sources */,
 				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
@@ -919,7 +1109,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "286c52a4-f77d-4cb1-8df9-dae23415a902";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -927,20 +1117,24 @@
 		};
 		F3CDCB4D1BB27D4A0070EDAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECE3885506396475413EC99F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Info Ti Technologies (74E64HKFV4)";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
 					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
-					"$(PROJECT_DIR)/FitHUDL/Libs",
 					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					$inherited,
+					"-lc++",
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = Pillar;
 				PROVISIONING_PROFILE = "aee039d4-1734-4b0b-adf6-39eed409eb36";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
@@ -949,22 +1143,27 @@
 		};
 		F3CDCB4E1BB27D4A0070EDAF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A4C8CCD3B472741D76A1421 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: DEEPU ZACHARIA (7QVT6YDQZ2)";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
 					"$(PROJECT_DIR)/FitHUDL/Libs/Facebook",
-					"$(PROJECT_DIR)/FitHUDL/Libs",
 					"$(PROJECT_DIR)/FitHUDL",
 				);
 				INFOPLIST_FILE = FitHUDL/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					$inherited,
+					"-lc++",
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = Pillar;
-				PROVISIONING_PROFILE = "ae49d5ad-20ba-4fc0-8d5d-c1e321fdad15";
+				PROVISIONING_PROFILE = "286c52a4-f77d-4cb1-8df9-dae23415a902";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 			};
 			name = Release;
@@ -988,7 +1187,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "aee039d4-1734-4b0b-adf6-39eed409eb36";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pillar.app/Pillar";
 			};
 			name = Debug;
 		};
@@ -1007,7 +1206,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "286c52a4-f77d-4cb1-8df9-dae23415a902";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FitHUDL.app/FitHUDL";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pillar.app/Pillar";
 			};
 			name = Release;
 		};

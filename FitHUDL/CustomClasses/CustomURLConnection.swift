@@ -52,21 +52,22 @@ class CustomURLConnection: NSURLConnection {
     }
     
     
-//    class func createRequestForStripe(params: NSMutableDictionary?, methodName: String, requestType: String) -> NSURLRequest {
-//        var error: NSError?
-//        let serverURL   = NSURL(string: STRIPE_URL.stringByAppendingString(methodName))
-//        let urlRequest  = NSMutableURLRequest(URL: serverURL!)
-//        urlRequest.HTTPMethod = requestType
-//        urlRequest.timeoutInterval = TimeOut.Data
-//        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        if let parameters = params {
-//
-//            println("PARAM\(parameters)")
-//            let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
-//            urlRequest.HTTPBody = jsonData
-//        }
-//        return urlRequest
-//    }
+    class func createRequestForStripe(params: NSMutableDictionary?, methodName: String, requestType: String) -> NSURLRequest {
+        var error: NSError?
+        let serverURL   = NSURL(string: STRIPE_URL.stringByAppendingString(methodName))
+        println("serverrr \(serverURL)")
+        let urlRequest  = NSMutableURLRequest(URL: serverURL!)
+        urlRequest.HTTPMethod = requestType
+        urlRequest.timeoutInterval = TimeOut.Data
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let parameters = params {
+
+            println("PARAM\(parameters)")
+            let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
+            urlRequest.HTTPBody = jsonData
+        }
+        return urlRequest
+    }
     
 
     

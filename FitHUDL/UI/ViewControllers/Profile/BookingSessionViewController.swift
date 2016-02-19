@@ -20,7 +20,6 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var monthButton: UIButton!
     @IBOutlet weak var sportsCarousel: iCarousel!
     @IBOutlet weak var expertLevelLabel: UILabel!
-    @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var noAvailLabel: UILabel!
@@ -66,13 +65,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
 //            tableViewTopConstraint.constant = -65
 //            view.layoutIfNeeded()
 //        }
-        if count(user.bio) > BIOTEXT_LENGTH {
-            bioLabel.userInteractionEnabled = true
-            Globals.attributedBioText((user.bio as NSString).substringToIndex(BIOTEXT_LENGTH-1), lengthExceed: true, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
-        } else {
-            bioLabel.userInteractionEnabled = false
-            Globals.attributedBioText((user.bio as NSString).substringToIndex((user.bio as NSString).length), lengthExceed: false, bioLabel: bioLabel, titleColor: AppColor.yellowTextColor, bioColor: UIColor.whiteColor())
-        }
+       
        
         favoriteButton.selected = user.isFavorite.boolValue
         profileImageView.image = UIImage(named: "default_image")
