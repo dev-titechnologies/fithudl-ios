@@ -15,6 +15,7 @@ class UserTime: NSManagedObject {
     @NSManaged var timeEnds: String
     @NSManaged var timeStarts: String
     @NSManaged var user: User
+    
 
     class func saveUserTimeList(date: String, startTime: String, endTime: String, user: User) -> UserTime {
         var userTime:UserTime = NSEntityDescription.insertNewObjectForEntityForName("UserTime", inManagedObjectContext: appDelegate.managedObjectContext!) as! UserTime

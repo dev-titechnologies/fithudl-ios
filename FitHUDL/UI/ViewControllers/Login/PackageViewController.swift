@@ -141,6 +141,8 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
   
     @IBAction func helpButtonAction(sender: AnyObject) {
         
+        UIAlertView(title: alertTitle, message: "Other than packages you may also buy credits of minimum $10", delegate: self, cancelButtonTitle: "OK").show()
+        
     }
     
     func reload() {
@@ -202,9 +204,9 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                 
                 println("Valid String")
                 
-                if amountTextField.text.toInt() <= 10 {
+                if amountTextField.text.toInt() < 10 {
                     amountTextField.text = ""
-                    UIAlertView(title: alertTitle, message: "Amount Should be Greater than 10", delegate: self, cancelButtonTitle: "OK").show()
+                    UIAlertView(title: alertTitle, message: "Minimum amount is $10 ", delegate: self, cancelButtonTitle: "OK").show()
                     return
                 } else {
                    
@@ -212,6 +214,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                         amountTextField.resignFirstResponder()
                     }
                     amount = num!
+                    amountTextField.text = ""
                     self.performSegueWithIdentifier("cardDetails", sender: self)
 
                    
@@ -219,7 +222,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
                 
             } else{
                 amountTextField.text = ""
-                UIAlertView(title: alertTitle, message: "Enter A Valid Amount", delegate: self, cancelButtonTitle: "OK").show()
+                UIAlertView(title: alertTitle, message: "Enter a valid amount", delegate: self, cancelButtonTitle: "OK").show()
                 return
             }
             
@@ -227,7 +230,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
             
         }else {
             
-            UIAlertView(title: "Either Select A package OR Enter A Recharge Amount", message: "", delegate: self, cancelButtonTitle: "OK").show()
+            UIAlertView(title: "Either select a package or enter a recharge amount", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
         }
     }

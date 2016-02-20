@@ -18,16 +18,16 @@ class WebViewController: UIViewController {
         super.viewDidLoad()
         if viewTag == ViewTag.termsView {
             titleLabel.text = "Terms Of Service"
-            loadWebContent("")
+            loadWebContent("http://www.pillar.fit/terms.html")
         } else if viewTag == ViewTag.privacyView {
             titleLabel.text = "Privacy Policy"
-            loadWebContent("")
+            loadWebContent("http://www.pillar.fit/privacy.html")
         } else if viewTag == ViewTag.agreement {
             titleLabel.text = "Contractor Agreement"
             loadWebContent("")
         } else if viewTag == ViewTag.mobilePrivacy {
             titleLabel.text = "Mobile Privacy"
-            loadWebContent("")
+            loadWebContent("http://www.pillar.fit/mobileprivacy.html")
         }
         
         // Do any additional setup after loading the view.

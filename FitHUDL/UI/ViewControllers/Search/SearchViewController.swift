@@ -450,7 +450,6 @@ extension SearchViewController:UISearchBarDelegate {
         } else if femaleButton.selected{
             requestDictionary.setObject(Gender.female, forKey: "gender")
         }
-        
         if self.userSelectedArray.count > 0 {
             let sportsArray = NSMutableArray()
             for sport in self.userSelectedArray {
@@ -466,7 +465,6 @@ extension SearchViewController:UISearchBarDelegate {
         } else {
             
             if nameSearchFlag {
-                
                 
             } else {
                 

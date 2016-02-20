@@ -25,7 +25,6 @@ class CustomPopupViewController: UIViewController {
     @IBOutlet weak var timeMsgLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var weekValueLabel: UILabel!
     @IBOutlet weak var placeLabel: UILabel!
     @IBOutlet weak var timeValueLabel: UILabel!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
@@ -125,6 +124,8 @@ class CustomPopupViewController: UIViewController {
 
     
     func setUpBookConfirmView() {
+        
+        println("booking dictionary \(sessionDictionary)")
         let predicate       = NSPredicate(format: "sportsId = %d", argumentArray: [sessionDictionary!["sports_id"] as! Int])
         let filteredArray   = appDelegate.sportsArray.filteredArrayUsingPredicate(predicate)
         sportsImageView.image = UIImage(named: "default_image")
@@ -135,12 +136,12 @@ class CustomPopupViewController: UIViewController {
             let sportName   = (filteredArray[0] as! SportsList).sportsName.uppercaseString
             sportsLabel.text = "\(sportName) session on"
         }
-        nameLabel.text      = appDelegate.user!.name.uppercaseString
+        nameLabel.text      = sessionDictionary!["name"] as? String
         let startTime       = Globals.convertTimeTo12Hours(sessionDictionary!["start_time"] as! String)
         let endTime         = Globals.convertTimeTo12Hours(sessionDictionary!["end_time"] as! String)
         timeValueLabel.text = "\(startTime) to \(endTime)"
         placeLabel.text     = sessionDictionary!["location"] as? String
-        weekValueLabel.text = "No"
+       
     }
     
     func attributedBioText() {
@@ -167,10 +168,7 @@ class CustomPopupViewController: UIViewController {
         delegate?.confirmSessionBook()
     }
     
-    @IBAction func weeklyButtonClicked(sender: UIButton) {
-        sender.selected     = !sender.selected
-        weekValueLabel.text = sender.selected ? "Yes" : "No"
-    }
+   
     
     @IBAction func stopBookButtonClicked(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)

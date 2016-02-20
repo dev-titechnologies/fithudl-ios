@@ -57,6 +57,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var expertLevelLabel: UILabel!
     @IBOutlet weak var NotificationView: UIView!
     @IBOutlet weak var notificationBackgroundView: UIView!
+    
     @IBOutlet weak var notificationBgtrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var notificationArrowTrailingConstraint: NSLayoutConstraint!
@@ -80,7 +81,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        println("MY PROFILE")
         menuView.hidden = true
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
         reviewCollectionView.registerNib(nib, forCellWithReuseIdentifier: "reviewCell")
@@ -150,17 +151,10 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         tapGesturesportscarousel.cancelsTouchesInView = false
         self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
         
-      
-                //self.showShareDialogBox("imagePath")
-        
-        // Do any additional setup after loading the view.
     }
     
     
-   
-    
      func viewTap(getstureRecognizer : UITapGestureRecognizer){
-        
         if menuView.frame.origin.x == 0 {
             hideMenuView()
         }
@@ -592,7 +586,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func showEmailVerifyAlert() {
-        let alert = UIAlertController(title: alertTitle, message: "You have not verified your email. Please verify inorder to proceed further.\n Do you want to resend the mail?", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: alertTitle, message: "Verification email has been sent to your email. Please verify to proceed.\n Haven't received email yet?", preferredStyle: UIAlertControllerStyle.Alert)
         let resendAction = UIAlertAction(title: "Resend Email", style: UIAlertActionStyle.Default) { (resendAction) -> Void in
             self.sendRequestEmailResent()
         }
@@ -722,13 +716,39 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 profileUser!.imageURL = ""
             }
             
-            if let session = responseDictionary["Training_session"] as? NSArray {
-                profileUser!.availableTime.removeAllObjects()
-                for sess in session {
-                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: profileUser!)
-                    profileUser!.availableTime.addObject(time)
-                }
+            
+            var session = NSArray()
+            
+            session = (responseDictionary["Training_session"] as? NSArray)!
+            println("ParseSession\(session)")
+            var i : Int = 0
+            
+            for i = 0; i<session.count; i++ {
+                
+                println("SWE \(session[i])")
+                let time = UserTime.saveUserTimeList(session[i].objectForKey("date") as! String, startTime: session[i].objectForKey("time_starts") as! String, endTime: session[i].objectForKey("time_ends") as! String, user: profileUser!)
+                println("TIME \(time)")
+                profileUser!.availableTime.addObject(time)
             }
+            println("ARDRA \(profileUser?.availableTime)")
+            
+            
+//            if let session = responseDictionary["Training_session"] as? NSArray {
+//                
+//               // println("ParseSession\(session)")
+//
+//                
+//                profileUser!.availableTime.removeAllObjects()
+//                for sess in session {
+//                    
+//                   // println("PPS \(sess)")
+//                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: profileUser!)
+//                    profileUser!.availableTime.addObject(time)
+//                    
+//                    //println("ARDRA \(profileUser?.availableTime)")
+//                }
+//            }
+            
             if let usageCount = responseDictionary["usage_count"] as? Int {
                 profileUser!.usageCount = "\(usageCount)"
             }
@@ -1254,6 +1274,9 @@ extension MyProfileViewController: UICollectionViewDataSource {
         var dateFromString : NSDate
         dateFromString = dateFormatter.dateFromString(dateString)!
         println("current datell \(dateFromString)")
+        
+        
+        println("TIME SOURCE IS \(source)")
         
         filterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateString))
         

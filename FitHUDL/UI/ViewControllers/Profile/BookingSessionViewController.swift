@@ -251,6 +251,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                         for date in datesArray {
                             var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
                             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
+                            //println("Available Session time \(availSessionTime)")
                         }
                     }
                 }
@@ -301,6 +302,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         requestDictionary.setObject(starttime, forKey: "start_time")
         requestDictionary.setObject(endtime, forKey: "end_time")
         requestDictionary.setObject(date, forKey: "session_date")
+        requestDictionary.setObject(user.name, forKey: "name")
         if let place = time["location"] as? String {
             if place == "" {
                 UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()

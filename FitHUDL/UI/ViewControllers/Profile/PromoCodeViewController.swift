@@ -172,7 +172,7 @@ class PromoCodeViewController: UIViewController {
                             shareContent = data["CONTENT"] as! String
                             
                             shareContent = shareContent.stringByReplacingOccurrencesOfString("Display Name", withString: appDelegate.user!.name)
-                             shareContent = shareContent.stringByReplacingOccurrencesOfString("invite code", withString: code)
+                             shareContent = shareContent.stringByReplacingOccurrencesOfString("incode", withString: code)
                             
                             
                         }

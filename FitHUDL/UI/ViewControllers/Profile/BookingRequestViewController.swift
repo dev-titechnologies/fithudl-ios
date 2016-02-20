@@ -68,7 +68,6 @@ class BookingRequestViewController: UIViewController {
     }
     
     //MARK: Booking Request API Call
-    
     func sendRequestToUpdateBooking() {
         if !Globals.isInternetConnected() {
             return

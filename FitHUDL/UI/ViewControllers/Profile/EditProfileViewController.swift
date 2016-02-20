@@ -722,7 +722,7 @@ class EditProfileViewController: UIViewController {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        println(response)
+        println("EDIT_PROFILE \(response)")
         var error: NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {

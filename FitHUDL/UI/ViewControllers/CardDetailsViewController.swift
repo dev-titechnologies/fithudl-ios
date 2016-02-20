@@ -235,7 +235,8 @@ class CardDetailsViewController: UIViewController {
     @IBAction func backAction(sender: AnyObject) {
         
         navigationController?.popViewControllerAnimated(true)
-    }
+        
+        }
 
 
     func postStripeToken(token: STPToken) {
@@ -281,7 +282,6 @@ class CardDetailsViewController: UIViewController {
         requestDictionary.setObject("Stripe", forKey: "transaction_method")
         
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/transaction", requestType: HttpMethod.post),delegate: self,tag: Connection.transactionRequest)
-        
     }
     
   
@@ -294,6 +294,7 @@ class CardDetailsViewController: UIViewController {
     }
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
+        
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         println(response)
         var error : NSError?
@@ -302,6 +303,7 @@ class CardDetailsViewController: UIViewController {
                 if connection.connectionTag == Connection.transactionRequest {
                     if status == ResponseStatus.success {
                         UIAlertView(title: alertTitle, message: "Package purchase successful", delegate: nil, cancelButtonTitle: "OK").show()
+                         navigationController?.popViewControllerAnimated(true)
                         showLoadingView(false)
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
