@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Bookings" representedClassName="Pillar.Bookings" syncable="YES">
         <attribute name="allotedDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bookingID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -119,6 +119,7 @@
     </entity>
     <entity name="UserTime" representedClassName="Pillar.UserTime" syncable="YES">
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeEnds" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeStarts" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="availableTime" inverseEntity="User" syncable="YES"/>
@@ -136,6 +137,6 @@
         <element name="UserReview" positionX="115" positionY="342" width="128" height="135"/>
         <element name="UsersList" positionX="-252" positionY="204" width="128" height="75"/>
         <element name="UserSports" positionX="70" positionY="135" width="128" height="120"/>
-        <element name="UserTime" positionX="243" positionY="486" width="128" height="105"/>
+        <element name="UserTime" positionX="243" positionY="486" width="128" height="120"/>
     </elements>
 </model>

@@ -73,7 +73,17 @@ class Globals: NSObject {
         }
         return time
     }
-    
+    class func convertTimeTo12HourswithDAte(time: String) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm a"
+        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        if let date = dateFormatter.dateFromString(time) {
+            dateFormatter.dateFormat = "h.mm a"
+            return dateFormatter.stringFromDate(date)
+        }
+        return time
+    }
+
     class func convertDate(date: NSDate) -> String {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"

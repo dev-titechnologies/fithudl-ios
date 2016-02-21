@@ -216,16 +216,34 @@ class EditProfileViewController: UIViewController {
         } else {
             timeArray = NSMutableArray()
         }
+        
+        
+        let dateFormat = NSDateFormatter()
+        dateFormat.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        dateFormat.dateFormat = "YYYY-MM-dd"
+        
         var fromTime = timeFormat.dateFromString(startTime)
         var toTime   = timeFormat.dateFromString(endTime)
         timeFormat.dateFormat = "hh.mm a"
         fromTime     = timeFormat.dateFromString(timeFormat.stringFromDate(fromTime!))
         toTime       = timeFormat.dateFromString(timeFormat.stringFromDate(toTime!))
         
+        let dateTime = dateFormat.stringFromDate(datePicker.selectedDate) + startTime
+        
+        println("ARSSSS \(dateTime)")
+        
         var timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
 
         while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
-            let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(fromTime!)), endTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(timeAfterInterval!)), user: appDelegate.user!)
+            
+            let dateFormatDate = NSDateFormatter()
+            dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+            dateFormatDate.dateFormat = "YYYY-MM-dd hh:mm a"
+
+            let dateTimeDate = dateFormatDate.dateFromString(dateTime)
+          
+            
+            let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(fromTime!)), endTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(timeAfterInterval!)), user: appDelegate.user!, dateTime: dateTime)
             if !timeArray.valueForKey("timeStarts")!.containsObject(time.timeStarts) {
                 timeArray.addObject(time)
             }

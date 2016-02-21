@@ -3362,11 +3362,11 @@
                         <viewControllerLayoutGuide type="bottom" id="RM4-aq-53w"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9a6-EJ-COa">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="axv-CG-lHx">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="507"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="pAh-oK-55X">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
@@ -3607,7 +3607,7 @@
                                 </connections>
                             </tableView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No available time on this date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPs-9G-O00">
-                                <rect key="frame" x="16" y="399" width="288" height="21"/>
+                                <rect key="frame" x="16" y="424" width="288" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="288" id="MfN-Ck-dZf"/>
                                     <constraint firstAttribute="height" constant="21" id="h1s-cs-MML"/>
@@ -3617,7 +3617,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TVP-F3-qAz" userLabel="Monthpicker view">
-                                <rect key="frame" x="0.0" y="460" width="320" height="180"/>
+                                <rect key="frame" x="0.0" y="509" width="320" height="180"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1eQ-gS-wfV" customClass="SRMonthPicker">
                                         <rect key="frame" x="0.0" y="26" width="320" height="162"/>
@@ -3676,8 +3676,8 @@
                             <constraint firstItem="TVP-F3-qAz" firstAttribute="top" secondItem="RM4-aq-53w" secondAttribute="bottom" constant="5" id="5Nb-pR-gu8"/>
                             <constraint firstAttribute="trailing" secondItem="TVP-F3-qAz" secondAttribute="trailing" id="6QO-Rf-ehl"/>
                             <constraint firstItem="axv-CG-lHx" firstAttribute="top" secondItem="9uY-iT-jxK" secondAttribute="bottom" id="AvN-M6-9yW"/>
-                            <constraint firstItem="RM4-aq-53w" firstAttribute="top" secondItem="axv-CG-lHx" secondAttribute="bottom" id="DRs-Bt-DZ0"/>
-                            <constraint firstItem="PPs-9G-O00" firstAttribute="centerY" secondItem="axv-CG-lHx" secondAttribute="centerY" constant="182" id="tlV-wG-njj"/>
+                            <constraint firstItem="RM4-aq-53w" firstAttribute="top" secondItem="axv-CG-lHx" secondAttribute="bottom" constant="-3" id="DRs-Bt-DZ0"/>
+                            <constraint firstItem="PPs-9G-O00" firstAttribute="centerY" secondItem="axv-CG-lHx" secondAttribute="centerY" constant="181" id="tlV-wG-njj"/>
                             <constraint firstItem="TVP-F3-qAz" firstAttribute="leading" secondItem="9a6-EJ-COa" secondAttribute="leading" id="xG7-pV-hU2"/>
                             <constraint firstItem="PPs-9G-O00" firstAttribute="centerX" secondItem="axv-CG-lHx" secondAttribute="centerX" id="yVT-TH-Uxd"/>
                         </constraints>
@@ -3710,6 +3710,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="bookingTableView" destination="axv-CG-lHx" id="Ah5-gf-zBz"/>
                         <outlet property="datePicker" destination="RPy-Gp-HNr" id="7TX-z7-4aM"/>
@@ -3732,7 +3733,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3135" y="319"/>
+            <point key="canvasLocation" x="3062" y="305"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sGU-Id-SUg">
@@ -6872,7 +6873,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2777" y="319"/>
+            <point key="canvasLocation" x="2745" y="522"/>
         </scene>
         <!--Change Password View Controller-->
         <scene sceneID="Ard-4R-aCR">

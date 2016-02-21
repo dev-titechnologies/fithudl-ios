@@ -1205,7 +1205,7 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "286c52a4-f77d-4cb1-8df9-dae23415a902";
+				PROVISIONING_PROFILE = "ae49d5ad-20ba-4fc0-8d5d-c1e321fdad15";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pillar.app/Pillar";
 			};
 			name = Release;

@@ -74,6 +74,9 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        
+        //self.view.backgroundColor = UIColor.redColor()
+       // bookingTableView.backgroundColor = UIColor.yellowColor()
     }
     
     //MARK: KEYBOARD HANDLING
@@ -83,6 +86,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         println(bookingTableView.frame.height)
         if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
             var frame = bookingTableView.frame
+            frame.size.height = frame.size.height+50
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationBeginsFromCurrentState(true)
             UIView.setAnimationDuration(animateInterval)
@@ -92,6 +96,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                 let rect = bookingTableView.convertRect(textField.bounds, fromView: textField)
                 bookingTableView.scrollRectToVisible(rect, animated: false)
             }
+            
             UIView.commitAnimations()
         }
     }

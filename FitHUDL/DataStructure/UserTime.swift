@@ -15,16 +15,20 @@ class UserTime: NSManagedObject {
     @NSManaged var timeEnds: String
     @NSManaged var timeStarts: String
     @NSManaged var user: User
+    @NSManaged var dateTime: String
+
     
 
-    class func saveUserTimeList(date: String, startTime: String, endTime: String, user: User) -> UserTime {
+    class func saveUserTimeList(date: String, startTime: String, endTime: String, user: User, dateTime: String) -> UserTime {
         var userTime:UserTime = NSEntityDescription.insertNewObjectForEntityForName("UserTime", inManagedObjectContext: appDelegate.managedObjectContext!) as! UserTime
         userTime.date           = date
         userTime.timeStarts     = startTime
         userTime.timeEnds       = endTime
         userTime.user           = user
+        userTime.dateTime       = dateTime
         return userTime
     }
+    
     
     class func fetchUserTimeList(id: Int?) -> NSArray? {
         var error: NSError? = nil

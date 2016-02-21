@@ -72,6 +72,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var carouselBackgoundView: UIView!
     @IBOutlet weak var interestLabel: UILabel!
     var filterTimeArray = NSArray()
+    var tempFilterTimeArray = NSArray()
     var searchResultId:String?
     var profileID: String?
     let calloutViewYAxis:CGFloat = 52.0
@@ -505,9 +506,35 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         starView.rating = (user.rating as NSString).floatValue
         
         
+//        let date = NSDate()
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//        let dateString = dateFormatter.stringFromDate(date) as String
+//        println("current date \(dateString)")
+//        var dateFromString : NSDate
+//        dateFromString = dateFormatter.dateFromString(dateString)!
+//        println("current datell \(dateFromString)")
+        
+
+        
+//        filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateString))
+//        
+//        if filteredArrayTime.count == 0 {
+//            
+//            println("NO VALUEEE")
+//            filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date > %@", dateString))
+//            
+//            println("NO VALUEEE \(filteredArrayTime)")
+//        }
+//        
+
+       var filteredArrayTime = NSArray()
+        
+        
         let date = NSDate()
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "YYYY-MM-dd HH:mm"
         dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         let dateString = dateFormatter.stringFromDate(date) as String
         println("current date \(dateString)")
@@ -515,23 +542,41 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         dateFromString = dateFormatter.dateFromString(dateString)!
         println("current datell \(dateFromString)")
         
-        var filteredArrayTime = NSArray()
         
-        filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateString))
+        let dateFormatterDate = NSDateFormatter()
+        dateFormatterDate.dateFormat = "YYYY-MM-dd"
+        dateFormatterDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        let dateOnlyString = dateFormatterDate.stringFromDate(date) as String
+        println("cccurrent date \(dateOnlyString)")
+        var dateOnlyFromString : NSDate
+        dateOnlyFromString = dateFormatterDate.dateFromString(dateOnlyString)!
+        println("ccccurrent datell \(dateOnlyFromString)")
         
+        
+        filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateOnlyString))
+        println("Filter Time \(filteredArrayTime)")
         if filteredArrayTime.count == 0 {
             
-            println("NO VALUEEE")
-            filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date > %@", dateString))
+            println("NNNOT TODAY")
+            filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
             
-            println("NO VALUEEE \(filteredArrayTime)")
+        } else {
+            println("YYYES TODAY")
+            filteredArrayTime = filteredArrayTime.filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+            
+            if filteredArrayTime.count == 0 {
+                
+                println("NNNOT TODAY")
+                filteredArrayTime = (user.availableTime.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+                
+            }
         }
-        
 
+        
         
       //  println("ARDRA \(profileUser!.availableTime)")
         
-        if filteredArrayTime.count <= 3 {
+        if filteredArrayTime.count <= 2 {
             morebgView.hidden = true
             moreButton.hidden = true
         }
@@ -736,7 +781,14 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             for i = 0; i<session.count; i++ {
                 
                 println("SWE \(session[i])")
-                let time = UserTime.saveUserTimeList(session[i].objectForKey("date") as! String, startTime: session[i].objectForKey("time_starts") as! String, endTime: session[i].objectForKey("time_ends") as! String, user: profileUser!)
+                
+                let dateFormatDate = NSDateFormatter()
+                dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                dateFormatDate.dateFormat = "YYYY-MM-dd hh:mm"
+                
+                let dateTimeDate = dateFormatDate.dateFromString(session[i].objectForKey("datetime") as! String)
+                
+                let time = UserTime.saveUserTimeList(session[i].objectForKey("date") as! String, startTime: session[i].objectForKey("time_starts") as! String, endTime: session[i].objectForKey("time_ends") as! String, user: profileUser!,dateTime: session[i].objectForKey("datetime") as! String)
                 println("TIME \(time)")
                 profileUser!.availableTime.addObject(time)
             }
@@ -860,7 +912,20 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             if let session = responseDictionary["Training_session"] as? NSArray {
                 appDelegate.user!.availableTime.removeAllObjects()
                 for sess in session {
-                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: appDelegate.user!)
+                    
+                    let dateFormatDate = NSDateFormatter()
+                    dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    dateFormatDate.dateFormat = "yyyy-MM-dd HH:mm"
+                    
+                    let tt = sess["datetime"] as! String
+                    
+                    println("TTT\(tt)")
+                    
+                    let dateTimeDate = dateFormatDate.dateFromString(tt)
+                    
+                    println("dateTime \(dateTimeDate)")
+                    
+                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: appDelegate.user!,dateTime: sess["datetime"] as! String)
                     appDelegate.user!.availableTime.addObject(time)
                 }
             }
@@ -1288,7 +1353,7 @@ extension MyProfileViewController: UICollectionViewDataSource {
         
         let date = NSDate()
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "YYYY-MM-dd HH:mm"
         dateFormatter.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
         let dateString = dateFormatter.stringFromDate(date) as String
         println("current date \(dateString)")
@@ -1297,16 +1362,54 @@ extension MyProfileViewController: UICollectionViewDataSource {
         println("current datell \(dateFromString)")
         
         
+        let dateFormatterDate = NSDateFormatter()
+        dateFormatterDate.dateFormat = "YYYY-MM-dd"
+        dateFormatterDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        let dateOnlyString = dateFormatterDate.stringFromDate(date) as String
+        println("current date \(dateOnlyString)")
+        var dateOnlyFromString : NSDate
+        dateOnlyFromString = dateFormatterDate.dateFromString(dateOnlyString)!
+        println("current datell \(dateOnlyFromString)")
+
+        
+        tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateOnlyString))
+        
+        if tempFilterTimeArray.count == 0 {
+            
+            println("NOT TODAY")
+            tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+            
+        } else {
+            println("YES TODAY")
+            tempFilterTimeArray = tempFilterTimeArray.filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+            
+            if tempFilterTimeArray.count == 0 {
+                
+                println("NNNOT TODAY")
+                tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+                
+            }
+
+        }
+
+          
         println("TIME SOURCE IS \(source)")
         
-        filterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", dateString))
+//        tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+//        
+//        
+//        if tempFilterTimeArray.count == 0 {
+//          
+//            tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+//            
+//        } else {
+//            
+//            tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
+//        }
         
-        if filterTimeArray.count == 0 {
-          
-            filterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "date > %@", dateString))
-        }
-        
-        println("COUNTlll")
+        var descriptor: NSSortDescriptor = NSSortDescriptor(key: "dateTime", ascending: true)
+        filterTimeArray = tempFilterTimeArray.sortedArrayUsingDescriptors([descriptor])
+        println("COUNTlll\(tempFilterTimeArray)")
         println("COUNT \(filterTimeArray)")
         return filterTimeArray.count
     }
