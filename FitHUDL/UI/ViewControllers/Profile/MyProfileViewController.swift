@@ -78,7 +78,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     var profileUser: User?
     var notificationListArray =  Array<Notification>()
     var profileImage: NSData? = nil
-    
+    var label : UILabel?
     override func viewDidLoad() {
         super.viewDidLoad()
         println("MY PROFILE")
@@ -150,6 +150,16 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         tapGesturesportscarousel.delegate = self
         tapGesturesportscarousel.cancelsTouchesInView = false
         self.sportsCarousel.addGestureRecognizer(tapGesturesportscarousel)
+        
+        
+       label = UILabel(frame: CGRectMake(0, notificationTableView.frame.size.height/2-21, notificationTableView.frame.size.width, 21))
+        //label.center = CGPointMake(160, 284)
+        label!.textAlignment = NSTextAlignment.Center
+        label!.text = "You have no notifications!"
+        label!.textColor = UIColor.lightGrayColor()
+        label!.backgroundColor = UIColor.clearColor()
+        notificationTableView.addSubview(label!)
+        label?.hidden = true
         
     }
     
@@ -919,7 +929,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        println(response)
+        println("NOTIFICATION RESPONSE \(response)")
         var error: NSError?
         
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
@@ -976,6 +986,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 }  else if connection.connectionTag == Connection.notificationRequest {
                     if status == ResponseStatus.success {
                         if var notifications = jsonResult["data"] as? NSMutableArray {
+                            println("NOT EMPTY")
                             Notification.deleteNotificationList()
                             notificationListArray.removeAll(keepCapacity: true)
                             let predicate = NSPredicate(format: "status == %@ || status == %@", argumentArray: [TrainingStatus.pendingCanceled, TrainingStatus.acceptCanceled])
@@ -991,8 +1002,18 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                             if let listArray = Notification.fetchNotifications() as? Array<Notification> {
                                 notificationListArray = listArray
                             }
+                            label?.hidden = true
                             notificationTableView.reloadData()
+                        } else
+                        {
+                            println("NOTIFICATION IS EMPTY")
+                           
                         }
+                        if notificationListArray.count <= 0 {
+                            println("NOTIFICATION IS EMPTY ZERO")
+                             label?.hidden = false
+                        }
+                        
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)

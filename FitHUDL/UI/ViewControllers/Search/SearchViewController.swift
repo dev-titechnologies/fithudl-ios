@@ -64,7 +64,7 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         userSelectedArray               = NSMutableArray()
         let searchField                 = searchBar.valueForKey("searchField") as? UITextField
         searchField?.textColor          = UIColor.whiteColor()
-        searchButton.enabled            = false
+       // searchButton.enabled            = false
         moderateButton.superview?.hidden = true
     }
     
@@ -78,6 +78,9 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         self.point.coordinate   = locationCoordinate
         mapView.addAnnotation(self.point)
         
+        println("LATITUDE \(locationCoordinate.latitude)")
+        println("LONGITUDE \(locationCoordinate.longitude)")
+        
         var location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
         
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(locationMark, error) -> Void in
@@ -86,9 +89,31 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                 return
             }
             if locationMark.count > 0 {
+                
                 let locationmark = locationMark[0] as! CLPlacemark
-                println("GEOO\(locationmark.locality)")
+                
+                let locality = (locationmark.locality != nil) ? locationmark.locality : ""
+                let postalCode = (locationmark.postalCode != nil) ? locationmark.postalCode : ""
+                let administrativeArea = (locationmark.administrativeArea != nil) ? locationmark.administrativeArea : ""
+                let country = (locationmark.country != nil) ? locationmark.country : ""
+                
+                println(locality)
+                println(postalCode)
+                println(administrativeArea)
+                println(country)
+                
+               // println("ARDAR \(locationMark)")
+                
+               // println("GEOO\(locationmark)")
+                
                 self.locationName.text = locationmark.locality
+                
+                if locality == "" {
+                    
+                    self.locationName.text = administrativeArea
+                    
+                }
+                
             } else {
                 println("Problem with the data received from geocoder")
             }
@@ -152,6 +177,27 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                         self.point.title        = pm.locality
                         self.locationName.text  = pm.locality
                         self.point.subtitle     = pm.administrativeArea
+                        
+                        let locality = (pm.locality != nil) ? pm.locality : ""
+                        let postalCode = (pm.postalCode != nil) ? pm.postalCode : ""
+                        let administrativeArea = (pm.administrativeArea != nil) ? pm.administrativeArea : ""
+                        let country = (pm.country != nil) ? pm.country : ""
+                        
+                        println(locality)
+                        println(postalCode)
+                        println(administrativeArea)
+                        println(country)
+                        
+                        
+                        self.locationName.text = locality
+                        
+                        if locality == "" {
+                            
+                            self.locationName.text = administrativeArea
+                            
+                        }
+
+                        
                         self.mapView.addAnnotation(self.point)
                     }
                 } else {
@@ -305,10 +351,10 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         })
         if userSelectedArray.count > 0 {
             moderateButton.superview?.hidden = false
-            searchButton.enabled             = true
+           // searchButton.enabled             = true
         } else {
             moderateButton.superview?.hidden = true
-            searchButton.enabled             = false
+            //searchButton.enabled             = false
         }
         sportsCarousel.reloadData()
     }
@@ -436,9 +482,19 @@ extension SearchViewController:UISearchBarDelegate {
         requestDictionary.setObject(searchString, forKey: "search_name")
         requestDictionary.setObject(sliderValue, forKey: "distance")
         if let location = point {
+            
+            if location.coordinate.latitude == 0 || location.coordinate.longitude == 0 {
+                
+                UIAlertView(title: "Failed to get your current location. Please select your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
+                return
+            }
+            
             requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
             requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
+            
         } else {
+            
+         
 //            requestDictionary.setObject(37.785834, forKey: "latitude")
 //            requestDictionary.setObject(-122.406417, forKey: "longitude")
         }
@@ -774,10 +830,10 @@ extension SearchViewController: iCarouselDelegate {
         }
         if userSelectedArray.count > 0 {
             moderateButton.superview?.hidden = false
-            searchButton.enabled             = true
+           // searchButton.enabled             = true
         } else {
             moderateButton.superview?.hidden = true
-            searchButton.enabled             = false
+          //  searchButton.enabled             = false
         }
         carousel.reloadData()
     }
