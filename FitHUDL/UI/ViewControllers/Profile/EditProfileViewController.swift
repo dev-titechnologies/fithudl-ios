@@ -750,7 +750,9 @@ class EditProfileViewController: UIViewController {
                             appDelegate.user!.profileImage = UIImagePNGRepresentation(photoImageView.image)
                             photoSelected = false
                         }
-                        dismissViewControllerAnimated(true, completion: nil)
+                        NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "callFunction", userInfo: nil, repeats: false)
+                        
+                      
                     } else {
                         appDelegate.user!.bio = bioTextView.text
                         bioOnly = false
@@ -760,13 +762,22 @@ class EditProfileViewController: UIViewController {
                         showDismissiveAlertMesssage(message)
                     } else {
                         showDismissiveAlertMesssage(Message.Error)
+                        
                     }
+                    showLoadingView(false)
                 } else {
                     dismissViewControllerAnimated(false, completion: nil)
                     self.presentingViewController?.dismissOnSessionExpire()
+                     showLoadingView(false)
                 }
             }
         }
+       
+    }
+    
+    func callFunction(){
+        print("function called")
+         self.dismissViewControllerAnimated(true, completion: nil)
         showLoadingView(false)
     }
     

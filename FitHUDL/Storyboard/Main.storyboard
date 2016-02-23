@@ -1193,7 +1193,7 @@
                                                     <constraint firstAttribute="height" constant="131" id="l9H-Sq-Jw4"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="David John" placeholder="Name on Card" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c04-zr-DHu">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="David Hernandez" placeholder="Name on Card" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c04-zr-DHu">
                                                 <rect key="frame" x="25" y="163" width="260" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="MCV-dD-Lug"/>
@@ -2557,7 +2557,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.47058823529999999" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.5568627451" blue="0.50588235290000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="BSh-3Z-Qor" firstAttribute="leading" secondItem="3Lc-Zp-BpX" secondAttribute="trailing" id="1IO-XW-mfX"/>
                                     <constraint firstItem="3Lc-Zp-BpX" firstAttribute="top" secondItem="Lua-Tp-Chf" secondAttribute="top" constant="27" id="55Z-mc-z5s"/>
@@ -7124,7 +7124,7 @@
                                             <constraint firstAttribute="height" constant="111" id="Fqv-A2-GaP"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" tag="50" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Share this session to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oF8-0h-CA5">
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="50" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share your activity to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oF8-0h-CA5">
                                         <rect key="frame" x="8" y="15" width="128" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="VvF-qJ-mtG"/>
@@ -7168,7 +7168,7 @@
                                     <constraint firstItem="Dlq-Du-0w3" firstAttribute="centerX" secondItem="Frx-Op-9hS" secondAttribute="centerX" id="cBi-t3-H0g"/>
                                     <constraint firstAttribute="trailing" secondItem="qo5-Mm-qjK" secondAttribute="trailing" constant="3" id="cVP-AE-x0Q"/>
                                     <constraint firstAttribute="height" constant="325" id="dJq-uP-ohO"/>
-                                    <constraint firstItem="oF8-0h-CA5" firstAttribute="top" secondItem="JcA-eb-QNr" secondAttribute="top" constant="12" id="jng-7J-C0E"/>
+                                    <constraint firstItem="oF8-0h-CA5" firstAttribute="top" secondItem="JcA-eb-QNr" secondAttribute="top" constant="15" id="jng-7J-C0E"/>
                                     <constraint firstAttribute="trailing" secondItem="Kwu-hv-9n6" secondAttribute="trailing" id="lIx-EQ-Wbt"/>
                                     <constraint firstItem="XIE-Gk-m6R" firstAttribute="top" secondItem="JcA-eb-QNr" secondAttribute="top" id="ml1-4X-3PY"/>
                                     <constraint firstItem="3pO-B9-TlN" firstAttribute="top" secondItem="JcA-eb-QNr" secondAttribute="top" constant="13" id="rlV-80-ba2"/>

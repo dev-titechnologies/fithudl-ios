@@ -57,6 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                 } else if type == PushNotification.sessionExtend {
                                     showSessionExtensionAlert(message)
                                 } else if type == PushNotification.sessionSuccess || type == PushNotification.sessionFail {
+                                    //UIAlertView(title: alertTitle, message:userInfoString, delegate: nil, cancelButtonTitle: "OK").show()
                                     NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : details])
                                 } else {
                                     showNotificationAlert(message)
@@ -69,18 +70,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                         }
                     }
                 }
-
             }
         }
         
         NewRelicAgent.enableFeatures(NRMAFeatureFlags.NRFeatureFlag_SwiftInteractionTracing);
         NewRelic.startWithApplicationToken("AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899")
-       
-        let stripePublishableKey = "pk_test_AslBY7XegFn06RfxNur20rbc"
+        let stripePublishableKey = "pk_test_jXr82Jb6q3fXYdnTHVBEp4mX"
         Stripe.setDefaultPublishableKey(stripePublishableKey)
 
-        
-        
         
 //        NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "createSampleNotifDictionary", userInfo: nil, repeats: false)
         
@@ -109,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-       // Globals.clearSession()
+      // Globals.clearSession()
         self.saveContext()
     }
 //    parent_id 0
@@ -277,11 +274,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+//        let userInfoString = userInfo.description as String
+//        
+//        UIAlertView(title: alertTitle, message:userInfoString, delegate: nil, cancelButtonTitle: "OK").show()
+        
         notificationArray.addObject(userInfo)
         if application.applicationState == UIApplicationState.Active {
             if let aps = userInfo["aps"] as? NSDictionary {
                 if let message = aps["alert"] as? String {
                     if let details = userInfo["details"] as? NSDictionary {
+                        
+                       
                         if let type = details["type"] as? String {
                             if type == PushNotification.sessionStart {
                                 UIAlertView(title: alertTitle, message: message, delegate: nil, cancelButtonTitle: "OK").show()
@@ -289,6 +293,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                             } else if type == PushNotification.sessionExtend {
                                 showSessionExtensionAlert(message)
                             } else if type == PushNotification.sessionSuccess || type == PushNotification.sessionFail {
+                                
+                                //UIAlertView(title: alertTitle, message:userInfoString, delegate: nil, cancelButtonTitle: "OK").show()
+                                
                                  NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.sessionNotif, object: nil, userInfo: ["session" : details])
                             } else {
                                 showNotificationAlert(message)

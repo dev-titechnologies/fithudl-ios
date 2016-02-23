@@ -9,7 +9,7 @@
 import UIKit
 let STRIPE_URL = "192.168.1.65/fithudl/donate/"
 let SERVER_URL = "http://api.pillar.fit/"
-let SHARE_URL  = "http://www.fithudl.com/"
+let SHARE_URL  = "http://www.pillar.fit/"
 let ITUNES_LINK = "https://itunes.apple.com/us/app/fithudl/id1062264534?ls=1&mt=8"
 //let Server_URL = "http://192.168.1.151:1337/"
 
@@ -144,7 +144,7 @@ struct TrainingStatus {
     static let accountRecharge              = "account_recharge"
     static let pendingCanceled              = "pending_cancel"
     static let acceptCanceled               = "accept_cancel"
-    static let eightHoursCompleted              = "user_weekly_time"
+    static let eightHoursCompleted          = "user_weekly_time"
     
 }
 

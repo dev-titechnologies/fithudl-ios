@@ -81,27 +81,43 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
     //MARK: KEYBOARD HANDLING
     
+    
+    
+    
+    
     func keyboardWillShow(note: NSNotification) {
+        println("KEYBOARDSHOW")
         println(view.frame.height)
         println(bookingTableView.frame.height)
         if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-            var frame = bookingTableView.frame
-            frame.size.height = frame.size.height+50
-            UIView.beginAnimations(nil, context: nil)
-            UIView.setAnimationBeginsFromCurrentState(true)
-            UIView.setAnimationDuration(animateInterval)
-            frame.size.height -= keyboardSize.height
-            bookingTableView.frame = frame
-            if let textField = activeText {
-                let rect = bookingTableView.convertRect(textField.bounds, fromView: textField)
-                bookingTableView.scrollRectToVisible(rect, animated: false)
+            
+            var pointInTable:CGPoint = activeText.superview!.convertPoint(activeText.frame.origin, toView:bookingTableView)
+            var contentOffset:CGPoint = bookingTableView.contentOffset
+            contentOffset.y  = pointInTable.y
+            if let accessoryView = activeText.inputAccessoryView {
+                contentOffset.y -= accessoryView.frame.size.height-100
             }
+            bookingTableView.contentOffset = contentOffset
+            
+           // var frame = bookingTableView.frame
+           // frame.size.height = frame.size.height+50
+//            UIView.beginAnimations(nil, context: nil)
+//            UIView.setAnimationBeginsFromCurrentState(true)
+//            UIView.setAnimationDuration(animateInterval)
+//            frame.size.height -= keyboardSize.height
+//            bookingTableView.frame = frame
+//            if let textField = activeText {
+//                 bookingTableView.setContentOffset(CGPointMake(0, textField.center.y+keyboardSize.height), animated: true)
+//            }
             
             UIView.commitAnimations()
         }
+        
+       
     }
     
     func keyboardWillHide(note: NSNotification) {
+        
         if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
             var frame = bookingTableView.frame
             UIView.beginAnimations(nil, context: nil)
@@ -298,6 +314,8 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
             let time  = Globals.convertTime(NSDate())
             timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
         }
+        var descriptor: NSSortDescriptor = NSSortDescriptor(key: "time_starts", ascending: true)
+        timeArray = timeArray.sortedArrayUsingDescriptors([descriptor])
         let time        = timeArray.objectAtIndex(sender.tag) as! NSDictionary
         let starttime   = Globals.convertTimeTo24Hours(time["time_starts"] as! String)
         let endtime     = Globals.convertTimeTo24Hours(time["time_ends"] as! String)
@@ -308,19 +326,22 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         requestDictionary.setObject(endtime, forKey: "end_time")
         requestDictionary.setObject(date, forKey: "session_date")
         requestDictionary.setObject(user.name, forKey: "name")
-        if let place = time["location"] as? String {
+        let indexpath = NSIndexPath(forRow: sender.tag, inSection: 0)
+        let cell = self.bookingTableView.cellForRowAtIndexPath(indexpath) as! BookingTableViewCell!
+
+        if let place = cell.locationTextField.text {
             if place == "" {
                 UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
                 return
             } else {
-                requestDictionary.setObject(place, forKey: "location")
+                requestDictionary.setObject(cell.locationTextField.text, forKey: "location")
             }
         } else {
             UIAlertView(title: "Please Enter your location", message: "", delegate: self, cancelButtonTitle: "OK").show()
             return
         }
         bookingDictionary = requestDictionary
-        
+        cell.locationTextField.text = ""
         let popController               = storyboard?.instantiateViewControllerWithIdentifier("CustomPopupViewController") as! CustomPopupViewController
         self.definesPresentationContext = true
         popController.sessionDictionary = bookingDictionary
@@ -377,6 +398,7 @@ extension BookingSessionViewController: iCarouselDataSource {
             indicatorView   = contentView.viewWithTag(3) as! UIActivityIndicatorView
             tickImageView   = contentView.viewWithTag(4) as! UIImageView
         }
+        
         let sports          = user.sports.allObjects[index] as! UserSports
         sportsImageView.image = UIImage(named: "default_image")
         sportsImageView.contentMode = UIViewContentMode.ScaleAspectFit
@@ -463,11 +485,19 @@ extension BookingSessionViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let datePicker = datePicker.selectedDate {
+            println("INTABLE")
             if var timeArray = availSessionTime.objectForKey(Globals.convertDate(datePicker)) as? NSArray {
+                println("Sdsdasfsf")
                 if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker) {
+                    println("sdhjsad")
                     let time = Globals.convertTime(NSDate())
                     timeArray = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
                 }
+                
+                var descriptor: NSSortDescriptor = NSSortDescriptor(key: "time_starts", ascending: true)
+                timeArray = timeArray.sortedArrayUsingDescriptors([descriptor])
+                println("Available Time \(timeArray)")
+                
                 noAvailLabel.hidden = timeArray.count > 0 ? true : false
                 return timeArray.count
             } else {
@@ -483,10 +513,28 @@ extension BookingSessionViewController: UITableViewDataSource {
         if Globals.convertDate(NSDate()) == Globals.convertDate(datePicker.selectedDate) {
             let time    = Globals.convertTime(NSDate())
             timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
+           
         }
+        
+        var descriptor: NSSortDescriptor = NSSortDescriptor(key: "time_starts", ascending: true)
+        timeArray = timeArray.sortedArrayUsingDescriptors([descriptor])
+        
         let time        = timeArray.objectAtIndex(indexPath.row) as! NSDictionary
         let starttime   = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
         let endtime     = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
+        
+        var myField: UITextField = UITextField (frame:CGRectMake(10, 10, 30, 10));
+        
+//        myField.backgroundColor = UIColor.redColor()
+//        cell.contentView.addSubview(myField)
+//        
+//        for view in cell.subviews {
+//            if view.isKindOfClass(UITextField) {
+//                view.removeFromSuperview()
+//            }
+//        }
+//
+        
         
         if let place = time["location"] as? String {
             cell.locationTextField.text = place
@@ -540,6 +588,9 @@ extension BookingSessionViewController: UITextFieldDelegate {
             let time    = Globals.convertTime(NSDate())
             timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
         }
+        var descriptor: NSSortDescriptor = NSSortDescriptor(key: "time_starts", ascending: true)
+        timeArray = timeArray.sortedArrayUsingDescriptors([descriptor])
+        
         let cell        = textField.superview?.superview as! BookingTableViewCell
         let indexPath   = bookingTableView.indexPathForCell(cell)
         if timeArray.count > 0 {
@@ -562,6 +613,9 @@ extension BookingSessionViewController: UITextFieldDelegate {
             let time    = Globals.convertTime(NSDate())
             timeArray   = timeArray.filteredArrayUsingPredicate(NSPredicate(format: "time_starts > %@", argumentArray: [time]))
         }
+        var descriptor: NSSortDescriptor = NSSortDescriptor(key: "time_starts", ascending: true)
+        timeArray = timeArray.sortedArrayUsingDescriptors([descriptor])
+        
         let cell        = textField.superview?.superview as! BookingTableViewCell
         let indexPath   = bookingTableView.indexPathForCell(cell)
         let session     = timeArray.objectAtIndex(indexPath!.row) as! NSMutableDictionary

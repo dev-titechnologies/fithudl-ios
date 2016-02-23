@@ -241,7 +241,7 @@ class CardDetailsViewController: UIViewController {
 
     func postStripeToken(token: STPToken) {
         println("STRIPE Token")
-        let URL = "http://192.168.1.65/fithudl/donate/payment.php"
+        let URL = "http://pillar.fit/payment/payment.php"
         let params = ["stripeToken":token.tokenId,"amount":rechargeAmount,"currency":"usd","description":"HELLOOO"]
         println("PARAM \(params)")
         
@@ -302,7 +302,7 @@ class CardDetailsViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.transactionRequest {
                     if status == ResponseStatus.success {
-                        UIAlertView(title: alertTitle, message: "Package purchase successful", delegate: nil, cancelButtonTitle: "OK").show()
+                        UIAlertView(title: alertTitle, message: "Payment successful", delegate: nil, cancelButtonTitle: "OK").show()
                          navigationController?.popViewControllerAnimated(true)
                         showLoadingView(false)
                     } else if status == ResponseStatus.error {

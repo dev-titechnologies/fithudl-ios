@@ -162,8 +162,12 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         notificationTableView.addSubview(label!)
         label?.hidden = true
         
+//        let controller  = storyboard?.instantiateViewControllerWithIdentifier("FaceBookShareViewController") as! FaceBookShareViewController
+//        controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+//        self.presentViewController(controller, animated: true, completion: nil)
+
+        
     }
-    
     
      func viewTap(getstureRecognizer : UITapGestureRecognizer){
         if menuView.frame.origin.x == 0 {
@@ -198,7 +202,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         badgeNextButton.hidden      = true
         badgePrevButton.hidden      = true
         buttonView.hidden           = true
-        
         menuView.setTranslatesAutoresizingMaskIntoConstraints(true)
         notificationButton.tag      = 0
         notificationBackgroundView.removeFromSuperview()
@@ -209,7 +212,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         notificationBackgroundView.hidden       = true
         notificationTableView.layer.borderWidth = 0.5
         notificationTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        sendRequestForProfile()
+       
         if let id = profileID {
             if let currentUser = appDelegate.user {
                 if currentUser.sports.count > 0 {
@@ -219,6 +222,11 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "termsChanged", name: "TermsChange", object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+         sendRequestForProfile()
     }
     
     func termsChanged() {
@@ -691,6 +699,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Profile API
     
     func sendRequestForProfile() {
+        
+        println("PROFILE REQUEST")
         if !Globals.checkNetworkConnectivity() {
             if let id = profileID {
                 if let user = User.fetchUser(NSPredicate(format: "profileID = %d", argumentArray: [id.toInt()!])) {
@@ -775,12 +785,10 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             var session = NSArray()
             
             session = (responseDictionary["Training_session"] as? NSArray)!
-            println("ParseSession\(session)")
             var i : Int = 0
             
             for i = 0; i<session.count; i++ {
                 
-                println("SWE \(session[i])")
                 
                 let dateFormatDate = NSDateFormatter()
                 dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -789,27 +797,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 let dateTimeDate = dateFormatDate.dateFromString(session[i].objectForKey("datetime") as! String)
                 
                 let time = UserTime.saveUserTimeList(session[i].objectForKey("date") as! String, startTime: session[i].objectForKey("time_starts") as! String, endTime: session[i].objectForKey("time_ends") as! String, user: profileUser!,dateTime: session[i].objectForKey("datetime") as! String)
-                println("TIME \(time)")
                 profileUser!.availableTime.addObject(time)
             }
-            println("ARDRA \(profileUser?.availableTime)")
-            
-            
-//            if let session = responseDictionary["Training_session"] as? NSArray {
-//                
-//               // println("ParseSession\(session)")
-//
-//                
-//                profileUser!.availableTime.removeAllObjects()
-//                for sess in session {
-//                    
-//                   // println("PPS \(sess)")
-//                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: profileUser!)
-//                    profileUser!.availableTime.addObject(time)
-//                    
-//                    //println("ARDRA \(profileUser?.availableTime)")
-//                }
-//            }
             
             if let usageCount = responseDictionary["usage_count"] as? Int {
                 profileUser!.usageCount = "\(usageCount)"
@@ -994,12 +983,13 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        println("NOTIFICATION RESPONSE \(response)")
+        //println("NOTIFICATION RESPONSE \(response)")
         var error: NSError?
         
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.userProfile {
+                    println("USER PROFILE")
                     if status == ResponseStatus.success {
                         parseProfileResponse(jsonResult)
                     } else if status == ResponseStatus.error {
@@ -1019,6 +1009,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                         populateProfileContents(appDelegate.user!)
                     }
                 } else if connection.connectionTag == Connection.logout {
+                    
+                    println("LOG OUT")
                     if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -1031,10 +1023,12 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                         dismissViewControllerAnimated(true, completion: nil)
                     }
                 } else if connection.connectionTag == Connection.updateSports {
+                    println("UPDATESPORTS")
                     if status == ResponseStatus.sessionOut {
                         dismissOnSessionExpire()
                     }
                 } else if connection.connectionTag == Connection.unfavourite {
+                    println("UNFAVOURITE")
                     if status == ResponseStatus.success {
                         profileUser!.isFavorite = favoriteButton.selected
                         NSNotificationCenter.defaultCenter().postNotificationName(PushNotification.favNotif, object: nil, userInfo: ["user" : profileUser!])
@@ -1049,6 +1043,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                         dismissOnSessionExpire()
                     }
                 }  else if connection.connectionTag == Connection.notificationRequest {
+                    println("NOTIFICATIONREQUEST")
                     if status == ResponseStatus.success {
                         if var notifications = jsonResult["data"] as? NSMutableArray {
                             println("NOT EMPTY")
@@ -1159,7 +1154,9 @@ extension MyProfileViewController: iCarouselDataSource {
     func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
         if let profID = profileID {
             if let profUser = profileUser {
+                
                 return profUser.sports.count
+                
             }
         } else {
             if let user = appDelegate.user {
@@ -1389,11 +1386,9 @@ extension MyProfileViewController: UICollectionViewDataSource {
                 tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
                 
             }
-
         }
 
           
-        println("TIME SOURCE IS \(source)")
         
 //        tempFilterTimeArray = (source.allObjects as NSArray).filteredArrayUsingPredicate(NSPredicate(format: "dateTime > %@", dateString))
 //        
@@ -1409,8 +1404,6 @@ extension MyProfileViewController: UICollectionViewDataSource {
         
         var descriptor: NSSortDescriptor = NSSortDescriptor(key: "dateTime", ascending: true)
         filterTimeArray = tempFilterTimeArray.sortedArrayUsingDescriptors([descriptor])
-        println("COUNTlll\(tempFilterTimeArray)")
-        println("COUNT \(filterTimeArray)")
         return filterTimeArray.count
     }
     
@@ -1453,9 +1446,7 @@ extension MyProfileViewController: UICollectionViewDataSource {
 //            })
             let time = filterTimeArray[indexPath.row] as! UserTime
             let tt = time.date + " " + Globals.convertTimeTo12Hours(time.timeStarts) as String
-            println("TIII \(tt)")
             cell.timeLabel.text = time.date + " " + Globals.convertTimeTo12Hours(time.timeStarts)
-            println("TIIIrrr \(cell.timeLabel.text)")
             return cell
         }
     }

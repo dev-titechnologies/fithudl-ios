@@ -66,7 +66,7 @@ class PromoCodeViewController: UIViewController {
     }
     
     func setAttributedPromoCode(code: String) {
-        var promoTitle = NSMutableAttributedString(string: "Promotion Code:", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 17.0)!, NSForegroundColorAttributeName: AppColor.promoGrayColor])
+        var promoTitle = NSMutableAttributedString(string: "Invite Code:", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 17.0)!, NSForegroundColorAttributeName: AppColor.promoGrayColor])
         promoTitle.appendAttributedString(NSAttributedString(string: " \(code)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 17.0)!, NSForegroundColorAttributeName: AppColor.promoGreenColor]))
         promoCodeLabel.attributedText = promoTitle
     }
@@ -98,7 +98,7 @@ class PromoCodeViewController: UIViewController {
             signupDelegate?.signupWithPromo(promoTextField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
             dismissViewControllerAnimated(true, completion: nil)
         } else {
-            UIAlertView(title: alertTitle, message: "Please enter promo code", delegate: nil, cancelButtonTitle: "OK").show()
+            UIAlertView(title: alertTitle, message: "Please enter invite code", delegate: nil, cancelButtonTitle: "OK").show()
         }
     }
     

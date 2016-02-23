@@ -141,7 +141,7 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
   
     @IBAction func helpButtonAction(sender: AnyObject) {
         
-        UIAlertView(title: alertTitle, message: "Other than packages you may also buy credits of minimum $10", delegate: self, cancelButtonTitle: "OK").show()
+        UIAlertView(title: alertTitle, message: "You may also buy credits of minimum $10", delegate: self, cancelButtonTitle: "OK").show()
         
     }
     

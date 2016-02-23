@@ -44,7 +44,7 @@ class CustomURLConnection: NSURLConnection {
                 }
             }
             
-            println("PARAM\(parameters)")
+           // println("PARAM\(parameters)")
             let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
             urlRequest.HTTPBody = jsonData
         }
@@ -62,7 +62,7 @@ class CustomURLConnection: NSURLConnection {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if let parameters = params {
 
-            println("PARAM\(parameters)")
+           // println("PARAM\(parameters)")
             let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
             urlRequest.HTTPBody = jsonData
         }
