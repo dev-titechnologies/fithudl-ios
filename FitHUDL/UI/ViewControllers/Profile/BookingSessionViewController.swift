@@ -61,11 +61,11 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         profileImageView.layer.borderWidth = 1.0
         
         nameLabel.text = user.name
+        
 //        if let id = searchResultId {
 //            tableViewTopConstraint.constant = -65
 //            view.layoutIfNeeded()
 //        }
-       
        
         favoriteButton.selected = user.isFavorite.boolValue
         profileImageView.image = UIImage(named: "default_image")
@@ -157,16 +157,6 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
    //MARK: Unfavourite API
     
-    func sendRequestToGetBookingSessions() {
-        if !Globals.isInternetConnected() {
-            return
-        }
-        
-        showLoadingView(true)
-        let requestDictionary = NSMutableDictionary()
-        requestDictionary.setObject(user.profileID, forKey: "user_id")
-        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/userBookingSessions", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionsList)
-    }
     
     func sendRequestToManageFavorite(favorite: Int) {
         if !Globals.isInternetConnected() {
@@ -225,6 +215,17 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         navigationController?.popViewControllerAnimated(true)
     }
     
+    func sendRequestToGetBookingSessions() {
+        if !Globals.isInternetConnected() {
+            return
+        }
+        
+        showLoadingView(true)
+        let requestDictionary = NSMutableDictionary()
+        requestDictionary.setObject(user.profileID, forKey: "user_id")
+        CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "sessions/userBookingSessions", requestType: HttpMethod.post), delegate: self, tag: Connection.sessionsList)
+    }
+
     func connection(connection: CustomURLConnection, didReceiveResponse: NSURLResponse) {
         connection.receiveData.length = 0
     }
@@ -523,7 +524,7 @@ extension BookingSessionViewController: UITableViewDataSource {
         let starttime   = Globals.convertTimeTo12Hours(time["time_starts"] as! String)
         let endtime     = Globals.convertTimeTo12Hours(time["time_ends"] as! String)
         
-        var myField: UITextField = UITextField (frame:CGRectMake(10, 10, 30, 10));
+//    var myField: UITextField = UITextField (frame:CGRectMake(10, 10, 30, 10));
         
 //        myField.backgroundColor = UIColor.redColor()
 //        cell.contentView.addSubview(myField)

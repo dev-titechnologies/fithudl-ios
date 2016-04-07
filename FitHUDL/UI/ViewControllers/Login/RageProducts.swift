@@ -12,14 +12,14 @@ import Foundation
 public enum RageProducts {
   
   /// TODO:  Change this to whatever you set on iTunes connect
-  private static let Prefix = "fithudl.titech."
-  
-  /// MARK: - Supported Product Identifiers
-  
-  public static let goldPackage   = Prefix + "gold"
-  public static let silverPackage = Prefix + "silver"
-  public static let bronzePackage = "fithudle.ti.bronze"
-  
+    private static let Prefix = "pillar.fit."
+    
+    /// MARK: - Supported Product Identifiers
+    
+    public static let goldPackage   = Prefix + "gold"
+    public static let silverPackage = Prefix + "silver"
+    public static let bronzePackage = Prefix + "tibronze"
+    
   // All of the products assembled into a set of product identifiers.
     
   private static let productIdentifiers: Set<ProductIdentifier> = [RageProducts.goldPackage,RageProducts.silverPackage,RageProducts.bronzePackage

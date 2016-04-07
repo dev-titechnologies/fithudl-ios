@@ -15,7 +15,7 @@ class HistoryTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var sportLabel: UILabel!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
-    
+    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     
     override func awakeFromNib() {

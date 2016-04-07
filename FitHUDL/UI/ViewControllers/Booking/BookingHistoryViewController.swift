@@ -269,6 +269,13 @@ extension BookingHistoryViewController: UITableViewDataSource {
         cell.timeLabel.text  = "On \(date) at \(startTime) to \(endTime)"
         cell.closeButton.addTarget(self, action: "cancelBooking:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.userImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "userImageTapped:"))
+        
+        if history.status == "pending" {
+            cell.statusLabel.text = "Waiting for acceptance"
+        } else {
+            
+           cell.statusLabel.text = "Accepted"
+        }
         return cell
     }
 }

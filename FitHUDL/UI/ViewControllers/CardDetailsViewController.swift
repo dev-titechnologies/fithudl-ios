@@ -269,7 +269,6 @@ class CardDetailsViewController: UIViewController {
     }
     
     
-    
     func requestForSendingTransactionId() {
         if !Globals.isInternetConnected() {
             return

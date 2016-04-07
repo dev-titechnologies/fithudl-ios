@@ -74,16 +74,20 @@ class FaceBookShareViewController: UIViewController {
 }
 extension FaceBookShareViewController: FBSDKSharingDelegate {
     func sharer(sharer: FBSDKSharing!, didCompleteWithResults results: [NSObject : AnyObject]!) {
-        println(results)
-        println(sharer)
+        println("FBBBBB \(results)")
+        println("SHAREE \(sharer)")
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func sharerDidCancel(sharer: FBSDKSharing!) {
         
+        println("CAncel")
+        
     }
     
     func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+        
+        println("Eorror \(error)")
         
     }
 }

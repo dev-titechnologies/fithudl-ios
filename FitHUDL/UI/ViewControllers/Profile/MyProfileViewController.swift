@@ -87,11 +87,17 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
         reviewCollectionView.registerNib(nib, forCellWithReuseIdentifier: "reviewCell")
         
+        nib = UINib(nibName: "MedalCollectionViewCell", bundle: nil)
+        badgesCollectionView.registerNib(nib, forCellWithReuseIdentifier: "MedalCell")
+        
+        
         nib = UINib(nibName: "BadgesCollectionViewCell", bundle: nil)
         badgesCollectionView.registerNib(nib, forCellWithReuseIdentifier: "badgeCell")
         
         let notificationNib  = UINib(nibName: "NotificationCell", bundle: nil)
         notificationTableView.registerNib(notificationNib, forCellReuseIdentifier: "Cell")
+        
+        
         
         badgePrevButton.enabled  = false
         badgeNextButton.enabled  = true
@@ -113,6 +119,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
 //        }
         
         if IS_IPHONE6PLUS {
+            
             profileViewHeightConstraint.constant = 260.0
             reviewTopConstraint.constant         = 30.0
             reviewBottomConstraint.constant      = 30.0
@@ -120,13 +127,15 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     
         if let id = profileID {
+            
             favoriteButton.hidden      = false
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
             editButton.hidden          = true
             beginnerButton.superview?.hidden    = true
             expertLevelLabel.superview?.hidden  = false
-            notificationButton.hidden  = true
+            notificationButton.hidden  = false
+            notificationButton .setImage(UIImage(named:"spam.png"), forState: UIControlState.Normal)
             settingsButton.setImage(UIImage(named: "back_button"), forState: UIControlState.Normal)
         }
         
@@ -416,24 +425,38 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func notificationsButtonClicked(sender: UIButton) {
-        self.notificationTableView.contentOffset = CGPointZero
-        if sender.tag == 0 {
-            if menuView.frame.origin.x == 0 {
-                hideMenuView()
-            }
-            sender.tag = 1
-            notificationBackgroundView.hidden   = false
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.notificationBackgroundView.frame = CGRect(x: (self.view.frame.size.width-self.notificationBackgroundView.frame.size.width), y: self.calloutViewYAxis, width: self.notificationBackgroundView.frame.size.width, height: 700)
-                self.notificationTableView.reloadData()
-            }, completion: nil)
-            self.sendRequestForNotificationList()
+        
+        if let id = profileID {
+            
+            let controller  = storyboard?.instantiateViewControllerWithIdentifier("ReportViewController") as! ReportViewController
+            self.definesPresentationContext   = true
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            controller.ProfileIDOtherUser = profileID!
+            presentViewController(controller, animated: true, completion: nil)
+            
         } else {
-            sender.tag = 0
-            UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.notificationBackgroundView.hidden   = true
-            }, completion: nil)
+            
+            self.notificationTableView.contentOffset = CGPointZero
+            if sender.tag == 0 {
+                if menuView.frame.origin.x == 0 {
+                    hideMenuView()
+                }
+                sender.tag = 1
+                notificationBackgroundView.hidden   = false
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.notificationBackgroundView.frame = CGRect(x: (self.view.frame.size.width-self.notificationBackgroundView.frame.size.width), y: self.calloutViewYAxis, width: self.notificationBackgroundView.frame.size.width, height: 700)
+                    self.notificationTableView.reloadData()
+                    }, completion: nil)
+                self.sendRequestForNotificationList()
+            } else {
+                sender.tag = 0
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.notificationBackgroundView.hidden   = true
+                    }, completion: nil)
+            }
+            
         }
+        
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
@@ -983,7 +1006,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        //println("NOTIFICATION RESPONSE \(response)")
+        println("NOTIFICATION RESPONSE \(response)")
         var error: NSError?
         
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
@@ -1421,16 +1444,43 @@ extension MyProfileViewController: UICollectionViewDataSource {
             CustomURLConnection.downloadAndSetImage(review.profilePic, imageView: cell.reviewView.userImageView, activityIndicatorView: cell.reviewView.indicatorView)
             return cell
         } else if collectionView.isEqual(badgesCollectionView){
-            let cell    = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
+            
+            
             let source  = profileID == nil ? appDelegate.user!.badges : profileUser!.badges
             let badge   = source.allObjects[indexPath.row] as! UserBadges
-            cell.titleLabel.hidden  = badge.name == "no badge" ? true : false
-            cell.titleLabel.text    = badge.name.uppercaseString
-            cell.badgeImageView.image = UIImage(named: "default_image")
-            cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
-            CustomURLConnection.downloadAndSetImage(badge.imageURL, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
-            cell.countLabel.text = "\(badge.sessionCount)"
-            return cell
+            if badge.name == "no badge" {
+                
+                println("BadgesCollectionViewBadge")
+                let cell    = collectionView.dequeueReusableCellWithReuseIdentifier("badgeCell", forIndexPath: indexPath) as! BadgesCollectionViewCell
+                
+                //cell.titleLabel.hidden  = badge.name == "no badge" ? true : false
+                //cell.titleLabel.text    = badge.name.uppercaseString
+                cell.badgeImageView.image = UIImage(named: "default_image")
+                cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                CustomURLConnection.downloadAndSetImage(badge.imageURL, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
+                /// cell.badgeImageView.contentMode = UIViewContentMode.ScaleToFill
+                cell.countLabel.text = "\(badge.sessionCount)"
+                return cell
+
+                
+            } else {
+                
+                println("BadgesCollectionView")
+                let cell    = collectionView.dequeueReusableCellWithReuseIdentifier("MedalCell", forIndexPath: indexPath) as! MedalCollectionViewCell
+                
+                //cell.titleLabel.hidden  = badge.name == "no badge" ? true : false
+                //cell.titleLabel.text    = badge.name.uppercaseString
+                cell.badgeImageView.image = UIImage(named: "default_image")
+                //cell.badgeImageView.contentMode = UIViewContentMode.ScaleAspectFit
+                CustomURLConnection.downloadAndSetImage(badge.imageURL, imageView: cell.badgeImageView, activityIndicatorView: cell.indicatorView)
+                cell.badgeImageView.contentMode = UIViewContentMode.ScaleToFill
+                cell.countLabel.text = "\(badge.sessionCount)"
+                return cell
+
+                
+            }
+            
+            
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("timeCell", forIndexPath: indexPath) as! AvailableTimeCollectionViewCell
 //            let source = profileID == nil ? appDelegate.user!.availableTime.allObjects : profileUser!.availableTime.allObjects
@@ -1537,7 +1587,7 @@ extension MyProfileViewController : UITableViewDataSource {
                         if let updatedCell = tableView.cellForRowAtIndexPath(indexPath) as? NotificationCell {
                             if error == nil {
                                 let imageFromData:UIImage? = UIImage(data: data)
-                                if let image  = imageFromData {
+                                if let image  = imageFromData{
                                     updatedCell.profilePic.contentMode = UIViewContentMode.ScaleAspectFill
                                     updatedCell.profilePic.image = image
                                     Images.save(imageurl as String, imageData: data)
@@ -1590,16 +1640,20 @@ extension MyProfileViewController : UITableViewDelegate {
 }
 extension MyProfileViewController: FBSDKSharingDelegate {
     func sharer(sharer: FBSDKSharing!, didCompleteWithResults results: [NSObject : AnyObject]!) {
-        println(results)
-        println(sharer)
+        println("FBBBBB \(results)")
+        println("SHAREE \(sharer)")
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func sharerDidCancel(sharer: FBSDKSharing!) {
         
+        println("CAncel")
+        
     }
     
     func sharer(sharer: FBSDKSharing!, didFailWithError error: NSError!) {
+        
+        println("Eorror \(error)")
         
     }
 }

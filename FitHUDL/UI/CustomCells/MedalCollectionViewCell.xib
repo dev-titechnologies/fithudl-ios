@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MedalCell" id="7Ub-af-E46" customClass="MedalCollectionViewCell" customModule="Pillar" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="60" height="69"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="60" height="69"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="champion" translatesAutoresizingMaskIntoConstraints="NO" id="JR5-1U-la5">
+                        <rect key="frame" x="8" y="0.0" width="39" height="69"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="39" id="KI4-Id-AT1"/>
+                            <constraint firstAttribute="height" constant="69" id="xal-QA-ueW"/>
+                        </constraints>
+                    </imageView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4rj-uZ-Anw">
+                        <rect key="frame" x="20" y="39" width="20" height="20"/>
+                    </activityIndicatorView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q8x-Z1-zgo">
+                        <rect key="frame" x="9" y="43" width="36" height="23"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="UV0-U3-Fkb"/>
+                            <constraint firstAttribute="width" constant="36" id="c8U-02-ONf"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.47058823529999999" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="Q8x-Z1-zgo" firstAttribute="centerY" secondItem="JR5-1U-la5" secondAttribute="centerY" constant="20" id="1j8-0k-eZb"/>
+                <constraint firstItem="4rj-uZ-Anw" firstAttribute="centerY" secondItem="JR5-1U-la5" secondAttribute="centerY" constant="14.5" id="4Pb-ha-Hxk"/>
+                <constraint firstItem="JR5-1U-la5" firstAttribute="leading" secondItem="7Ub-af-E46" secondAttribute="leadingMargin" id="iZP-Va-dTy"/>
+                <constraint firstItem="Q8x-Z1-zgo" firstAttribute="top" secondItem="7Ub-af-E46" secondAttribute="top" constant="43" id="inh-jQ-xKO"/>
+                <constraint firstItem="4rj-uZ-Anw" firstAttribute="centerX" secondItem="JR5-1U-la5" secondAttribute="centerX" constant="2.5" id="jzk-n9-Go0"/>
+                <constraint firstItem="Q8x-Z1-zgo" firstAttribute="centerX" secondItem="JR5-1U-la5" secondAttribute="centerX" constant="-0.5" id="m4v-oY-Tba"/>
+            </constraints>
+            <size key="customSize" width="55" height="60"/>
+            <connections>
+                <outlet property="badgeImageView" destination="JR5-1U-la5" id="nal-wu-jLe"/>
+                <outlet property="countLabel" destination="Q8x-Z1-zgo" id="eCv-1m-rEG"/>
+                <outlet property="indicatorView" destination="4rj-uZ-Anw" id="3gY-sY-L4k"/>
+            </connections>
+            <point key="canvasLocation" x="542" y="359.5"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="champion" width="32" height="33"/>
+    </resources>
+</document>
