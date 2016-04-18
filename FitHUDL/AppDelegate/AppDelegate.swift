@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         NewRelicAgent.enableFeatures(NRMAFeatureFlags.NRFeatureFlag_SwiftInteractionTracing);
         NewRelic.startWithApplicationToken("AAf8cd598fd69739a9dcdb8f40abcffe51f42c0899")
-        let stripePublishableKey = "pk_test_jXr82Jb6q3fXYdnTHVBEp4mX"
+        let stripePublishableKey = "pk_live_XcoOZHjJoRPDS5df8tv8Lcrw"
         Stripe.setDefaultPublishableKey(stripePublishableKey)
 
         
@@ -90,6 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("InvalidateTimer", object: nil)
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }

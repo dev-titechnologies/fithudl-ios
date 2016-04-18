@@ -45,6 +45,8 @@ class CardDetailsViewController: UIViewController {
         monthPick.fontColor      = UIColor(red: 0, green: 120/255, blue: 109/255, alpha: 1.0)
         
        
+        
+       
     }
     
     
@@ -267,7 +269,6 @@ class CardDetailsViewController: UIViewController {
                   self.showLoadingView(false)
         }
     }
-    
     
     
     func requestForSendingTransactionId() {
