@@ -87,6 +87,7 @@ class CardDetailsViewController: UIViewController {
         var error: NSError?
         if (creditCard.validateCardReturningError(&error)){
             var stripeError: NSError!
+            
             Stripe.createTokenWithCard(creditCard, completion: { (token, stripeError) -> Void in
                 if (stripeError != nil){
                     println("there is error");

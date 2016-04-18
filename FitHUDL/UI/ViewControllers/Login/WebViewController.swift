@@ -24,7 +24,7 @@ class WebViewController: UIViewController {
             loadWebContent("http://www.pillar.fit/privacy.html")
         } else if viewTag == ViewTag.agreement {
             titleLabel.text = "Contractor Agreement"
-            loadWebContent("")
+            loadWebContent("http://www.pillar.fit/contractoragreement.html")
         } else if viewTag == ViewTag.mobilePrivacy {
             titleLabel.text = "Mobile Privacy"
             loadWebContent("http://www.pillar.fit/mobileprivacy.html")
