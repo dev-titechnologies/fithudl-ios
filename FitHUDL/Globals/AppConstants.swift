@@ -93,7 +93,7 @@ struct Connection {
     static let contentChangeRequest = 37
     static let striperequest = 38
     static let reportRequest = 39
-    static let notificationCount = 40
+    static let stripeAccount = 40
 }
 
 struct SportsLevel {

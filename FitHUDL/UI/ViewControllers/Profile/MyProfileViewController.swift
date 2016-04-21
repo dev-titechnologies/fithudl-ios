@@ -120,6 +120,23 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
 //        view.layoutIfNeeded()
 //        }
         
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            let firstFrame = CGRect(x: navigationBar.frame.width-28, y: 0, width: 20, height: 20)
+            
+            notificationCountLabel = UILabel(frame: firstFrame)
+            notificationCountLabel.layer.cornerRadius = 10.0
+            notificationCountLabel.layer.borderColor = UIColor.clearColor().CGColor
+            notificationCountLabel.clipsToBounds = true
+            notificationCountLabel.text = ""
+            notificationCountLabel.textAlignment = NSTextAlignment.Center
+            notificationCountLabel.textColor = UIColor.whiteColor()
+            notificationCountLabel.backgroundColor = UIColor.redColor()
+            notificationCountLabel.font = UIFont(name: "OpenSans", size: 9)
+            self.notificationCountLabel.hidden = true
+            navigationBar.addSubview(notificationCountLabel)
+        }
+
         if IS_IPHONE6PLUS {
             
             profileViewHeightConstraint.constant = 260.0
@@ -130,6 +147,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
         if let id = profileID {
             
+            notificationCountLabel.hidden = true
             favoriteButton.hidden      = false
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
@@ -179,22 +197,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
 
         
         
-        if let navigationBar = self.navigationController?.navigationBar {
-            let firstFrame = CGRect(x: navigationBar.frame.width-28, y: 0, width: 20, height: 20)
-            
-            notificationCountLabel = UILabel(frame: firstFrame)
-            notificationCountLabel.layer.cornerRadius = 10.0
-            notificationCountLabel.layer.borderColor = UIColor.clearColor().CGColor
-            notificationCountLabel.clipsToBounds = true
-            notificationCountLabel.text = ""
-            notificationCountLabel.textAlignment = NSTextAlignment.Center
-            notificationCountLabel.textColor = UIColor.whiteColor()
-            notificationCountLabel.backgroundColor = UIColor.redColor()
-            notificationCountLabel.font = UIFont(name: "OpenSans", size: 10)
-            self.notificationCountLabel.hidden = true
-            navigationBar.addSubview(notificationCountLabel)
-        }
-        self.sendRequestToGetNotificationCount()
+        
         
     }
     
@@ -256,9 +259,13 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
+        
         super.viewDidAppear(true)
+        
+         self.sendRequestToGetNotificationCount()
          sendRequestForProfile()
         timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector:"sendRequestToGetNotificationCount", userInfo: nil, repeats: true)
+        
     }
     
     func StopTimer(){
@@ -707,8 +714,8 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - NotificationCount API
     
     func sendRequestToGetNotificationCount() {
-        println("sendRequestToGetNotificationCount")
-        if !Globals.isInternetConnected() {
+       // println("sendRequestToGetNotificationCount")
+        if !Globals.checkNetworkConnectivity() {
             return
         }
         
@@ -725,36 +732,39 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         if let apiToken = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
             parameters.setObject(apiToken, forKey: "token")
         }
-        println("PARAM\(parameters)")
+       // println("PARAM\(parameters)")
         let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
         request.HTTPBody = jsonData
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             if error == nil {
                 if let jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as? NSDictionary {
                     
-                    println("Notification Count Result\(jsonResult)")
+                    //println("Notification Count Result\(jsonResult)")
                     if let status = jsonResult["status"] as? Int {
                         if status == ResponseStatus.success {
                             
                             if let resultArray = jsonResult["data"] as? NSArray {
                                 
-                                println("Notification Count Resultuuu\(resultArray)")
+                               // println("Notification Count Resultuuu\(resultArray)")
                                 
                                 if let notificationCount = resultArray[0].objectForKey("notification_count") as? Int {
                                     
-                                    println("Notification Count Resultgggggg\(notificationCount)")
+                                  //  println("Notification Count Resultgggggg\(notificationCount)")
                                     if notificationCount >= 1 {
+                                        self.notificationCountLabel.hidden = false
+                                        if let id = self.profileID {
+                                            self.notificationCountLabel.hidden = true
+                                        }
+                                        if notificationCount>9{
+                                          self.notificationCountLabel.text = "9+"
+                                        } else {
                                          self.notificationCountLabel.text = "\(notificationCount)"
-                                         self.notificationCountLabel.hidden = false
+                                        }
                                     }else {
                                          self.notificationCountLabel.hidden = true
                                     }
-                                    
-                                   
                                 }
                             }
-                            
-                            
                            
                         } else {
                             if let message = jsonResult["message"] as? String {
@@ -763,7 +773,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                     }
                 }
             } else {
-                UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
+               // UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
             }
         }
         

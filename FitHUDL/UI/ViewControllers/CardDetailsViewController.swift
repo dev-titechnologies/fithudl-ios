@@ -91,8 +91,8 @@ class CardDetailsViewController: UIViewController {
             var stripeError: NSError!
             Stripe.createTokenWithCard(creditCard, completion: { (token, stripeError) -> Void in
                 if (stripeError != nil){
-                    println("there is error");
-                     self.alertMessage("Some Error Occured")
+                    println("there is error\(stripeError.description)");
+                     self.alertMessage(stripeError.description)
                      self.showLoadingView(false)
                 }
                 else{
@@ -214,15 +214,23 @@ class CardDetailsViewController: UIViewController {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if textField == nameTextField {
+            
             let validCharSet    = NSCharacterSet(charactersInString: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ")
             let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
             let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
+            
             return stringIsValid
         } else if textField == cardNumberField {
+            
             let validCharSet    = NSCharacterSet(charactersInString: "1234567890")
             let nameText        = NSCharacterSet(charactersInString: textField.text.stringByAppendingString(string))
             let stringIsValid   = validCharSet.isSupersetOfSet(nameText)
-            return stringIsValid
+            return (stringIsValid && count(textField.text) + (count(string) - range.length) <= 16)
+            
+        }else if textField == ccvField {
+            
+            return count(textField.text) + (count(string) - range.length) <= 4
+            
         }
         return true;
     }

@@ -75,13 +75,14 @@ class LoginOrSignUpViewController: UIViewController {
                 signUpButton.hidden = true
                 bottomView.hidden   = true
                 connectFBButton.hidden = true
-                connectTwitterButton.hidden = true
+               // connectTwitterButton.hidden = true
             }
         }
         sendRequestToGetSportsList()
     }
     
     override func viewDidAppear(animated: Bool) {
+        
         if let token = NSUserDefaults.standardUserDefaults().objectForKey("API_TOKEN") as? String {
             if token != "" {
                 let mainTabController = storyboard?.instantiateViewControllerWithIdentifier("MainTabbarViewController") as! MainTabbarViewController
@@ -91,7 +92,7 @@ class LoginOrSignUpViewController: UIViewController {
                     self.signUpButton.hidden    = false
                     self.bottomView.hidden      = false
                     self.connectFBButton.hidden = false
-                    self.connectTwitterButton.hidden = false
+                    //self.connectTwitterButton.hidden = false
                 })
             }
         }
