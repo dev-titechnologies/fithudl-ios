@@ -19,8 +19,8 @@ class BookingHistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setStatusBarColor()
-        let font        = UIFont(name: "OpenSans", size: 14.0)
+        
+                 let font        = UIFont(name: "OpenSans", size: 14.0)
         var attributes  = [NSForegroundColorAttributeName: AppColor.statusBarColor, NSFontAttributeName: font!]
         bookingSegmentControl.setTitleTextAttributes(attributes, forState: UIControlState.Normal)
         attributes      = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: font!]
@@ -34,6 +34,24 @@ class BookingHistoryViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         sendRequestToGetSessions()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("historyIntroFlag") as? String
+        println("POUUUu \(profileFlag)")
+        if profileFlag != "1"{
+            NSUserDefaults.standardUserDefaults().setValue("1", forKey: "historyIntroFlag")
+            navigationController?.navigationBar.hidden = true
+            let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+            custompopController.controllerFlag = 5
+            presentViewController(custompopController, animated: true, completion: nil)
+        } else {
+            
+            navigationController?.navigationBar.hidden = false
+        }
+        
+        navigationController?.setStatusBarColor()
+
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -151,11 +169,43 @@ class BookingHistoryViewController: UIViewController {
                     } else {
                         Bookings.deleteBookings(nil)
                         myBookings.removeAllObjects()
+                        
                         bookings.removeAllObjects()
                         let bookingsArray = NSMutableArray()
-                        if var data = jsonResult["data"] as? NSArray {
+                        
+                        if var dataArray = jsonResult["data"] as? NSArray {
+                            
+                            var data = NSArray()
+                            var mutableDataArray = NSMutableArray()
+                            let dateFormatDate = NSDateFormatter()
+                            dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                            dateFormatDate.dateFormat = "yyyy-MM-dd HH:mm"
+                            
+                            let dateFormatDate1 = NSDateFormatter()
+                            dateFormatDate1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                            dateFormatDate1.dateFormat = "yyyy-MM-dd"
+                            
+                            let dateFormatDate2 = NSDateFormatter()
+                            dateFormatDate2.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                            dateFormatDate2.dateFormat = "HH:mm"
+                            
+                            for datacontent in dataArray {
+                                
+                                let dateZone    = datacontent.valueForKey("alloted_date") as! String
+                                let timeStarts  = datacontent.valueForKey("start_time")  as! String
+                                let timeEnd     = datacontent.valueForKey("end_time") as! String
+                                let endDate = dateZone + " " + timeEnd
+                                let startdate   = dateZone + " " + timeStarts
+                                datacontent.setObject(Globals.convertTimeZoneDate(startdate as String, dateFormate: dateFormatDate), forKey: "alloted_date")
+                                datacontent.setObject(Globals.convertTimeZoneStartDate(endDate as String, dateFormate: dateFormatDate), forKey: "end_time")
+                                datacontent.setObject(Globals.convertTimeZoneStartDate(startdate as String, dateFormate: dateFormatDate), forKey: "start_time")
+                                mutableDataArray.addObject(datacontent)
+                            }
+                 
+                            data = mutableDataArray
                             data = data.filteredArrayUsingPredicate(NSPredicate(format: "alloted_date >= %@", argumentArray: [Globals.convertDate(NSDate())])) as! [NSDictionary]
                             for book in data {
+                                
                                 let booking = Bookings.saveBooking(Globals.checkStringNull(book["user_name"] as? String), userID: Globals.checkIntNull(book["user_id"] as? Int), requestID: Globals.checkIntNull(book["request_id"] as? Int), trainerID: Globals.checkIntNull(book["trainer_id"] as? Int), spID: Globals.checkIntNull(book["sports_id"] as? Int), spName: Globals.checkStringNull(book["sports_name"] as? String), status: Globals.checkStringNull(book["status"] as?String), loc: Globals.checkStringNull(book["location"] as? String), bookID: Globals.checkIntNull(book["booking_id"] as? Int), startTime: Globals.checkStringNull(book["start_time"] as? String), endTime: Globals.checkStringNull(book["end_time"] as? String), allotedDate: Globals.checkStringNull(book["alloted_date"] as? String), userImage: Globals.checkStringNull(book["user_profile_pic"] as? String), trainerName: Globals.checkStringNull(book["trainer_name"] as? String), trainerImage: Globals.checkStringNull(book["trainer_profile_pic"] as? String))
                                 bookingsArray.addObject(booking)
                             }
@@ -170,12 +220,11 @@ class BookingHistoryViewController: UIViewController {
                         showDismissiveAlertMesssage(ErrorMessage.invalid)
                     }
                 } else {
-                    if let message = jsonResult["message"] as? String {
-                        showDismissiveAlertMesssage(message)
-                    } else {
-                        showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                    }
+                    showLoadingView(false)
+                    dismissOnSessionExpire()
+                    return
                 }
+
             }
         }
         showLoadingView(false)

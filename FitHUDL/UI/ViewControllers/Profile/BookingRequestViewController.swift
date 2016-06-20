@@ -39,9 +39,20 @@ class BookingRequestViewController: UIViewController {
             var heading : String    = notif.sportsName
             headingLabel.text       = "Request for " + heading
             var date : String       = notif.allotedDate
-            var startTime : String  = Globals.convertTimeTo12Hours(notif.startTime)
-            var endTime : String    = Globals.convertTimeTo12Hours(notif.endTime)
-            timeLabel.text          = date + " at " + startTime + " to " + endTime
+           
+            let dateFormatDate = NSDateFormatter()
+            dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+            dateFormatDate.dateFormat = "yyyy-MM-dd HH:mm"
+            
+            let dateZone    = notif.allotedDate as String
+            let timeStarts  = notif.startTime  as String
+            let timeEnd     = notif.endTime as String
+            let endDate = dateZone + " " + timeEnd
+            let startdate   = dateZone + " " + timeStarts
+            
+            var startTime : String  = Globals.convertTimeTo12Hours(Globals.convertTimeZoneStartDate(startdate as String, dateFormate: dateFormatDate))
+            var endTime : String    = Globals.convertTimeTo12Hours(Globals.convertTimeZoneStartDate(endDate as String, dateFormate: dateFormatDate))
+            timeLabel.text          = Globals.convertTimeZoneDate(startdate as String, dateFormate: dateFormatDate) + " at " + startTime + " to " + endTime
             locationLabel.text      = notif.location
             nameLabel.text          = notif.userName
         }

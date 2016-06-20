@@ -47,7 +47,8 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     var isKeyBoard : Bool = false
     
-    override func viewDidLoad() {
+    
+     override func viewDidLoad() {
         super.viewDidLoad()
         
         purchaseButton.layer.borderColor = AppColor.statusBarColor.CGColor
@@ -56,14 +57,12 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         enterAmountBgView.layer.borderColor = UIColor.lightGrayColor().CGColor
         enterAmountBgView.layer.borderWidth = 1.0
         enterAmountBgView.layer.cornerRadius = 2.0
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+              // NSNotificationCenter.defaultCenter().addObserver(self, selector: "productPurchased:", name: IAPHelperProductPurchasedNotification, object: nil)
         
-        // NSNotificationCenter.defaultCenter().addObserver(self, selector: "productPurchased:", name: IAPHelperProductPurchasedNotification, object: nil)
-        
-        var touch = UITapGestureRecognizer(target:self, action:"scrollviewTouchAction")
-        self.view.addGestureRecognizer(touch)
+       
     }
+    
+    
     
     func scrollviewTouchAction() {
         
@@ -77,28 +76,53 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
     
     //MARK: TextField operations
     
+//    
+//    func keyboardWasShownPackage(notification: NSNotification)
+//    {
+//        
+//        
+//        println("FRAMEE\(self.view.frame.origin.y)")
+//        isKeyBoard = true
+//        //Need to calculate keyboard exact size due to Apple suggestions
+//        let info : NSDictionary = notification.userInfo!
+//        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
+//        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+//        
+//        self.view.frame.origin.y -= keyboardSize!.height
+//        println("FRAMEE2\(self.view.frame.origin.y)")
+//        
+//    }
+//    
+//    func keyboardWillBeHiddenPackage(notification: NSNotification)
+//    {
+//        println("FRAMEEWW\(self.view.frame.origin.y)")
+//        isKeyBoard = false
+//        //Once keyboard disappears, restore original positions
+//        let info : NSDictionary = notification.userInfo!
+//        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
+//        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+//        self.view.frame.origin.y += keyboardSize!.height
+//         println("FRAMEEWW2\(self.view.frame.origin.y)")
+//    }
     
-    func keyboardWasShown(notification: NSNotification)
+    func keyboardWillShow(notification: NSNotification)
     {
-        isKeyBoard = true
-        //Need to calculate keyboard exact size due to Apple suggestions
-        let info : NSDictionary = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
-        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
-        
-        self.view.frame.origin.y -= keyboardSize!.height
-        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue()
+        {
+           // UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+            self.view.frame.origin.y -= keyboardSize.height
+            // add this line if you are shifting a scrollView, as in a chat application
+        }
     }
     
-    func keyboardWillBeHidden(notification: NSNotification)
+    func keyboardWillHide(notification: NSNotification)
     {
-        isKeyBoard = false
-        //Once keyboard disappears, restore original positions
-        let info : NSDictionary = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size
-        let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
-        self.view.frame.origin.y += keyboardSize!.height
-        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue()
+        {
+           // UIApplication.sharedApplication().beginIgnoringInteractionEvents()
+            self.view.frame.origin.y += keyboardSize.height
+            // add this line if you are shifting a scrollView, as in a chat application
+        }
     }
     
     func textFieldDidBeginEditing(textField: UITextField!)
@@ -169,13 +193,21 @@ class PackageViewController: UIViewController,IAPHelperClassDelegate {
         super.viewDidAppear(true)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "finishedLoading", name: "LoadingCompleted", object: nil)
        self.reload()
-       
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        
+
+        isKeyBoard = false
+//        var touch = UITapGestureRecognizer(target:self, action:"scrollviewTouchAction")
+//        self.view.addGestureRecognizer(touch)
         sendRequestToGetPackageList()
         
     }
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "LoadingCompleted", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

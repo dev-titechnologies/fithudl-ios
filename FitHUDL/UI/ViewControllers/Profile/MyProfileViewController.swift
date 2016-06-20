@@ -16,6 +16,8 @@ class AvailableTimeCollectionViewCell: UICollectionViewCell {
 
 class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
 
+    var StripeFlag: NSString = ""
+    var stripeVerifyString : NSString = ""
     @IBOutlet weak var contentScrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var expertButton: UIButton!
@@ -82,8 +84,22 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     var label : UILabel?
     var notificationCountLabel: UILabel!
     var timer = NSTimer()
+    
+    @IBAction func infoButtonAction(sender: AnyObject) {
+        let controller  = storyboard?.instantiateViewControllerWithIdentifier("IntroViewController") as! IntroViewController
+        controller.getredyButtonFlag = 1
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+//        custompopController.controllerFlag = 1
+//        presentViewController(custompopController, animated: true, completion: nil)
+        
+        
         println("MY PROFILE")
         menuView.hidden = true
         var nib = UINib(nibName: "UserReviewCollectionViewCell", bundle: nil)
@@ -191,11 +207,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         notificationTableView.addSubview(label!)
         label?.hidden = true
         
-//        let controller  = storyboard?.instantiateViewControllerWithIdentifier("FaceBookShareViewController") as! FaceBookShareViewController
-//        controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-//        self.presentViewController(controller, animated: true, completion: nil)
-
-        
         
         
         
@@ -262,9 +273,28 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         
         super.viewDidAppear(true)
         
+        let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("profileIntroFlag") as? String
+        if profileFlag != "1"{
+            NSUserDefaults.standardUserDefaults().setValue("1", forKey: "profileIntroFlag")
+            let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+            custompopController.controllerFlag = 1
+            presentViewController(custompopController, animated: true, completion: nil)
+            
+        } else {
+            
+            //navigationController?.navigationBar.hidden = false
+        }
+
+        
          self.sendRequestToGetNotificationCount()
          sendRequestForProfile()
         timer = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector:"sendRequestToGetNotificationCount", userInfo: nil, repeats: true)
+        
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        
+         notificationCountLabel.hidden = true
         
     }
     
@@ -300,6 +330,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         if let loadView = view.viewWithTag(999) {
             showLoadingView(false)
         }
+        self.hideMenuView()
         notificationBackgroundView.removeFromSuperview()
         notificationBackgroundView.frame = CGRect(x: 0.0, y: -17.0, width: notificationBackgroundView.frame.size.width, height: 0)
         self.view.addSubview(notificationBackgroundView)
@@ -475,16 +506,27 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             
             self.notificationTableView.contentOffset = CGPointZero
             if sender.tag == 0 {
-                if menuView.frame.origin.x == 0 {
-                    hideMenuView()
+                 let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("notifIntroFlag") as? String
+                    if profileFlag != "1"{
+                        NSUserDefaults.standardUserDefaults().setValue("1", forKey: "notifIntroFlag")
+                        let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+                        custompopController.controllerFlag = 6
+                        presentViewController(custompopController, animated: true, completion: nil)
+                    } else {
+                        
+                        if menuView.frame.origin.x == 0 {
+                            hideMenuView()
+                        }
+                        sender.tag = 1
+                        notificationBackgroundView.hidden   = false
+                        UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                            self.notificationBackgroundView.frame = CGRect(x: (self.view.frame.size.width-self.notificationBackgroundView.frame.size.width), y: self.calloutViewYAxis, width: self.notificationBackgroundView.frame.size.width, height: 700)
+                            self.notificationTableView.reloadData()
+                            }, completion: nil)
+                        self.sendRequestForNotificationList()
+                        
                 }
-                sender.tag = 1
-                notificationBackgroundView.hidden   = false
-                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                    self.notificationBackgroundView.frame = CGRect(x: (self.view.frame.size.width-self.notificationBackgroundView.frame.size.width), y: self.calloutViewYAxis, width: self.notificationBackgroundView.frame.size.width, height: 700)
-                    self.notificationTableView.reloadData()
-                    }, completion: nil)
-                self.sendRequestForNotificationList()
+                
             } else {
                 sender.tag = 0
                 UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -493,7 +535,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             
         }
-        
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {
@@ -503,7 +544,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             showBioView(appDelegate.user!.bio)
         }
     }
-    
     @IBAction func bookSessionTapped(sender: UITapGestureRecognizer) {
         if profileUser!.availableTime.count > 0 {
             performSegueWithIdentifier("pushToBookingSession", sender: self)
@@ -511,7 +551,6 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             showDismissiveAlertMesssage("\(profileUser!.name) has no available time.")
         }
     }
-    
     func populateProfileContents(user: User) {
         nameLabel.text = user.name
         favoriteButton.selected = user.isFavorite.boolValue
@@ -615,7 +654,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         
       //  println("ARDRA \(profileUser!.availableTime)")
         
-        if filteredArrayTime.count <= 2 {
+        if filteredArrayTime.count <= 1 {
             morebgView.hidden = true
             moreButton.hidden = true
         }
@@ -670,6 +709,18 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         custompopController.bioText = bioText
         presentViewController(custompopController, animated: true, completion: nil)
     }
+    func showStripe(){
+        
+       // performSegueWithIdentifier("ProfiletoStripe", sender: self)
+        
+        let controller  = storyboard?.instantiateViewControllerWithIdentifier("CreateStripeViewController") as! CreateStripeViewController
+         self.definesPresentationContext = true
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        presentViewController(navController, animated: true, completion: nil)
+        
+    }
+    
     
     func hideMenuView() {
         UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
@@ -688,6 +739,14 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         alert.addAction(resendAction)
         alert.addAction(cancelAction)
         presentViewController(alert, animated: true, completion: nil)
+//        
+//        if stripeVerifyString == "" {
+//            
+//                            print(self.presentingViewController)
+//                            let controller  = storyboard?.instantiateViewControllerWithIdentifier("CreateStripeViewController") as! CreateStripeViewController
+//                            controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+//                            presentViewController(controller, animated: true, completion: nil)
+//                        }
     }
     
     func updateBio() {
@@ -838,6 +897,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         CustomURLConnection(request: CustomURLConnection.createRequest(requestDictionary, methodName: "user/modifyUserSports", requestType: HttpMethod.post), delegate: self, tag: Connection.updateSports)
     }
     
+    
     func sendRequestForUpdateNotifReadStatus(requestID: Int) {
         if !Globals.isInternetConnected() {
             return
@@ -881,24 +941,62 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 profileUser!.imageURL = ""
             }
             
-            
-            var session = NSArray()
-            
-            session = (responseDictionary["Training_session"] as? NSArray)!
-            var i : Int = 0
-            
-            for i = 0; i<session.count; i++ {
-                
-                
-                let dateFormatDate = NSDateFormatter()
-                dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
-                dateFormatDate.dateFormat = "YYYY-MM-dd hh:mm"
-                
-                let dateTimeDate = dateFormatDate.dateFromString(session[i].objectForKey("datetime") as! String)
-                
-                let time = UserTime.saveUserTimeList(session[i].objectForKey("date") as! String, startTime: session[i].objectForKey("time_starts") as! String, endTime: session[i].objectForKey("time_ends") as! String, user: profileUser!,dateTime: session[i].objectForKey("datetime") as! String)
-                profileUser!.availableTime.addObject(time)
+            if let session = responseDictionary["Training_session"] as? NSArray {
+               // appDelegate.user!.availableTime.removeAllObjects()
+                for sess in session {
+                    
+                    
+                    let dateFormatDate = NSDateFormatter()
+                    dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    dateFormatDate.dateFormat = "yyyy-MM-dd HH:mm"
+                    
+                    let dateFormatDate1 = NSDateFormatter()
+                    dateFormatDate1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    dateFormatDate1.dateFormat = "yyyy-MM-dd"
+                    
+                    
+                    let dateFormatDate2 = NSDateFormatter()
+                    dateFormatDate2.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    dateFormatDate2.dateFormat = "HH:mm"
+                    
+                    
+                    let dateZone = sess["date"] as! String
+                    let timeStarts = sess["time_starts"] as! String
+                    let timeEnd = sess["time_ends"] as! String
+                    let endDate = dateZone + " " + timeEnd
+                    println("End Date \(endDate)")
+                    let endDateDate = dateFormatDate.dateFromString(endDate)
+                    
+                    
+                    let dateTime = sess["datetime"] as! String
+                    let dateTimeDate = dateFormatDate.dateFromString(dateTime)
+                    
+                    let timeZone1 = NSTimeZone(name: "America/Chicago")
+                    let localTimeZone = NSTimeZone.systemTimeZone()
+                    let timeZone1Interval = timeZone1?.secondsFromGMTForDate(dateTimeDate!)
+                    let deviceTimeZoneInterval = localTimeZone.secondsFromGMTForDate(dateTimeDate!)
+                    let timeInterval =  Double(deviceTimeZoneInterval - timeZone1Interval!)
+                    let originalDate = NSDate(timeInterval: timeInterval, sinceDate: dateTimeDate!)
+                    let dateFormater : NSDateFormatter = NSDateFormatter()
+                    dateFormater.dateFormat = "yyyy-MM-dd HH:mm"
+                    NSLog("Converted date: \(dateFormater.stringFromDate(originalDate))")
+                    
+                    
+                    let timeZone1IntervaEndDate = timeZone1?.secondsFromGMTForDate(endDateDate!)
+                    let deviceTimeZoneIntervalEndDate = localTimeZone.secondsFromGMTForDate(endDateDate!)
+                    let timeIntervalEndDate =  Double(deviceTimeZoneIntervalEndDate - timeZone1IntervaEndDate!)
+                    let originalEndDate = NSDate(timeInterval: timeIntervalEndDate, sinceDate: endDateDate!)
+                    
+                    NSLog("Converted date: \(dateFormatDate.stringFromDate(originalEndDate))")
+                    
+                    println("dateTimezone \(dateTimeDate)")
+                    
+                    let time = UserTime.saveUserTimeList(dateFormatDate1.stringFromDate(originalDate) as String, startTime: (dateFormatDate2.stringFromDate(originalDate)) as String, endTime: (dateFormatDate2.stringFromDate(originalEndDate)) as String, user: profileUser!,dateTime: (dateFormater.stringFromDate(originalDate)) as String)
+                    profileUser!.availableTime.addObject(time)
+                    
+                 }
             }
+            
             
             if let usageCount = responseDictionary["usage_count"] as? Int {
                 profileUser!.usageCount = "\(usageCount)"
@@ -924,6 +1022,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             if let hours = responseDictionary["weekly_hours"] as? String {
                 profileUser!.totalHours = hours
             }
+          
             
             if let sportsArray = responseDictionary["Sports_list"] as? NSArray {
                 profileUser!.sports.removeAllObjects()
@@ -943,8 +1042,10 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
         } else {
             //logged in User
             if responseDictionary["email_verify"] as! Int == 0 {
+                stripeVerifyString = responseDictionary["stripe_recipient_id"] as! String
                 showEmailVerifyAlert()
             }
+            
             if let user = appDelegate.user {
                 if user.profileImage.length != 0 {
                     profileImage = user.profileImage
@@ -981,6 +1082,11 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                 appDelegate.user!.bio = ""
                 showBioView("")
             }
+            if responseDictionary["stripe_recipient_id"] as! String == "" {
+                
+                self.showStripe()
+                //NSNotificationCenter.defaultCenter().addObserver(self, selector: "showStripe", name: "stripe", object: nil)
+            }
             if let otherInterests = responseDictionary["other_interests"] as? String {
                 appDelegate.user!.interests = otherInterests
             } else {
@@ -1006,15 +1112,55 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                     dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
                     dateFormatDate.dateFormat = "yyyy-MM-dd HH:mm"
                     
-                    let tt = sess["datetime"] as! String
                     
-                    println("TTT\(tt)")
+                    let dateFormatDate1 = NSDateFormatter()
+                    dateFormatDate1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    dateFormatDate1.dateFormat = "yyyy-MM-dd"
                     
-                    let dateTimeDate = dateFormatDate.dateFromString(tt)
                     
-                    println("dateTime \(dateTimeDate)")
+                    let dateFormatDate2 = NSDateFormatter()
+                    dateFormatDate2.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                    dateFormatDate2.dateFormat = "HH:mm"
                     
-                    let time = UserTime.saveUserTimeList(sess["date"] as! String, startTime: sess["time_starts"] as! String, endTime: sess["time_ends"] as! String, user: appDelegate.user!,dateTime: sess["datetime"] as! String)
+                    
+                    let dateZone = sess["date"] as! String
+                    let timeStarts = sess["time_starts"] as! String
+                    let timeEnd = sess["time_ends"] as! String
+                    let endDate = dateZone + " " + timeEnd
+                    println("End Date \(endDate)")
+                    let endDateDate = dateFormatDate.dateFromString(endDate)
+                    
+                    
+                    
+                    let dateTime = sess["datetime"] as! String
+                    let dateTimeDate = dateFormatDate.dateFromString(dateTime)
+                    
+                    
+                    
+                    
+                    let timeZone1 = NSTimeZone(name: "America/Chicago")
+                    let localTimeZone = NSTimeZone.systemTimeZone()
+                    
+                    let timeZone1Interval = timeZone1?.secondsFromGMTForDate(dateTimeDate!)
+                    let deviceTimeZoneInterval = localTimeZone.secondsFromGMTForDate(dateTimeDate!)
+                    let timeInterval =  Double(deviceTimeZoneInterval - timeZone1Interval!)
+                    let originalDate = NSDate(timeInterval: timeInterval, sinceDate: dateTimeDate!)
+                    let dateFormater : NSDateFormatter = NSDateFormatter()
+                    dateFormater.dateFormat = "yyyy-MM-dd HH:mm"
+                    NSLog("Converted date: \(dateFormater.stringFromDate(originalDate))")
+                    
+                    
+                    let timeZone1IntervaEndDate = timeZone1?.secondsFromGMTForDate(endDateDate!)
+                    let deviceTimeZoneIntervalEndDate = localTimeZone.secondsFromGMTForDate(endDateDate!)
+                    let timeIntervalEndDate =  Double(deviceTimeZoneIntervalEndDate - timeZone1IntervaEndDate!)
+                    let originalEndDate = NSDate(timeInterval: timeInterval, sinceDate: endDateDate!)
+                   
+                    NSLog("Converted date: \(dateFormatDate.stringFromDate(originalEndDate))")
+                    
+                    
+                    println("dateTimezone \(dateTimeDate)")
+                    
+                    let time = UserTime.saveUserTimeList(dateFormatDate1.stringFromDate(originalDate) as String, startTime: (dateFormatDate2.stringFromDate(originalDate)) as String, endTime: (dateFormatDate2.stringFromDate(originalEndDate)) as String, user: appDelegate.user!,dateTime: (dateFormater.stringFromDate(originalDate)) as String)
                     appDelegate.user!.availableTime.addObject(time)
                 }
             }
@@ -1119,8 +1265,22 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                         }
                     } else {
                         Globals.clearSession()
-                        (self.presentingViewController as! UINavigationController).popToRootViewControllerAnimated(true)
-                        dismissViewControllerAnimated(true, completion: nil)
+                        
+                          let appDomain = NSBundle.mainBundle().bundleIdentifier!
+                          NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
+                            let controller  = storyboard?.instantiateViewControllerWithIdentifier("LoginOrSignUpViewController") as! LoginOrSignUpViewController
+                            controller.hidesBottomBarWhenPushed = true
+                            navigationController?.pushViewController(controller, animated: true)
+  
+//                        } else {
+//                            
+//                             (self.presentingViewController as! UINavigationController).popToRootViewControllerAnimated(true)
+//                            
+//                        }
+                        
+                      
+                       // dismissViewControllerAnimated(true, completion: nil)
+                        
                     }
                 } else if connection.connectionTag == Connection.updateSports {
                     println("UPDATESPORTS")
@@ -1163,6 +1323,44 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                                 notificationListArray = listArray
                             }
                             label?.hidden = true
+                            
+                            
+                            var i:Int = 0
+                            while i < notificationListArray.count {
+                                
+                                let notification = notificationListArray[i]
+                                if notification.type == TrainingStatus.sessionAutoCancel{
+                                    if let user = appDelegate.user {
+                                        if  user.profileID == notification.trainerID {
+                                            notificationListArray.removeAtIndex(i)
+                                            
+                                        }else{
+                                            
+                                            i++
+                                        }
+                                    }
+                                }else {
+                                    
+                                    i++
+                                }
+                            }
+
+                            
+                            
+//                            var i:Int = 0
+//                            
+//                            for i=0; i<notificationListArray.count; i++ {
+//                                
+//                                
+//                                let notification = notificationListArray[i]
+//                                if notification.type == TrainingStatus.sessionAutoCancel{
+//                                    if let user = appDelegate.user {
+//                                    if  user.profileID == notification.trainerID {
+//                                        notificationListArray.removeAtIndex(i)
+//                                    }
+//                                    }
+//                                }
+//                            }
                             notificationTableView.reloadData()
                         } else
                         {
@@ -1571,6 +1769,7 @@ extension MyProfileViewController: UICollectionViewDataSource {
 //                let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
 //                return date1!.compare(date2!)
 //            })
+            
             let time = filterTimeArray[indexPath.row] as! UserTime
             let tt = time.date + " " + Globals.convertTimeTo12Hours(time.timeStarts) as String
             cell.timeLabel.text = time.date + " " + Globals.convertTimeTo12Hours(time.timeStarts)
@@ -1708,8 +1907,16 @@ extension MyProfileViewController : UITableViewDelegate {
             let controller  = storyboard?.instantiateViewControllerWithIdentifier("FaceBookShareViewController") as! FaceBookShareViewController
             controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
             self.presentViewController(controller, animated: true, completion: nil)
-            
 
+        } else {
+            
+            let controller  = storyboard?.instantiateViewControllerWithIdentifier("NotificationDetailViewController") as! NotificationDetailViewController
+            self.definesPresentationContext   = true
+            controller.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            controller.notification = notificationListArray[indexPath.row]
+            presentViewController(controller, animated: true, completion: nil)
+            notificationBackgroundView.hidden = true
+            
         }
         
         

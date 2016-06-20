@@ -32,10 +32,12 @@
 		F3438AA01BB28A03001BA5E6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F3438A9E1BB28A03001BA5E6 /* Reachability.m */; };
 		F3438AA41BB290B6001BA5E6 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA21BB290B6001BA5E6 /* AppConstants.swift */; };
 		F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3438AA31BB290B6001BA5E6 /* Globals.swift */; };
+		F352054D1CED9C85006C77EC /* NotificationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F352054C1CED9C85006C77EC /* NotificationDetailViewController.swift */; };
 		F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */; };
 		F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */; };
 		F3587C4A1C7569D40043FC25 /* FaceBookShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3587C491C7569D40043FC25 /* FaceBookShareViewController.swift */; };
 		F35FAE591BFB3A3E00FDB777 /* BookingRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */; };
+		F35FB94C1CE35C060002214F /* CreateStripeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35FB94B1CE35C060002214F /* CreateStripeViewController.swift */; };
 		F36691631BCD072A00B74CFE /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36691621BCD072A00B74CFE /* Images.swift */; };
 		F36B81F41BB5373B00CB8043 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */; };
 		F36B81F51BB5373B00CB8043 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */; };
@@ -99,6 +101,7 @@
 		F3A2AD291BD4A78600DA6F7B /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3A2AD281BD4A78600DA6F7B /* RateView.xib */; };
 		F3ABEC0F1C19B2F50051D997 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC0E1C19B2F50051D997 /* libc++.dylib */; };
 		F3ABEC111C19B2FE0051D997 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */; };
+		F3AD822A1CE4BA5700D81400 /* AccountStripeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3AD82291CE4BA5700D81400 /* AccountStripeViewController.swift */; };
 		F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */; };
 		F3B43F461CAA68DC00C7D50A /* MedalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B43F441CAA68DC00C7D50A /* MedalCollectionViewCell.swift */; };
 		F3B43F471CAA68DC00C7D50A /* MedalCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3B43F451CAA68DC00C7D50A /* MedalCollectionViewCell.xib */; };
@@ -123,8 +126,11 @@
 		F3E266651BECCB2E00717724 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E266631BECCB2E00717724 /* NotificationCell.swift */; };
 		F3E266661BECCB2E00717724 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E266641BECCB2E00717724 /* NotificationCell.xib */; };
 		F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */; };
+		F3E3D9441CD73F1B0079DF5F /* PageItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D9421CD73F1B0079DF5F /* PageItemController.swift */; };
+		F3E3D9461CD770FB0079DF5F /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D9451CD770FB0079DF5F /* IntroViewController.swift */; };
 		F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */; };
 		F3E3D94C1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */; };
+		F3FF4A871CEEFA9D002B1F35 /* OverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FF4A851CEEF3EC002B1F35 /* OverlayViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,10 +174,12 @@
 		F3438A9F1BB28A03001BA5E6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F3438AA21BB290B6001BA5E6 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		F3438AA31BB290B6001BA5E6 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		F352054C1CED9C85006C77EC /* NotificationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDetailViewController.swift; sourceTree = "<group>"; };
 		F3551CF41BCE08AB00A94B1B /* FavouritesListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesListCell.swift; sourceTree = "<group>"; };
 		F35654BA1BE0BAE8006A8705 /* SearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		F3587C491C7569D40043FC25 /* FaceBookShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceBookShareViewController.swift; sourceTree = "<group>"; };
 		F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingRequestViewController.swift; sourceTree = "<group>"; };
+		F35FB94B1CE35C060002214F /* CreateStripeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateStripeViewController.swift; sourceTree = "<group>"; };
 		F36691621BCD072A00B74CFE /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		F36B81F21BB5373B00CB8043 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		F36B81F31BB5373B00CB8043 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -238,6 +246,7 @@
 		F3ABEC0E1C19B2F50051D997 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		F3ABEC101C19B2FE0051D997 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F3ABEC121C19B3B50051D997 /* FitHUDL-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FitHUDL-Prefix.pch"; sourceTree = "<group>"; };
+		F3AD82291CE4BA5700D81400 /* AccountStripeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountStripeViewController.swift; sourceTree = "<group>"; };
 		F3B05B541BBA553600CA9ACA /* MainTabbarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		F3B43F441CAA68DC00C7D50A /* MedalCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedalCollectionViewCell.swift; sourceTree = "<group>"; };
 		F3B43F451CAA68DC00C7D50A /* MedalCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MedalCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -267,8 +276,11 @@
 		F3E266631BECCB2E00717724 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		F3E266641BECCB2E00717724 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		F3E3D93B1BBD14F100E45E36 /* CustomPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopupViewController.swift; sourceTree = "<group>"; };
+		F3E3D9421CD73F1B0079DF5F /* PageItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageItemController.swift; sourceTree = "<group>"; };
+		F3E3D9451CD770FB0079DF5F /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		F3E3D9491BBD526E00E45E36 /* UserReviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReviewCollectionViewCell.swift; sourceTree = "<group>"; };
 		F3E3D94A1BBD526E00E45E36 /* UserReviewCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserReviewCollectionViewCell.xib; sourceTree = "<group>"; };
+		F3FF4A851CEEF3EC002B1F35 /* OverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +348,7 @@
 		F305F5221BB951D8006BEFA2 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				F352054C1CED9C85006C77EC /* NotificationDetailViewController.swift */,
 				F35FAE581BFB3A3E00FDB777 /* BookingRequestViewController.swift */,
 				F37968F31BCE81500074B57D /* EditProfileViewController.swift */,
 				F305F5261BB96691006BEFA2 /* MyProfileViewController.swift */,
@@ -469,6 +482,8 @@
 		F3438A781BB27E3A001BA5E6 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				F3E3D9451CD770FB0079DF5F /* IntroViewController.swift */,
+				F3E3D9421CD73F1B0079DF5F /* PageItemController.swift */,
 				F3438A791BB27E62001BA5E6 /* LoginOrSignUpViewController.swift */,
 				F3438A7A1BB27E62001BA5E6 /* SignupViewController.swift */,
 				F3438A7B1BB27E62001BA5E6 /* LoginViewController.swift */,
@@ -619,11 +634,13 @@
 		F3884C651BF35D9100A62547 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				F3AD82291CE4BA5700D81400 /* AccountStripeViewController.swift */,
 				F385F1EF1C719F8300BF3A28 /* CardDetailsViewController.swift */,
 				F3CC9DDB1C0DC2F2006DAF6A /* IAPHelper.swift */,
 				F3884C661BF35DB300A62547 /* PackageViewController.swift */,
 				F3CC9DDD1C0DC64D006DAF6A /* RageProducts.swift */,
 				F3433C9B1CC5165700800A3D /* StripeViewController.swift */,
+				F35FB94B1CE35C060002214F /* CreateStripeViewController.swift */,
 			);
 			name = Packages;
 			path = Login;
@@ -651,6 +668,7 @@
 		F39E61BF1C02D397001D8576 /* Booking */ = {
 			isa = PBXGroup;
 			children = (
+				F3FF4A851CEEF3EC002B1F35 /* OverlayViewController.swift */,
 				F39E61C01C02D524001D8576 /* BookingHistoryViewController.swift */,
 			);
 			path = Booking;
@@ -943,8 +961,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3FF4A871CEEFA9D002B1F35 /* OverlayViewController.swift in Sources */,
 				F385F1F21C71A54700BF3A28 /* Stripe+ApplePay.h in Sources */,
 				F385F1F31C71A54700BF3A28 /* STPBankAccount.h in Sources */,
+				F3E3D9441CD73F1B0079DF5F /* PageItemController.swift in Sources */,
 				F385F1F41C71A54700BF3A28 /* STPCard.h in Sources */,
 				F385F1F51C71A54700BF3A28 /* STPFormEncodeProtocol.h in Sources */,
 				F385F1F61C71A54700BF3A28 /* STPToken.h in Sources */,
@@ -956,6 +976,7 @@
 				F3CC9DDC1C0DC2F2006DAF6A /* IAPHelper.swift in Sources */,
 				F385F1F01C719F8300BF3A28 /* CardDetailsViewController.swift in Sources */,
 				F37968F41BCE81500074B57D /* EditProfileViewController.swift in Sources */,
+				F35FB94C1CE35C060002214F /* CreateStripeViewController.swift in Sources */,
 				F3E3D93C1BBD14F100E45E36 /* CustomPopupViewController.swift in Sources */,
 				F321BDBF1C0EF76A0060FECD /* ChangePasswordViewController.swift in Sources */,
 				F3E3D94B1BBD526E00E45E36 /* UserReviewCollectionViewCell.swift in Sources */,
@@ -998,6 +1019,7 @@
 				F3D99C2B1C180EC5007A20F9 /* Bookings.swift in Sources */,
 				F3D99C231C180EC4007A20F9 /* User.swift in Sources */,
 				F385F1E71C7198B900BF3A28 /* Stripe.m in Sources */,
+				F3E3D9461CD770FB0079DF5F /* IntroViewController.swift in Sources */,
 				F3438A8C1BB27F74001BA5E6 /* CustomURLConnection.swift in Sources */,
 				F3B05B551BBA553600CA9ACA /* MainTabbarViewController.swift in Sources */,
 				F3551CF51BCE08AB00A94B1B /* FavouritesListCell.swift in Sources */,
@@ -1012,6 +1034,7 @@
 				F3438A7C1BB27E62001BA5E6 /* LoginOrSignUpViewController.swift in Sources */,
 				F3A2AD271BD4A77000DA6F7B /* RateView.swift in Sources */,
 				F35654BB1BE0BAE8006A8705 /* SearchResultViewController.swift in Sources */,
+				F3AD822A1CE4BA5700D81400 /* AccountStripeViewController.swift in Sources */,
 				F30616821C47C45700DD06A1 /* WebViewController.swift in Sources */,
 				F3D99C211C180EC4007A20F9 /* UserSports.swift in Sources */,
 				F3438AA51BB290B6001BA5E6 /* Globals.swift in Sources */,
@@ -1023,6 +1046,7 @@
 				F39F4ACB1BF9BA3600056A0B /* SessionTimerViewController.swift in Sources */,
 				F37F80F01C50E07600A10CD5 /* PromoCodeViewController.swift in Sources */,
 				F38950091BCF94FD00ED0C77 /* DIDatepicker.m in Sources */,
+				F352054D1CED9C85006C77EC /* NotificationDetailViewController.swift in Sources */,
 				F39E61C41C02D878001D8576 /* HistoryTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1125,7 +1149,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "396853e9-de12-47d1-9af2-bcaadec9b964";
+				PROVISIONING_PROFILE = "297663ec-1964-4637-afd6-0e4f11136c4f";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1154,6 +1178,7 @@
 				PRODUCT_NAME = Pillar;
 				PROVISIONING_PROFILE = "ae7e0e31-3747-4a3c-9c8d-447d893c27c5";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -1181,6 +1206,7 @@
 				PRODUCT_NAME = Pillar;
 				PROVISIONING_PROFILE = "297663ec-1964-4637-afd6-0e4f11136c4f";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};

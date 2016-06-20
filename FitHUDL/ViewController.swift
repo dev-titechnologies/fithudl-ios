@@ -19,12 +19,16 @@ extension UINavigationController {
 extension UIViewController {
     
     func dismissOnSessionExpire() {
-        if let presentingController = self.presentingViewController as? UINavigationController {
+     //   if let presentingController = self.presentingViewController as? UINavigationController {
             Globals.clearSession()
-            presentingController.popToRootViewControllerAnimated(true)
-            UIAlertView(title: "", message: ErrorMessage.sessionOut, delegate: nil, cancelButtonTitle: "OK").show()
-            dismissViewControllerAnimated(true, completion: nil)
-        }
+           // presentingController.popToRootViewControllerAnimated(true)
+            let controller  = storyboard?.instantiateViewControllerWithIdentifier("LoginOrSignUpViewController") as! LoginOrSignUpViewController
+            //self.presentViewController(controller, animated: true, completion: nil)
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+           // UIAlertView(title: "", message: ErrorMessage.sessionOut, delegate: nil, cancelButtonTitle: "OK").show()
+            //dismissViewControllerAnimated(true, completion: nil)
+       // }
 
     }
     

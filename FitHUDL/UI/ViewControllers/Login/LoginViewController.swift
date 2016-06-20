@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var emailTextField: UITextField!
@@ -16,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var resetEmailTextField: UITextField!
     @IBOutlet weak var calloutView: UIView!
     @IBOutlet weak var calloutContentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rememberMeButton: UIButton!
 
     @IBOutlet weak var signInButton: UIButton!
     var selectedTextField: UITextField!
@@ -36,6 +38,14 @@ class LoginViewController: UIViewController {
         placeHolderString = NSAttributedString(string: resetEmailTextField.placeholder!, attributes: [NSForegroundColorAttributeName: UIColor(red: 136/255, green: 136/255, blue: 136/255, alpha: 1.0)])
         resetEmailTextField.attributedPlaceholder = placeHolderString
         
+        if let rememberemailString = NSUserDefaults.standardUserDefaults().valueForKey("rememberEmail") as? String{
+            emailTextField.text = rememberemailString
+            rememberMeButton.selected = true
+        }
+        if let rememberPass = NSUserDefaults.standardUserDefaults().valueForKey("rememberPassword") as? String
+        {
+            passwordTextField.text = rememberPass
+        }
 //        signInButton.layer.borderColor = UIColor.whiteColor().CGColor
         
 //        emailTextField.text     = "ardra@test.com"
@@ -44,6 +54,25 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func rememberMeAction(sender: UIButton) {
+        
+        if sender.tag == 0 {
+            
+            sender.tag = 1
+            sender.selected = true
+            NSUserDefaults.standardUserDefaults().setValue(emailTextField.text, forKey: "rememberEmail")
+            NSUserDefaults.standardUserDefaults().setValue(passwordTextField.text, forKey: "rememberPassword")
+            
+        } else{
+            
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("rememberEmail")
+            NSUserDefaults.standardUserDefaults().removeObjectForKey("rememberPassword")
+            sender.tag = 0
+            sender.selected = false
+            
+        }
+        
+    }
     override func viewWillAppear(animated: Bool) {
         calloutView.removeFromSuperview()
         calloutView.setTranslatesAutoresizingMaskIntoConstraints(true)
@@ -58,6 +87,14 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginButtonClicked(sender: UIButton) {
+        
+        if rememberMeButton.selected == true{
+            
+            NSUserDefaults.standardUserDefaults().setValue(emailTextField.text, forKey: "rememberEmail")
+            NSUserDefaults.standardUserDefaults().setValue(passwordTextField.text, forKey: "rememberPassword")
+            
+        }
+        
         if validateFields() {
             sendLoginRequest()
         }
@@ -148,7 +185,7 @@ class LoginViewController: UIViewController {
     
     func connectionDidFinishLoading(connection: CustomURLConnection) {
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
-        println(response)
+        print(response)
         var error: NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
@@ -216,5 +253,10 @@ extension LoginViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        rememberMeButton.selected = false
+//        return true;
+//    }
+
     
 }

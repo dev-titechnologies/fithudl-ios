@@ -1,15 +1,15 @@
 //
-//  StripeViewController.swift
+//  AccountStripeViewController.swift
 //  
 //
-//  Created by Ti Technologies on 18/04/16.
+//  Created by Ti Technologies on 12/05/16.
 //
 //
 
 import UIKit
 
-class StripeViewController: UIViewController {
-
+class AccountStripeViewController: UIViewController {
+    
     var stripeFlag: NSString = ""
     @IBOutlet weak var accountType: UITextField!
     @IBOutlet weak var scrollview: UIScrollView!
@@ -23,18 +23,18 @@ class StripeViewController: UIViewController {
         super.viewDidLoad()
         if IS_IPHONE4S || IS_IPHONE5 {
             
-           contentViewHeightConstant.constant = 400
+            contentViewHeightConstant.constant = 400
         }
         navigationController?.navigationBar.tintColor = AppColor.statusBarColor
         navigationItem.hidesBackButton = true
-    println("Stripeeeee")
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
         
 
         //navigationController?.navigationBarHidden = true
     }
-   
+    
     override func didReceiveMemoryWarning() {
         
         super.didReceiveMemoryWarning()
@@ -43,7 +43,6 @@ class StripeViewController: UIViewController {
     //MARK: - What's Stripe
     
     @IBAction func whatsStripeAction(sender: AnyObject) {
-        
         
         let alert       = UIAlertController(title: "What's Stripe", message: "Lyft, Postmates, OrderAhead, Instacart, and thousands of other mobile applications use Stripe’s native iOS & Android libraries to charge on the go. Even collect cards up front for seamless background billing later,", preferredStyle: UIAlertControllerStyle.Alert)
         let noAction    = UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel) { (noAction) -> Void in
@@ -59,16 +58,15 @@ class StripeViewController: UIViewController {
         alert.addAction(noAction)
         alert.addAction(yesAction)
         presentViewController(alert, animated: true, completion: nil)
-        
     }
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
     
@@ -85,6 +83,9 @@ class StripeViewController: UIViewController {
         
         var aRect : CGRect = self.view.frame
         aRect.size.height -= keyboardSize!.height
+        
+        println("Frame is\(activeField!.frame)")
+        
         if let activeFieldPresent = activeField
         {
             if (!CGRectContainsPoint(aRect, activeField!.frame.origin))
@@ -108,7 +109,7 @@ class StripeViewController: UIViewController {
         self.scrollview.scrollEnabled = false
         
     }
-
+    
     func textFieldDidBeginEditing(textField: UITextField!)
     {
         
@@ -157,7 +158,7 @@ class StripeViewController: UIViewController {
         UIAlertView(title: alertTitle, message: message, delegate: self, cancelButtonTitle: "OK").show()
         
     }
-
+    
     @IBAction func accountTypeSelection(sender: AnyObject) {
         
         let actionSheetControllerIOS8: UIAlertController = UIAlertController(title: "Please select an account type", message: "", preferredStyle: .ActionSheet)
@@ -177,7 +178,7 @@ class StripeViewController: UIViewController {
         
         let deleteActionButton: UIAlertAction = UIAlertAction(title: "Company", style: .Default)
             { action -> Void in
-           self.accountType.text = "Company"
+                self.accountType.text = "Company"
                 print("Delete")
         }
         actionSheetControllerIOS8.addAction(deleteActionButton)
@@ -194,22 +195,25 @@ class StripeViewController: UIViewController {
         } else if routingNumber.text.isEmpty {
             self.alertMessage("Please Enter Security Code")
         } else if routingNumber.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) != 9 {
-           self.alertMessage("Routing number should contain 9 digits")
+            self.alertMessage("Routing number should contain 9 digits")
         }
         else {
             self.showLoadingView(true)
             self.requestForSendingStripeDetails()
         }
+        
     }
     
     @IBAction func questionButtonAction(sender: AnyObject) {
         
         UIAlertView(title: alertTitle, message: "Your bank account should be added as 'Recipient' (Payee) of Pillar Stripe account, to get you paid for sessions. Do not worry, we don't store your bank details anywhere. Stripe is secure enough to handle this.", delegate: self, cancelButtonTitle: "OK").show()
+        
     }
     func requestForSendingStripeDetails() {
         if !Globals.isInternetConnected() {
             return
         }
+        
         let requestDictionary = NSMutableDictionary()
         requestDictionary.setObject(nameTextField.text, forKey: "cname")
         requestDictionary.setObject(accountNumberField.text, forKey: "accountnumber")
@@ -233,19 +237,15 @@ class StripeViewController: UIViewController {
         
         let response = NSString(data: connection.receiveData, encoding: NSUTF8StringEncoding)
         println(response)
-       // showLoadingView(false)
+        // showLoadingView(false)
         var error : NSError?
         if let jsonResult = NSJSONSerialization.JSONObjectWithData(connection.receiveData, options: NSJSONReadingOptions.MutableContainers, error: &error) as? NSDictionary {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.stripeAccount {
                     if status == ResponseStatus.success {
-                        if stripeFlag == "STRIPE"{
-                           performSegueWithIdentifier("stripeToProfile", sender: self)
-                        } else {
-                        performSegueWithIdentifier("modalSeguetoTab", sender: self)
-                        }
-                       // UIAlertView(title: alertTitle, message: "your stripe account has been created successfully", delegate: nil, cancelButtonTitle: "OK").show()
-                       // showLoadingView(false)
+                            performSegueWithIdentifier("stripeToProfile", sender: self)
+                        // UIAlertView(title: alertTitle, message: "your stripe account has been created successfully", delegate: nil, cancelButtonTitle: "OK").show()
+                        // showLoadingView(false)
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -282,5 +282,5 @@ class StripeViewController: UIViewController {
             }
         }
     }
-
+    
 }

@@ -353,8 +353,10 @@ class SignupViewController: UIViewController {
                 requestDictionary.setObject(location.coordinate.latitude, forKey: "latitude")
                 requestDictionary.setObject(location.coordinate.longitude, forKey: "longitude")
             } else {
+                
 //            requestDictionary.setObject(37.785834, forKey: "latitude")
 //            requestDictionary.setObject(-122.406417, forKey: "longitude")
+                
             }
             if let code = promoCode {
                 requestDictionary.setObject(code, forKey: "promo_code")

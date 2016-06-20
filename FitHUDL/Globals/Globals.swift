@@ -135,7 +135,7 @@ class Globals: NSObject {
     }
     
     class func attributedBioText(bio: String, lengthExceed: Bool, bioLabel: UILabel, titleColor: UIColor, bioColor: UIColor) {
-        var bioTitle = NSMutableAttributedString(string: "BIO", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 16.0)!, NSForegroundColorAttributeName: titleColor])
+        var bioTitle = NSMutableAttributedString(string: "Bio", attributes: [NSFontAttributeName: UIFont(name: "OpenSans", size: 16.0)!, NSForegroundColorAttributeName: titleColor])
         bioTitle.appendAttributedString(NSAttributedString(string: ":", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Bold", size: 14.0)!, NSForegroundColorAttributeName: bioColor]))
         bioTitle.appendAttributedString(NSAttributedString(string: " \(bio)", attributes: [NSFontAttributeName: UIFont(name: "OpenSans-Light", size: 15.0)!, NSForegroundColorAttributeName: bioColor]))
         if lengthExceed == true {
@@ -153,6 +153,40 @@ class Globals: NSObject {
         }
         interestLabel.attributedText = bioTitle
     }
+
+    
+    class func convertTimeZoneStartDate(dateString: String , dateFormate: NSDateFormatter) -> String {
+    
+    let timeZone1 = NSTimeZone(name: "America/Chicago")
+    let localTimeZone = NSTimeZone.systemTimeZone()
+    let date = dateFormate.dateFromString(dateString)
+    let timeZone1IntervalStart = timeZone1?.secondsFromGMTForDate(date!)
+    let deviceTimeZoneIntervalStart = localTimeZone.secondsFromGMTForDate(date!)
+    let timeIntervalDateStart =  Double(deviceTimeZoneIntervalStart - timeZone1IntervalStart!)
+    let originalDateStart = NSDate(timeInterval: timeIntervalDateStart, sinceDate: date!)
+    let dateFormatDate2 = NSDateFormatter()
+    dateFormatDate2.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+    dateFormatDate2.dateFormat = "HH:mm"
+    return dateFormatDate2.stringFromDate(originalDateStart)
+        
+    }
+    
+    class func convertTimeZoneDate(dateString: String , dateFormate: NSDateFormatter) -> String {
+        
+        let timeZone1 = NSTimeZone(name: "America/Chicago")
+        let localTimeZone = NSTimeZone.systemTimeZone()
+    
+        let date = dateFormate.dateFromString(dateString)
+        let timeZone1IntervalStart = timeZone1?.secondsFromGMTForDate(date!)
+        let deviceTimeZoneIntervalStart = localTimeZone.secondsFromGMTForDate(date!)
+        let timeIntervalDate =  Double(deviceTimeZoneIntervalStart - timeZone1IntervalStart!)
+        let originalDateStart = NSDate(timeInterval: timeIntervalDate, sinceDate: date!)
+        let dateFormatDate1 = NSDateFormatter()
+        dateFormatDate1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+        dateFormatDate1.dateFormat = "yyyy-MM-dd"
+        return dateFormatDate1.stringFromDate(originalDateStart)
+    }
+
 
     
     class func createShareImage(sportImage: UIImage, shareText: String, parentView: UIView) -> UIImage {

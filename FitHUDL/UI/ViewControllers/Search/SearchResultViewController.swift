@@ -67,12 +67,11 @@ class SearchResultViewController: UIViewController {
                         showDismissiveAlertMesssage(ErrorMessage.invalid)
                     }
                 } else {
-                    if let message = jsonResult["message"] as? String {
-                        showDismissiveAlertMesssage(message)
-                    } else {
-                        showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                    }
+                    showLoadingView(false)
+                    dismissOnSessionExpire()
+                    return
                 }
+
             }
         }
         showLoadingView(false)

@@ -34,6 +34,9 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        
+        
         sendRequestToGetBookingSessions()
         sportsCarousel.type = .Custom
         let nib  = UINib(nibName: "BookingTableViewCell", bundle: nil)
@@ -82,11 +85,22 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     //MARK: KEYBOARD HANDLING
     
     
-    
-    
+    override func viewDidAppear(animated: Bool) {
+        let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("bookingIntroFlag") as? String
+            if profileFlag != "1"{
+                NSUserDefaults.standardUserDefaults().setValue("1", forKey: "bookingIntroFlag")
+                let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+                custompopController.controllerFlag = 4
+                presentViewController(custompopController, animated: true, completion: nil)
+        }
+      
+    }
+//    override func viewDidDisappear(animated: Bool) {
+//        NSN
+//    }
     
     func keyboardWillShow(note: NSNotification) {
-        println("KEYBOARDSHOW")
+        println("KEYBOARDSHOW booking noti")
         println(view.frame.height)
         println(bookingTableView.frame.height)
         if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
@@ -118,6 +132,7 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
     
     func keyboardWillHide(note: NSNotification) {
         
+        println("keyboerdhidefrombookin")
         if let keyboardSize = (note.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
             var frame = bookingTableView.frame
             UIView.beginAnimations(nil, context: nil)
@@ -268,12 +283,44 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
                         dismissOnSessionExpire()
                     }
                 } else if connection.connectionTag == Connection.sessionsList {
-                    if let data = jsonResult["data"] as? NSArray {
+                    if let dataArray = jsonResult["data"] as? NSMutableArray {
+                        
+                        let data = NSMutableArray()
+                        
+                        let dateFormatDate = NSDateFormatter()
+                        dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                        dateFormatDate.dateFormat = "yyyy-MM-dd HH:mm"
+                        
+                        let dateFormatDate1 = NSDateFormatter()
+                        dateFormatDate1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                        dateFormatDate1.dateFormat = "yyyy-MM-dd"
+                        
+                        let dateFormatDate2 = NSDateFormatter()
+                        dateFormatDate2.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+                        dateFormatDate2.dateFormat = "HH:mm"
+                        
+                         for datacontent in dataArray {
+                            
+                            let dateZone    = datacontent.valueForKey("date") as! String
+                            let timeStarts  = datacontent.valueForKey("time_starts") as! String
+                            let timeEnd     = datacontent.valueForKey("time_ends") as! String
+                            let endDate = dateZone + " " + timeEnd
+                            let startdate   = dateZone + " " + timeStarts
+                            println("endDate\(endDate)")
+                            println("startDate\(startdate)")
+                            
+                            println("DATACONTENT\(datacontent)")
+                            datacontent.setObject(Globals.convertTimeZoneDate(startdate as String, dateFormate: dateFormatDate), forKey: "date")
+                            datacontent.setObject(Globals.convertTimeZoneStartDate(endDate as String, dateFormate: dateFormatDate), forKey: "time_ends")
+                            datacontent.setObject(Globals.convertTimeZoneStartDate(startdate as String, dateFormate: dateFormatDate), forKey: "time_starts")
+                            data.addObject(datacontent)
+                        }
                         var datesArray  = NSSet(array:data.valueForKey("date") as! [String])
                         for date in datesArray {
                             var filteredArray = data.filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date])) as NSArray
                             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
-                            //println("Available Session time \(availSessionTime)")
+                            println("Available Session time \(availSessionTime)")
+                            
                         }
                     }
                 }
@@ -321,7 +368,10 @@ class BookingSessionViewController: UIViewController,UITextFieldDelegate {
         let starttime   = Globals.convertTimeTo24Hours(time["time_starts"] as! String)
         let endtime     = Globals.convertTimeTo24Hours(time["time_ends"] as! String)
         let date        = time["date"] as! String
-        
+
+        let timeZondde = NSTimeZone.defaultTimeZone()
+        print("Zone is \(timeZondde.name)")
+        requestDictionary.setValue("\(timeZondde.name)", forKey: "timezone")
         requestDictionary.setObject(user.profileID, forKey: "trainer_id")
         requestDictionary.setObject(starttime, forKey: "start_time")
         requestDictionary.setObject(endtime, forKey: "end_time")
@@ -534,8 +584,7 @@ extension BookingSessionViewController: UITableViewDataSource {
 //                view.removeFromSuperview()
 //            }
 //        }
-//
-        
+
         
         if let place = time["location"] as? String {
             cell.locationTextField.text = place

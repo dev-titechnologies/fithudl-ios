@@ -27,7 +27,18 @@ class CustomURLConnection: NSURLConnection {
     
     class func createRequest(params: NSMutableDictionary?, methodName: String, requestType: String) -> NSURLRequest {
         var error: NSError?
-        let serverURL   = NSURL(string: SERVER_URL.stringByAppendingString(methodName))
+        let serverURL : NSURL?
+//        if methodName == "user/saveCustomer" {
+//            
+//            println("saveCustomersaveCustomer")
+//         serverURL   = NSURL(string: "http://192.168.1.65:1337/user/saveCustomer")
+//        } else if methodName == "user/signup"{
+//            
+//            serverURL   = NSURL(string: "http://192.168.1.65:1337/user/signup")
+//            
+//        }else{
+         serverURL   = NSURL(string: SERVER_URL.stringByAppendingString(methodName))
+      // }
         let urlRequest  = NSMutableURLRequest(URL: serverURL!)
         urlRequest.HTTPMethod = requestType
         urlRequest.timeoutInterval = TimeOut.Data
@@ -43,8 +54,10 @@ class CustomURLConnection: NSURLConnection {
                     parameters.setObject(apiToken, forKey: "token")
                 }
             }
-            
-           println("PARAM\(parameters)")
+//             if methodName == "user/saveCustomer" {
+//                 parameters.setObject("8c120261b938e9eef042151c", forKey: "token")
+//            }
+          // println("PARAM\(parameters)")
             let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
             urlRequest.HTTPBody = jsonData
         }

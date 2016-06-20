@@ -11,7 +11,7 @@ let STRIPE_URL = "192.168.1.65/fithudl/donate/"
 let SERVER_URL = "http://api.pillar.fit/"
 let SHARE_URL  = "http://www.pillar.fit/"
 let ITUNES_LINK = "https://itunes.apple.com/us/app/fithudl/id1062264534?ls=1&mt=8"
-//let Server_URL = "http://192.168.1.151:1337/"
+//let SERVER_URL = "http://192.168.1.65:1337/"
 
 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
@@ -44,6 +44,7 @@ struct AppColor {
 }
 
 struct Message {
+    
     static let Offline  = "Not connected to the internet!"
     static let Error    = "Internal Error"
 }
@@ -62,16 +63,16 @@ struct HttpMethod {
 }
 
 struct Connection {
-    static let login         = 9
-    static let signup        = 10
-    static let checkUserFB   = 11
-    static let checkUser     = 12
-    static let resetPassword = 13
-    static let sportsList    = 14
-    static let userProfile   = 15
-    static let favouriteList = 16
-    static let unfavourite   = 17
-    static let updateSports  = 18
+    static let login          = 9
+    static let signup         = 10
+    static let checkUserFB    = 11
+    static let checkUser      = 12
+    static let resetPassword  = 13
+    static let sportsList     = 14
+    static let userProfile    = 15
+    static let favouriteList  = 16
+    static let unfavourite    = 17
+    static let updateSports   = 18
     static let ratecategory   = 19
     static let submitfeedback = 20
     static let logout         = 21
@@ -123,6 +124,7 @@ struct ViewTag {
     static let mobilePrivacy    = 9
     static let agreement        = 10
     static let contentChange    = 11
+    static let whatisStripe     = 12
 }
 
 struct ResponseStatus {
@@ -147,7 +149,7 @@ struct TrainingStatus {
     static let pendingCanceled              = "pending_cancel"
     static let acceptCanceled               = "accept_cancel"
     static let eightHoursCompleted          = "user_weekly_time"
-    
+    static let sessionAutoCancel            = "session_auto_cancel_to_suspended_trainer"
 }
 
 struct Session {

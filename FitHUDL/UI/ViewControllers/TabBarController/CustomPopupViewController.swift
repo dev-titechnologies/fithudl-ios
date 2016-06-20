@@ -141,6 +141,7 @@ class CustomPopupViewController: UIViewController {
         let endTime         = Globals.convertTimeTo12Hours(sessionDictionary!["end_time"] as! String)
         timeValueLabel.text = "\(startTime) to \(endTime)"
         placeLabel.text     = sessionDictionary!["location"] as? String
+        
        
     }
     

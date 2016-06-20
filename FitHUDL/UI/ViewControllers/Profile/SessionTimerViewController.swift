@@ -9,8 +9,8 @@
 import UIKit
 
 class SessionTimerViewController: UIViewController {
-//    @IBOutlet weak var circleView: UIView!
-//    @IBOutlet weak var timerView: TimerView!
+    //    @IBOutlet weak var circleView: UIView!
+    //    @IBOutlet weak var timerView: TimerView!
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var timerLabel: MZTimerLabel!
@@ -31,7 +31,7 @@ class SessionTimerViewController: UIViewController {
     @IBOutlet weak var shareOkButton: UIButton!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     
-    var sessionDictionary: NSDictionary!
+    var sessionDictionary: NSMutableDictionary!
     var starOne: UIButton!
     var starTwo: UIButton!
     var starThree: UIButton!
@@ -48,7 +48,7 @@ class SessionTimerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         timerLabel.timerType = MZTimerLabelTypeTimer
         timerLabel.timeLabel = timerLabel
         timerLabel.delegate  = self
@@ -83,7 +83,7 @@ class SessionTimerViewController: UIViewController {
                 nameLabel.text = "\(sportsName!) session with \(name!)"
             }
         }
-
+        
         let startTime = Globals.convertTimeTo12Hours((sessionDictionary["start_time"] as? String)!)
         let endTime = Globals.convertTimeTo12Hours((sessionDictionary["end_time"] as? String)!)
         
@@ -102,10 +102,14 @@ class SessionTimerViewController: UIViewController {
             timeLabel.text  = "Time: \(startTime) to \(endTime)"
             sendRequestforShareImageUrl(Globals.createShareImage(sportsImageView.image!, shareText: shareLabel.text!, parentView: self.view))
         }
+        
+        println("Dictionary\(sessionDictionary)")
         // Do any additional setup after loading the view.
     }
     
     func getDate(stringDate: String) -> NSDate {
+        
+        
         let dateFormatter        = NSDateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         return dateFormatter.dateFromString(stringDate)!
@@ -113,13 +117,22 @@ class SessionTimerViewController: UIViewController {
     
     func createTimer() {
         
+        let vv = getDate("10:00")
+        println("StartTime\(vv)")
+        
+        
+       // var startTime : NSString = String((sessionDictionary["start_time"] as? String)!)
+       // var endTime : NSString = String((sessionDictionary["end_time"] as? String)!)
+        //println("string \(startTime)")
+        
+        
         circleTimer = CircularTimer(position: CGPoint(x: (self.view.frame.size.width-160)/2, y: 125), radius: 80, internalRadius: 78, circleStrokeColor: AppColor.timerColor, activeCircleStrokeColor: AppColor.boxBorderColor, initialDate: getDate((sessionDictionary["start_time"] as? String)!), finalDate: getDate((sessionDictionary["end_time"] as? String)!), startCallback: { () -> Void in
             }, endCallback: { () -> Void in
         })
         
         println("contentview frame \(self.view.frame.size.width)")
         circleTimer.translatesAutoresizingMaskIntoConstraints()
-      //  circleTimer.center = CGPoint(x: timerLabel.center.x, y: circleTimer.center.y)
+        //  circleTimer.center = CGPoint(x: timerLabel.center.x, y: circleTimer.center.y)
         circleTimer.layoutIfNeeded()
         view.addSubview(circleTimer)
         statusLabel.text = "The session has been started."
@@ -152,7 +165,7 @@ class SessionTimerViewController: UIViewController {
     
     func startSessionExtension(notif: NSNotification) {
         if let userInfo = notif.userInfo {
-            let session = userInfo["session"] as! NSDictionary
+            let session = userInfo["session"] as! NSMutableDictionary
             if let type = session["type"] as? String {
                 if type == PushNotification.sessionFail {
                     if !isTrainer {
@@ -223,7 +236,7 @@ class SessionTimerViewController: UIViewController {
             println(error)
         }
     }
-
+    
     
     @IBAction func userRate(sender: UIButton) {
         let selectedState = sender.selected
@@ -406,7 +419,7 @@ class SessionTimerViewController: UIViewController {
             if let status = jsonResult["status"] as? Int {
                 if connection.connectionTag == Connection.userRatingRequest {
                     if status == ResponseStatus.success {
-
+                        
                     } else if status == ResponseStatus.error {
                         if let message = jsonResult["message"] as? String {
                             showDismissiveAlertMesssage(message)
@@ -485,17 +498,17 @@ class SessionTimerViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
 
 extension SessionTimerViewController: MZTimerLabelDelegate {
@@ -504,8 +517,8 @@ extension SessionTimerViewController: MZTimerLabelDelegate {
         if !isTrainer {
             showSessionExtensionAlert()
         } //else {
-//            showUserRateView()
-//        }
+        //            showUserRateView()
+        //        }
     }
 }
 

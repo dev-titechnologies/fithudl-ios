@@ -62,12 +62,13 @@ class MainTabbarViewController: UITabBarController {
     
     func timerStartNotification(notif:NSNotification) {
         let userInfo: NSDictionary  = notif.userInfo!
-        showTimer(userInfo["session"] as! NSDictionary, time: userInfo["time"] as! Int)
+        showTimer(userInfo["session"] as! NSMutableDictionary, time: userInfo["time"] as! Int)
     }
     
-    func showTimer(session: NSDictionary, time: Int) {
+    func showTimer(session: NSMutableDictionary, time: Int) {
         let controller  = storyboard?.instantiateViewControllerWithIdentifier("SessionTimerViewController") as! SessionTimerViewController
         controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+        
         controller.sessionDictionary      = session
         controller.time                   = time
         selectedViewController!.presentViewController(controller, animated: true, completion: nil)

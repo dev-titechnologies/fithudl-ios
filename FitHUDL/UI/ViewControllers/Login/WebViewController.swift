@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebViewController: UIViewController {
+class WebViewController: UIViewController,UIWebViewDelegate {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var termsWebView: UIWebView!
     
@@ -16,6 +16,7 @@ class WebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        termsWebView.delegate = self
         if viewTag == ViewTag.termsView {
             titleLabel.text = "Terms Of Service"
             loadWebContent("http://www.pillar.fit/terms.html")
@@ -28,7 +29,11 @@ class WebViewController: UIViewController {
         } else if viewTag == ViewTag.mobilePrivacy {
             titleLabel.text = "Mobile Privacy"
             loadWebContent("http://www.pillar.fit/mobileprivacy.html")
+        } else if viewTag == ViewTag.whatisStripe {
+            titleLabel.text = "What's Stripe?"
+            loadWebContent("http://www.stripe.com")
         }
+
         
         // Do any additional setup after loading the view.
     }
@@ -48,6 +53,15 @@ class WebViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func webViewDidStartLoad(webView : UIWebView) {
+        showLoadingView(true)
+        println("AA")
+    }
+    
+    func webViewDidFinishLoad(webView : UIWebView) {
+        showLoadingView(false)
+        println("BB")
+    }
 
     /*
     // MARK: - Navigation

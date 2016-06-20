@@ -173,7 +173,7 @@ activeCircleStrokeColor:(UIColor *)activeCircleStrokeColor
 {
     NSDateFormatter *dateFormatter  = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat        = @"HH:mm";
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
     NSString *today                 = [dateFormatter stringFromDate:[NSDate date]];
     return [dateFormatter dateFromString:today];
 }

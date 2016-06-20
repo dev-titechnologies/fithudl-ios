@@ -244,7 +244,13 @@ class CardDetailsViewController: UIViewController {
     
     @IBAction func backAction(sender: AnyObject) {
         
-        navigationController?.popViewControllerAnimated(true)
+        
+        let controller  = storyboard?.instantiateViewControllerWithIdentifier("PackageViewController") as! PackageViewController
+       // controller.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+       // let navController = UINavigationController(rootViewController: controller)
+       // self.presentViewController(navController, animated: true, completion: nil)
+        
+      navigationController?.pushViewController(controller, animated: true)
         
         }
 

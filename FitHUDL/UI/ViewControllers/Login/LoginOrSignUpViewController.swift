@@ -195,6 +195,7 @@ class LoginOrSignUpViewController: UIViewController {
         fbLoginManager.loginBehavior = FBSDKLoginBehavior.SystemAccount
         fbLoginManager.logInWithReadPermissions(faceBookPermissions, handler: { (result: FBSDKLoginManagerLoginResult!, error: NSError!) -> Void in
             self.showLoadingView(false)
+            println("FB RESULT \(result)")
             if error != nil {
                 UIAlertView(title: alertTitle, message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
                 fbLoginManager.logOut()

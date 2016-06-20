@@ -94,12 +94,11 @@ class FavoritesViewController: UIViewController {
                             showDismissiveAlertMesssage(ErrorMessage.invalid)
                         }
                     } else {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                        }
+                        showLoadingView(false)
+                        dismissOnSessionExpire()
+                        return
                     }
+
                 } else {
                      if status == ResponseStatus.success {
                         favouriteListArray.removeAtIndex(favouritelistIndex)
@@ -121,6 +120,7 @@ class FavoritesViewController: UIViewController {
                             showDismissiveAlertMesssage(message)
                         } else {
                             showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                            dismissOnSessionExpire()
                         }
                     }
                 }

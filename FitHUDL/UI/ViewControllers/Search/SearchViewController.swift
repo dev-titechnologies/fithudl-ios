@@ -47,8 +47,6 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-
         
         navigationController?.setStatusBarColor()
         selectedIndexArray              = NSMutableArray()
@@ -140,6 +138,16 @@ class SearchViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     override func viewDidAppear(animated: Bool) {
         
         super.viewDidAppear(true)
+        
+        let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("searchIntroFlag") as? String
+        if profileFlag != "1"{
+            NSUserDefaults.standardUserDefaults().setValue("1", forKey: "searchIntroFlag")
+            let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+            custompopController.controllerFlag = 3
+            presentViewController(custompopController, animated: true, completion: nil)
+        }
+
+        
         println("View DidAppear SEARCH")
         currentLocationInMap()
         var tapGesture      = UITapGestureRecognizer(target: self, action: "mapViewTouch:")
@@ -572,11 +580,8 @@ extension SearchViewController:UISearchBarDelegate {
                                 showDismissiveAlertMesssage(ErrorMessage.invalid)
                             }
                         } else {
-                            if let message = jsonResult["message"] as? String {
-                                showDismissiveAlertMesssage(message)
-                            } else {
-                                showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                            }
+                                  dismissOnSessionExpire()
+                                  return
                         }
                     }
                 } else if  connection.connectionTag == Connection.userSportsList {
@@ -604,12 +609,9 @@ extension SearchViewController:UISearchBarDelegate {
                                 showDismissiveAlertMesssage(ErrorMessage.invalid)
                             }
                         } else {
-                            if let message = jsonResult["message"] as? String {
-                                showDismissiveAlertMesssage(message)
-                            } else {
-                                showDismissiveAlertMesssage(ErrorMessage.sessionOut)
+                                dismissOnSessionExpire()
+                               return
                             }
-                        }
                     }
                 } else {
                     if status == ResponseStatus.success {
@@ -620,11 +622,9 @@ extension SearchViewController:UISearchBarDelegate {
                             showDismissiveAlertMesssage(ErrorMessage.invalid)
                         }
                     } else {
-                        if let message = jsonResult["message"] as? String {
-                            showDismissiveAlertMesssage(message)
-                        } else {
-                            showDismissiveAlertMesssage(ErrorMessage.sessionOut)
-                        }
+                        
+                            dismissOnSessionExpire()
+                            return
                     }
                 }
             }

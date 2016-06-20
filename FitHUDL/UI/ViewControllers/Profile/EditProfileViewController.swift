@@ -52,6 +52,7 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         bioTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
         bioTextView.layer.borderWidth = 1.0
         
@@ -103,8 +104,19 @@ class EditProfileViewController: UIViewController {
             let filteredArray = NSMutableArray(array: appDelegate.user!.availableTime.allObjects).filteredArrayUsingPredicate(NSPredicate(format: "date = %@", argumentArray: [date]))
             availSessionTime.setObject(NSMutableArray(array:filteredArray), forKey: date as! String)
         }
+        println("Avaiiiiiiii \(availSessionTime)")
     }
     
+    override func viewDidAppear(animated: Bool) {
+       let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("editIntroFlag") as? String
+            if profileFlag != "1"{
+                 NSUserDefaults.standardUserDefaults().setValue("1", forKey: "editIntroFlag")
+                let custompopController = storyboard?.instantiateViewControllerWithIdentifier("OverlayViewController") as! OverlayViewController
+                custompopController.controllerFlag = 2
+                presentViewController(custompopController, animated: true, completion: nil)
+        }
+
+    }
     override func viewDidLayoutSubviews() {
         if IS_IPHONE4S || IS_IPHONE5 {
             contentScrollView.contentSize = CGSize(width: contentScrollView.frame.size.width, height: 603.0)
@@ -233,15 +245,15 @@ class EditProfileViewController: UIViewController {
         println("ARSSSS \(dateTime)")
         
         var timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
-
+        
         while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
             
             let dateFormatDate = NSDateFormatter()
             dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
             dateFormatDate.dateFormat = "YYYY-MM-dd hh:mm a"
-
+            
             let dateTimeDate = dateFormatDate.dateFromString(dateTime)
-          
+            
             
             let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(fromTime!)), endTime: Globals.convertTimeTo24Hours(timeFormat.stringFromDate(timeAfterInterval!)), user: appDelegate.user!, dateTime: dateTime)
             if !timeArray.valueForKey("timeStarts")!.containsObject(time.timeStarts) {
@@ -253,6 +265,101 @@ class EditProfileViewController: UIViewController {
         }
         availSessionTime.setObject(timeArray, forKey: Globals.convertDate(datePicker.selectedDate))
     }
+    
+    
+//    func splitTimeToIntervals(startTime: String, endTime: String) {
+//        
+//         println("123333 \(availSessionTime)")
+//        let timeFormat = NSDateFormatter()
+//        timeFormat.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//        timeFormat.dateFormat = "hh:mm a"
+//        var timeArray: NSMutableArray!
+//        if let array = availSessionTime.objectForKey(Globals.convertDate(datePicker.selectedDate)) as? NSMutableArray {
+//            timeArray = array
+//            
+//            println("AVAVVAV\(timeArray)")
+//            
+//        } else {
+//            timeArray = NSMutableArray()
+//        }
+//        
+//        
+//        let dateFormat = NSDateFormatter()
+//        dateFormat.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//        dateFormat.dateFormat = "YYYY-MM-dd"
+//        
+//        var fromTime = timeFormat.dateFromString(startTime)
+//        var toTime   = timeFormat.dateFromString(endTime)
+//        timeFormat.dateFormat = "hh.mm a"
+//        
+//        
+//        fromTime     = timeFormat.dateFromString(timeFormat.stringFromDate(fromTime!))
+//        toTime       = timeFormat.dateFromString(timeFormat.stringFromDate(toTime!))
+//        
+//        println("FROM TIME:\(fromTime)")
+//        println("TO TIME : \(toTime)")
+//        
+//        let dateTime = dateFormat.stringFromDate(datePicker.selectedDate) + startTime
+//        
+//        let newStartdate = dateFormat.stringFromDate(datePicker.selectedDate) + " " + startTime
+//        
+//        let dateFormat1 = NSDateFormatter()
+//        dateFormat1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//        dateFormat1.dateFormat = "YYYY-MM-dd hh.mm a"
+//        let newdate = dateFormat1.dateFromString(newStartdate)
+//        
+//
+//        let newdateFormat = NSDateFormatter()
+//        newdateFormat.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//        newdateFormat.dateFormat = "YYYY-MM-dd HH:mm:ss Z"
+//        let newStartDateString = newdateFormat.stringFromDate(newdate!)
+//        println("ARSSSS \(dateTime)")
+//        println("ARSSSS1 \(newStartdate)")
+//        println("ARSSSS2 \(newStartDateString)")
+//        
+//        
+//        var timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
+//        println("TOTIME \(timeAfterInterval)")
+//        
+//        var timeAfterInterval1 = newdate?.dateByAddingTimeInterval(NSTimeInterval(duration))
+//        println("TOTIME \(timeAfterInterval1)")
+//        
+////        let dateFormat2 = NSDateFormatter()
+////        dateFormat2.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+////        dateFormat2.dateFormat = "YYYY-MM-dd hh.mm a"
+////        let newdate1 = dateFormat1.dateFromString(timeAfterInterval)
+//
+//        
+//        
+//        let newdateFormat1 = NSDateFormatter()
+//        newdateFormat1.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//        newdateFormat1.dateFormat = "YYYY-MM-dd HH:mm:ss Z"
+//        let newEndDateString = newdateFormat.stringFromDate(timeAfterInterval1!)
+//        println("TOTIME1 \(newEndDateString)")
+//
+//        while timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedAscending || timeAfterInterval!.dateByAddingTimeInterval(NSTimeInterval(duration)).compare(toTime!) == NSComparisonResult.OrderedSame || timeAfterInterval!.compare(toTime!) == NSComparisonResult.OrderedSame {
+//            
+//            let dateFormatDate = NSDateFormatter()
+//            dateFormatDate.locale     = NSLocale(localeIdentifier: "en_US_POSIX")
+//            dateFormatDate.dateFormat = "YYYY-MM-dd hh:mm a"
+//            let dateTimeDate = dateFormatDate.dateFromString(dateTime)
+//            let time        = UserTime.saveUserTimeList(Globals.convertDate(datePicker.selectedDate), startTime: Globals.convertTimeTo24Hours(newStartDateString), endTime: Globals.convertTimeTo24Hours(newEndDateString), user: appDelegate.user!, dateTime: dateTime)
+//            println("uuuuu\(time)")
+//            if !timeArray.valueForKey("timeStarts")!.containsObject(time.timeStarts) {
+//                timeArray.addObject(time)
+//            }
+//            println("TTTTTT \(timeArray)")
+//            fromTime          = timeAfterInterval?.dateByAddingTimeInterval(NSTimeInterval(duration))
+//            timeAfterInterval = fromTime?.dateByAddingTimeInterval(NSTimeInterval(duration))
+//            continue
+//        }
+//        availSessionTime.setObject(timeArray, forKey: Globals.convertDate(datePicker.selectedDate))
+//        println("TTTTTT11 \(timeArray)")
+//        println("TTTTTT33 \(availSessionTime)")
+//
+//
+//    }
+    
     
     func dateValueChanged(collectionView: UICollectionView) {
         if let datePicker = datePicker.selectedDate {
@@ -705,6 +812,12 @@ class EditProfileViewController: UIViewController {
         requestDictionary.setObject(bioTextView.text, forKey: "bio")
         if !bioOnly {
             showLoadingView(true)
+            
+            
+            
+            let timeZondde = NSTimeZone.defaultTimeZone()
+            print("Zone is \(timeZondde.name)")
+            requestDictionary.setValue("\(timeZondde.name)", forKey: "timezone")
             requestDictionary.setValue(interestTextView.text, forKey: "other_interests")
             let timeArray = NSMutableArray()
             for value in availSessionTime.allValues {
@@ -716,6 +829,8 @@ class EditProfileViewController: UIViewController {
                     timeArray.addObject(setTime)
                 }
             }
+            
+            println("TIMEARRAY:\(timeArray)")
             timeArray.addObjectsFromArray(deletedTimeArray as [AnyObject])
             requestDictionary.setObject(timeArray, forKey: "session")
             if photoSelected == true {
@@ -906,7 +1021,7 @@ extension EditProfileViewController: UICollectionViewDataSource {
             let date2 = dateFormatter.dateFromString((obj2 as! UserTime).timeStarts as String)
             return date1!.compare(date2!)
         })
-
+        
         let time            = filteredArray.objectAtIndex(indexPath.item) as! UserTime
         let starttime       = Globals.convertTimeTo12Hours(time.timeStarts)
         let endtime         = Globals.convertTimeTo12Hours(time.timeEnds)
@@ -914,8 +1029,7 @@ extension EditProfileViewController: UICollectionViewDataSource {
         cell.timeLabel.superview?.layer.borderColor = UIColor(red: 0, green: 142/255, blue: 130/255, alpha: 1.0).CGColor
         cell.deleteButton.addTarget(self, action: "timeDeleteButtonClicked:", forControlEvents: .TouchUpInside)
         return cell
-    }
-}
+    }}
 
 extension EditProfileViewController: UICollectionViewDelegate {
 
