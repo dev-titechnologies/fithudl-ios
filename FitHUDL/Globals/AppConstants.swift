@@ -94,7 +94,10 @@ struct Connection {
     static let contentChangeRequest = 37
     static let striperequest = 38
     static let reportRequest = 39
+<<<<<<< HEAD
     static let stripeAccount = 40
+=======
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 }
 
 struct SportsLevel {

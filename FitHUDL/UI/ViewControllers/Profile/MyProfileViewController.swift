@@ -163,7 +163,10 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
         if let id = profileID {
             
+<<<<<<< HEAD
             notificationCountLabel.hidden = true
+=======
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
             favoriteButton.hidden      = false
             completedTitleLabel.hidden = true
             hoursLabel.hidden          = true
@@ -506,6 +509,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             
             self.notificationTableView.contentOffset = CGPointZero
             if sender.tag == 0 {
+<<<<<<< HEAD
                  let profileFlag = NSUserDefaults.standardUserDefaults().valueForKey("notifIntroFlag") as? String
                     if profileFlag != "1"{
                         NSUserDefaults.standardUserDefaults().setValue("1", forKey: "notifIntroFlag")
@@ -527,6 +531,18 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
                         
                 }
                 
+=======
+                if menuView.frame.origin.x == 0 {
+                    hideMenuView()
+                }
+                sender.tag = 1
+                notificationBackgroundView.hidden   = false
+                UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.notificationBackgroundView.frame = CGRect(x: (self.view.frame.size.width-self.notificationBackgroundView.frame.size.width), y: self.calloutViewYAxis, width: self.notificationBackgroundView.frame.size.width, height: 700)
+                    self.notificationTableView.reloadData()
+                    }, completion: nil)
+                self.sendRequestForNotificationList()
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
             } else {
                 sender.tag = 0
                 UIView.animateWithDuration(animateInterval, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -535,6 +551,7 @@ class MyProfileViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             
         }
+        
     }
     
     @IBAction func bioLabelTapped(sender: UITapGestureRecognizer) {

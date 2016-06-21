@@ -54,10 +54,15 @@ class CustomURLConnection: NSURLConnection {
                     parameters.setObject(apiToken, forKey: "token")
                 }
             }
+<<<<<<< HEAD
 //             if methodName == "user/saveCustomer" {
 //                 parameters.setObject("8c120261b938e9eef042151c", forKey: "token")
 //            }
           // println("PARAM\(parameters)")
+=======
+            
+           println("PARAM\(parameters)")
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
             let jsonData        = NSJSONSerialization.dataWithJSONObject(parameters, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
             urlRequest.HTTPBody = jsonData
         }

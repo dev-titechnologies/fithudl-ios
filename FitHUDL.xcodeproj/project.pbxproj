@@ -1087,8 +1087,13 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+<<<<<<< HEAD
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+=======
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ascension dynamik llc (9VXHQPW9HA)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: ascension dynamik llc (9VXHQPW9HA)";
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1110,7 +1115,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "";
+=======
+				PROVISIONING_PROFILE = "396853e9-de12-47d1-9af2-bcaadec9b964";
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1149,7 +1158,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "297663ec-1964-4637-afd6-0e4f11136c4f";
+=======
+				PROVISIONING_PROFILE = "396853e9-de12-47d1-9af2-bcaadec9b964";
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1176,7 +1189,11 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Pillar;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "ae7e0e31-3747-4a3c-9c8d-447d893c27c5";
+=======
+				PROVISIONING_PROFILE = "59e86cc9-0d0f-47b8-8060-755cf3c284b2";
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/FitHUDL/CustomClasses/FitHUDL-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1216,7 +1233,10 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: David Hernandez (HE7H85QGG4)";
+<<<<<<< HEAD
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: David Hernandez (HE7H85QGG4)";
+=======
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1229,7 +1249,11 @@
 				INFOPLIST_FILE = FitHUDLTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "ae7e0e31-3747-4a3c-9c8d-447d893c27c5";
+=======
+				PROVISIONING_PROFILE = "59e86cc9-0d0f-47b8-8060-755cf3c284b2";
+>>>>>>> 97574d3d8b8d17cf182d45352b06f5b4dc419d40
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pillar.app/Pillar";
 			};
 			name = Debug;
